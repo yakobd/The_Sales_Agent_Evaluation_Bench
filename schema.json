@@ -1,0 +1,248 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Tenacious-Bench Task Schema v0.1",
+  "description": "Schema for evaluating signal-grounded B2B outreach generation",
+  "type": "object",
+  "required": [
+    "task_id",
+    "source_mode",
+    "difficulty",
+    "input",
+    "candidate_output",
+    "ground_truth",
+    "rubric",
+    "metadata"
+  ],
+  "properties": {
+    "task_id": {
+      "type": "string",
+      "description": "Unique task identifier e.g. TB-001",
+      "pattern": "^TB-[0-9]{3,4}$"
+    },
+    "source_mode": {
+      "type": "string",
+      "enum": ["trace_derived", "programmatic", "multi_llm_synthesis", "hand_authored"],
+      "description": "How this task was generated"
+    },
+    "difficulty": {
+      "type": "string",
+      "enum": ["easy", "medium", "hard"],
+      "description": "easy=single signal, medium=conflicting signals, hard=adversarial"
+    },
+    "input": {
+      "type": "object",
+      "required": ["hiring_signal_brief", "bench_summary", "instruction"],
+      "properties": {
+        "hiring_signal_brief": {
+          "type": "object",
+          "description": "Enrichment output from Week 10 pipeline",
+          "required": ["prospect", "icp_classification", "firmographics"],
+          "properties": {
+            "prospect": { "type": "string" },
+            "icp_classification": {
+              "type": "object",
+              "required": ["segment", "segment_name", "confidence", "reasons"],
+              "properties": {
+                "segment": { "type": "integer", "minimum": 1, "maximum": 4 },
+                "segment_name": { "type": "string" },
+                "confidence": { "type": "string", "enum": ["high", "medium", "low", "very_low"] },
+                "reasons": { "type": "array", "items": { "type": "string" } }
+              }
+            },
+            "firmographics": {
+              "type": "object",
+              "properties": {
+                "company": { "type": "string" },
+                "website": { "type": "string" },
+                "description": { "type": "string" }
+              }
+            },
+            "ai_maturity": {
+              "type": "object",
+              "properties": {
+                "ai_maturity_score": { "type": "integer", "minimum": 0, "maximum": 3 },
+                "confidence": { "type": "string" }
+              }
+            }
+          }
+        },
+        "bench_summary": {
+          "type": "object",
+          "description": "Tenacious bench state at time of task generation",
+          "properties": {
+            "total_engineers": { "type": "integer" },
+            "available": { "type": "integer" },
+            "stacks": { "type": "object" }
+          }
+        },
+        "instruction": {
+          "type": "string",
+          "description": "What the agent is asked to do"
+        },
+        "prior_thread": {
+          "type": "array",
+          "description": "Optional prior conversation turns",
+          "items": {
+            "type": "object",
+            "properties": {
+              "role": { "type": "string", "enum": ["agent", "prospect"] },
+              "content": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "candidate_output": {
+      "type": "object",
+      "description": "The agent output being evaluated",
+      "required": ["subject", "body"],
+      "properties": {
+        "subject": { "type": "string" },
+        "body": { "type": "string" }
+      }
+    },
+    "ground_truth": {
+      "type": "object",
+      "description": "Verifiable facts from the input that must appear in the output",
+      "required": ["required_signals", "forbidden_phrases", "max_subject_length"],
+      "properties": {
+        "required_signals": {
+          "type": "array",
+          "description": "At least one of these signals must appear in the email body",
+          "items": { "type": "string" }
+        },
+        "forbidden_phrases": {
+          "type": "array",
+          "description": "None of these phrases may appear in subject or body",
+          "items": { "type": "string" }
+        },
+        "max_subject_length": {
+          "type": "integer",
+          "default": 60
+        },
+        "must_end_with_cta": {
+          "type": "boolean",
+          "description": "Email must end with calendar link or explicit next-step offer",
+          "default": true
+        }
+      }
+    },
+    "rubric": {
+      "type": "object",
+      "description": "Four machine-verifiable scoring dimensions",
+      "required": ["grounding", "tone", "subject_length", "cta_present"],
+      "properties": {
+        "grounding": {
+          "type": "object",
+          "description": "Every factual claim maps to a field in hiring_signal_brief",
+          "properties": {
+            "weight": { "type": "number", "default": 1.0 },
+            "check": { "type": "string", "default": "all_claims_grounded" }
+          }
+        },
+        "tone": {
+          "type": "object",
+          "description": "No banned phrase from Tenacious style guide",
+          "properties": {
+            "weight": { "type": "number", "default": 1.0 },
+            "check": { "type": "string", "default": "zero_banned_phrases" }
+          }
+        },
+        "subject_length": {
+          "type": "object",
+          "description": "Subject line 60 characters or fewer",
+          "properties": {
+            "weight": { "type": "number", "default": 1.0 },
+            "check": { "type": "string", "default": "subject_lte_60_chars" }
+          }
+        },
+        "cta_present": {
+          "type": "object",
+          "description": "Email ends with calendar link or next-step offer",
+          "properties": {
+            "weight": { "type": "number", "default": 1.0 },
+            "check": { "type": "string", "default": "cta_in_last_paragraph" }
+          }
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "required": ["created_at", "partition", "probe_ids"],
+      "properties": {
+        "created_at": { "type": "string", "format": "date-time" },
+        "partition": { "type": "string", "enum": ["train", "dev", "held_out"] },
+        "probe_ids": {
+          "type": "array",
+          "description": "Week 10 probe IDs this task targets",
+          "items": { "type": "string" }
+        },
+        "source_trace_id": {
+          "type": "string",
+          "description": "Week 10 trace ID if trace_derived"
+        },
+        "judge_score": {
+          "type": "number",
+          "description": "LLM judge quality score 1-5 at authoring time"
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "task_id": "TB-001",
+      "source_mode": "trace_derived",
+      "difficulty": "easy",
+      "input": {
+        "hiring_signal_brief": {
+          "prospect": "Yellow.ai",
+          "icp_classification": {
+            "segment": 2,
+            "segment_name": "Mid-market restructuring",
+            "confidence": "high",
+            "reasons": ["Layoff detected — cost restructuring likely"]
+          },
+          "firmographics": {
+            "company": "Yellow.ai",
+            "website": "https://yellow.ai",
+            "description": "Conversational AI platform for enterprises"
+          },
+          "ai_maturity": {
+            "ai_maturity_score": 2,
+            "confidence": "high"
+          }
+        },
+        "bench_summary": {
+          "total_engineers": 60,
+          "available": 34,
+          "stacks": { "python": 12, "node": 8, "ml": 6 }
+        },
+        "instruction": "Write a cold outreach email to the VP Engineering at Yellow.ai.",
+        "prior_thread": []
+      },
+      "candidate_output": {
+        "subject": "Note on Yellow.ai restructuring",
+        "body": "Yellow.ai has gone through a recent restructuring. Companies in this state often need to preserve delivery capacity while reshaping cost structure.\n\nTenacious provides managed engineering teams that preserve delivery capacity while reducing cost.\n\nWorth 15 minutes this week? http://localhost:3000/yakob/30min\n\nResearch Partner\nTenacious Intelligence Corporation"
+      },
+      "ground_truth": {
+        "required_signals": ["restructuring", "cost", "layoff"],
+        "forbidden_phrases": ["just circling back", "hope this finds you well", "aggressive hiring", "top talent", "world-class", "rockstar", "bench"],
+        "max_subject_length": 60,
+        "must_end_with_cta": true
+      },
+      "rubric": {
+        "grounding": { "weight": 1.0, "check": "all_claims_grounded" },
+        "tone": { "weight": 1.0, "check": "zero_banned_phrases" },
+        "subject_length": { "weight": 1.0, "check": "subject_lte_60_chars" },
+        "cta_present": { "weight": 1.0, "check": "cta_in_last_paragraph" }
+      },
+      "metadata": {
+        "created_at": "2026-04-28T00:00:00Z",
+        "partition": "dev",
+        "probe_ids": ["P06", "P10", "P30"],
+        "source_trace_id": "thread_20260427_110356",
+        "judge_score": 4.5
+      }
+    }
+  ]
+}
