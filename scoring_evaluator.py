@@ -171,6 +171,160 @@ def check_cta(candidate_output: dict, ground_truth: dict) -> dict:
 
 
 # ─────────────────────────────────────────────
+# Check 5 — LLM Judge (5 Tenacious Tone Markers)
+# ─────────────────────────────────────────────
+
+TENACIOUS_TONE_MARKERS = [
+    "Direct — opens with a specific signal about the prospect, not a generic greeting",
+    "Honest — no claim is made that cannot be supported by the supplied brief",
+    "Respectful — no condescending framing, no urgency pressure, no clichés",
+    "Specific — references at least one named signal from the brief",
+    "Action-oriented — ends with a clear, low-friction next step",
+]
+
+def check_llm_judge(candidate_output: dict, ground_truth: dict,
+                    openrouter_api_key: str = None,
+                    hiring_signal_brief: dict = None) -> dict:
+    """
+    Check 5: LLM judge scores the email on 5 Tenacious tone markers.
+    Each marker scored 1-5. Pass threshold: average >= 4.0.
+
+    If no API key is provided, falls back to a rule-based heuristic.
+    """
+    subject = candidate_output.get("subject", "")
+    body = candidate_output.get("body", "")
+
+    # Rule-based fallback when no API key available
+    if not openrouter_api_key:
+        return _rule_based_tone_score(subject, body, hiring_signal_brief)
+
+    # LLM judge via OpenRouter
+    try:
+        import requests
+        brief_text = json.dumps(hiring_signal_brief, indent=2) if hiring_signal_brief else "Not provided"
+        prompt = f"""You are a strict evaluator for Tenacious Intelligence Corporation's outreach emails.
+
+Score the following email on each of the 5 Tenacious tone markers.
+Score each marker 1-5 where 1=completely fails, 5=exemplary.
+Respond ONLY with a JSON object like:
+{{"marker_1": 4, "marker_2": 3, "marker_3": 5, "marker_4": 4, "marker_5": 4, "reasoning": "brief explanation"}}
+
+Tone Markers:
+1. Direct — opens with a specific signal about the prospect, not a generic greeting
+2. Honest — no claim is made that cannot be supported by the supplied brief
+3. Respectful — no condescending framing, no urgency pressure, no clichés
+4. Specific — references at least one named signal from the brief
+5. Action-oriented — ends with a clear, low-friction next step
+
+Hiring Signal Brief:
+{brief_text}
+
+Email Subject: {subject}
+Email Body:
+{body}"""
+
+        response = requests.post(
+            "https://openrouter.ai/api/v1/chat/completions",
+            headers={
+                "Authorization": f"Bearer {openrouter_api_key}",
+                "Content-Type": "application/json",
+            },
+            json={
+                "model": "qwen/qwen3-235b-a22b",
+                "max_tokens": 300,
+                "messages": [{"role": "user", "content": prompt}]
+            },
+            timeout=30
+        )
+        response.raise_for_status()
+        content = response.json()["choices"][0]["message"]["content"]
+
+        # Parse JSON response
+        clean = content.strip()
+        if "```" in clean:
+            clean = clean.split("```")[1].replace("json", "").strip()
+        scores = json.loads(clean)
+
+        marker_scores = [
+            scores.get("marker_1", 3),
+            scores.get("marker_2", 3),
+            scores.get("marker_3", 3),
+            scores.get("marker_4", 3),
+            scores.get("marker_5", 3),
+        ]
+        avg_score = sum(marker_scores) / len(marker_scores)
+        passed = avg_score >= 4.0
+
+        return {
+            "pass": passed,
+            "score": 1.0 if passed else 0.0,
+            "marker_scores": marker_scores,
+            "average_score": round(avg_score, 2),
+            "reasoning": scores.get("reasoning", ""),
+            "detail": f"LLM judge avg: {round(avg_score, 2)}/5.0 (threshold 4.0)",
+            "method": "llm_judge"
+        }
+
+    except Exception as e:
+        # Fall back to rule-based if LLM call fails
+        result = _rule_based_tone_score(subject, body, hiring_signal_brief)
+        result["detail"] += f" [LLM fallback: {str(e)[:50]}]"
+        return result
+
+
+def _rule_based_tone_score(subject: str, body: str,
+                            hiring_signal_brief: dict = None) -> dict:
+    """
+    Rule-based fallback for LLM judge.
+    Scores 5 tone markers heuristically.
+    """
+    scores = []
+    body_lower = body.lower()
+    subject_lower = subject.lower()
+
+    # Marker 1: Direct — no generic greeting
+    generic_greetings = ["hope this finds you", "hope you're doing well",
+                         "i wanted to reach out", "my name is"]
+    m1 = 5 if not any(g in body_lower for g in generic_greetings) else 2
+    scores.append(m1)
+
+    # Marker 2: Honest — no over-claiming phrases
+    overclaims = ["aggressive hiring", "clearly", "obviously",
+                  "you are definitely", "without a doubt"]
+    m2 = 5 if not any(o in body_lower for o in overclaims) else 2
+    scores.append(m2)
+
+    # Marker 3: Respectful — no condescending framing
+    condescending = ["you are missing", "fell behind", "struggling",
+                     "your competitors have already", "you need to"]
+    m3 = 5 if not any(c in body_lower for c in condescending) else 2
+    scores.append(m3)
+
+    # Marker 4: Specific — references prospect name or signal
+    prospect_name = ""
+    if hiring_signal_brief:
+        prospect_name = hiring_signal_brief.get("prospect", "").lower()
+    m4 = 5 if (prospect_name and prospect_name in body_lower) else 3
+    scores.append(m4)
+
+    # Marker 5: Action-oriented — has CTA
+    cta_words = ["http", "cal.com", "book", "schedule", "minutes", "call", "reply"]
+    m5 = 5 if any(c in body_lower for c in cta_words) else 1
+    scores.append(m5)
+
+    avg = sum(scores) / len(scores)
+    passed = avg >= 4.0
+
+    return {
+        "pass": passed,
+        "score": 1.0 if passed else 0.0,
+        "marker_scores": scores,
+        "average_score": round(avg, 2),
+        "detail": f"Rule-based tone avg: {round(avg, 2)}/5.0 (threshold 4.0)",
+        "method": "rule_based_fallback"
+    }
+
+# ─────────────────────────────────────────────
 # Main Scorer
 # ─────────────────────────────────────────────
 
@@ -187,17 +341,31 @@ def score_task(task: dict, candidate_output: dict = None) -> dict:
     ground_truth = task.get("ground_truth", {})
     task_id = task.get("task_id", "unknown")
 
-    # Run all four checks
+    # Run all five checks
+    openrouter_key = None
+    try:
+        from dotenv import load_dotenv
+        import os
+        load_dotenv('/home/yakob/week11-sales-bench/.env')
+        openrouter_key = os.getenv("OPENROUTER_API_KEY")
+    except Exception:
+        pass
+
+    hiring_brief = task.get("input", {}).get("hiring_signal_brief", {})
+
     grounding_result    = check_grounding(candidate_output, ground_truth)
     tone_result         = check_tone(candidate_output, ground_truth)
     subject_result      = check_subject_length(candidate_output, ground_truth)
     cta_result          = check_cta(candidate_output, ground_truth)
+    judge_result        = check_llm_judge(candidate_output, ground_truth,
+                                          openrouter_key, hiring_brief)
 
     checks = {
         "grounding":      grounding_result,
         "tone":           tone_result,
         "subject_length": subject_result,
         "cta_present":    cta_result,
+        "llm_judge":      judge_result,
     }
 
     # Overall score: 1 only if ALL four checks pass
@@ -436,3 +604,4 @@ if __name__ == "__main__":
     else:
         parser.print_help()
         sys.exit(1)
+
