@@ -1,0 +1,6 @@
+.env
+venv/
+__pycache__/
+*.pyc
+tenacious_bench_v0.1/held_out/
+*.log
