@@ -377,14 +377,9 @@ def score_task(task: dict, candidate_output: dict = None) -> dict:
     task_id = task.get("task_id", "unknown")
 
     # Run all five checks
+    # Use rule-based judge for bulk scoring (fast + free)
+    # LLM judge only used for sealed held-out evaluation
     openrouter_key = None
-    try:
-        from dotenv import load_dotenv
-        import os
-        load_dotenv('/home/yakob/week11-sales-bench/.env')
-        openrouter_key = os.getenv("OPENROUTER_API_KEY")
-    except Exception:
-        pass
 
     hiring_brief = task.get("input", {}).get("hiring_signal_brief", {})
 

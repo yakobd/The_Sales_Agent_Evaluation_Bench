@@ -1,0 +1,27 @@
+{
+  "generated_at": "2026-04-29T19:52:43.582968",
+  "mode": "trace_derived",
+  "source_threads": 30,
+  "unique_companies": 13,
+  "tasks_generated": 13,
+  "partition_counts": {
+    "train": 7,
+    "dev": 4,
+    "held_out": 2
+  },
+  "task_ids": [
+    "TB-001",
+    "TB-002",
+    "TB-003",
+    "TB-004",
+    "TB-005",
+    "TB-006",
+    "TB-007",
+    "TB-008",
+    "TB-009",
+    "TB-010",
+    "TB-011",
+    "TB-012",
+    "TB-013"
+  ]
+}

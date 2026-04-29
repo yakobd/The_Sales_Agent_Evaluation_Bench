@@ -1,0 +1,36 @@
+{
+  "generated_at": "2026-04-29T20:13:27.426723",
+  "mode": "trace_derived_v2",
+  "companies": [
+    "Yellow.ai",
+    "Salesforce",
+    "Hubspot",
+    "Retool",
+    "Linear",
+    "Brex",
+    "Lattice",
+    "Intercom",
+    "Deel",
+    "Rippling",
+    "Figma",
+    "Notion",
+    "Stripe"
+  ],
+  "tasks_generated": 78,
+  "passing_tasks": 52,
+  "failing_tasks": 26,
+  "partition_counts": {
+    "train": 39,
+    "dev": 24,
+    "held_out": 15
+  },
+  "segment_counts": {
+    "Segment 2": 42,
+    "Segment 1": 36
+  },
+  "difficulty_counts": {
+    "easy": 7,
+    "medium": 32,
+    "hard": 39
+  }
+}

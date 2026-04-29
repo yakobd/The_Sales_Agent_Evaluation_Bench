@@ -1,0 +1,135 @@
+{
+  "task_id": "TB-051",
+  "source_mode": "trace_derived",
+  "difficulty": "hard",
+  "variant": "v3_low_confidence",
+  "is_passing": true,
+  "input": {
+    "hiring_signal_brief": {
+      "prospect": "Deel",
+      "icp_classification": {
+        "segment": 1,
+        "segment_name": "Recently-funded startup",
+        "confidence": "very_low",
+        "reasons": [
+          "No strong signals \u2014 defaulting to Segment 1"
+        ]
+      },
+      "firmographics": {
+        "company": "Deel",
+        "website": "",
+        "description": "",
+        "num_employees": "unknown"
+      },
+      "ai_maturity": {
+        "ai_maturity_score": 0,
+        "confidence": "very_low"
+      },
+      "layoff_signal": {
+        "company": "Deel",
+        "layoff_detected": false,
+        "confidence": 0.9,
+        "source": "layoffs_fyi_github_mirror",
+        "note": "No layoff found in 2362-record dataset"
+      },
+      "leadership_signal": {
+        "company": "Deel",
+        "leadership_change_detected": false,
+        "confidence": 0.0,
+        "note": "Company not found in Crunchbase ODM sample"
+      }
+    },
+    "bench_summary": {
+      "total_engineers": 60,
+      "available": 34,
+      "stacks": {
+        "python": 12,
+        "node": 8,
+        "ml": 6,
+        "go": 4,
+        "data": 4
+      }
+    },
+    "instruction": "Write a cold outreach email to Deel. Signal confidence is very_low \u2014 use interrogative or conditional language. Do not assert facts you cannot verify.",
+    "prior_thread": []
+  },
+  "candidate_output": {
+    "subject": "Context: Deel and engineering capacity",
+    "body": "Deel may have engineering capacity needs based on public profile \u2014 typical bottleneck for teams at this stage is recruiting capacity, not budget.\n\nWe run dedicated engineering squads for companies scaling post-funding \u2014 senior engineers available in 7\u201314 days with 3\u20135 hours daily time-zone overlap.\n\nWorth 15 minutes this week to walk through how this lands for Deel? \u2192 http://localhost:3000/yakob/30min\n\n\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com"
+  },
+  "ground_truth": {
+    "required_signals": [
+      "may",
+      "appears",
+      "public",
+      "profile",
+      "based"
+    ],
+    "forbidden_phrases": [
+      "just circling back",
+      "hope this finds you well",
+      "just following up",
+      "per my last email",
+      "top talent",
+      "world-class",
+      "rockstar",
+      "a-players",
+      "ninja",
+      "wizard",
+      "bench",
+      "aggressive hiring",
+      "skyrocket",
+      "supercharge",
+      "synergize",
+      "synergy",
+      "game-changer",
+      "disruptor",
+      "you are missing",
+      "falling behind",
+      "behind the curve",
+      "catch up",
+      "quick question",
+      "quick chat",
+      "obviously",
+      "clearly",
+      "touching base",
+      "following up",
+      "as per"
+    ],
+    "max_subject_length": 60,
+    "must_end_with_cta": true
+  },
+  "rubric": {
+    "grounding": {
+      "weight": 1.0,
+      "check": "all_claims_grounded"
+    },
+    "tone": {
+      "weight": 1.0,
+      "check": "zero_banned_phrases"
+    },
+    "subject_length": {
+      "weight": 1.0,
+      "check": "subject_lte_60_chars"
+    },
+    "cta_present": {
+      "weight": 1.0,
+      "check": "cta_in_last_paragraph"
+    },
+    "llm_judge": {
+      "weight": 1.0,
+      "check": "avg_tone_marker_gte_4"
+    }
+  },
+  "metadata": {
+    "created_at": "2026-04-29T20:13:27.307330Z",
+    "partition": "dev",
+    "probe_ids": [
+      "P05",
+      "P30"
+    ],
+    "source_trace_id": "thread_20260427_114651",
+    "judge_score": null,
+    "expected_score": 1.0
+  }
+}

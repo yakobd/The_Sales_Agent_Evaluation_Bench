@@ -1,0 +1,141 @@
+{
+  "task_id": "TB-013",
+  "source_mode": "trace_derived",
+  "difficulty": "easy",
+  "variant": "v1_standard_outreach",
+  "is_passing": true,
+  "input": {
+    "hiring_signal_brief": {
+      "prospect": "Hubspot",
+      "icp_classification": {
+        "segment": 2,
+        "segment_name": "Post-layoff restructuring",
+        "confidence": "high",
+        "reasons": [
+          "Layoff detected \u2014 cost restructuring likely"
+        ]
+      },
+      "firmographics": {
+        "company": "Hubspot",
+        "website": "",
+        "description": "",
+        "num_employees": "unknown"
+      },
+      "ai_maturity": {
+        "ai_maturity_score": 0,
+        "confidence": "high"
+      },
+      "layoff_signal": {
+        "company": "Hubspot",
+        "layoff_detected": true,
+        "confidence": 1.0,
+        "source": "layoffs_fyi_github_mirror",
+        "total_laid_off": "500.0",
+        "percentage_laid_off": "0.07",
+        "date": "1/31/2023",
+        "stage": "Post-IPO",
+        "country": "United States",
+        "icp_signal": "Segment 2 \u2014 cost restructuring pitch",
+        "note": "Layoff detected from layoffs.fyi dataset (1 records found)"
+      },
+      "leadership_signal": {
+        "company": "Hubspot",
+        "leadership_change_detected": false,
+        "confidence": 0.0,
+        "note": "Company not found in Crunchbase ODM sample"
+      }
+    },
+    "bench_summary": {
+      "total_engineers": 60,
+      "available": 34,
+      "stacks": {
+        "python": 12,
+        "node": 8,
+        "ml": 6,
+        "go": 4,
+        "data": 4
+      }
+    },
+    "instruction": "Write a cold outreach email to the VP Engineering at Hubspot. Ground every claim in the supplied hiring signal brief. Follow all Tenacious style guide constraints.",
+    "prior_thread": []
+  },
+  "candidate_output": {
+    "subject": "Note on Hubspot restructuring",
+    "body": "Hubspot has gone through a recent restructuring. Companies in this state often need to preserve delivery capacity while reshaping cost structure.\n\nTenacious provides managed engineering teams that preserve delivery capacity while reducing cost \u2014 our engineers are full-time employees, not contractors.\n\nWorth 15 minutes this week to walk through how this lands for Hubspot? \u2192 http://localhost:3000/yakob/30min\n\n\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com"
+  },
+  "ground_truth": {
+    "required_signals": [
+      "restructuring",
+      "cost",
+      "layoff",
+      "restructure"
+    ],
+    "forbidden_phrases": [
+      "just circling back",
+      "hope this finds you well",
+      "just following up",
+      "per my last email",
+      "top talent",
+      "world-class",
+      "rockstar",
+      "a-players",
+      "ninja",
+      "wizard",
+      "bench",
+      "aggressive hiring",
+      "skyrocket",
+      "supercharge",
+      "synergize",
+      "synergy",
+      "game-changer",
+      "disruptor",
+      "you are missing",
+      "falling behind",
+      "behind the curve",
+      "catch up",
+      "quick question",
+      "quick chat",
+      "obviously",
+      "clearly",
+      "touching base",
+      "following up",
+      "as per"
+    ],
+    "max_subject_length": 60,
+    "must_end_with_cta": true
+  },
+  "rubric": {
+    "grounding": {
+      "weight": 1.0,
+      "check": "all_claims_grounded"
+    },
+    "tone": {
+      "weight": 1.0,
+      "check": "zero_banned_phrases"
+    },
+    "subject_length": {
+      "weight": 1.0,
+      "check": "subject_lte_60_chars"
+    },
+    "cta_present": {
+      "weight": 1.0,
+      "check": "cta_in_last_paragraph"
+    },
+    "llm_judge": {
+      "weight": 1.0,
+      "check": "avg_tone_marker_gte_4"
+    }
+  },
+  "metadata": {
+    "created_at": "2026-04-29T20:13:27.287780Z",
+    "partition": "train",
+    "probe_ids": [
+      "P10",
+      "P16",
+      "P20"
+    ],
+    "source_trace_id": "thread_20260427_115927",
+    "judge_score": null,
+    "expected_score": 1.0
+  }
+}
