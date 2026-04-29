@@ -1,0 +1,13 @@
+{
+  "generated_at": "2026-04-29T22:20:02.675579",
+  "mode": "style_guide",
+  "good_drafts": 12,
+  "bad_drafts": 12,
+  "total_tasks": 24,
+  "partition_counts": {
+    "train": 12,
+    "dev": 8,
+    "held_out": 4
+  },
+  "cost": "$0.00"
+}
