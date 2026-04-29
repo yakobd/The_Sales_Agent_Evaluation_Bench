@@ -21,32 +21,67 @@ from pathlib import Path
 # Source: Tenacious style guide v2
 # ─────────────────────────────────────────────
 BANNED_PHRASES = [
+    # Generic openers
     "just circling back",
     "hope this finds you well",
     "hope you're doing well",
+    "i hope this email finds you",
     "touching base",
     "following up",
+    "just following up",
     "per my last email",
+    "per my last",
     "as per",
-    "aggressive hiring",
+    # Offshore vendor cliches
     "top talent",
     "world-class",
     "rockstar",
     "a-players",
     "ninja",
+    "wizard",
     "guru",
-    "offshore",
+    # Internal jargon
+    "bench",
+    # Aggressive claims
+    "aggressive hiring",
+    "skyrocket",
+    "supercharge",
+    "10x",
+    "game-changer",
+    "disruptor",
+    "paradigm shift",
+    # Consultant jargon
+    "synergize",
+    "synergy",
+    "leverage",
+    "ecosystem",
+    # Condescending framing
+    "you are missing",
+    "you are falling behind",
+    "behind the curve",
+    "your competitors have",
+    "fell behind",
+    "catch up",
+    "you need to",
+    "you should",
+    # Fake urgency
+    "you'll regret",
+    "don't miss out",
+    "last chance",
+    "urgent",
+    # Fabrication risk
+    "our proprietary",
+    "our ai-powered",
+    # Other violations
+    "quick question",
+    "quick chat",
+    "obviously",
+    "clearly",
+    "struggling",
     "outsourcing",
     "cheaper",
     "cost effective",
     "cost-effective",
-    "bench",
-    "you are missing",
-    "your competitors have",
-    "fell behind",
-    "struggling",
-    "obviously",
-    "clearly",
 ]
 
 # CTA indicators — email must end with one of these
