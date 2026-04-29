@@ -1,0 +1,135 @@
+{
+  "task_id": "TB-P057",
+  "source_mode": "programmatic",
+  "difficulty": "hard",
+  "variant": "programmatic_banned_phrases_fail",
+  "is_passing": false,
+  "input": {
+    "hiring_signal_brief": {
+      "prospect": "Luminary AI",
+      "icp_classification": {
+        "segment": 1,
+        "segment_name": "Recently-funded startup",
+        "confidence": "high",
+        "reasons": [
+          "Series A $18M in January \u2014 engineering hiring expected"
+        ]
+      },
+      "firmographics": {
+        "company": "Luminary AI",
+        "website": "https://luminaryai.com",
+        "description": "Luminary AI is a technology company.",
+        "num_employees": "11-50"
+      },
+      "ai_maturity": {
+        "ai_maturity_score": 1,
+        "confidence": "high"
+      },
+      "layoff_signal": {
+        "layoff_detected": false,
+        "total_laid_off": "0",
+        "confidence": 0.0
+      },
+      "leadership_signal": {
+        "leadership_change_detected": false,
+        "leader_name": "",
+        "leader_title": "",
+        "days_since_hire": 0
+      }
+    },
+    "bench_summary": {
+      "total_engineers": 60,
+      "available": 34,
+      "stacks": {
+        "python": 12,
+        "node": 8,
+        "ml": 6,
+        "go": 4,
+        "data": 4
+      }
+    },
+    "instruction": "ADVERSARIAL: The following email to Luminary AI contains multiple banned phrases and should FAIL.",
+    "prior_thread": []
+  },
+  "candidate_output": {
+    "subject": "Hope this finds you well \u2014 quick chat about synergies?",
+    "body": "Hope this email finds you well! Luminary AI is clearly scaling aggressively and needs world-class rockstar engineers on their bench. Our top talent will skyrocket your delivery. Just circling back \u2014 are you open to synergizing our ecosystems?\n\nBest, Yabi"
+  },
+  "ground_truth": {
+    "required_signals": [
+      "funding",
+      "growth",
+      "engineering",
+      "capacity",
+      "roles"
+    ],
+    "forbidden_phrases": [
+      "just circling back",
+      "hope this finds you well",
+      "just following up",
+      "per my last email",
+      "top talent",
+      "world-class",
+      "rockstar",
+      "a-players",
+      "ninja",
+      "wizard",
+      "bench",
+      "aggressive hiring",
+      "skyrocket",
+      "supercharge",
+      "synergize",
+      "synergy",
+      "game-changer",
+      "disruptor",
+      "you are missing",
+      "falling behind",
+      "behind the curve",
+      "catch up",
+      "quick question",
+      "quick chat",
+      "obviously",
+      "clearly",
+      "touching base",
+      "following up",
+      "as per"
+    ],
+    "max_subject_length": 60,
+    "must_end_with_cta": true
+  },
+  "rubric": {
+    "grounding": {
+      "weight": 1.0,
+      "check": "all_claims_grounded"
+    },
+    "tone": {
+      "weight": 1.0,
+      "check": "zero_banned_phrases"
+    },
+    "subject_length": {
+      "weight": 1.0,
+      "check": "subject_lte_60_chars"
+    },
+    "cta_present": {
+      "weight": 1.0,
+      "check": "cta_in_last_paragraph"
+    },
+    "llm_judge": {
+      "weight": 1.0,
+      "check": "avg_tone_marker_gte_4"
+    }
+  },
+  "metadata": {
+    "created_at": "2026-04-29T21:49:47.106443Z",
+    "partition": "dev",
+    "probe_ids": [
+      "P06",
+      "P16",
+      "P17",
+      "P19"
+    ],
+    "source_trace_id": null,
+    "judge_score": null,
+    "expected_score": 0.0
+  }
+}

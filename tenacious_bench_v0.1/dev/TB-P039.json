@@ -1,0 +1,135 @@
+{
+  "task_id": "TB-P039",
+  "source_mode": "programmatic",
+  "difficulty": "medium",
+  "variant": "programmatic_low_confidence",
+  "is_passing": true,
+  "input": {
+    "hiring_signal_brief": {
+      "prospect": "Vertex Intelligence",
+      "icp_classification": {
+        "segment": 4,
+        "segment_name": "AI capability gap",
+        "confidence": "low",
+        "reasons": [
+          "AI maturity 2/3 with partial ML stack signal",
+          "Competitor gap: 2 peers with public MLOps function"
+        ]
+      },
+      "firmographics": {
+        "company": "Vertex Intelligence",
+        "website": "https://vertexintelligence.com",
+        "description": "Vertex Intelligence is a technology company.",
+        "num_employees": "201-500"
+      },
+      "ai_maturity": {
+        "ai_maturity_score": 2,
+        "confidence": "low"
+      },
+      "layoff_signal": {
+        "layoff_detected": false,
+        "total_laid_off": "0",
+        "confidence": 0.0
+      },
+      "leadership_signal": {
+        "leadership_change_detected": false,
+        "leader_name": "",
+        "leader_title": "",
+        "days_since_hire": 0
+      }
+    },
+    "bench_summary": {
+      "total_engineers": 60,
+      "available": 34,
+      "stacks": {
+        "python": 12,
+        "node": 8,
+        "ml": 6,
+        "go": 4,
+        "data": 4
+      }
+    },
+    "instruction": "Write a cold outreach email to the VP Engineering at Vertex Intelligence (Segment 4 \u2014 AI capability gap, confidence=low). Ground every claim in the supplied hiring signal brief.",
+    "prior_thread": []
+  },
+  "candidate_output": {
+    "subject": "Question on Vertex Intelligence AI capability",
+    "body": "Public signal suggests Vertex Intelligence may be building toward specialized AI capability. Teams at this stage often hit a talent bottleneck before a budget one.\n\nWe deliver fixed-scope AI and data engineering projects \u2014 ML platform builds, agentic systems, data contracts \u2014 typically 3 to 4 months. Starter scopes from $XX,XXX.\n\nIf you have already scoped this and decided against it, I would genuinely be curious why \u2014 that is useful for us. If not, 15 minutes: \u2192 http://localhost:3000/yakob/30min\n\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com"
+  },
+  "ground_truth": {
+    "required_signals": [
+      "ai",
+      "capability",
+      "ml",
+      "platform",
+      "agentic",
+      "data"
+    ],
+    "forbidden_phrases": [
+      "just circling back",
+      "hope this finds you well",
+      "just following up",
+      "per my last email",
+      "top talent",
+      "world-class",
+      "rockstar",
+      "a-players",
+      "ninja",
+      "wizard",
+      "bench",
+      "aggressive hiring",
+      "skyrocket",
+      "supercharge",
+      "synergize",
+      "synergy",
+      "game-changer",
+      "disruptor",
+      "you are missing",
+      "falling behind",
+      "behind the curve",
+      "catch up",
+      "quick question",
+      "quick chat",
+      "obviously",
+      "clearly",
+      "touching base",
+      "following up",
+      "as per"
+    ],
+    "max_subject_length": 60,
+    "must_end_with_cta": true
+  },
+  "rubric": {
+    "grounding": {
+      "weight": 1.0,
+      "check": "all_claims_grounded"
+    },
+    "tone": {
+      "weight": 1.0,
+      "check": "zero_banned_phrases"
+    },
+    "subject_length": {
+      "weight": 1.0,
+      "check": "subject_lte_60_chars"
+    },
+    "cta_present": {
+      "weight": 1.0,
+      "check": "cta_in_last_paragraph"
+    },
+    "llm_judge": {
+      "weight": 1.0,
+      "check": "avg_tone_marker_gte_4"
+    }
+  },
+  "metadata": {
+    "created_at": "2026-04-29T21:49:47.105054Z",
+    "partition": "dev",
+    "probe_ids": [
+      "P05",
+      "P30"
+    ],
+    "source_trace_id": null,
+    "judge_score": null,
+    "expected_score": 1.0
+  }
+}

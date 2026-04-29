@@ -1,0 +1,23 @@
+{
+  "generated_at": "2026-04-29T21:49:47.195312",
+  "mode": "programmatic",
+  "total_tasks": 72,
+  "passing_tasks": 32,
+  "failing_tasks": 40,
+  "partition_counts": {
+    "train": 36,
+    "dev": 22,
+    "held_out": 14
+  },
+  "segment_counts": {
+    "Segment 3": 27,
+    "Segment 4": 27,
+    "Segment 1": 9,
+    "Segment 2": 9
+  },
+  "difficulty_counts": {
+    "easy": 8,
+    "medium": 24,
+    "hard": 40
+  }
+}
