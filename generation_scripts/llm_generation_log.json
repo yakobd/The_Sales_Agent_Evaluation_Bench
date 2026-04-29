@@ -1,0 +1,16 @@
+{
+  "generated_at": "2026-04-29T22:30:52.785466",
+  "mode": "multi_llm_synthesis",
+  "generator_model": "qwen/qwen3-235b-a22b",
+  "scenarios_tried": 16,
+  "api_calls": 26,
+  "accepted": 10,
+  "rejected": 16,
+  "acceptance_rate": 0.38,
+  "tasks_generated": 10,
+  "partition_counts": {
+    "train": 6,
+    "dev": 4,
+    "held_out": 0
+  }
+}
