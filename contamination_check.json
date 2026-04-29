@@ -1,0 +1,476 @@
+{
+  "generated_at": "2026-04-29T23:24:10.398372",
+  "dataset_version": "tenacious_bench_v0.1",
+  "total_tasks": 299,
+  "train_tasks": 148,
+  "dev_tasks": 93,
+  "held_out_tasks": 58,
+  "checks": {
+    "ngram": {
+      "check": "ngram_overlap",
+      "n": 8,
+      "threshold": "< 3 overlapping 8-grams",
+      "total_held_out": 58,
+      "clean": 2,
+      "warnings": 1,
+      "violations": 55,
+      "violation_details": [
+        {
+          "held_out_task": "TB-064",
+          "most_similar_train": "TB-022",
+          "overlap_count": 92,
+          "threshold": 1,
+          "status": "VIOLATION"
+        },
+        {
+          "held_out_task": "TB-065",
+          "most_similar_train": "TB-023",
+          "overlap_count": 73,
+          "threshold": 1,
+          "status": "VIOLATION"
+        },
+        {
+          "held_out_task": "TB-066",
+          "most_similar_train": "TB-024",
+          "overlap_count": 79,
+          "threshold": 1,
+          "status": "VIOLATION"
+        },
+        {
+          "held_out_task": "TB-067",
+          "most_similar_train": "TB-019",
+          "overlap_count": 81,
+          "threshold": 1,
+          "status": "VIOLATION"
+        },
+        {
+          "held_out_task": "TB-068",
+          "most_similar_train": "TB-020",
+          "overlap_count": 86,
+          "threshold": 1,
+          "status": "VIOLATION"
+        },
+        {
+          "held_out_task": "TB-069",
+          "most_similar_train": "TB-021",
+          "overlap_count": 78,
+          "threshold": 1,
+          "status": "VIOLATION"
+        },
+        {
+          "held_out_task": "TB-070",
+          "most_similar_train": "TB-022",
+          "overlap_count": 92,
+          "threshold": 1,
+          "status": "VIOLATION"
+        },
+        {
+          "held_out_task": "TB-071",
+          "most_similar_train": "TB-023",
+          "overlap_count": 73,
+          "threshold": 1,
+          "status": "VIOLATION"
+        },
+        {
+          "held_out_task": "TB-072",
+          "most_similar_train": "TB-024",
+          "overlap_count": 79,
+          "threshold": 1,
+          "status": "VIOLATION"
+        },
+        {
+          "held_out_task": "TB-073",
+          "most_similar_train": "TB-001",
+          "overlap_count": 73,
+          "threshold": 1,
+          "status": "VIOLATION"
+        },
+        {
+          "held_out_task": "TB-074",
+          "most_similar_train": "TB-002",
+          "overlap_count": 82,
+          "threshold": 1,
+          "status": "VIOLATION"
+        },
+        {
+          "held_out_task": "TB-075",
+          "most_similar_train": "TB-003",
+          "overlap_count": 70,
+          "threshold": 1,
+          "status": "VIOLATION"
+        },
+        {
+          "held_out_task": "TB-076",
+          "most_similar_train": "TB-004",
+          "overlap_count": 90,
+          "threshold": 1,
+          "status": "VIOLATION"
+        },
+        {
+          "held_out_task": "TB-077",
+          "most_similar_train": "TB-005",
+          "overlap_count": 71,
+          "threshold": 1,
+          "status": "VIOLATION"
+        },
+        {
+          "held_out_task": "TB-078",
+          "most_similar_train": "TB-006",
+          "overlap_count": 77,
+          "threshold": 1,
+          "status": "VIOLATION"
+        },
+        {
+          "held_out_task": "TB-HA012",
+          "most_similar_train": "TB-HA003",
+          "overlap_count": 9,
+          "threshold": 1,
+          "status": "VIOLATION"
+        },
+        {
+          "held_out_task": "TB-HA013",
+          "most_similar_train": "TB-SG05",
+          "overlap_count": 10,
+          "threshold": 1,
+          "status": "VIOLATION"
+        },
+        {
+          "held_out_task": "TB-HA014",
+          "most_similar_train": "TB-HA001",
+          "overlap_count": 6,
+          "threshold": 1,
+          "status": "VIOLATION"
+        },
+        {
+          "held_out_task": "TB-HA015",
+          "most_similar_train": "TB-P003",
+          "overlap_count": 1,
+          "threshold": 1,
+          "status": "WARNING"
+        },
+        {
+          "held_out_task": "TB-LLM015",
+          "most_similar_train": "TB-LLM019",
+          "overlap_count": 14,
+          "threshold": 1,
+          "status": "VIOLATION"
+        },
+        {
+          "held_out_task": "TB-LLM016",
+          "most_similar_train": "TB-LLM012",
+          "overlap_count": 13,
+          "threshold": 1,
+          "status": "VIOLATION"
+        },
+        {
+          "held_out_task": "TB-LLM017",
+          "most_similar_train": "TB-LLM024",
+          "overlap_count": 14,
+          "threshold": 1,
+          "status": "VIOLATION"
+        },
+        {
+          "held_out_task": "TB-LLM062",
+          "most_similar_train": "TB-LLM019",
+          "overlap_count": 14,
+          "threshold": 1,
+          "status": "VIOLATION"
+        },
+        {
+          "held_out_task": "TB-LLM063",
+          "most_similar_train": "TB-LLM011",
+          "overlap_count": 16,
+          "threshold": 1,
+          "status": "VIOLATION"
+        },
+        {
+          "held_out_task": "TB-LLM064",
+          "most_similar_train": "TB-LLM039",
+          "overlap_count": 14,
+          "threshold": 1,
+          "status": "VIOLATION"
+        },
+        {
+          "held_out_task": "TB-LLM065",
+          "most_similar_train": "TB-LLM012",
+          "overlap_count": 13,
+          "threshold": 1,
+          "status": "VIOLATION"
+        },
+        {
+          "held_out_task": "TB-LLM066",
+          "most_similar_train": "TB-LLM012",
+          "overlap_count": 13,
+          "threshold": 1,
+          "status": "VIOLATION"
+        },
+        {
+          "held_out_task": "TB-LLM067",
+          "most_similar_train": "TB-LLM012",
+          "overlap_count": 13,
+          "threshold": 1,
+          "status": "VIOLATION"
+        },
+        {
+          "held_out_task": "TB-LLM068",
+          "most_similar_train": "TB-LLM011",
+          "overlap_count": 16,
+          "threshold": 1,
+          "status": "VIOLATION"
+        },
+        {
+          "held_out_task": "TB-LLM069",
+          "most_similar_train": "TB-LLM012",
+          "overlap_count": 13,
+          "threshold": 1,
+          "status": "VIOLATION"
+        },
+        {
+          "held_out_task": "TB-LLM071",
+          "most_similar_train": "TB-LLM012",
+          "overlap_count": 13,
+          "threshold": 1,
+          "status": "VIOLATION"
+        },
+        {
+          "held_out_task": "TB-P059",
+          "most_similar_train": "TB-P005",
+          "overlap_count": 51,
+          "threshold": 1,
+          "status": "VIOLATION"
+        },
+        {
+          "held_out_task": "TB-P060",
+          "most_similar_train": "TB-019",
+          "overlap_count": 40,
+          "threshold": 1,
+          "status": "VIOLATION"
+        },
+        {
+          "held_out_task": "TB-P061",
+          "most_similar_train": "TB-019",
+          "overlap_count": 40,
+          "threshold": 1,
+          "status": "VIOLATION"
+        },
+        {
+          "held_out_task": "TB-P062",
+          "most_similar_train": "TB-P003",
+          "overlap_count": 38,
+          "threshold": 1,
+          "status": "VIOLATION"
+        },
+        {
+          "held_out_task": "TB-P063",
+          "most_similar_train": "TB-P004",
+          "overlap_count": 49,
+          "threshold": 1,
+          "status": "VIOLATION"
+        },
+        {
+          "held_out_task": "TB-P064",
+          "most_similar_train": "TB-001",
+          "overlap_count": 62,
+          "threshold": 1,
+          "status": "VIOLATION"
+        },
+        {
+          "held_out_task": "TB-P065",
+          "most_similar_train": "TB-001",
+          "overlap_count": 62,
+          "threshold": 1,
+          "status": "VIOLATION"
+        },
+        {
+          "held_out_task": "TB-P066",
+          "most_similar_train": "TB-P003",
+          "overlap_count": 38,
+          "threshold": 1,
+          "status": "VIOLATION"
+        },
+        {
+          "held_out_task": "TB-P067",
+          "most_similar_train": "TB-P004",
+          "overlap_count": 49,
+          "threshold": 1,
+          "status": "VIOLATION"
+        },
+        {
+          "held_out_task": "TB-P068",
+          "most_similar_train": "TB-P005",
+          "overlap_count": 51,
+          "threshold": 1,
+          "status": "VIOLATION"
+        },
+        {
+          "held_out_task": "TB-P069",
+          "most_similar_train": "TB-001",
+          "overlap_count": 62,
+          "threshold": 1,
+          "status": "VIOLATION"
+        },
+        {
+          "held_out_task": "TB-P070",
+          "most_similar_train": "TB-001",
+          "overlap_count": 62,
+          "threshold": 1,
+          "status": "VIOLATION"
+        },
+        {
+          "held_out_task": "TB-P071",
+          "most_similar_train": "TB-P003",
+          "overlap_count": 38,
+          "threshold": 1,
+          "status": "VIOLATION"
+        },
+        {
+          "held_out_task": "TB-P072",
+          "most_similar_train": "TB-P004",
+          "overlap_count": 49,
+          "threshold": 1,
+          "status": "VIOLATION"
+        },
+        {
+          "held_out_task": "TB-P112",
+          "most_similar_train": "TB-019",
+          "overlap_count": 38,
+          "threshold": 1,
+          "status": "VIOLATION"
+        },
+        {
+          "held_out_task": "TB-P113",
+          "most_similar_train": "TB-019",
+          "overlap_count": 38,
+          "threshold": 1,
+          "status": "VIOLATION"
+        },
+        {
+          "held_out_task": "TB-P114",
+          "most_similar_train": "TB-P084",
+          "overlap_count": 33,
+          "threshold": 1,
+          "status": "VIOLATION"
+        },
+        {
+          "held_out_task": "TB-P115",
+          "most_similar_train": "TB-001",
+          "overlap_count": 60,
+          "threshold": 1,
+          "status": "VIOLATION"
+        },
+        {
+          "held_out_task": "TB-P116",
+          "most_similar_train": "TB-001",
+          "overlap_count": 60,
+          "threshold": 1,
+          "status": "VIOLATION"
+        },
+        {
+          "held_out_task": "TB-P117",
+          "most_similar_train": "TB-P075",
+          "overlap_count": 33,
+          "threshold": 1,
+          "status": "VIOLATION"
+        },
+        {
+          "held_out_task": "TB-P118",
+          "most_similar_train": "TB-001",
+          "overlap_count": 60,
+          "threshold": 1,
+          "status": "VIOLATION"
+        },
+        {
+          "held_out_task": "TB-P119",
+          "most_similar_train": "TB-001",
+          "overlap_count": 60,
+          "threshold": 1,
+          "status": "VIOLATION"
+        },
+        {
+          "held_out_task": "TB-P120",
+          "most_similar_train": "TB-P075",
+          "overlap_count": 32,
+          "threshold": 1,
+          "status": "VIOLATION"
+        },
+        {
+          "held_out_task": "TB-SG11",
+          "most_similar_train": "TB-SG03",
+          "overlap_count": 9,
+          "threshold": 1,
+          "status": "VIOLATION"
+        },
+        {
+          "held_out_task": "TB-SG24",
+          "most_similar_train": "TB-P005",
+          "overlap_count": 18,
+          "threshold": 1,
+          "status": "VIOLATION"
+        }
+      ],
+      "passed": false
+    },
+    "embedding": {
+      "check": "embedding_similarity",
+      "model": "all-MiniLM-L6-v2",
+      "threshold": 0.85,
+      "total_held_out": 58,
+      "clean": 53,
+      "violations": 5,
+      "violation_details": [
+        {
+          "held_out_task": "TB-064",
+          "most_similar_train": "TB-028",
+          "cosine_similarity": 0.8714,
+          "threshold": 0.85,
+          "status": "VIOLATION"
+        },
+        {
+          "held_out_task": "TB-066",
+          "most_similar_train": "TB-030",
+          "cosine_similarity": 0.8999,
+          "threshold": 0.85,
+          "status": "VIOLATION"
+        },
+        {
+          "held_out_task": "TB-070",
+          "most_similar_train": "TB-028",
+          "cosine_similarity": 0.8847,
+          "threshold": 0.85,
+          "status": "VIOLATION"
+        },
+        {
+          "held_out_task": "TB-072",
+          "most_similar_train": "TB-012",
+          "cosine_similarity": 0.9157,
+          "threshold": 0.85,
+          "status": "VIOLATION"
+        },
+        {
+          "held_out_task": "TB-078",
+          "most_similar_train": "TB-012",
+          "cosine_similarity": 0.8582,
+          "threshold": 0.85,
+          "status": "VIOLATION"
+        }
+      ],
+      "passed": false
+    },
+    "timeshift": {
+      "check": "time_shift_verification",
+      "total_tasks": 299,
+      "verified": 299,
+      "issues": [],
+      "documented_sources": {
+        "Crunchbase ODM": "Apache 2.0, 1,000 companies, snapshot used in Week 10",
+        "layoffs.fyi": "GitHub mirror, 2,361 records, data as of April 2026",
+        "Style guide v2": "Tenacious internal document, hand-labeled April 2026",
+        "Synthetic": "Generated by pipeline \u2014 no external public data dependency"
+      },
+      "passed": true
+    }
+  },
+  "overall_passed": false,
+  "held_out_sealed": false,
+  "contamination_free": false
+}
