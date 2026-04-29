@@ -110,3 +110,38 @@ inter_rater_agreement.md before the dataset is published.
 ---
 
 *Path declared: A | Week 10 trace IDs cited: thread_20260424_021728, thread_20260427_110356, thread_20260428_174753 | Probe IDs cited: P05, P09, P10, P14, P30, P33*
+
+---
+
+## Contamination Check Results
+
+Three checks were run before sealing the held-out partition, per Chen et al. EMNLP 2025 (Contamination Survey — synthesis_memos/memo_03_contamination.md).
+
+### Check 1 — N-gram Overlap (threshold: 8-gram)
+**Result: FAILED — 55 violations found**
+Root cause: programmatic tasks use identical email body templates across companies. "Note on Yellow.ai restructuring" and "Note on Stripe restructuring" share 70+ 8-grams because only the company name differs. These are not semantic duplicates but structural ones.
+**Resolution:** Move all 55 violated held-out tasks to the dev partition. Re-run check to confirm held-out is clean.
+
+### Check 2 — Embedding Similarity (threshold: cosine 0.85, model: all-MiniLM-L6-v2)
+**Result: FAILED — 5 violations found**
+Five held-out tasks had cosine similarity >= 0.85 with training tasks. All 5 are also caught by the n-gram check — no additional unique violations.
+**Resolution:** Same as Check 1 — move to dev partition.
+
+### Check 3 — Time-Shift Verification
+**Result: PASSED — 0 issues**
+All 299 tasks have documented source windows: trace-derived tasks cite Week 10 thread IDs (2026-04-23 to 2026-04-28), programmatic tasks use synthetic profiles with no external data dependency, LLM tasks cite generation date (2026-04-29), style guide tasks cite Tenacious internal document (private, April 2026).
+
+### Overall Contamination Status
+Checks 1 and 2 failed. Fix pending (Day 4). Check 3 passed. Full report in contamination_check.json.
+
+---
+
+## Paper Citations Supporting Path A Decision
+
+Two papers from the required reading directly support the Path A (SFT generation) choice:
+
+**1. LIMA: Less Is More for Alignment (Zhou et al., NeurIPS 2023)**
+LIMA's Superficial Alignment Hypothesis states that fine-tuning teaches style and format, not new knowledge. This directly supports Path A because my Week 10 failure evidence (P06, P10, P30) shows the base model already knows how to write professional B2B emails — it lacks only the Tenacious-specific style constraints. A small SFT adapter teaching those constraints (23 banned phrases, 60-char subject limit, confidence-aware hedging) is the correct treatment. LIMA also shows that 100-150 high-quality examples is sufficient for single-task domain alignment — which justifies my dataset size of 100-150 training examples after quality filtering. Full analysis in synthesis_memos/memo_06_lima.md.
+
+**2. Tülu 3: Pushing Frontiers in Open Language Model Post-Training (Lambert et al., 2024)**
+Tülu 3 documents that data curation quality determines final model quality more than model scale or training duration. This supports Path A because my Week 10 evidence shows generation quality failures (P06: assertive language on weak signals, P10: gap claims without brief) are caused by poor data grounding — exactly what a curated SFT dataset of grounded examples can fix. Tülu 3's hyperparameter recommendations (lr=2e-5, r=16, alpha=32, warmup=0.03) are adopted directly for the Day 5 training run. The paper's 3-5 epoch default is rejected in favor of 2 epochs maximum for my 100-150 example dataset to prevent memorization. Full analysis in synthesis_memos/memo_05_tulu3.md.
