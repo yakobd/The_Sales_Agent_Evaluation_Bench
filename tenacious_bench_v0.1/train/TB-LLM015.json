@@ -1,0 +1,127 @@
+{
+  "task_id": "TB-LLM015",
+  "source_mode": "multi_llm_synthesis",
+  "difficulty": "easy",
+  "variant": "llm_generated_v2",
+  "is_passing": true,
+  "input": {
+    "hiring_signal_brief": {
+      "prospect": "Marble Technologies",
+      "icp_classification": {
+        "segment": 1,
+        "segment_name": "Recently-funded startup",
+        "confidence": "high",
+        "reasons": [
+          "Series A $20M in March, open backend roles tripled from 3 to 9"
+        ]
+      },
+      "firmographics": {
+        "company": "Marble Technologies",
+        "website": "https://marbletechnologies.com",
+        "description": "Marble Technologies \u2014 technology company",
+        "num_employees": "51-200"
+      },
+      "ai_maturity": {
+        "ai_maturity_score": 1,
+        "confidence": "high"
+      },
+      "layoff_signal": {
+        "layoff_detected": false
+      },
+      "leadership_signal": {
+        "leadership_change_detected": false
+      }
+    },
+    "bench_summary": {
+      "total_engineers": 60,
+      "available": 34,
+      "stacks": {
+        "python": 12,
+        "node": 8,
+        "ml": 6,
+        "go": 4,
+        "data": 4
+      }
+    },
+    "instruction": "Write outreach for Marble Technologies \u2014 Series A $20M in March, open backend roles tripled from 3 to 9",
+    "prior_thread": []
+  },
+  "candidate_output": {
+    "subject": "Marble\u2019s $20M Raise & Backend Growth Opportunity",
+    "body": "Hi [Name],\n\nMarble\u2019s recent $20M Series A signals strong momentum. Noticing backend roles tripled from 3 to 9 since March \u2014 this expansion likely requires strategic talent acquisition to maintain velocity.\n\nTenacious specializes in high-growth tech orgs like yours. I\u2019d share how we\u2019ve helped similar teams secure critical hires without disrupting runway.\n\nWorth 15 minutes this week? \u2192 http://localhost:3000/yakob/30min\n\nResearch Partner / Tenacious Intelligence Corporation / gettenacious.com"
+  },
+  "ground_truth": {
+    "required_signals": [
+      "funding",
+      "growth",
+      "engineering",
+      "capacity",
+      "roles"
+    ],
+    "forbidden_phrases": [
+      "just circling back",
+      "hope this finds you well",
+      "just following up",
+      "per my last email",
+      "top talent",
+      "world-class",
+      "rockstar",
+      "a-players",
+      "ninja",
+      "wizard",
+      "bench",
+      "aggressive hiring",
+      "skyrocket",
+      "supercharge",
+      "synergize",
+      "synergy",
+      "game-changer",
+      "disruptor",
+      "you are missing",
+      "falling behind",
+      "behind the curve",
+      "catch up",
+      "quick question",
+      "quick chat",
+      "obviously",
+      "clearly"
+    ],
+    "max_subject_length": 60,
+    "must_end_with_cta": true
+  },
+  "rubric": {
+    "grounding": {
+      "weight": 1.0,
+      "check": "all_claims_grounded"
+    },
+    "tone": {
+      "weight": 1.0,
+      "check": "zero_banned_phrases"
+    },
+    "subject_length": {
+      "weight": 1.0,
+      "check": "subject_lte_60_chars"
+    },
+    "cta_present": {
+      "weight": 1.0,
+      "check": "cta_in_last_paragraph"
+    },
+    "llm_judge": {
+      "weight": 1.0,
+      "check": "avg_tone_marker_gte_4"
+    }
+  },
+  "metadata": {
+    "created_at": "2026-04-29T23:03:01.294169Z",
+    "partition": "train",
+    "probe_ids": [
+      "P10",
+      "P16",
+      "P20"
+    ],
+    "source_trace_id": null,
+    "judge_score": null,
+    "expected_score": 1.0,
+    "generator_model": "qwen/qwen3-235b-a22b"
+  }
+}

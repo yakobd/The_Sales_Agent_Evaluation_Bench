@@ -1,0 +1,12 @@
+{
+  "generated_at": "2026-04-29T22:50:40.417172",
+  "mode": "programmatic_v2",
+  "total_tasks": 48,
+  "passing_tasks": 32,
+  "failing_tasks": 16,
+  "partition_counts": {
+    "train": 24,
+    "dev": 15,
+    "held_out": 9
+  }
+}

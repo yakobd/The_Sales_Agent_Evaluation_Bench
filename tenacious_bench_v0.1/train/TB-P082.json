@@ -1,0 +1,132 @@
+{
+  "task_id": "TB-P082",
+  "source_mode": "programmatic",
+  "difficulty": "medium",
+  "variant": "programmatic_v2_standard",
+  "is_passing": true,
+  "input": {
+    "hiring_signal_brief": {
+      "prospect": "Beacon Software",
+      "icp_classification": {
+        "segment": 3,
+        "segment_name": "Leadership change",
+        "confidence": "medium",
+        "reasons": [
+          "Leadership change detected \u2014 50 days ago"
+        ]
+      },
+      "firmographics": {
+        "company": "Beacon Software",
+        "website": "https://beaconsoftware.io",
+        "description": "Beacon Software \u2014 technology company",
+        "num_employees": "201-500"
+      },
+      "ai_maturity": {
+        "ai_maturity_score": 1,
+        "confidence": "medium"
+      },
+      "layoff_signal": {
+        "layoff_detected": false,
+        "total_laid_off": "0"
+      },
+      "leadership_signal": {
+        "leadership_change_detected": true,
+        "leader_name": "Nina Patel",
+        "leader_title": "CTO"
+      }
+    },
+    "bench_summary": {
+      "total_engineers": 60,
+      "available": 34,
+      "stacks": {
+        "python": 12,
+        "node": 8,
+        "ml": 6,
+        "go": 4,
+        "data": 4
+      }
+    },
+    "instruction": "Write a cold outreach email to the VP Engineering at Beacon Software (Segment 3 \u2014 Leadership change, confidence=medium).",
+    "prior_thread": []
+  },
+  "candidate_output": {
+    "subject": "Context: engineering vendor mix at Beacon Software",
+    "body": "Congratulations on the recent leadership change at Beacon Software \u2014 the CTO appointment 50 days ago is the kind of moment when vendor and offshore mix typically gets a fresh look.\n\nIf offshore delivery is on your review list, we would welcome 15 minutes \u2014 managed teams with full time-zone overlap, not staff augmentation.\n\nWorth a conversation? \u2192 http://localhost:3000/yakob/30min\n\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com"
+  },
+  "ground_truth": {
+    "required_signals": [
+      "leadership",
+      "engineering",
+      "vendor",
+      "mix",
+      "new"
+    ],
+    "forbidden_phrases": [
+      "just circling back",
+      "hope this finds you well",
+      "just following up",
+      "per my last email",
+      "top talent",
+      "world-class",
+      "rockstar",
+      "a-players",
+      "ninja",
+      "wizard",
+      "bench",
+      "aggressive hiring",
+      "skyrocket",
+      "supercharge",
+      "synergize",
+      "synergy",
+      "game-changer",
+      "disruptor",
+      "you are missing",
+      "falling behind",
+      "behind the curve",
+      "catch up",
+      "quick question",
+      "quick chat",
+      "obviously",
+      "clearly",
+      "touching base",
+      "following up",
+      "as per"
+    ],
+    "max_subject_length": 60,
+    "must_end_with_cta": true
+  },
+  "rubric": {
+    "grounding": {
+      "weight": 1.0,
+      "check": "all_claims_grounded"
+    },
+    "tone": {
+      "weight": 1.0,
+      "check": "zero_banned_phrases"
+    },
+    "subject_length": {
+      "weight": 1.0,
+      "check": "subject_lte_60_chars"
+    },
+    "cta_present": {
+      "weight": 1.0,
+      "check": "cta_in_last_paragraph"
+    },
+    "llm_judge": {
+      "weight": 1.0,
+      "check": "avg_tone_marker_gte_4"
+    }
+  },
+  "metadata": {
+    "created_at": "2026-04-29T22:50:40.354371Z",
+    "partition": "train",
+    "probe_ids": [
+      "P10",
+      "P16",
+      "P20"
+    ],
+    "source_trace_id": null,
+    "judge_score": null,
+    "expected_score": 1.0
+  }
+}

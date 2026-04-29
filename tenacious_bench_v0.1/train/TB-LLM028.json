@@ -1,0 +1,127 @@
+{
+  "task_id": "TB-LLM028",
+  "source_mode": "multi_llm_synthesis",
+  "difficulty": "medium",
+  "variant": "llm_generated_v2",
+  "is_passing": true,
+  "input": {
+    "hiring_signal_brief": {
+      "prospect": "Arc Systems",
+      "icp_classification": {
+        "segment": 1,
+        "segment_name": "Recently-funded startup",
+        "confidence": "medium",
+        "reasons": [
+          "Funding detected but stage unclear, 3 open roles"
+        ]
+      },
+      "firmographics": {
+        "company": "Arc Systems",
+        "website": "https://arcsystems.com",
+        "description": "Arc Systems \u2014 technology company",
+        "num_employees": "51-200"
+      },
+      "ai_maturity": {
+        "ai_maturity_score": 1,
+        "confidence": "medium"
+      },
+      "layoff_signal": {
+        "layoff_detected": false
+      },
+      "leadership_signal": {
+        "leadership_change_detected": false
+      }
+    },
+    "bench_summary": {
+      "total_engineers": 60,
+      "available": 34,
+      "stacks": {
+        "python": 12,
+        "node": 8,
+        "ml": 6,
+        "go": 4,
+        "data": 4
+      }
+    },
+    "instruction": "Write outreach for Arc Systems \u2014 Funding detected but stage unclear, 3 open roles",
+    "prior_thread": []
+  },
+  "candidate_output": {
+    "subject": "Arc Systems' Funding & Hiring Strategy \u2013 15 mins?",
+    "body": "Hi Yakob,\n\nSaw Arc Systems\u2019 recent funding news \u2013 if confirmed, how will this shape Arc\u2019s hiring approach? Three open roles suggest alignment with strategic growth, though team-building priorities may shift with new capital.\n\nCurious to discuss how your talent strategy might evolve alongside product development timelines. Would you be open to a brief conversation about sourcing specialized engineering or product talent in this phase?\n\nWorth 15 minutes this week? \u2192 http://localhost:3000/yakob/30min\n\nResearch Partner / Tenacious Intelligence Corporation / gettenacious.com"
+  },
+  "ground_truth": {
+    "required_signals": [
+      "funding",
+      "growth",
+      "engineering",
+      "capacity",
+      "roles"
+    ],
+    "forbidden_phrases": [
+      "just circling back",
+      "hope this finds you well",
+      "just following up",
+      "per my last email",
+      "top talent",
+      "world-class",
+      "rockstar",
+      "a-players",
+      "ninja",
+      "wizard",
+      "bench",
+      "aggressive hiring",
+      "skyrocket",
+      "supercharge",
+      "synergize",
+      "synergy",
+      "game-changer",
+      "disruptor",
+      "you are missing",
+      "falling behind",
+      "behind the curve",
+      "catch up",
+      "quick question",
+      "quick chat",
+      "obviously",
+      "clearly"
+    ],
+    "max_subject_length": 60,
+    "must_end_with_cta": true
+  },
+  "rubric": {
+    "grounding": {
+      "weight": 1.0,
+      "check": "all_claims_grounded"
+    },
+    "tone": {
+      "weight": 1.0,
+      "check": "zero_banned_phrases"
+    },
+    "subject_length": {
+      "weight": 1.0,
+      "check": "subject_lte_60_chars"
+    },
+    "cta_present": {
+      "weight": 1.0,
+      "check": "cta_in_last_paragraph"
+    },
+    "llm_judge": {
+      "weight": 1.0,
+      "check": "avg_tone_marker_gte_4"
+    }
+  },
+  "metadata": {
+    "created_at": "2026-04-29T23:04:45.947136Z",
+    "partition": "train",
+    "probe_ids": [
+      "P10",
+      "P16",
+      "P20"
+    ],
+    "source_trace_id": null,
+    "judge_score": null,
+    "expected_score": 1.0,
+    "generator_model": "qwen/qwen3-235b-a22b"
+  }
+}

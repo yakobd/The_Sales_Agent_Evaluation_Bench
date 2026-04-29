@@ -1,0 +1,24 @@
+{
+  "generated_at": "2026-04-29T22:43:14.695757",
+  "mode": "hand_authored",
+  "total_tasks": 15,
+  "passing_tasks": 5,
+  "failing_tasks": 10,
+  "partition_counts": {
+    "train": 6,
+    "dev": 5,
+    "held_out": 4
+  },
+  "probes_covered": [
+    "P05",
+    "P13",
+    "P21",
+    "P22",
+    "P25",
+    "P27",
+    "P28",
+    "P33",
+    "P34"
+  ],
+  "cost": "$0.00"
+}
