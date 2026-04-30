@@ -1,35 +1,41 @@
 {
-  "task_id": "TB-LLM015",
-  "source_mode": "multi_llm_synthesis",
+  "task_id": "TB-P068",
+  "source_mode": "programmatic",
   "difficulty": "hard",
-  "variant": "llm_generated",
-  "is_passing": true,
+  "variant": "programmatic_fabricated_signal_fail",
+  "is_passing": false,
   "input": {
     "hiring_signal_brief": {
-      "prospect": "Atlas Cloud",
+      "prospect": "Horizon Cloud",
       "icp_classification": {
         "segment": 2,
         "segment_name": "Post-layoff restructuring",
-        "confidence": "medium",
+        "confidence": "high",
         "reasons": [
-          "Layoff detected but percentage unknown. Funding status unclear."
+          "Layoff detected \u2014 150 employees, March 2024",
+          "Recent funding detected \u2014 fresh budget available"
         ]
       },
       "firmographics": {
-        "company": "Atlas Cloud",
-        "website": "https://atlascloud.com",
-        "description": "Atlas Cloud \u2014 technology company",
-        "num_employees": "51-200"
+        "company": "Horizon Cloud",
+        "website": "https://horizoncloud.com",
+        "description": "Horizon Cloud is a technology company.",
+        "num_employees": "501-1000"
       },
       "ai_maturity": {
         "ai_maturity_score": 1,
-        "confidence": "medium"
+        "confidence": "high"
       },
       "layoff_signal": {
-        "layoff_detected": true
+        "layoff_detected": true,
+        "total_laid_off": "150",
+        "confidence": 1.0
       },
       "leadership_signal": {
-        "leadership_change_detected": false
+        "leadership_change_detected": false,
+        "leader_name": "",
+        "leader_title": "",
+        "days_since_hire": 0
       }
     },
     "bench_summary": {
@@ -43,12 +49,12 @@
         "data": 4
       }
     },
-    "instruction": "Write outreach for Atlas Cloud \u2014 Layoff detected but percentage unknown. Funding status unclear.",
+    "instruction": "ADVERSARIAL: The following email to Horizon Cloud fabricates a funding signal not in the brief and should FAIL.",
     "prior_thread": []
   },
   "candidate_output": {
-    "subject": "Post-Layoff Cloud Strategy Adjustments at Atlas?",
-    "body": "Hi [Name],\n\nHope you're navigating the shifts at Atlas Cloud effectively. With recent restructuring and funding dynamics in flux, many teams are re-evaluating their cloud infrastructure priorities. If your team is exploring adjustments to align with evolving goals, I'd welcome a brief conversation to discuss potential angles.\n\nWorth 15 minutes this week? \u2192 http://localhost:3000/yakob/30min\n\nBest,\nResearch Partner / Tenacious Intelligence Corporation / gettenacious.com"
+    "subject": "Congrats on your $40M Series C!",
+    "body": "Congratulations on closing your $40M Series C last month \u2014 exciting moment for the Horizon Cloud team! With that level of capital, scaling engineering aggressively is the obvious next move. We can plug 15 engineers into your stack within 2 weeks at our standard rates.\n\nWant to set up a call?\n\nBest, Yabi"
   },
   "ground_truth": {
     "required_signals": [
@@ -83,7 +89,10 @@
       "quick question",
       "quick chat",
       "obviously",
-      "clearly"
+      "clearly",
+      "touching base",
+      "following up",
+      "as per"
     ],
     "max_subject_length": 60,
     "must_end_with_cta": true
@@ -111,17 +120,16 @@
     }
   },
   "metadata": {
-    "created_at": "2026-04-29T22:34:27.632663Z",
+    "created_at": "2026-04-29T21:49:47.106816Z",
     "partition": "dev",
     "probe_ids": [
+      "P07",
       "P10",
-      "P16",
-      "P20"
+      "P12"
     ],
     "source_trace_id": null,
     "judge_score": null,
-    "expected_score": 1.0,
-    "generator_model": "qwen/qwen3-235b-a22b",
+    "expected_score": 0.0,
     "contamination_note": "Moved from held_out to dev \u2014 n-gram or embedding contamination violation detected by contamination_check.py"
   }
 }

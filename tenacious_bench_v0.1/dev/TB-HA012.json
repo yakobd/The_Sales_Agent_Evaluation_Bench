@@ -1,32 +1,33 @@
 {
-  "task_id": "TB-LLM015",
-  "source_mode": "multi_llm_synthesis",
+  "task_id": "TB-HA012",
+  "source_mode": "hand_authored",
   "difficulty": "hard",
-  "variant": "llm_generated",
-  "is_passing": true,
+  "variant": "hand_authored_adversarial",
+  "is_passing": false,
+  "probe_label": "P05 \u2014 Very low confidence triggers assertive language",
   "input": {
     "hiring_signal_brief": {
-      "prospect": "Atlas Cloud",
+      "prospect": "Phantom Corp",
       "icp_classification": {
-        "segment": 2,
-        "segment_name": "Post-layoff restructuring",
-        "confidence": "medium",
+        "segment": 1,
+        "segment_name": "Recently-funded startup",
+        "confidence": "very_low",
         "reasons": [
-          "Layoff detected but percentage unknown. Funding status unclear."
+          "Hand-authored scenario \u2014 P05 \u2014 Very low confidence triggers assertive language"
         ]
       },
       "firmographics": {
-        "company": "Atlas Cloud",
-        "website": "https://atlascloud.com",
-        "description": "Atlas Cloud \u2014 technology company",
-        "num_employees": "51-200"
+        "company": "Phantom Corp",
+        "website": "",
+        "description": "Phantom Corp \u2014 technology company",
+        "num_employees": "51-500"
       },
       "ai_maturity": {
         "ai_maturity_score": 1,
-        "confidence": "medium"
+        "confidence": "very_low"
       },
       "layoff_signal": {
-        "layoff_detected": true
+        "layoff_detected": false
       },
       "leadership_signal": {
         "leadership_change_detected": false
@@ -43,19 +44,19 @@
         "data": 4
       }
     },
-    "instruction": "Write outreach for Atlas Cloud \u2014 Layoff detected but percentage unknown. Funding status unclear.",
+    "instruction": "ADVERSARIAL P05: Signal confidence is very_low \u2014 no public funding, no verified roles. Email asserts Series A, high velocity, aggressive scaling \u2014 all fabricated. Should FAIL \u2014 assertive language on very_low confidence signal.",
     "prior_thread": []
   },
   "candidate_output": {
-    "subject": "Post-Layoff Cloud Strategy Adjustments at Atlas?",
-    "body": "Hi [Name],\n\nHope you're navigating the shifts at Atlas Cloud effectively. With recent restructuring and funding dynamics in flux, many teams are re-evaluating their cloud infrastructure priorities. If your team is exploring adjustments to align with evolving goals, I'd welcome a brief conversation to discuss potential angles.\n\nWorth 15 minutes this week? \u2192 http://localhost:3000/yakob/30min\n\nBest,\nResearch Partner / Tenacious Intelligence Corporation / gettenacious.com"
+    "subject": "Context: Phantom Corp and engineering capacity",
+    "body": "Hi Jordan,\n\nPhantom Corp has been scaling aggressively and your engineering team is clearly growing fast. You recently closed a Series A and are hiring Python engineers at a high velocity.\n\nWe solve this exact bottleneck \u2014 senior engineers available in 7-14 days with full timezone overlap.\n\nWorth 15 minutes? \u2192 http://localhost:3000/yakob/30min\n\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com"
   },
   "ground_truth": {
     "required_signals": [
-      "restructuring",
-      "cost",
-      "delivery",
-      "capacity"
+      "may",
+      "appears",
+      "public profile",
+      "based on"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -111,17 +112,17 @@
     }
   },
   "metadata": {
-    "created_at": "2026-04-29T22:34:27.632663Z",
+    "created_at": "2026-04-29T22:43:14.684619Z",
     "partition": "dev",
     "probe_ids": [
-      "P10",
-      "P16",
-      "P20"
+      "P05",
+      "P30"
     ],
     "source_trace_id": null,
     "judge_score": null,
-    "expected_score": 1.0,
-    "generator_model": "qwen/qwen3-235b-a22b",
+    "expected_score": 0.0,
+    "failure_reason": "Assertive language on very_low confidence \u2014 no verified signals",
+    "hand_authored": true,
     "contamination_note": "Moved from held_out to dev \u2014 n-gram or embedding contamination violation detected by contamination_check.py"
   }
 }

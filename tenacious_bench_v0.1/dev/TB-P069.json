@@ -1,35 +1,40 @@
 {
-  "task_id": "TB-LLM015",
-  "source_mode": "multi_llm_synthesis",
-  "difficulty": "hard",
-  "variant": "llm_generated",
+  "task_id": "TB-P069",
+  "source_mode": "programmatic",
+  "difficulty": "medium",
+  "variant": "programmatic_standard",
   "is_passing": true,
   "input": {
     "hiring_signal_brief": {
-      "prospect": "Atlas Cloud",
+      "prospect": "Atlas Software",
       "icp_classification": {
         "segment": 2,
         "segment_name": "Post-layoff restructuring",
         "confidence": "medium",
         "reasons": [
-          "Layoff detected but percentage unknown. Funding status unclear."
+          "Layoff detected \u2014 cost restructuring signal"
         ]
       },
       "firmographics": {
-        "company": "Atlas Cloud",
-        "website": "https://atlascloud.com",
-        "description": "Atlas Cloud \u2014 technology company",
-        "num_employees": "51-200"
+        "company": "Atlas Software",
+        "website": "https://atlassoftware.com",
+        "description": "Atlas Software is a technology company.",
+        "num_employees": "201-500"
       },
       "ai_maturity": {
-        "ai_maturity_score": 1,
+        "ai_maturity_score": 0,
         "confidence": "medium"
       },
       "layoff_signal": {
-        "layoff_detected": true
+        "layoff_detected": true,
+        "total_laid_off": "80",
+        "confidence": 1.0
       },
       "leadership_signal": {
-        "leadership_change_detected": false
+        "leadership_change_detected": false,
+        "leader_name": "",
+        "leader_title": "",
+        "days_since_hire": 0
       }
     },
     "bench_summary": {
@@ -43,12 +48,12 @@
         "data": 4
       }
     },
-    "instruction": "Write outreach for Atlas Cloud \u2014 Layoff detected but percentage unknown. Funding status unclear.",
+    "instruction": "Write a cold outreach email to the VP Engineering at Atlas Software (Segment 2 \u2014 Post-layoff restructuring, confidence=medium). Ground every claim in the supplied hiring signal brief.",
     "prior_thread": []
   },
   "candidate_output": {
-    "subject": "Post-Layoff Cloud Strategy Adjustments at Atlas?",
-    "body": "Hi [Name],\n\nHope you're navigating the shifts at Atlas Cloud effectively. With recent restructuring and funding dynamics in flux, many teams are re-evaluating their cloud infrastructure priorities. If your team is exploring adjustments to align with evolving goals, I'd welcome a brief conversation to discuss potential angles.\n\nWorth 15 minutes this week? \u2192 http://localhost:3000/yakob/30min\n\nBest,\nResearch Partner / Tenacious Intelligence Corporation / gettenacious.com"
+    "subject": "Note on Atlas Software restructuring",
+    "body": "Atlas Software has gone through a recent restructuring. Companies in this state often need to preserve delivery capacity while reshaping cost structure.\n\nTenacious provides managed engineering teams that preserve delivery capacity while reducing cost \u2014 our engineers are full-time employees, not contractors.\n\nWorth 15 minutes this week to walk through how this lands for Atlas Software? \u2192 http://localhost:3000/yakob/30min\n\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com"
   },
   "ground_truth": {
     "required_signals": [
@@ -83,7 +88,10 @@
       "quick question",
       "quick chat",
       "obviously",
-      "clearly"
+      "clearly",
+      "touching base",
+      "following up",
+      "as per"
     ],
     "max_subject_length": 60,
     "must_end_with_cta": true
@@ -111,7 +119,7 @@
     }
   },
   "metadata": {
-    "created_at": "2026-04-29T22:34:27.632663Z",
+    "created_at": "2026-04-29T21:49:47.106882Z",
     "partition": "dev",
     "probe_ids": [
       "P10",
@@ -121,7 +129,6 @@
     "source_trace_id": null,
     "judge_score": null,
     "expected_score": 1.0,
-    "generator_model": "qwen/qwen3-235b-a22b",
     "contamination_note": "Moved from held_out to dev \u2014 n-gram or embedding contamination violation detected by contamination_check.py"
   }
 }

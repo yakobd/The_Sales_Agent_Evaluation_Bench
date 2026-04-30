@@ -1,35 +1,42 @@
 {
-  "task_id": "TB-LLM015",
-  "source_mode": "multi_llm_synthesis",
-  "difficulty": "hard",
-  "variant": "llm_generated",
+  "task_id": "TB-068",
+  "source_mode": "trace_derived",
+  "difficulty": "medium",
+  "variant": "v2_warm_reply",
   "is_passing": true,
   "input": {
     "hiring_signal_brief": {
-      "prospect": "Atlas Cloud",
+      "prospect": "Notion",
       "icp_classification": {
-        "segment": 2,
-        "segment_name": "Post-layoff restructuring",
-        "confidence": "medium",
+        "segment": 1,
+        "segment_name": "Recently-funded startup",
+        "confidence": "low",
         "reasons": [
-          "Layoff detected but percentage unknown. Funding status unclear."
+          "No strong signals \u2014 defaulting to Segment 1"
         ]
       },
       "firmographics": {
-        "company": "Atlas Cloud",
-        "website": "https://atlascloud.com",
-        "description": "Atlas Cloud \u2014 technology company",
-        "num_employees": "51-200"
+        "company": "Notion",
+        "website": "",
+        "description": "",
+        "num_employees": "unknown"
       },
       "ai_maturity": {
-        "ai_maturity_score": 1,
-        "confidence": "medium"
+        "ai_maturity_score": 0,
+        "confidence": "low"
       },
       "layoff_signal": {
-        "layoff_detected": true
+        "company": "Notion",
+        "layoff_detected": false,
+        "confidence": 0.9,
+        "source": "layoffs_fyi_github_mirror",
+        "note": "No layoff found in 2362-record dataset"
       },
       "leadership_signal": {
-        "leadership_change_detected": false
+        "company": "Notion",
+        "leadership_change_detected": false,
+        "confidence": 0.0,
+        "note": "Company not found in Crunchbase ODM sample"
       }
     },
     "bench_summary": {
@@ -43,19 +50,20 @@
         "data": 4
       }
     },
-    "instruction": "Write outreach for Atlas Cloud \u2014 Layoff detected but percentage unknown. Funding status unclear.",
-    "prior_thread": []
+    "prior_thread": [],
+    "instruction": "The prospect at Notion has replied saying: 'Interesting context on the hiring velocity. What exactly does your engineering s'. Write a warm reply that acknowledges their response and offers a booking link. Max 200 words."
   },
   "candidate_output": {
-    "subject": "Post-Layoff Cloud Strategy Adjustments at Atlas?",
-    "body": "Hi [Name],\n\nHope you're navigating the shifts at Atlas Cloud effectively. With recent restructuring and funding dynamics in flux, many teams are re-evaluating their cloud infrastructure priorities. If your team is exploring adjustments to align with evolving goals, I'd welcome a brief conversation to discuss potential angles.\n\nWorth 15 minutes this week? \u2192 http://localhost:3000/yakob/30min\n\nBest,\nResearch Partner / Tenacious Intelligence Corporation / gettenacious.com"
+    "subject": "Re: Context: Notion and engineering capacity",
+    "body": "Thanks for the reply \u2014 good to know the context lands.\n\nGiven what you shared, the fastest next step is a 30-minute call with our delivery lead. They can walk through exactly how we structure engagements for Notion's stage and answer questions on timeline and capacity.\n\nBook directly here: http://localhost:3000/yakob/30min?utm_source=email_reply\n\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com"
   },
   "ground_truth": {
     "required_signals": [
-      "restructuring",
-      "cost",
+      "book",
+      "call",
+      "30min",
       "delivery",
-      "capacity"
+      "localhost"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -83,7 +91,10 @@
       "quick question",
       "quick chat",
       "obviously",
-      "clearly"
+      "clearly",
+      "touching base",
+      "following up",
+      "as per"
     ],
     "max_subject_length": 60,
     "must_end_with_cta": true
@@ -111,17 +122,15 @@
     }
   },
   "metadata": {
-    "created_at": "2026-04-29T22:34:27.632663Z",
+    "created_at": "2026-04-29T20:13:27.313690Z",
     "partition": "dev",
     "probe_ids": [
-      "P10",
-      "P16",
-      "P20"
+      "P25",
+      "P26"
     ],
-    "source_trace_id": null,
+    "source_trace_id": "thread_20260427_114630",
     "judge_score": null,
     "expected_score": 1.0,
-    "generator_model": "qwen/qwen3-235b-a22b",
     "contamination_note": "Moved from held_out to dev \u2014 n-gram or embedding contamination violation detected by contamination_check.py"
   }
 }

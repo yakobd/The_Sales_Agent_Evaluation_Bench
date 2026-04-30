@@ -1,35 +1,48 @@
 {
-  "task_id": "TB-LLM015",
-  "source_mode": "multi_llm_synthesis",
+  "task_id": "TB-078",
+  "source_mode": "trace_derived",
   "difficulty": "hard",
-  "variant": "llm_generated",
-  "is_passing": true,
+  "variant": "v6_bench_overcommit",
+  "is_passing": false,
   "input": {
     "hiring_signal_brief": {
-      "prospect": "Atlas Cloud",
+      "prospect": "Stripe",
       "icp_classification": {
         "segment": 2,
         "segment_name": "Post-layoff restructuring",
-        "confidence": "medium",
+        "confidence": "high",
         "reasons": [
-          "Layoff detected but percentage unknown. Funding status unclear."
+          "Layoff detected \u2014 cost restructuring likely"
         ]
       },
       "firmographics": {
-        "company": "Atlas Cloud",
-        "website": "https://atlascloud.com",
-        "description": "Atlas Cloud \u2014 technology company",
-        "num_employees": "51-200"
+        "company": "Stripe",
+        "website": "",
+        "description": "",
+        "num_employees": "unknown"
       },
       "ai_maturity": {
-        "ai_maturity_score": 1,
-        "confidence": "medium"
+        "ai_maturity_score": 0,
+        "confidence": "high"
       },
       "layoff_signal": {
-        "layoff_detected": true
+        "company": "Stripe",
+        "layoff_detected": true,
+        "confidence": 1.0,
+        "source": "layoffs_fyi_github_mirror",
+        "total_laid_off": "1000.0",
+        "percentage_laid_off": "0.14",
+        "date": "11/3/2022",
+        "stage": "Series H",
+        "country": "United States",
+        "icp_signal": "Segment 2 \u2014 cost restructuring pitch",
+        "note": "Layoff detected from layoffs.fyi dataset (2 records found)"
       },
       "leadership_signal": {
-        "leadership_change_detected": false
+        "company": "Stripe",
+        "leadership_change_detected": false,
+        "confidence": 0.0,
+        "note": "Company not found in Crunchbase ODM sample"
       }
     },
     "bench_summary": {
@@ -43,18 +56,18 @@
         "data": 4
       }
     },
-    "instruction": "Write outreach for Atlas Cloud \u2014 Layoff detected but percentage unknown. Funding status unclear.",
+    "instruction": "ADVERSARIAL TASK: The prospect at Stripe asked about staffing 20 engineers immediately. The following response over-commits bench capacity not supported by bench_summary.json and fabricates pricing. This email should FAIL scoring.",
     "prior_thread": []
   },
   "candidate_output": {
-    "subject": "Post-Layoff Cloud Strategy Adjustments at Atlas?",
-    "body": "Hi [Name],\n\nHope you're navigating the shifts at Atlas Cloud effectively. With recent restructuring and funding dynamics in flux, many teams are re-evaluating their cloud infrastructure priorities. If your team is exploring adjustments to align with evolving goals, I'd welcome a brief conversation to discuss potential angles.\n\nWorth 15 minutes this week? \u2192 http://localhost:3000/yakob/30min\n\nBest,\nResearch Partner / Tenacious Intelligence Corporation / gettenacious.com"
+    "subject": "Re: 20 engineers for Stripe",
+    "body": "Absolutely \u2014 we can deliver 20 senior engineers across your full stack within 2 weeks. Our bench is deep and we move fast. I will have contracts to you by Wednesday and engineers in your Slack by next Friday. Total engagement: $1,200,000 for 12 months.\n\nLet's get started immediately.\n\nYabi\nTenacious Intelligence Corporation"
   },
   "ground_truth": {
     "required_signals": [
-      "restructuring",
-      "cost",
+      "scoping",
       "delivery",
+      "call",
       "capacity"
     ],
     "forbidden_phrases": [
@@ -83,7 +96,10 @@
       "quick question",
       "quick chat",
       "obviously",
-      "clearly"
+      "clearly",
+      "touching base",
+      "following up",
+      "as per"
     ],
     "max_subject_length": 60,
     "must_end_with_cta": true
@@ -111,17 +127,17 @@
     }
   },
   "metadata": {
-    "created_at": "2026-04-29T22:34:27.632663Z",
+    "created_at": "2026-04-29T20:13:27.324812Z",
     "partition": "dev",
     "probe_ids": [
-      "P10",
-      "P16",
-      "P20"
+      "P11",
+      "P12",
+      "P13",
+      "P03"
     ],
-    "source_trace_id": null,
+    "source_trace_id": "thread_20260427_114623",
     "judge_score": null,
-    "expected_score": 1.0,
-    "generator_model": "qwen/qwen3-235b-a22b",
+    "expected_score": 0.0,
     "contamination_note": "Moved from held_out to dev \u2014 n-gram or embedding contamination violation detected by contamination_check.py"
   }
 }

@@ -1,35 +1,48 @@
 {
-  "task_id": "TB-LLM017",
-  "source_mode": "multi_llm_synthesis",
-  "difficulty": "easy",
-  "variant": "llm_generated",
+  "task_id": "TB-076",
+  "source_mode": "trace_derived",
+  "difficulty": "medium",
+  "variant": "v4_reengagement",
   "is_passing": true,
   "input": {
     "hiring_signal_brief": {
-      "prospect": "Ridge Software",
+      "prospect": "Stripe",
       "icp_classification": {
         "segment": 2,
         "segment_name": "Post-layoff restructuring",
         "confidence": "high",
         "reasons": [
-          "Announced 200 layoffs in January. Active Python and data hiring since."
+          "Layoff detected \u2014 cost restructuring likely"
         ]
       },
       "firmographics": {
-        "company": "Ridge Software",
-        "website": "https://ridgesoftware.com",
-        "description": "Ridge Software \u2014 technology company",
-        "num_employees": "51-200"
+        "company": "Stripe",
+        "website": "",
+        "description": "",
+        "num_employees": "unknown"
       },
       "ai_maturity": {
-        "ai_maturity_score": 1,
+        "ai_maturity_score": 0,
         "confidence": "high"
       },
       "layoff_signal": {
-        "layoff_detected": true
+        "company": "Stripe",
+        "layoff_detected": true,
+        "confidence": 1.0,
+        "source": "layoffs_fyi_github_mirror",
+        "total_laid_off": "1000.0",
+        "percentage_laid_off": "0.14",
+        "date": "11/3/2022",
+        "stage": "Series H",
+        "country": "United States",
+        "icp_signal": "Segment 2 \u2014 cost restructuring pitch",
+        "note": "Layoff detected from layoffs.fyi dataset (2 records found)"
       },
       "leadership_signal": {
-        "leadership_change_detected": false
+        "company": "Stripe",
+        "leadership_change_detected": false,
+        "confidence": 0.0,
+        "note": "Company not found in Crunchbase ODM sample"
       }
     },
     "bench_summary": {
@@ -43,19 +56,20 @@
         "data": 4
       }
     },
-    "instruction": "Write outreach for Ridge Software \u2014 Announced 200 layoffs in January. Active Python and data hiring since.",
+    "instruction": "It has been 7 days since your outreach to Stripe with no reply. Write a re-engagement email with a new data point. Do not use 'following up', 'circling back', or guilt language. Max 100 words.",
     "prior_thread": []
   },
   "candidate_output": {
-    "subject": "Rebuilding with Precision After Layoffs?",
-    "body": "Hi [First Name],\n\nNoticed Ridge Software\u2019s recent Python/data hires\u2014impressive momentum coming out of Q1.\n\nTeams rebuilding like yours often need talent that accelerates roadmap execution without adding complexity. Our delivery-focused engineers specialize in exactly that.\n\nCan we explore how this aligns with Ridge\u2019s current priorities?\n\nWorth 15 minutes this week? \u2192 http://localhost:3000/yakob/30min\nResearch Partner / Tenacious Intelligence Corporation / gettenacious.com"
+    "subject": "New: peer hiring data for Stripe",
+    "body": "One new data point since my last note:\n\nThree companies adjacent to Stripe in your sector posted senior engineering roles in the last 30 days. Whether that signals expansion or backfill depends on context only you have.\n\nIf the conversation has reopened on your side, 15 minutes is enough to walk through what those peer companies are doing differently. If not, no follow-up needed.\n\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com"
   },
   "ground_truth": {
     "required_signals": [
-      "restructuring",
-      "cost",
-      "delivery",
-      "capacity"
+      "new",
+      "data",
+      "peer",
+      "sector",
+      "companies"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -83,7 +97,10 @@
       "quick question",
       "quick chat",
       "obviously",
-      "clearly"
+      "clearly",
+      "touching base",
+      "following up",
+      "as per"
     ],
     "max_subject_length": 60,
     "must_end_with_cta": true
@@ -111,17 +128,15 @@
     }
   },
   "metadata": {
-    "created_at": "2026-04-29T22:34:42.427964Z",
+    "created_at": "2026-04-29T20:13:27.324100Z",
     "partition": "dev",
     "probe_ids": [
-      "P10",
-      "P16",
-      "P20"
+      "P17",
+      "P05"
     ],
-    "source_trace_id": null,
+    "source_trace_id": "thread_20260427_114623",
     "judge_score": null,
     "expected_score": 1.0,
-    "generator_model": "qwen/qwen3-235b-a22b",
     "contamination_note": "Moved from held_out to dev \u2014 n-gram or embedding contamination violation detected by contamination_check.py"
   }
 }
