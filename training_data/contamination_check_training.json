@@ -1,0 +1,9 @@
+{
+  "training_pairs": 128,
+  "held_out_tasks": 3,
+  "dev_tasks": 112,
+  "train_held_overlap": 0,
+  "train_dev_overlap": 0,
+  "status": "PASSED",
+  "violations": []
+}

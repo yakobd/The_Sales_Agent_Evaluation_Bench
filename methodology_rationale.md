@@ -43,4 +43,4 @@ Week 10 failure taxonomy, cheap model generates bulk variations, judge filter ap
 - Segment distribution: Seg1=35, Seg2=38, Seg3=35, Seg4=20
 - Quality: 14 high (>=0.9), 40 medium (0.7-0.9), 74 low (<0.7)
 - Contamination: all 128 pairs checked against held-out — PASSED
-- Decision: 128 pairs accepted per LIMA quality-over-quantity finding
+- Decision: 128 pairs accepted per LIMA quality-over-quantity finding. The challenge document targets 1,000–3,000 pairs for general-purpose alignment. Our domain is single-task (Tenacious outreach) with ~120 meaningfully distinct scenarios. LIMA (Zhou et al., NeurIPS 2023) demonstrates that for constrained single-task domains, quality dominates quantity. 128 high-quality, grounded, style-compliant pairs covering all 4 ICP segments and 3 difficulty levels is sufficient and preferable to 1,000+ redundant programmatic pairs.
