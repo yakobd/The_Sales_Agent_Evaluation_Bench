@@ -1,29 +1,29 @@
 {
-  "task_id": "TB-SG06",
+  "task_id": "TB-SG11",
   "source_mode": "hand_authored",
-  "difficulty": "easy",
+  "difficulty": "medium",
   "variant": "style_guide_good",
   "is_passing": true,
-  "style_guide_id": "SG-G06",
+  "style_guide_id": "SG-G11",
   "input": {
     "hiring_signal_brief": {
-      "prospect": "Ana Startup",
+      "prospect": "Mei Data",
       "icp_classification": {
-        "segment": 1,
-        "segment_name": "Recently-funded startup",
+        "segment": 4,
+        "segment_name": "AI capability gap",
         "confidence": "high",
         "reasons": [
-          "Style guide labeled: Resource value-add no-pitch first touch"
+          "Style guide labeled: Mutual connection real not name-drop"
         ]
       },
       "firmographics": {
-        "company": "Ana Startup",
+        "company": "Mei Data",
         "website": "",
         "description": "Technology company",
         "num_employees": "51-200"
       },
       "ai_maturity": {
-        "ai_maturity_score": 1,
+        "ai_maturity_score": 2,
         "confidence": "high"
       },
       "layoff_signal": {
@@ -44,19 +44,19 @@
         "data": 4
       }
     },
-    "instruction": "STYLE GUIDE EXAMPLE (SG-G06): GOOD \u2014 should PASS. Resource value-add no-pitch first touch",
+    "instruction": "STYLE GUIDE EXAMPLE (SG-G11): GOOD \u2014 should PASS. Mutual connection real not name-drop",
     "prior_thread": []
   },
   "candidate_output": {
-    "subject": "Resource: Series A engineering scale-up checklist",
-    "body": "Hi Ana,\n\nYou closed your seed extension in October and your first three engineering hires are public on LinkedIn. The window between now and your Series A is the one where most teams delivery process either compounds or stalls.\n\nI put together a one-page checklist of the seven decisions that determine which side a team lands on. Two of the items are arguments against hiring an outsourced team in your stage.\n\nWant me to send the PDF? No follow-up if you are not interested.\n\nWorth 15 minutes this week? https://cal.com/yakob/30min\n\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com\n\nBest,\nYabi\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com"
+    "subject": "Context: Arjun's recommendation",
+    "body": "Hi Mei,\n\nArjun Krishnan suggested I reach out \u2014 he and I worked on the data platform redesign at his Series B in February, and he said your team is at a similar stage with the same Snowflake plus dbt plus Airflow combination he was working through.\n\nIf the equivalent rebuild is on your roadmap, I would be glad to share what we learned in his project, including the two architectural decisions that did not work. Happy to send a one-page write-up or do 15 minutes \u2014 your call.\n\nIf this is not on your roadmap, no follow-up.\n\nBest,\nYabi\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com"
   },
   "ground_truth": {
     "required_signals": [
-      "seed extension",
-      "october",
-      "linkedin",
-      "checklist"
+      "arjun",
+      "snowflake",
+      "dbt",
+      "airflow"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -116,7 +116,7 @@
     }
   },
   "metadata": {
-    "created_at": "2026-04-29T22:20:02.639027Z",
+    "created_at": "2026-04-29T22:20:02.639521Z",
     "partition": "train",
     "probe_ids": [
       "P10"
@@ -124,6 +124,7 @@
     "source_trace_id": null,
     "judge_score": null,
     "expected_score": 1.0,
-    "style_guide_label": "Resource value-add no-pitch first touch"
+    "style_guide_label": "Mutual connection real not name-drop",
+    "contamination_note": "Moved from held_out to dev \u2014 n-gram or embedding contamination violation detected by contamination_check.py"
   }
 }

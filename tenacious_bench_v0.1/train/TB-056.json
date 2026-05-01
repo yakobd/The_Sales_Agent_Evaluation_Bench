@@ -1,36 +1,42 @@
 {
-  "task_id": "TB-SG06",
-  "source_mode": "hand_authored",
-  "difficulty": "easy",
-  "variant": "style_guide_good",
+  "task_id": "TB-056",
+  "source_mode": "trace_derived",
+  "difficulty": "medium",
+  "variant": "v2_warm_reply",
   "is_passing": true,
-  "style_guide_id": "SG-G06",
   "input": {
     "hiring_signal_brief": {
-      "prospect": "Ana Startup",
+      "prospect": "Rippling",
       "icp_classification": {
         "segment": 1,
         "segment_name": "Recently-funded startup",
-        "confidence": "high",
+        "confidence": "low",
         "reasons": [
-          "Style guide labeled: Resource value-add no-pitch first touch"
+          "No strong signals \u2014 defaulting to Segment 1"
         ]
       },
       "firmographics": {
-        "company": "Ana Startup",
+        "company": "Rippling",
         "website": "",
-        "description": "Technology company",
-        "num_employees": "51-200"
+        "description": "",
+        "num_employees": "unknown"
       },
       "ai_maturity": {
-        "ai_maturity_score": 1,
-        "confidence": "high"
+        "ai_maturity_score": 0,
+        "confidence": "low"
       },
       "layoff_signal": {
-        "layoff_detected": false
+        "company": "Rippling",
+        "layoff_detected": false,
+        "confidence": 0.9,
+        "source": "layoffs_fyi_github_mirror",
+        "note": "No layoff found in 2362-record dataset"
       },
       "leadership_signal": {
-        "leadership_change_detected": false
+        "company": "Rippling",
+        "leadership_change_detected": false,
+        "confidence": 0.0,
+        "note": "Company not found in Crunchbase ODM sample"
       }
     },
     "bench_summary": {
@@ -44,19 +50,20 @@
         "data": 4
       }
     },
-    "instruction": "STYLE GUIDE EXAMPLE (SG-G06): GOOD \u2014 should PASS. Resource value-add no-pitch first touch",
-    "prior_thread": []
+    "prior_thread": [],
+    "instruction": "The prospect at Rippling has replied saying: 'Interesting context on the hiring velocity. What exactly does your engineering s'. Write a warm reply that acknowledges their response and offers a booking link. Max 200 words."
   },
   "candidate_output": {
-    "subject": "Resource: Series A engineering scale-up checklist",
-    "body": "Hi Ana,\n\nYou closed your seed extension in October and your first three engineering hires are public on LinkedIn. The window between now and your Series A is the one where most teams delivery process either compounds or stalls.\n\nI put together a one-page checklist of the seven decisions that determine which side a team lands on. Two of the items are arguments against hiring an outsourced team in your stage.\n\nWant me to send the PDF? No follow-up if you are not interested.\n\nWorth 15 minutes this week? https://cal.com/yakob/30min\n\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com\n\nBest,\nYabi\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com"
+    "subject": "Re: Context: Rippling and engineering capacity",
+    "body": "Thanks for the reply \u2014 good to know the context lands.\n\nGiven what you shared, the fastest next step is a 30-minute call with our delivery lead. They can walk through exactly how we structure engagements for Rippling's stage and answer questions on timeline and capacity.\n\nBook directly here: http://localhost:3000/yakob/30min?utm_source=email_reply\n\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com"
   },
   "ground_truth": {
     "required_signals": [
-      "seed extension",
-      "october",
-      "linkedin",
-      "checklist"
+      "book",
+      "call",
+      "30min",
+      "delivery",
+      "localhost"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -87,8 +94,7 @@
       "clearly",
       "touching base",
       "following up",
-      "as per",
-      "i hope this email finds you"
+      "as per"
     ],
     "max_subject_length": 60,
     "must_end_with_cta": true
@@ -116,14 +122,14 @@
     }
   },
   "metadata": {
-    "created_at": "2026-04-29T22:20:02.639027Z",
+    "created_at": "2026-04-29T20:13:27.308864Z",
     "partition": "train",
     "probe_ids": [
-      "P10"
+      "P25",
+      "P26"
     ],
-    "source_trace_id": null,
+    "source_trace_id": "thread_20260427_114644",
     "judge_score": null,
-    "expected_score": 1.0,
-    "style_guide_label": "Resource value-add no-pitch first touch"
+    "expected_score": 1.0
   }
 }

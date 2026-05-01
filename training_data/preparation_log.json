@@ -1,0 +1,17 @@
+{
+  "prepared_at": "2026-05-01T10:44:51.097581",
+  "train_tasks": 178,
+  "skipped_failing": 50,
+  "candidates": 128,
+  "selected": 128,
+  "target_min": 100,
+  "target_max": 150,
+  "segment_counts": {
+    "1": 35,
+    "2": 38,
+    "3": 35,
+    "4": 20
+  },
+  "output_file": "/home/yakob/week11-sales-bench/training_data/training_pairs.jsonl",
+  "system_prompt_length": 1392
+}

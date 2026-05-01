@@ -1,32 +1,32 @@
 {
   "task_id": "TB-LLM015",
   "source_mode": "multi_llm_synthesis",
-  "difficulty": "easy",
-  "variant": "llm_generated_v2",
+  "difficulty": "hard",
+  "variant": "llm_generated",
   "is_passing": true,
   "input": {
     "hiring_signal_brief": {
-      "prospect": "Marble Technologies",
+      "prospect": "Atlas Cloud",
       "icp_classification": {
-        "segment": 1,
-        "segment_name": "Recently-funded startup",
-        "confidence": "high",
+        "segment": 2,
+        "segment_name": "Post-layoff restructuring",
+        "confidence": "medium",
         "reasons": [
-          "Series A $20M in March, open backend roles tripled from 3 to 9"
+          "Layoff detected but percentage unknown. Funding status unclear."
         ]
       },
       "firmographics": {
-        "company": "Marble Technologies",
-        "website": "https://marbletechnologies.com",
-        "description": "Marble Technologies \u2014 technology company",
+        "company": "Atlas Cloud",
+        "website": "https://atlascloud.com",
+        "description": "Atlas Cloud \u2014 technology company",
         "num_employees": "51-200"
       },
       "ai_maturity": {
         "ai_maturity_score": 1,
-        "confidence": "high"
+        "confidence": "medium"
       },
       "layoff_signal": {
-        "layoff_detected": false
+        "layoff_detected": true
       },
       "leadership_signal": {
         "leadership_change_detected": false
@@ -43,20 +43,19 @@
         "data": 4
       }
     },
-    "instruction": "Write outreach for Marble Technologies \u2014 Series A $20M in March, open backend roles tripled from 3 to 9",
+    "instruction": "Write outreach for Atlas Cloud \u2014 Layoff detected but percentage unknown. Funding status unclear.",
     "prior_thread": []
   },
   "candidate_output": {
-    "subject": "Marble\u2019s $20M Raise & Backend Growth Opportunity",
-    "body": "Hi [Name],\n\nMarble\u2019s recent $20M Series A signals strong momentum. Noticing backend roles tripled from 3 to 9 since March \u2014 this expansion likely requires strategic talent acquisition to maintain velocity.\n\nTenacious specializes in high-growth tech orgs like yours. I\u2019d share how we\u2019ve helped similar teams secure critical hires without disrupting runway.\n\nWorth 15 minutes this week? \u2192 http://localhost:3000/yakob/30min\n\nResearch Partner / Tenacious Intelligence Corporation / gettenacious.com"
+    "subject": "Post-Layoff Cloud Strategy Adjustments at Atlas?",
+    "body": "Hi [Name],\n\nHope you're navigating the shifts at Atlas Cloud effectively. With recent restructuring and funding dynamics in flux, many teams are re-evaluating their cloud infrastructure priorities. If your team is exploring adjustments to align with evolving goals, I'd welcome a brief conversation to discuss potential angles.\n\nWorth 15 minutes this week? \u2192 http://localhost:3000/yakob/30min\n\nBest,\nResearch Partner / Tenacious Intelligence Corporation / gettenacious.com"
   },
   "ground_truth": {
     "required_signals": [
-      "funding",
-      "growth",
-      "engineering",
-      "capacity",
-      "roles"
+      "restructuring",
+      "cost",
+      "delivery",
+      "capacity"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -112,7 +111,7 @@
     }
   },
   "metadata": {
-    "created_at": "2026-04-29T23:03:01.294169Z",
+    "created_at": "2026-04-29T22:34:27.632663Z",
     "partition": "train",
     "probe_ids": [
       "P10",
@@ -122,6 +121,7 @@
     "source_trace_id": null,
     "judge_score": null,
     "expected_score": 1.0,
-    "generator_model": "qwen/qwen3-235b-a22b"
+    "generator_model": "qwen/qwen3-235b-a22b",
+    "contamination_note": "Moved from held_out to dev \u2014 n-gram or embedding contamination violation detected by contamination_check.py"
   }
 }

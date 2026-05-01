@@ -1,29 +1,28 @@
 {
-  "task_id": "TB-SG06",
-  "source_mode": "hand_authored",
-  "difficulty": "easy",
-  "variant": "style_guide_good",
+  "task_id": "TB-LLM063",
+  "source_mode": "multi_llm_synthesis",
+  "difficulty": "medium",
+  "variant": "llm_generated_v2",
   "is_passing": true,
-  "style_guide_id": "SG-G06",
   "input": {
     "hiring_signal_brief": {
-      "prospect": "Ana Startup",
+      "prospect": "Beam Systems",
       "icp_classification": {
-        "segment": 1,
-        "segment_name": "Recently-funded startup",
+        "segment": 4,
+        "segment_name": "AI capability gap",
         "confidence": "high",
         "reasons": [
-          "Style guide labeled: Resource value-add no-pitch first touch"
+          "AI maturity 3/3, no MLOps function publicly visible, 5 peers have one"
         ]
       },
       "firmographics": {
-        "company": "Ana Startup",
-        "website": "",
-        "description": "Technology company",
+        "company": "Beam Systems",
+        "website": "https://beamsystems.com",
+        "description": "Beam Systems \u2014 technology company",
         "num_employees": "51-200"
       },
       "ai_maturity": {
-        "ai_maturity_score": 1,
+        "ai_maturity_score": 2,
         "confidence": "high"
       },
       "layoff_signal": {
@@ -44,19 +43,21 @@
         "data": 4
       }
     },
-    "instruction": "STYLE GUIDE EXAMPLE (SG-G06): GOOD \u2014 should PASS. Resource value-add no-pitch first touch",
+    "instruction": "Write outreach for Beam Systems \u2014 AI maturity 3/3, no MLOps function publicly visible, 5 peers have one",
     "prior_thread": []
   },
   "candidate_output": {
-    "subject": "Resource: Series A engineering scale-up checklist",
-    "body": "Hi Ana,\n\nYou closed your seed extension in October and your first three engineering hires are public on LinkedIn. The window between now and your Series A is the one where most teams delivery process either compounds or stalls.\n\nI put together a one-page checklist of the seven decisions that determine which side a team lands on. Two of the items are arguments against hiring an outsourced team in your stage.\n\nWant me to send the PDF? No follow-up if you are not interested.\n\nWorth 15 minutes this week? https://cal.com/yakob/30min\n\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com\n\nBest,\nYabi\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com"
+    "subject": "Your AI Maturity, Our Specialized MLOps Support",
+    "body": "Hi [First Name],\n\nAt Beam Systems, your advanced AI maturity stands out\u2014yet we noticed no public MLOps function despite peers adopting it. Tenacious Intelligence can provide specialized MLOps capacity to bridge this gap, focusing on optimization and scalability tailored to your existing infrastructure. \n\nWorth 15 minutes this week? \u2192 http://localhost:3000/yakob/30min\n\nBest,\n[Your Name]\nResearch Partner / Tenacious Intelligence Corporation / gettenacious.com"
   },
   "ground_truth": {
     "required_signals": [
-      "seed extension",
-      "october",
-      "linkedin",
-      "checklist"
+      "ai",
+      "capability",
+      "ml",
+      "platform",
+      "peer",
+      "data"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -84,11 +85,7 @@
       "quick question",
       "quick chat",
       "obviously",
-      "clearly",
-      "touching base",
-      "following up",
-      "as per",
-      "i hope this email finds you"
+      "clearly"
     ],
     "max_subject_length": 60,
     "must_end_with_cta": true
@@ -116,14 +113,17 @@
     }
   },
   "metadata": {
-    "created_at": "2026-04-29T22:20:02.639027Z",
+    "created_at": "2026-04-29T23:10:32.683899Z",
     "partition": "train",
     "probe_ids": [
-      "P10"
+      "P10",
+      "P16",
+      "P20"
     ],
     "source_trace_id": null,
     "judge_score": null,
     "expected_score": 1.0,
-    "style_guide_label": "Resource value-add no-pitch first touch"
+    "generator_model": "qwen/qwen3-235b-a22b",
+    "contamination_note": "Moved from held_out to dev \u2014 n-gram or embedding contamination violation detected by contamination_check.py"
   }
 }

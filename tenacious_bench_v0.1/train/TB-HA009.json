@@ -1,29 +1,29 @@
 {
-  "task_id": "TB-SG06",
+  "task_id": "TB-HA009",
   "source_mode": "hand_authored",
-  "difficulty": "easy",
-  "variant": "style_guide_good",
+  "difficulty": "hard",
+  "variant": "hand_authored_adversarial",
   "is_passing": true,
-  "style_guide_id": "SG-G06",
+  "probe_label": "P33 \u2014 Correct: AI company compared to AI sector peers",
   "input": {
     "hiring_signal_brief": {
-      "prospect": "Ana Startup",
+      "prospect": "Yellow.ai",
       "icp_classification": {
-        "segment": 1,
-        "segment_name": "Recently-funded startup",
+        "segment": 4,
+        "segment_name": "AI capability gap",
         "confidence": "high",
         "reasons": [
-          "Style guide labeled: Resource value-add no-pitch first touch"
+          "Hand-authored scenario \u2014 P33 \u2014 Correct: AI company compared to AI sector peers"
         ]
       },
       "firmographics": {
-        "company": "Ana Startup",
+        "company": "Yellow.ai",
         "website": "",
-        "description": "Technology company",
-        "num_employees": "51-200"
+        "description": "Yellow.ai \u2014 technology company",
+        "num_employees": "51-500"
       },
       "ai_maturity": {
-        "ai_maturity_score": 1,
+        "ai_maturity_score": 2,
         "confidence": "high"
       },
       "layoff_signal": {
@@ -44,19 +44,19 @@
         "data": 4
       }
     },
-    "instruction": "STYLE GUIDE EXAMPLE (SG-G06): GOOD \u2014 should PASS. Resource value-add no-pitch first touch",
+    "instruction": "CORRECT P33: Yellow.ai compared to Intercom, Zendesk, Drift \u2014 all conversational AI/customer service platforms. Correct sector matching. Should PASS.",
     "prior_thread": []
   },
   "candidate_output": {
-    "subject": "Resource: Series A engineering scale-up checklist",
-    "body": "Hi Ana,\n\nYou closed your seed extension in October and your first three engineering hires are public on LinkedIn. The window between now and your Series A is the one where most teams delivery process either compounds or stalls.\n\nI put together a one-page checklist of the seven decisions that determine which side a team lands on. Two of the items are arguments against hiring an outsourced team in your stage.\n\nWant me to send the PDF? No follow-up if you are not interested.\n\nWorth 15 minutes this week? https://cal.com/yakob/30min\n\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com\n\nBest,\nYabi\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com"
+    "subject": "Question on Yellow.ai MLOps function",
+    "body": "Hi Raghu,\n\nThree companies adjacent to Yellow.ai in the conversational AI space \u2014 Intercom, Zendesk, and Drift \u2014 posted senior MLOps engineer roles in the last 90 days. Your team has not, at least not publicly. Two readings: deliberate choice or function not yet scoped.\n\nWe staff specialized AI squads on fixed-scope engagements.\n\nWorth 15 minutes? \u2192 http://localhost:3000/yakob/30min\n\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com"
   },
   "ground_truth": {
     "required_signals": [
-      "seed extension",
-      "october",
-      "linkedin",
-      "checklist"
+      "ai",
+      "mlops",
+      "conversational",
+      "peer"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -84,11 +84,7 @@
       "quick question",
       "quick chat",
       "obviously",
-      "clearly",
-      "touching base",
-      "following up",
-      "as per",
-      "i hope this email finds you"
+      "clearly"
     ],
     "max_subject_length": 60,
     "must_end_with_cta": true
@@ -116,14 +112,15 @@
     }
   },
   "metadata": {
-    "created_at": "2026-04-29T22:20:02.639027Z",
+    "created_at": "2026-04-29T22:43:14.680500Z",
     "partition": "train",
     "probe_ids": [
-      "P10"
+      "P33"
     ],
     "source_trace_id": null,
     "judge_score": null,
     "expected_score": 1.0,
-    "style_guide_label": "Resource value-add no-pitch first touch"
+    "failure_reason": null,
+    "hand_authored": true
   }
 }

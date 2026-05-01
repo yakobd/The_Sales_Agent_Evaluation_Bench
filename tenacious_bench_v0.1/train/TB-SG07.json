@@ -1,23 +1,23 @@
 {
-  "task_id": "TB-SG06",
+  "task_id": "TB-SG07",
   "source_mode": "hand_authored",
-  "difficulty": "easy",
+  "difficulty": "medium",
   "variant": "style_guide_good",
   "is_passing": true,
-  "style_guide_id": "SG-G06",
+  "style_guide_id": "SG-G07",
   "input": {
     "hiring_signal_brief": {
-      "prospect": "Ana Startup",
+      "prospect": "Camila Systems",
       "icp_classification": {
         "segment": 1,
         "segment_name": "Recently-funded startup",
         "confidence": "high",
         "reasons": [
-          "Style guide labeled: Resource value-add no-pitch first touch"
+          "Style guide labeled: Warm reply with routing to human delivery lead"
         ]
       },
       "firmographics": {
-        "company": "Ana Startup",
+        "company": "Camila Systems",
         "website": "",
         "description": "Technology company",
         "num_employees": "51-200"
@@ -44,19 +44,19 @@
         "data": 4
       }
     },
-    "instruction": "STYLE GUIDE EXAMPLE (SG-G06): GOOD \u2014 should PASS. Resource value-add no-pitch first touch",
+    "instruction": "STYLE GUIDE EXAMPLE (SG-G07): GOOD \u2014 should PASS. Warm reply with routing to human delivery lead",
     "prior_thread": []
   },
   "candidate_output": {
-    "subject": "Resource: Series A engineering scale-up checklist",
-    "body": "Hi Ana,\n\nYou closed your seed extension in October and your first three engineering hires are public on LinkedIn. The window between now and your Series A is the one where most teams delivery process either compounds or stalls.\n\nI put together a one-page checklist of the seven decisions that determine which side a team lands on. Two of the items are arguments against hiring an outsourced team in your stage.\n\nWant me to send the PDF? No follow-up if you are not interested.\n\nWorth 15 minutes this week? https://cal.com/yakob/30min\n\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com\n\nBest,\nYabi\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com"
+    "subject": "Re: scope of the three-engineer engagement",
+    "body": "Hi Camila,\n\nThanks for the reply and for the additional context on the December timeline.\n\nThree Python and one data engineer for a 6-month engagement is in our typical range. Our public-tier pricing for that mix starts from approximately $X,XXX/month per engineer at senior level, with a one-month minimum and two-week extension blocks.\n\nA specific quote depends on the exact stack, timezone overlap, and whether you want a Tenacious delivery lead embedded. The cleanest path is a 30-minute scoping call with our delivery lead. Here is his calendar: gettenacious.com/arun\n\nBest,\nYabi"
   },
   "ground_truth": {
     "required_signals": [
-      "seed extension",
-      "october",
-      "linkedin",
-      "checklist"
+      "december",
+      "python",
+      "data engineer",
+      "gettenacious.com"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -116,14 +116,15 @@
     }
   },
   "metadata": {
-    "created_at": "2026-04-29T22:20:02.639027Z",
+    "created_at": "2026-04-29T22:20:02.639103Z",
     "partition": "train",
     "probe_ids": [
-      "P10"
+      "P11",
+      "P13"
     ],
     "source_trace_id": null,
     "judge_score": null,
     "expected_score": 1.0,
-    "style_guide_label": "Resource value-add no-pitch first touch"
+    "style_guide_label": "Warm reply with routing to human delivery lead"
   }
 }

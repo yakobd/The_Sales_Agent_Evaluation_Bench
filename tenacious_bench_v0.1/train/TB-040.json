@@ -1,36 +1,48 @@
 {
-  "task_id": "TB-SG02",
-  "source_mode": "hand_authored",
-  "difficulty": "easy",
-  "variant": "style_guide_good",
+  "task_id": "TB-040",
+  "source_mode": "trace_derived",
+  "difficulty": "medium",
+  "variant": "v4_reengagement",
   "is_passing": true,
-  "style_guide_id": "SG-G02",
   "input": {
     "hiring_signal_brief": {
-      "prospect": "Daniel Corp",
+      "prospect": "Lattice",
       "icp_classification": {
         "segment": 2,
         "segment_name": "Post-layoff restructuring",
         "confidence": "high",
         "reasons": [
-          "Style guide labeled: Post-layoff cost-pressure pitch mid-market restructuring"
+          "Layoff detected \u2014 cost restructuring likely"
         ]
       },
       "firmographics": {
-        "company": "Daniel Corp",
+        "company": "Lattice",
         "website": "",
-        "description": "Technology company",
-        "num_employees": "51-200"
+        "description": "",
+        "num_employees": "unknown"
       },
       "ai_maturity": {
-        "ai_maturity_score": 1,
+        "ai_maturity_score": 0,
         "confidence": "high"
       },
       "layoff_signal": {
-        "layoff_detected": true
+        "company": "Lattice",
+        "layoff_detected": true,
+        "confidence": 1.0,
+        "source": "layoffs_fyi_github_mirror",
+        "total_laid_off": "nan",
+        "percentage_laid_off": "0.15",
+        "date": "1/12/2023",
+        "stage": "Series F",
+        "country": "United States",
+        "icp_signal": "Segment 2 \u2014 cost restructuring pitch",
+        "note": "Layoff detected from layoffs.fyi dataset (3 records found)"
       },
       "leadership_signal": {
-        "leadership_change_detected": false
+        "company": "Lattice",
+        "leadership_change_detected": false,
+        "confidence": 0.0,
+        "note": "Company not found in Crunchbase ODM sample"
       }
     },
     "bench_summary": {
@@ -44,19 +56,20 @@
         "data": 4
       }
     },
-    "instruction": "STYLE GUIDE EXAMPLE (SG-G02): GOOD \u2014 should PASS. Post-layoff cost-pressure pitch mid-market restructuring",
+    "instruction": "It has been 7 days since your outreach to Lattice with no reply. Write a re-engagement email with a new data point. Do not use 'following up', 'circling back', or guilt language. Max 100 words.",
     "prior_thread": []
   },
   "candidate_output": {
-    "subject": "Context: lower-cost engineering capacity post-restructure",
-    "body": "Hi Daniel,\n\nI saw the announcement that your team contracted by about 12% in March. Companies in your stage often need to maintain delivery output while reducing fully-loaded cost \u2014 that is the engagement pattern we run most often.\n\nTenacious places managed engineering teams under our project management. Senior engineers in Python, data, and ML start from $X,XXX/month, with a one-month minimum and two-week extension blocks. No long-term commitment.\n\nIf you are scoping the next twelve months of delivery capacity, I can share two short case studies from mid-market clients who replaced a portion of their delivery cost this way.\n\nWorth 15 minutes this week? https://cal.com/yakob/30min\n\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com\n\nBest,\nYabi\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com"
+    "subject": "New: peer hiring data for Lattice",
+    "body": "One new data point since my last note:\n\nThree companies adjacent to Lattice in your sector posted senior engineering roles in the last 30 days. Whether that signals expansion or backfill depends on context only you have.\n\nIf the conversation has reopened on your side, 15 minutes is enough to walk through what those peer companies are doing differently. If not, no follow-up needed.\n\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com"
   },
   "ground_truth": {
     "required_signals": [
-      "12%",
-      "march",
-      "cost",
-      "delivery"
+      "new",
+      "data",
+      "peer",
+      "sector",
+      "companies"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -87,8 +100,7 @@
       "clearly",
       "touching base",
       "following up",
-      "as per",
-      "i hope this email finds you"
+      "as per"
     ],
     "max_subject_length": 60,
     "must_end_with_cta": true
@@ -116,15 +128,14 @@
     }
   },
   "metadata": {
-    "created_at": "2026-04-29T22:20:02.638732Z",
+    "created_at": "2026-04-29T20:13:27.302984Z",
     "partition": "train",
     "probe_ids": [
-      "P08",
-      "P10"
+      "P17",
+      "P05"
     ],
-    "source_trace_id": null,
+    "source_trace_id": "thread_20260427_114825",
     "judge_score": null,
-    "expected_score": 1.0,
-    "style_guide_label": "Post-layoff cost-pressure pitch mid-market restructuring"
+    "expected_score": 1.0
   }
 }
