@@ -1,12 +1,15 @@
 {
-  "run_date": "2026-05-01T13:42:36.945777",
+  "run_date": "2026-05-01T22:34:57.682846",
+  "run_id": "run2_2541_pairs",
   "held_out_tasks": 3,
   "model": "qwen/qwen-2.5-72b-instruct",
   "seed": 42,
+  "training_pairs": 2541,
+  "training_run": "training_run_v2.log",
   "scores": {
     "baseline": [
       0.0,
-      0.0,
+      1.0,
       0.0
     ],
     "prompt_engineered": [
@@ -21,11 +24,11 @@
     ]
   },
   "averages": {
-    "baseline": 0.0,
+    "baseline": 0.3333333333333333,
     "prompt_engineered": 0.6666666666666666,
     "trained_adapter": 0.6666666666666666
   },
-  "delta_a": 0.6666666666666666,
+  "delta_a": 0.3333333333333333,
   "delta_b": 0.0,
   "delta_c": 0.3336666666666666,
   "delta_c_note": "informational only \u2014 reuses Week 10 tau2-Bench score 0.333",
@@ -35,8 +38,8 @@
     "seed": 42,
     "ci_95_low": 0.0,
     "ci_95_high": 1.0,
-    "p_value": 0.0385,
-    "significant": true,
+    "p_value": 0.2976,
+    "significant": false,
     "note": "n=3 held-out tasks limits statistical power; results directional"
   },
   "cost_pareto": {
