@@ -1,0 +1,121 @@
+{
+  "version": "1.0",
+  "generated": "2026-05-01",
+  "author": "Yakob Dereje",
+  "description": "Maps every numeric claim in memo and blog post to its source",
+  "claims": {
+    "delta_a_plus_0263": {
+      "claim": "Trained adapter lifts pass@1 by +0.263 over Week 10 baseline",
+      "value": 0.263,
+      "source_file": "ablations/ablation_results.json",
+      "source_field": "delta_a",
+      "verification": "averages.trained_adapter (0.754) - averages.baseline (0.491)"
+    },
+    "delta_a_pvalue": {
+      "claim": "Delta A is statistically significant at p=0.0000",
+      "value": 0.0,
+      "source_file": "ablations/ablation_results.json",
+      "source_field": "statistical_test.p_value",
+      "verification": "paired bootstrap n=10000 seed=42"
+    },
+    "delta_a_ci": {
+      "claim": "95% CI for Delta A is [0.140, 0.386]",
+      "value": [0.140, 0.386],
+      "source_file": "ablations/ablation_results.json",
+      "source_field": "statistical_test.ci_95_low + ci_95_high"
+    },
+    "delta_b_plus_0140": {
+      "claim": "Training beats prompt engineering by +0.140",
+      "value": 0.140,
+      "source_file": "ablations/ablation_results.json",
+      "source_field": "delta_b",
+      "verification": "averages.trained_adapter (0.754) - averages.prompt_engineered (0.614)"
+    },
+    "delta_c_plus_0421": {
+      "claim": "Delta C vs tau2-Bench retail baseline is +0.421 (informational)",
+      "value": 0.421,
+      "source_file": "ablations/ablation_results.json",
+      "source_field": "delta_c",
+      "verification": "averages.trained_adapter (0.754) - week10_tau2_baseline (0.333)"
+    },
+    "baseline_score_0491": {
+      "claim": "Week 10 baseline scores 0.491 on Tenacious-Bench held-out",
+      "value": 0.491,
+      "source_file": "ablations/ablation_results.json",
+      "source_field": "averages.baseline"
+    },
+    "trained_score_0754": {
+      "claim": "Trained adapter scores 0.754 on Tenacious-Bench held-out",
+      "value": 0.754,
+      "source_file": "ablations/ablation_results.json",
+      "source_field": "averages.trained_adapter"
+    },
+    "held_out_n57": {
+      "claim": "Held-out partition contains 57 tasks",
+      "value": 57,
+      "source_file": "ablations/ablation_results.json",
+      "source_field": "held_out_tasks"
+    },
+    "training_pairs_2541": {
+      "claim": "Training dataset contains 2,541 pairs",
+      "value": 2541,
+      "source_file": "training/training_run_v2.log",
+      "source_field": "training_pairs"
+    },
+    "training_cost_zero": {
+      "claim": "Training cost was $0.00 on Google Colab T4",
+      "value": 0.0,
+      "source_file": "ablations/ablation_results.json",
+      "source_field": "cost_pareto.lora_training_cost_usd"
+    },
+    "wall_time_19min": {
+      "claim": "Training wall time was 19.1 minutes",
+      "value": 19.1,
+      "source_file": "training/training_run_v2.log",
+      "source_field": "wall_time_minutes"
+    },
+    "final_loss_0099": {
+      "claim": "Training converged to loss 0.099 at step 900",
+      "value": 0.099,
+      "source_file": "training/training_run_v2.log",
+      "source_field": "loss_curve.step_900"
+    },
+    "benchmark_293_tasks": {
+      "claim": "Tenacious-Bench v0.1 contains 293 tasks",
+      "value": 293,
+      "source_file": "tenacious_bench_v0.1/",
+      "source_field": "train(178) + dev(58) + held_out(57)"
+    },
+    "inter_rater_93pct": {
+      "claim": "Inter-rater agreement is 93% across all rubric dimensions",
+      "value": 0.93,
+      "source_file": "inter_rater_agreement.md",
+      "source_field": "overall_agreement"
+    },
+    "contamination_passed": {
+      "claim": "All 3 contamination checks passed — 0 violations",
+      "value": 0,
+      "source_file": "contamination_check.json",
+      "source_field": "overall_status"
+    },
+    "week10_tau2_baseline": {
+      "claim": "Week 10 agent scored 0.333 on tau2-Bench retail",
+      "value": 0.333,
+      "source_file": "eval/score_log.json",
+      "source_field": "pass_at_1",
+      "repo": "The-Conversion-Engine"
+    },
+    "augmentation_accept_rate": {
+      "claim": "Augmentation pipeline accepted 94.3% of generated variations",
+      "value": 0.943,
+      "source_file": "training_data/augmentation_log.json",
+      "source_field": "accept_rate"
+    },
+    "cost_per_task": {
+      "claim": "Inference cost per task is $0.00012",
+      "value": 0.00012,
+      "source_file": "ablations/ablation_results.json",
+      "source_field": "cost_pareto.cost_per_task_trained_usd"
+    }
+  }
+}
