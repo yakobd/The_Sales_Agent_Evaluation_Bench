@@ -1,0 +1,12 @@
+{
+  "run_date": "2026-05-01T19:04:50.641446",
+  "original_pairs": 128,
+  "augmented_pairs": 2413,
+  "total_pairs": 2541,
+  "accepted": 2413,
+  "rejected": 147,
+  "accept_rate": 0.942578125,
+  "model": "qwen/qwen-2.5-72b-instruct",
+  "variations_each": 20,
+  "wall_time_min": 305.47646886110306
+}
