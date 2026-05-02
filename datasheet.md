@@ -145,3 +145,10 @@ Four failure modes Tenacious-Bench v0.1 does not capture that v0.2 should addres
 ---
 
 *Dataset constructed April 28-29, 2026 | Probe library source: Week 10 Conversion Engine (github.com/yakobd/The-Conversion-Engine) | Style guide source: Tenacious Intelligence Corporation internal document (private)*
+
+
+## Distribution
+
+**Dataset URL:** https://huggingface.co/datasets/yakobd/tenacious-bench
+
+**License:** CC-BY-4.0

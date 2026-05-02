@@ -32,7 +32,7 @@ other than English.
 - **Source modes:** trace-derived, multi-LLM synthesis, programmatic, hand-authored
 - **Segments:** Seg1=35, Seg2=38, Seg3=35, Seg4=20
 - **Quality filter:** scoring_evaluator.py pass@1=1.0 required
-- **Dataset URL:** yakobd/tenacious-bench (to be published)
+- **Dataset URL:** https://huggingface.co/datasets/yakobd/tenacious-bench
 
 ## Training Procedure
 
