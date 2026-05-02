@@ -17,6 +17,7 @@ Measures signal grounding, tone compliance, and commercial safety — three dime
 | Blog Post | https://yakobdereje.substack.com/p/i-broke-my-own-sales-agent-then-built |
 | Community Engagement | https://github.com/sierra-research/tau2-bench/issues/284 |
 | HuggingFace Blog PR | https://github.com/huggingface/blog/pull/3371 |
+| Personal Site | https://yakobd.github.io/ |
 
 ---
 
