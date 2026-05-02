@@ -20,13 +20,16 @@
     },
     "delta_a_ci": {
       "claim": "95% CI for Delta A is [0.140, 0.386]",
-      "value": [0.140, 0.386],
+      "value": [
+        0.14,
+        0.386
+      ],
       "source_file": "ablations/ablation_results.json",
       "source_field": "statistical_test.ci_95_low + ci_95_high"
     },
     "delta_b_plus_0140": {
       "claim": "Training beats prompt engineering by +0.140",
-      "value": 0.140,
+      "value": 0.14,
       "source_file": "ablations/ablation_results.json",
       "source_field": "delta_b",
       "verification": "averages.trained_adapter (0.754) - averages.prompt_engineered (0.614)"
@@ -93,7 +96,7 @@
       "source_field": "overall_agreement"
     },
     "contamination_passed": {
-      "claim": "All 3 contamination checks passed — 0 violations",
+      "claim": "All 3 contamination checks passed \u2014 0 violations",
       "value": 0,
       "source_file": "contamination_check.json",
       "source_field": "overall_status"
@@ -117,5 +120,12 @@
       "source_file": "ablations/ablation_results.json",
       "source_field": "cost_pareto.cost_per_task_trained_usd"
     }
+  },
+  "public_artifacts": {
+    "huggingface_dataset": "https://huggingface.co/datasets/yakobd/tenacious-bench",
+    "huggingface_model": "https://huggingface.co/yakobd/tenacious-bench-adapter",
+    "github_repo": "https://github.com/yakobd/The_Sales_Agent_Evaluation_Bench",
+    "blog_post": "https://yakobdereje.substack.com/p/i-broke-my-own-sales-agent-then-built",
+    "community_engagement": "https://github.com/sierra-research/tau2-bench/issues/284"
   }
 }
