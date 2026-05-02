@@ -137,6 +137,12 @@ week11-sales-bench/
 
 ---
 
+## License
+
+This repository is licensed under **CC-BY-4.0** (Creative Commons Attribution 4.0 International).
+See the [LICENSE](LICENSE) file at the repo root for the full license text.
+This applies to both the code and the dataset artifacts published under this project.
+
 ## Attribution
 
 - Crunchbase ODM (Apache 2.0) — firmographic enrichment
