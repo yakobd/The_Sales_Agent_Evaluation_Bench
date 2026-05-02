@@ -126,6 +126,7 @@
     "huggingface_model": "https://huggingface.co/yakobd/tenacious-bench-adapter",
     "github_repo": "https://github.com/yakobd/The_Sales_Agent_Evaluation_Bench",
     "blog_post": "https://yakobdereje.substack.com/p/i-broke-my-own-sales-agent-then-built",
-    "community_engagement": "https://github.com/sierra-research/tau2-bench/issues/284"
+    "community_engagement": "https://github.com/sierra-research/tau2-bench/issues/284",
+    "huggingface_blog_pr": "https://github.com/huggingface/blog/pull/3371"
   }
 }
