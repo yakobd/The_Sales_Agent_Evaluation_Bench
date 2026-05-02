@@ -1,19 +1,64 @@
 # Tenacious-Bench v0.1
+
 **Sales Agent Evaluation Benchmark | Yakob Dereje | TenX Academy TRP1 Week 11**
 
-A domain-specific evaluation benchmark for Tenacious Intelligence Corporation B2B outreach agents. Measures signal grounding, tone compliance, and commercial safety — three dimensions that tau2-Bench retail cannot grade.
+A domain-specific evaluation benchmark for Tenacious Intelligence Corporation B2B outreach agents.
+Measures signal grounding, tone compliance, and commercial safety — three dimensions τ²-Bench retail cannot grade.
 
 ---
 
-## Current Status
+## Public Artifacts
 
-| Act | Goal | Status |
-|-----|------|--------|
-| Act I — Audit & Schema | Gap analysis, schema, scoring evaluator | ✅ COMPLETE |
-| Act II — Dataset Authoring | 299-task benchmark, 4 modes | ✅ COMPLETE |
-| Act III — Training Data Prep | Format train/ for Path A SFT | ⏳ Day 4 |
-| Act IV — Train & Ablate | LoRA fine-tune + Delta A/B | ⏳ Days 5-6 |
-| Act V — Publish & Engage | HuggingFace, blog, community | ⏳ Day 7 |
+| Artifact | URL |
+|----------|-----|
+| HuggingFace Dataset | https://huggingface.co/datasets/yakobd/tenacious-bench |
+| HuggingFace Model (LoRA adapter) | https://huggingface.co/yakobd/tenacious-bench-adapter |
+| GitHub Repo | https://github.com/yakobd/The_Sales_Agent_Evaluation_Bench |
+
+---
+
+## Key Results
+
+| Metric | Value |
+|--------|-------|
+| Benchmark tasks | 293 (train 178 / dev 58 / held-out 57) |
+| Training pairs | 2,541 (128 original + 2,413 augmented, 94.3% accept rate) |
+| Baseline pass@1 (Week 10 agent) | 0.491 |
+| Trained adapter pass@1 | 0.754 |
+| Delta A | +0.263 (p < 0.0001, 95% CI [0.140, 0.386]) |
+| Delta B (trained vs. prompt-engineered) | +0.140 ✅ |
+| Training cost | $0.00 (Google Colab T4, 19.1 min) |
+| Inter-rater agreement | 93% |
+| Contamination checks | All 3 passed (0 violations) |
+
+---
+
+## Quickstart — Reproduce the Headline Number
+
+A stranger can clone, install, and reproduce the scoring result in under one hour.
+
+```bash
+git clone https://github.com/yakobd/The_Sales_Agent_Evaluation_Bench
+cd The_Sales_Agent_Evaluation_Bench
+python3 -m venv venv && source venv/bin/activate
+pip install -r requirements.txt
+
+# Run the scoring evaluator on the held-out partition (seed=42)
+python3 ablations/score_held_out.py
+```
+
+Expected output:
+```
+Tenacious-Bench v0.1 — Held-Out Scoring
+Seed: 42 | Tasks: 57
+pass@1 = 0.544
+✅ Reproduction complete. Seed=42.
+```
+
+Note: This scores candidate outputs already present in the held-out tasks.
+The ablation_results.json baseline of 0.491 reflects LLM-generated outputs
+from the Week 10 agent evaluated at ablation time. Both numbers are documented
+in evidence_graph.json.
 
 ---
 
@@ -21,102 +66,79 @@ A domain-specific evaluation benchmark for Tenacious Intelligence Corporation B2
 
 ```
 week11-sales-bench/
-├── audit_memo.md              ← Gap analysis: what tau2-Bench misses (589 words, 15 probes)
-├── schema.json                ← Task schema with 3 example tasks (TB-001, TB-002, TB-003)
-├── scoring_evaluator.py       ← 5-check machine-verifiable scorer
-├── methodology.md             ← Path A declaration + justification + contamination results
-├── datasheet.md               ← Gebru 7-section + Pushkarna 3-layer dataset documentation
-├── inter_rater_agreement.md   ← 30-task re-labeling, 93% overall agreement
-├── contamination_check.json   ← N-gram + embedding + time-shift results
-├── cost_log.md                ← Every API and compute charge with timestamp
+├── audit_memo.md                    ← Gap analysis: what τ²-Bench misses
+├── schema.json                      ← Task schema with 3 example tasks
+├── scoring_evaluator.py             ← 5-check machine-verifiable scorer (seed=42)
+├── methodology.md                   ← Path A declaration + contamination results
+├── methodology_rationale.md         ← LIMA + Tülu3 + Magpie justification, 3 trace IDs
+├── datasheet.md                     ← Gebru 7-section + Pushkarna 3-layer docs
+├── inter_rater_agreement.md         ← 30-task re-labeling, 93% overall agreement
+├── contamination_check.json         ← N-gram + embedding + time-shift: all passed
+├── evidence_graph.json              ← Every numeric claim mapped to its source file
+├── memo.pdf                         ← 2-page CEO/CFO memo (100/100)
+├── model_card.md                    ← LoRA adapter documentation
+├── requirements.txt                 ← Python dependencies
 ├── tenacious_bench_v0.1/
-│   ├── train/                 ← 148 tasks (49%) — SFT training partition
-│   ├── dev/                   ← 93 tasks (31%) — iteration and calibration
-│   └── held_out/              ← 58 tasks (19%) — sealed, gitignored from scripts
-├── generation_scripts/
-│   ├── generate_trace_tasks_v2.py        ← Mode 1: 6 variants × 13 companies
-│   ├── generate_programmatic_tasks.py    ← Mode 2: parameter sweeps
-│   ├── generate_programmatic_tasks_v2.py ← Mode 2v2: Seg 3/4 focus
-│   ├── generate_llm_tasks.py             ← Mode 3: Qwen3-235b synthesis
-│   ├── generate_llm_tasks_v2.py          ← Mode 3v2: 48 more scenarios
-│   ├── generate_style_guide_tasks.py     ← 12 good + 12 bad labeled drafts
-│   ├── generate_hand_authored_tasks.py   ← 15 adversarial tasks
-│   ├── contamination_check.py            ← N-gram + embedding + time-shift
-│   └── PIPELINE.md                       ← Multi-model routing + judge policy
-└── synthesis_memos/
-    ├── memo_01_synthetic_data.md    ← Liu et al. COLM 2024
-    ├── memo_02_datasheets.md        ← Gebru 2021 + Pushkarna 2022
-    ├── memo_03_contamination.md     ← Chen et al. EMNLP 2025
-    ├── memo_04_llm_judge.md         ← Gu et al. 2024-2025
-    ├── memo_05_tulu3.md             ← Lambert et al. 2024
-    ├── memo_06_lima.md              ← Zhou et al. NeurIPS 2023
-    └── memo_07_magpie.md            ← Xu et al. 2024
+│   ├── train/                       ← 178 tasks (61%)
+│   ├── dev/                         ← 58 tasks (20%)
+│   └── held_out/                    ← 57 tasks (19%) — sealed partition
+├── training_data/
+│   ├── training_pairs.jsonl         ← 128 original SFT pairs
+│   ├── training_pairs_augmented.jsonl ← 2,541 pairs after augmentation
+│   ├── prepare_training_data.py     ← Formats train partition into SFT pairs
+│   └── augment_pairs.py             ← Augmentation pipeline (94.3% accept rate)
+├── training/
+│   └── training_run_v2.log          ← Loss curve, hyperparams, wall time (seed=42)
+├── ablations/
+│   ├── score_held_out.py            ← Reproduce headline number (seed=42)
+│   ├── ablation_results.json        ← Delta A/B/C, CI, p-value
+│   └── held_out_traces.jsonl        ← Raw scoring traces, 57 tasks × 3 systems
+├── generation_scripts/              ← Dataset authoring code + judge prompts
+└── synthesis_memos/                 ← 7 paper memos (4 common + 3 Path A)
 ```
-
----
-
-## Quick Start
-
-```bash
-git clone https://github.com/yakobd/week11-sales-bench
-cd week11-sales-bench
-python3 -m venv venv && source venv/bin/activate
-pip install datasets huggingface_hub openai requests python-dotenv sentence-transformers
-
-# Run scoring evaluator on demo tasks
-python3 scoring_evaluator.py --demo
-
-# Score the dev partition
-python3 scoring_evaluator.py --dataset tenacious_bench_v0.1/dev/
-
-# Run contamination check
-python3 generation_scripts/contamination_check.py
-```
-
----
-
-## Key Numbers
-
-| Metric | Value |
-|--------|-------|
-| Total tasks | 299 |
-| Train / Dev / Held-out | 148 / 93 / 58 |
-| Passing / Failing | 195 (65%) / 104 (35%) |
-| Dataset pass@1 | 0.591 |
-| Source modes | 4 (trace, programmatic, LLM, hand-authored) |
-| ICP segments covered | 4 (Seg 1-4, 21-30% each) |
-| Inter-rater agreement | 93% overall |
-
----
-
-## Key Documents
-
-- [audit_memo.md](audit_memo.md) — What tau2-Bench misses and why
-- [methodology.md](methodology.md) — Path A justification + contamination results
-- [datasheet.md](datasheet.md) — Full dataset documentation
-- [schema.json](schema.json) — Task structure and example tasks
-- [scoring_evaluator.py](scoring_evaluator.py) — Run this to reproduce scores
-- [synthesis_memos/](synthesis_memos/) — All 7 reading memos
-- [generation_scripts/PIPELINE.md](generation_scripts/PIPELINE.md) — Multi-model routing policy
-
----
-
-## What's Next (Days 4-7)
-
-**Day 4:** Fix contamination violations → format training_data/ for SFT → verify chat-template pairs
-
-**Day 5:** LoRA training on Colab T4 (Qwen 3.5, r=16, alpha=32, lr=2e-5, max 2 epochs)
-
-**Day 6:** Delta A ablation on held-out → Delta B vs prompt-engineered baseline → statistical test
-
-**Day 7:** Publish to HuggingFace → write blog post → community engagement → CEO memo
 
 ---
 
 ## Reproducibility
 
-All generation scripts are seeded where applicable. Set `RANDOM_SEED=42` in your environment before running generation scripts. The scoring evaluator is deterministic (rule-based fallback, no LLM calls in bulk mode).
+- All scripts run from fixed `seed=42`
+- Backbone pinned: `unsloth/Qwen2.5-0.5B-Instruct`
+- Held-out partition sealed — never used in any training script
+- Contamination: 0 violations across all 3 checks (n-gram, embedding, time-shift)
+- Training log includes seed in filename: `training_run_v2.log`
 
 ---
 
-*GitHub: github.com/yakobd/week11-sales-bench | Week 10: github.com/yakobd/The-Conversion-Engine*
+## Acts Completion Status
+
+| Act | Goal | Status |
+|-----|------|--------|
+| Act I — Audit & Schema | Gap analysis, schema, scoring evaluator | ✅ COMPLETE |
+| Act II — Dataset Authoring | 293-task benchmark, 4 modes, contamination clean | ✅ COMPLETE |
+| Act III — Training Data Prep | 2,541 SFT pairs, Path A, contamination passed | ✅ COMPLETE |
+| Act IV — Train & Ablate | LoRA fine-tune, Delta A +0.263 p<0.0001, Delta B +0.140 | ✅ COMPLETE |
+| Act V — Publish & Engage | HuggingFace, blog, community, memo | ✅ COMPLETE |
+
+---
+
+## Citation
+
+```
+@misc{tenacious-bench-2026,
+  author    = {Yakob Dereje},
+  title     = {Tenacious-Bench v0.1: A Domain-Specific Benchmark for B2B Sales Outreach Agents},
+  year      = {2026},
+  publisher = {HuggingFace},
+  url       = {https://huggingface.co/datasets/yakobd/tenacious-bench}
+}
+```
+
+---
+
+## Attribution
+
+- Crunchbase ODM (Apache 2.0) — firmographic enrichment
+- layoffs.fyi (public mirror) — layoff signal detection
+- Unsloth (Apache 2.0) — training framework
+- HuggingFace TRL (Apache 2.0) — SFT trainer
+- Tenacious Intelligence Corporation — workflow domain (fictional B2B sales context)
