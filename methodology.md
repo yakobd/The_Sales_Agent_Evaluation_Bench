@@ -145,3 +145,17 @@ LIMA's Superficial Alignment Hypothesis states that fine-tuning teaches style an
 
 **2. Tülu 3: Pushing Frontiers in Open Language Model Post-Training (Lambert et al., 2024)**
 Tülu 3 documents that data curation quality determines final model quality more than model scale or training duration. This supports Path A because my Week 10 evidence shows generation quality failures (P06: assertive language on weak signals, P10: gap claims without brief) are caused by poor data grounding — exactly what a curated SFT dataset of grounded examples can fix. Tülu 3's hyperparameter recommendations (lr=2e-5, r=16, alpha=32, warmup=0.03) are adopted directly for the Day 5 training run. The paper's 3-5 epoch default is rejected in favor of 2 epochs maximum for my 100-150 example dataset to prevent memorization. Full analysis in synthesis_memos/memo_05_tulu3.md.
+
+## Anti-Leakage Policy
+
+Following Li et al. (2025) "Preference Leakage: A Contamination Problem in LLM-as-a-Judge",
+the pipeline enforces a strict rotation rule: the same model never both generates and judges
+the same task.
+
+Rotation policy:
+- Frontier seed author: Claude Sonnet (Anthropic)
+- Bulk variation generator: Qwen3 (Alibaba, via OpenRouter)
+- Quality judge / filter: DeepSeek (DeepSeek AI, via OpenRouter)
+
+No model family appears in more than one role for the same task.
+This policy is documented here and enforced in generation_scripts/generate_llm_tasks_v2.py.

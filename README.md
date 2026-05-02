@@ -14,6 +14,8 @@ Measures signal grounding, tone compliance, and commercial safety — three dime
 | HuggingFace Dataset | https://huggingface.co/datasets/yakobd/tenacious-bench |
 | HuggingFace Model (LoRA adapter) | https://huggingface.co/yakobd/tenacious-bench-adapter |
 | GitHub Repo | https://github.com/yakobd/The_Sales_Agent_Evaluation_Bench |
+| Blog Post | https://yakobdereje.substack.com/p/i-broke-my-own-sales-agent-then-built |
+| Community Engagement | https://github.com/sierra-research/tau2-bench/issues/284 |
 
 ---
 
