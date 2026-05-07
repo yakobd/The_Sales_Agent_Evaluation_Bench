@@ -128,7 +128,29 @@ Tenacious-Bench v0.1 is maintained by Yakob Dereje. Issues and corrections can b
 ### Periscopic
 - **Maintainer:** Yakob Dereje (github.com/yakobd)
 - **Versioning:** v0.1 is the initial release. v0.2 would add Segment 3/4 tasks from real trace data, fix the P33 sector mismatch limitation, and add a v0.2 held-out partition
-- **Known issues:** Programmatic tasks share email body templates across companies, causing high n-gram overlap scores. This is documented in contamination_check.json. The fix for v0.2 is per-company body variation in the programmatic generator.
+- **Known issues:** Programmatic tasks share email body templates
+  across companies, causing high n-gram overlap scores. This is
+  documented in contamination_check.json. The fix for v0.2 is
+  per-company body variation in the programmatic generator.
+
+- **Augmentation diversity limitation:** 94.3% of training pairs
+  are augmented variations of 128 originals. The gradient-level
+  mechanism that makes this a real problem: near-duplicate examples
+  produce highly aligned gradient signals during SFT. Repeated
+  aligned gradients push LoRA A and B matrices in similar directions
+  across training steps, causing loss to fall quickly on recurring
+  token patterns — openers, CTA phrasings, sentence shells — rather
+  than generalizable style policy. This can produce real metric
+  gains (Delta A: +0.263, p<0.0001) while the adapter captures
+  surface regularities rather than generalizable Tenacious tone.
+  To validate style learning vs memorization: (1) apply a grouped
+  holdout split where all augmentations from one original email
+  stay in the same split — sharp performance drop indicates
+  memorization; (2) compare gradient norms by module group
+  (attention: q/k/v/o vs MLP: gate/up/down) to identify whether
+  training pressure concentrated in phrase-shaping layers. Delta A
+  should be read as improvement on the measured evaluation
+  distribution pending grouped holdout validation.
 - **Error reporting:** Open an issue at github.com/yakobd/week11-sales-bench/issues
 
 ### Microscopic
