@@ -89,6 +89,41 @@ Evaluated on Tenacious-Bench v0.1 held-out partition (n=57 tasks,
 - **Statistical test:** paired bootstrap, n_bootstrap=10,000, seed=42
 - **Sample size:** n=57 held-out tasks
 
+### Judge Bias Audit Status
+
+**Inter-rater agreement:** Computed on 30 tasks labeled
+twice 24 hours apart. Agreement exceeded 80% on all 5
+rubric dimensions (overall 93%). No rubric revision was
+required.
+
+**Bias audit status:** The judge was NOT tested for the
+three known LLM-as-a-judge biases before reporting Delta A.
+
+**Position bias:** Unknown. Output presentation order was
+not randomized during evaluation. A position-swap audit
+has not been run. Red flag threshold: slot_A_win_rate
+> 0.65 in both orderings, or flip_rate > 0.35.
+
+**Length bias:** Partially screened. A length-score
+correlation check on existing deterministic artifacts
+showed negative correlation between output length and
+score — no obvious positive length bias in saved
+deterministic artifacts. The live LLM judge has not
+been audited separately.
+
+**Self-preference bias:** Partially mitigated. Generator
+and judge used different Qwen model families. This
+prevents direct self-grading but does not eliminate
+shared post-training style familiarity bias.
+
+**Conservative interpretation:** Delta A = +0.263
+(p<0.0001) is a strong result under the current judge
+protocol. Because the judge was not fully audited for
+position, length, or self-preference bias, systematic
+judge bias could explain part of the lift. The result
+should be read as improvement under current judge
+protocol, pending full bias audit.
+
 ## How to Use
 
 ```python
