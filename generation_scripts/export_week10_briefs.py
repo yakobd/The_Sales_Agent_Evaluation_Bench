@@ -40,7 +40,10 @@ from agent.enrichment.crunchbase import enrich_company, load_crunchbase_data  # 
 from agent.enrichment.job_posts import get_job_post_signal  # noqa: E402
 from agent.enrichment.layoffs import check_layoffs  # noqa: E402
 from agent.enrichment.leadership import check_leadership_change  # noqa: E402
-from agent.email_agent import generate_outreach_email  # noqa: E402
+import agent.email_agent as _EA  # noqa: E402
+# the benchmark baseline is the ORIGINAL Week 10 composer/classifier (v1), even on newer W10 branches
+generate_outreach_email = getattr(_EA, "generate_outreach_email_v1", _EA.generate_outreach_email)
+classify_icp_v1 = getattr(P, "classify_icp_segment_v1", P.classify_icp_segment)
 
 OUT_DIR = REPO_ROOT / "generation_scripts" / "week10_export"
 N_SIGNAL, N_NO_SIGNAL = 48, 6
@@ -52,8 +55,13 @@ def git_rev(path: Path) -> str:
 
 
 def used_prospects() -> set:
+    """Companies used by Tenacious-Bench v0.1 (train/dev). The v0.2 held-out
+    tasks (TB-H*) are this script's own output, so they must not be excluded,
+    otherwise a re-run would pick different companies (non-idempotent)."""
     names = set()
     for f in BENCH_DIR.rglob("TB-*.json"):
+        if f.stem.startswith("TB-H"):
+            continue
         names.add(json.loads(f.read_text(encoding="utf-8"))["input"]["hiring_signal_brief"]["prospect"].strip().lower())
     return names
 
@@ -145,7 +153,7 @@ def main():
             if not cb.get("found") or cb.get("name", "").strip().lower() != name.lower():
                 continue  # substring match hit a different company (known W10 issue) - skip
             lay, lead, ai, jobs = check_layoffs(name), check_leadership_change(name), score_ai_maturity(name), get_job_post_signal(name)
-            icp = P.classify_icp_segment(cb, lay, lead, ai)
+            icp = classify_icp_v1(cb, lay, lead, ai)
         snapshot = pd.Timestamp(row["timestamp"]).tz_localize(None)
         brief = compact_brief(name, row, cb, lay, lead, ai, jobs, icp, snapshot)
         rows.append({"brief": brief, "has_signal": max(icp["scores"].values()) > 0, "raw_w10": {
@@ -195,7 +203,7 @@ def enrich_rows(names, df):
             if not cb.get("found") or cb.get("name", "").strip().lower() != name.lower():
                 continue
             lay, lead, ai, jobs = check_layoffs(name), check_leadership_change(name), score_ai_maturity(name), get_job_post_signal(name)
-            icp = P.classify_icp_segment(cb, lay, lead, ai)
+            icp = classify_icp_v1(cb, lay, lead, ai)
         snapshot = pd.Timestamp(row["timestamp"]).tz_localize(None)
         rows.append({"brief": compact_brief(name, row, cb, lay, lead, ai, jobs, icp, snapshot),
                      "has_signal": max(icp["scores"].values()) > 0,
