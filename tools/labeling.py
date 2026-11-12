@@ -224,6 +224,46 @@ def score():
     print(json.dumps(report, indent=2))
 
 
+def score_vs_evaluator(round_no: int = 1):
+    """Human labels (one round) vs evaluator, per dimension + overall, with every disagreement."""
+    r = read_labels(round_no)
+    tasks = {t["task_id"]: t for t in candidates()}
+    ids = sorted(i for i in r if i in tasks)
+    assert all(r[i][d] in ("P", "F") for i in ids for d in DIMS), "every task needs P/F on every dimension"
+    res = {i: E.score_task(tasks[i]) for i in ids}
+    report = {"round": round_no, "n_tasks": len(ids), "evaluator": f"v{E.VERSION}", "per_dimension": {}, "disagreements": []}
+    for d in DIMS:
+        h = [r[i][d] for i in ids]
+        e = ["P" if res[i]["checks"][d]["pass"] else "F" for i in ids]
+        agree = sum(a == b for a, b in zip(h, e))
+        report["per_dimension"][d] = {"agree": agree, "agreement": round(agree / len(ids), 3),
+                                      "cohen_kappa": cohen_kappa(h, e),
+                                      "human_fail_evaluator_pass": sum(a == "F" and b == "P" for a, b in zip(h, e)),
+                                      "human_pass_evaluator_fail": sum(a == "P" and b == "F" for a, b in zip(h, e))}
+        for i, a, b in zip(ids, h, e):
+            if a != b:
+                report["disagreements"].append({"task_id": i, "dimension": d, "human": a, "evaluator": b,
+                                                "evaluator_violations": res[i]["checks"][d]["violations"],
+                                                "human_note": r[i].get("notes", "")})
+    hum = ["P" if all(r[i][d] == "P" for d in DIMS) else "F" for i in ids]
+    evo = ["P" if res[i]["all_pass"] else "F" for i in ids]
+    agree = sum(a == b for a, b in zip(hum, evo))
+    report["overall"] = {"agree": agree, "agreement": round(agree / len(ids), 3), "cohen_kappa": cohen_kappa(hum, evo),
+                         "human_pass": hum.count("P"), "evaluator_pass": evo.count("P")}
+    (config.REPO_ROOT / "reports").mkdir(exist_ok=True)
+    (config.REPO_ROOT / "reports" / f"human_vs_evaluator_round{round_no}.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
+    print(f"Human (round {round_no}) vs evaluator v{E.VERSION} on {len(ids)} tasks never used to develop the evaluator")
+    for d, v in report["per_dimension"].items():
+        print(f"  {d:18s} {v['agree']:2d}/{len(ids)} ({v['agreement']:.0%})  kappa {v['cohen_kappa']}  "
+              f"[human F / eval P: {v['human_fail_evaluator_pass']}, human P / eval F: {v['human_pass_evaluator_fail']}]")
+    o = report["overall"]
+    print(f"  {'OVERALL':18s} {o['agree']:2d}/{len(ids)} ({o['agreement']:.0%})  kappa {o['cohen_kappa']}  "
+          f"(human passes {o['human_pass']}, evaluator passes {o['evaluator_pass']})")
+    print("\ndisagreements:")
+    for x in report["disagreements"]:
+        print(f"  {x['task_id']:10s} {x['dimension']:17s} human={x['human']} eval={x['evaluator']} {x['evaluator_violations']} | {x['human_note'][:90]}")
+
+
 def main():
     for s in (sys.stdout, sys.stderr):
         if hasattr(s, "reconfigure"):
@@ -233,8 +273,15 @@ def main():
     mk = sub.add_parser("make")
     mk.add_argument("--round", type=int, choices=(1, 2), required=True)
     sub.add_parser("score")
+    ve = sub.add_parser("vs-evaluator", help="one round of human labels vs the evaluator")
+    ve.add_argument("--round", type=int, choices=(1, 2), default=1)
     args = ap.parse_args()
-    make(args.round) if args.cmd == "make" else score()
+    if args.cmd == "make":
+        make(args.round)
+    elif args.cmd == "score":
+        score()
+    else:
+        score_vs_evaluator(args.round)
 
 
 if __name__ == "__main__":

@@ -1,0 +1,259 @@
+{
+  "round": 1,
+  "n_tasks": 30,
+  "evaluator": "v0.2.1",
+  "per_dimension": {
+    "grounding": {
+      "agree": 25,
+      "agreement": 0.833,
+      "cohen_kappa": 0.516,
+      "human_fail_evaluator_pass": 4,
+      "human_pass_evaluator_fail": 1
+    },
+    "honesty": {
+      "agree": 19,
+      "agreement": 0.633,
+      "cohen_kappa": 0.203,
+      "human_fail_evaluator_pass": 9,
+      "human_pass_evaluator_fail": 2
+    },
+    "commercial_safety": {
+      "agree": 29,
+      "agreement": 0.967,
+      "cohen_kappa": 0.651,
+      "human_fail_evaluator_pass": 1,
+      "human_pass_evaluator_fail": 0
+    },
+    "tone": {
+      "agree": 29,
+      "agreement": 0.967,
+      "cohen_kappa": 0.911,
+      "human_fail_evaluator_pass": 1,
+      "human_pass_evaluator_fail": 0
+    },
+    "format": {
+      "agree": 24,
+      "agreement": 0.8,
+      "cohen_kappa": 0.534,
+      "human_fail_evaluator_pass": 1,
+      "human_pass_evaluator_fail": 5
+    }
+  },
+  "disagreements": [
+    {
+      "task_id": "TB-005",
+      "dimension": "grounding",
+      "human": "F",
+      "evaluator": "P",
+      "evaluator_violations": [],
+      "human_note": "Uses no specific signal; banned phrases and 'bench'; 'scaling aggressively', '10x throughput' and 'proprietary agentic systems' unsupported."
+    },
+    {
+      "task_id": "TB-LLM027",
+      "dimension": "grounding",
+      "human": "P",
+      "evaluator": "F",
+      "evaluator_violations": [
+        "NO_SPECIFIC_SIGNAL"
+      ],
+      "human_note": "[First Name] and [Your Name] placeholders left in."
+    },
+    {
+      "task_id": "TB-P054",
+      "dimension": "grounding",
+      "human": "F",
+      "evaluator": "P",
+      "evaluator_violations": [],
+      "human_note": "Falling-behind language, fake urgency, competitor comparison with no peer data, assertive at low confidence."
+    },
+    {
+      "task_id": "TB-P095",
+      "dimension": "grounding",
+      "human": "F",
+      "evaluator": "P",
+      "evaluator_violations": [],
+      "human_note": "Grounding borderline: vague AI-capability line; does not cite the 2/3 maturity finding or the 3 adjacent companies."
+    },
+    {
+      "task_id": "TB-P101",
+      "dimension": "grounding",
+      "human": "F",
+      "evaluator": "P",
+      "evaluator_violations": [],
+      "human_note": "Grounding borderline: only a vague 'building toward specialized AI capability'; no specific signal named."
+    },
+    {
+      "task_id": "TB-005",
+      "dimension": "honesty",
+      "human": "F",
+      "evaluator": "P",
+      "evaluator_violations": [],
+      "human_note": "Uses no specific signal; banned phrases and 'bench'; 'scaling aggressively', '10x throughput' and 'proprietary agentic systems' unsupported."
+    },
+    {
+      "task_id": "TB-027",
+      "dimension": "honesty",
+      "human": "P",
+      "evaluator": "F",
+      "evaluator_violations": [
+        "FUNDING_UNSUPPORTED"
+      ],
+      "human_note": ""
+    },
+    {
+      "task_id": "TB-030",
+      "dimension": "honesty",
+      "human": "F",
+      "evaluator": "P",
+      "evaluator_violations": [],
+      "human_note": "Quotes $1,200,000, promises contracts and 20 engineers in 2 weeks, uses 'bench', fake urgency ('start immediately')."
+    },
+    {
+      "task_id": "TB-045",
+      "dimension": "honesty",
+      "human": "F",
+      "evaluator": "P",
+      "evaluator_violations": [],
+      "human_note": "Asserts a restructuring as fact although confidence is very_low and the task asks for conditional language."
+    },
+    {
+      "task_id": "TB-051",
+      "dimension": "honesty",
+      "human": "P",
+      "evaluator": "F",
+      "evaluator_violations": [
+        "FUNDING_UNSUPPORTED"
+      ],
+      "human_note": ""
+    },
+    {
+      "task_id": "TB-075",
+      "dimension": "honesty",
+      "human": "F",
+      "evaluator": "P",
+      "evaluator_violations": [],
+      "human_note": "Asserts a restructuring as fact although confidence is very_low and the task asks for conditional language."
+    },
+    {
+      "task_id": "TB-LLM050",
+      "dimension": "honesty",
+      "human": "F",
+      "evaluator": "P",
+      "evaluator_violations": [],
+      "human_note": "[First Name] and [Your Name] placeholders. 'Scaling systems at Stripe' and 'Shore's current focus on engineering velocity' are not in the brief."
+    },
+    {
+      "task_id": "TB-P030",
+      "dimension": "honesty",
+      "human": "F",
+      "evaluator": "P",
+      "evaluator_violations": [],
+      "human_note": "Uses none of the brief's signals; banned phrases and 'bench'; unsupported 'scaling aggressively'."
+    },
+    {
+      "task_id": "TB-P033",
+      "dimension": "honesty",
+      "human": "F",
+      "evaluator": "P",
+      "evaluator_violations": [],
+      "human_note": "'Starter scopes from $XX,XXX' quotes a price and leaves a placeholder. Brief says 4 adjacent companies building agentic capability, not that they posted ML platform roles in 90 days."
+    },
+    {
+      "task_id": "TB-P054",
+      "dimension": "honesty",
+      "human": "F",
+      "evaluator": "P",
+      "evaluator_violations": [],
+      "human_note": "Falling-behind language, fake urgency, competitor comparison with no peer data, assertive at low confidence."
+    },
+    {
+      "task_id": "TB-P066",
+      "dimension": "honesty",
+      "human": "F",
+      "evaluator": "P",
+      "evaluator_violations": [],
+      "human_note": "Uses none of the brief's signals (150-person layoff, funding); banned phrases and 'bench'; unsupported 'scaling aggressively'."
+    },
+    {
+      "task_id": "TB-P033",
+      "dimension": "commercial_safety",
+      "human": "F",
+      "evaluator": "P",
+      "evaluator_violations": [],
+      "human_note": "'Starter scopes from $XX,XXX' quotes a price and leaves a placeholder. Brief says 4 adjacent companies building agentic capability, not that they posted ML platform roles in 90 days."
+    },
+    {
+      "task_id": "TB-LLM015",
+      "dimension": "tone",
+      "human": "F",
+      "evaluator": "P",
+      "evaluator_violations": [],
+      "human_note": "Generic opener 'Hope you're navigating the shifts'; [Name] placeholder left in."
+    },
+    {
+      "task_id": "TB-005",
+      "dimension": "format",
+      "human": "P",
+      "evaluator": "F",
+      "evaluator_violations": [
+        "NO_CTA"
+      ],
+      "human_note": "Uses no specific signal; banned phrases and 'bench'; 'scaling aggressively', '10x throughput' and 'proprietary agentic systems' unsupported."
+    },
+    {
+      "task_id": "TB-030",
+      "dimension": "format",
+      "human": "P",
+      "evaluator": "F",
+      "evaluator_violations": [
+        "NO_CTA"
+      ],
+      "human_note": "Quotes $1,200,000, promises contracts and 20 engineers in 2 weeks, uses 'bench', fake urgency ('start immediately')."
+    },
+    {
+      "task_id": "TB-P026",
+      "dimension": "format",
+      "human": "P",
+      "evaluator": "F",
+      "evaluator_violations": [
+        "NO_CTA"
+      ],
+      "human_note": "Banned phrases (hope this finds you well, world-class, rockstar, bench, top talent, skyrocket, circling back); 'scaling aggressively' at low confidence with no support. CTA is vague but present."
+    },
+    {
+      "task_id": "TB-P030",
+      "dimension": "format",
+      "human": "P",
+      "evaluator": "F",
+      "evaluator_violations": [
+        "NO_CTA"
+      ],
+      "human_note": "Uses none of the brief's signals; banned phrases and 'bench'; unsupported 'scaling aggressively'."
+    },
+    {
+      "task_id": "TB-P033",
+      "dimension": "format",
+      "human": "F",
+      "evaluator": "P",
+      "evaluator_violations": [],
+      "human_note": "'Starter scopes from $XX,XXX' quotes a price and leaves a placeholder. Brief says 4 adjacent companies building agentic capability, not that they posted ML platform roles in 90 days."
+    },
+    {
+      "task_id": "TB-P066",
+      "dimension": "format",
+      "human": "P",
+      "evaluator": "F",
+      "evaluator_violations": [
+        "NO_CTA"
+      ],
+      "human_note": "Uses none of the brief's signals (150-person layoff, funding); banned phrases and 'bench'; unsupported 'scaling aggressively'."
+    }
+  ],
+  "overall": {
+    "agree": 23,
+    "agreement": 0.767,
+    "cohen_kappa": 0.512,
+    "human_pass": 10,
+    "evaluator_pass": 13
+  }
+}
