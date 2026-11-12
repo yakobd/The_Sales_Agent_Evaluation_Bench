@@ -14,3 +14,7 @@ tenacious_style_guide_v2.md
 generation_scripts/week10_export/week10_briefs.jsonl
 # Colab bundle contains rendered held-out prompts (sealed)
 training/colab_bundle.zip
+# per-email held-out traces (reveal sealed prospects) - release only after the leaderboard decision
+ablations/held_out_traces_v0.2.jsonl
+ablations/generations.jsonl
+ablations/adapter.zip
