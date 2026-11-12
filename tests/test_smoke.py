@@ -6,7 +6,7 @@ from pathlib import Path
 import pytest
 
 import config
-from scoring_evaluator import DEMO_TASKS, score_dataset
+from scoring_evaluator_v01 import DEMO_TASKS, score_dataset
 
 REPO = config.REPO_ROOT
 PY_FILES = [p for p in REPO.rglob("*.py") if "venv" not in p.parts]

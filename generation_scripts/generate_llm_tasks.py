@@ -26,7 +26,7 @@ from dotenv import load_dotenv
 load_dotenv(REPO_ROOT / '.env')
 
 sys.path.insert(0, str(REPO_ROOT))
-from scoring_evaluator import score_task
+from scoring_evaluator_v01 import score_task
 
 OUTPUT_DIR  = (REPO_ROOT / 'tenacious_bench_v0.1')
 SCRIPTS_DIR = (REPO_ROOT / 'generation_scripts')
