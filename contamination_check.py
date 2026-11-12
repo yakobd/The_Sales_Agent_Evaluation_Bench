@@ -75,6 +75,8 @@ def template_ngrams():
     import ast
     sources = sorted((config.WEEK10_DIR / "agent" / "enrichment").glob("*.py"))
     sources += [config.REPO_ROOT / "generation_scripts" / "build_heldout_v2.py",
+                config.REPO_ROOT / "generation_scripts" / "export_week10_briefs.py",
+                config.REPO_ROOT / "training_data" / "build_sft_v2.py",
                 config.REPO_ROOT / "tools" / "repair_tasks_phase2.py"]
     grams, used = set(), []
     for path in sources:

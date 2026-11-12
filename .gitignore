@@ -12,3 +12,5 @@ tenacious_style_guide_v2.md
 .judge_cache.jsonl
 # held-out source data: sealed (only manifest.json is public)
 generation_scripts/week10_export/week10_briefs.jsonl
+# Colab bundle contains rendered held-out prompts (sealed)
+training/colab_bundle.zip

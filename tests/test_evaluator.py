@@ -68,7 +68,7 @@ def codes(t, e):
 def test_good_email_passes_all_dimensions():
     r = E.score_task(task(), email())
     assert r["all_pass"], r["violations"]
-    assert r["evaluator_version"] == "0.2"
+    assert r["evaluator_version"].startswith("0.2")
 
 
 class TestGrounding:
@@ -76,6 +76,17 @@ class TestGrounding:
         """Brief has a layoff signal; mentioning only 'engineering' doesn't use it."""
         t = task(ground_truth__required_signals=["engineering"])
         e = email("Your engineering team could use more capacity." + CTA + SIG, "Hello")
+        assert "NO_SPECIFIC_SIGNAL" in codes(t, e)
+
+    def test_stale_signal_is_not_required_for_grounding(self):
+        """v0.2.1: an honest email that avoids a 2017 funding round must not fail grounding."""
+        t = task(ground_truth__required_signals=[],
+                 input__hiring_signal_brief__layoff_signal={"layoff_detected": False},
+                 input__hiring_signal_brief__funding={"latest_round": "Series A", "announced_on": "2017-12-12", "recent": False})
+        t["input"]["hiring_signal_brief"]["icp_classification"]["reasons"] = []
+        e = email("Would a conversation about your engineering roadmap be useful?" + CTA + SIG, "A question for Acme")
+        assert "NO_SPECIFIC_SIGNAL" not in codes(t, e)
+        t["input"]["hiring_signal_brief"]["funding"]["recent"] = True  # a fresh round must be used
         assert "NO_SPECIFIC_SIGNAL" in codes(t, e)
 
     def test_grounding_not_applicable_when_brief_has_no_signal(self):

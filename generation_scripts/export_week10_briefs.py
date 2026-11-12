@@ -124,6 +124,15 @@ def compact_brief(name, row, cb, lay, lead, ai, jobs, icp, snapshot):
 
 
 def main():
+    import argparse
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--split", choices=["held_out", "train"], default="held_out",
+                    help="held_out: original v0.2 held-out export (default, unchanged). "
+                         "train: remaining companies for SFT data, excluding every held-out company.")
+    ap.add_argument("--n-no-signal", type=int, default=120, help="train split: no-signal companies to add")
+    args = ap.parse_args()
+    if args.split == "train":
+        return export_train(args.n_no_signal)
     df = load_crunchbase_data()
     used = used_prospects()
     rows = []
@@ -175,6 +184,51 @@ def main():
     }
     (OUT_DIR / "manifest.json").write_text(json.dumps(manifest, indent=2), encoding="utf-8")
     print(json.dumps(manifest, indent=2))
+
+
+def enrich_rows(names, df):
+    rows = []
+    for name in names:
+        row = df[df["name"].astype(str).str.strip() == name].iloc[0]
+        with contextlib.redirect_stdout(io.StringIO()):
+            cb = enrich_company(name)
+            if not cb.get("found") or cb.get("name", "").strip().lower() != name.lower():
+                continue
+            lay, lead, ai, jobs = check_layoffs(name), check_leadership_change(name), score_ai_maturity(name), get_job_post_signal(name)
+            icp = P.classify_icp_segment(cb, lay, lead, ai)
+        snapshot = pd.Timestamp(row["timestamp"]).tz_localize(None)
+        rows.append({"brief": compact_brief(name, row, cb, lay, lead, ai, jobs, icp, snapshot),
+                     "has_signal": max(icp["scores"].values()) > 0,
+                     "raw_w10": {"firmographics": cb, "layoff_signal": lay, "leadership_signal": lead,
+                                 "ai_maturity": ai, "job_post_signal": jobs, "icp_classification": icp}})
+    return rows
+
+
+def export_train(n_no_signal):
+    """All remaining signal companies + a sample of no-signal ones, never a held-out company."""
+    held = {json.loads(l)["brief"]["prospect"].lower()
+            for l in (OUT_DIR / "week10_briefs.jsonl").read_text(encoding="utf-8").splitlines() if l.strip()}
+    used = used_prospects() | held
+    df = load_crunchbase_data()
+    names = [n for n in (str(x).strip() for x in df["name"]) if n and n.lower() != "nan" and n.lower() not in used]
+    names = list(dict.fromkeys(names))
+    rows = enrich_rows(names, df)
+    rng = random.Random(SEED + 1)
+    signal = [r for r in rows if r["has_signal"]]
+    quiet = [r for r in rows if not r["has_signal"]]
+    picked = signal + rng.sample(quiet, min(n_no_signal, len(quiet)))
+    out = REPO_ROOT / "training_data" / "week10_train_briefs.jsonl"
+    with out.open("w", encoding="utf-8") as fh:
+        for r in picked:
+            w10_input = {**r["raw_w10"], "prospect": r["brief"]["prospect"]}
+            with contextlib.redirect_stdout(io.StringIO()):
+                email = generate_outreach_email(w10_input)
+            fh.write(json.dumps({"brief": r["brief"], "week10_email": {"subject": email["subject"], "body": email["body"]}},
+                                ensure_ascii=False, default=str) + "\n")
+    overlap = held & {r["brief"]["prospect"].lower() for r in picked}
+    print(json.dumps({"split": "train", "exported": len(picked), "with_signal": len(signal),
+                      "no_signal": len(picked) - len(signal), "held_out_overlap": len(overlap)}, indent=2))
+    assert not overlap
 
 
 if __name__ == "__main__":

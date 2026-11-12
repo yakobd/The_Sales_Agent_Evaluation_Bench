@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-12T12:15:52+00:00",
+  "generated_at": "2026-11-12T14:13:45+00:00",
   "partitions": {
     "train": 178,
     "dev": 115,
@@ -19,9 +19,11 @@
       "agent\\enrichment\\leadership.py",
       "agent\\enrichment\\pipeline.py",
       "generation_scripts\\build_heldout_v2.py",
+      "generation_scripts\\export_week10_briefs.py",
+      "training_data\\build_sft_v2.py",
       "tools\\repair_tasks_phase2.py"
     ],
-    "template_ngrams_found_in_tasks": 212,
+    "template_ngrams_found_in_tasks": 214,
     "template_ngrams_found_in_tasks_list": [
       "# adjacent loyalty platform companies posted senior mlops",
       "# adjacent loyalty platform peers posted senior mlops",
@@ -88,6 +90,7 @@
       "engineers on our go and infra heavy stack",
       "engineers plus a delivery lead what would that",
       "engineers public roles are backend and product only",
+      "estimated from crunchbase proxy signals job boards not",
       "evaluating a dbt snowflake stack internal review next",
       "every claim in the brief and the thread",
       "every claim in the supplied hiring signal brief",
@@ -98,6 +101,7 @@
       "former client with a similar snowflake dbt airflow",
       "from # ground every claim in the brief",
       "from arjun krishnan former client with a similar",
+      "from crunchbase proxy signals job boards not scraped",
       "fyi # contractions in the prospect s sub",
       "get us # senior go engineers in two",
       "go and infra heavy stack within # days",
