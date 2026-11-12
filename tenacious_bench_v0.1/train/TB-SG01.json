@@ -13,7 +13,8 @@
         "segment_name": "Recently-funded startup",
         "confidence": "high",
         "reasons": [
-          "Style guide labeled: Series A funding and role velocity high confidence"
+          "Series A of $14M closed in February",
+          "Open Python engineering roles rose from 2 to 7 in 60 days"
         ]
       },
       "firmographics": {
@@ -31,6 +32,15 @@
       },
       "leadership_signal": {
         "leadership_change_detected": false
+      },
+      "funding": {
+        "round": "Series A",
+        "amount": "$14M",
+        "date": "February"
+      },
+      "job_post_signal": {
+        "open_python_roles_60_days_ago": 2,
+        "open_python_roles_now": 7
       }
     },
     "bench_summary": {
@@ -44,8 +54,9 @@
         "data": 4
       }
     },
-    "instruction": "STYLE GUIDE EXAMPLE (SG-G01): GOOD \u2014 should PASS. Series A funding and role velocity high confidence",
-    "prior_thread": []
+    "instruction": "Write a cold outreach email to the VP Engineering at Maya Tech. Ground every claim in the supplied hiring signal brief.",
+    "prior_thread": [],
+    "email_type": "cold"
   },
   "candidate_output": {
     "subject": "Request: 15 minutes on your Q3 Python hiring",
@@ -125,6 +136,12 @@
     "source_trace_id": null,
     "judge_score": null,
     "expected_score": 1.0,
-    "style_guide_label": "Series A funding and role velocity high confidence"
+    "style_guide_label": "Series A funding and role velocity high confidence",
+    "author_note": "STYLE GUIDE EXAMPLE (SG-G01): GOOD — should PASS. Series A funding and role velocity high confidence",
+    "scenario": "Style guide labeled: Series A funding and role velocity high confidence",
+    "brief_reconstructed": true,
+    "reconstruction_note": "Facts restored from the scenario/labelled draft that this task was written against; the v0.1 conversion had dropped them. See tools/repair_tasks_phase2.py.",
+    "label_source": "tenacious_style_guide",
+    "dataset_version": "0.1.1"
   }
 }

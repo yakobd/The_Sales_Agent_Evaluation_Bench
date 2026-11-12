@@ -13,7 +13,7 @@
         "segment_name": "Post-layoff restructuring",
         "confidence": "high",
         "reasons": [
-          "Style guide labeled: Multiple stacked asks"
+          "Team contracted by about 12% in March"
         ]
       },
       "firmographics": {
@@ -27,7 +27,9 @@
         "confidence": "high"
       },
       "layoff_signal": {
-        "layoff_detected": true
+        "layoff_detected": true,
+        "percentage_laid_off": "12%",
+        "date": "March"
       },
       "leadership_signal": {
         "leadership_change_detected": false
@@ -44,18 +46,18 @@
         "data": 4
       }
     },
-    "instruction": "STYLE GUIDE EXAMPLE (SG-B10): BAD \u2014 should FAIL. Multiple stacked asks",
-    "prior_thread": []
+    "instruction": "Write a cold outreach email to the VP Engineering at Daniel Corp. Ground every claim in the supplied hiring signal brief.",
+    "prior_thread": [],
+    "email_type": "cold"
   },
   "candidate_output": {
     "subject": "A few questions and ideas",
-    "body": "Hi Daniel,\n\nI had a few thoughts I wanted to share. First, I would love to understand your current engineering structure. Second, I have an introduction to a peer of yours. Third, we have a new training program. Fourth, your AI maturity is around a 2 \u2014 happy to walk through how to move it to a 3.\n\nCould we set up a 60-minute call next week to discuss all four of these?\n\nBest,\nYabi"
+    "body": "Hi Daniel,\n\nI had a few thoughts I wanted to share. First, I would love to understand your current engineering structure. Second, I have an introduction to a peer of yours. Third, we have a new training program. Fourth, your AI maturity is around a 2 — happy to walk through how to move it to a 3.\n\nCould we set up a 60-minute call next week to discuss all four of these?\n\nBest,\nYabi"
   },
   "ground_truth": {
     "required_signals": [
       "contracted",
-      "12%",
-      "cost"
+      "12%"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -124,6 +126,17 @@
     "source_trace_id": null,
     "judge_score": null,
     "expected_score": 0.0,
-    "style_guide_label": "Multiple stacked asks"
+    "style_guide_label": "Multiple stacked asks",
+    "author_note": "STYLE GUIDE EXAMPLE (SG-B10): BAD — should FAIL. Multiple stacked asks",
+    "scenario": "Style guide labeled: Multiple stacked asks",
+    "brief_reconstructed": true,
+    "reconstruction_note": "Facts restored from the scenario/labelled draft that this task was written against; the v0.1 conversion had dropped them. See tools/repair_tasks_phase2.py.",
+    "required_signals_v01": [
+      "contracted",
+      "12%",
+      "cost"
+    ],
+    "label_source": "tenacious_style_guide",
+    "dataset_version": "0.1.1"
   }
 }

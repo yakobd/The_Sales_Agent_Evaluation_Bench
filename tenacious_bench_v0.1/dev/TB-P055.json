@@ -12,7 +12,7 @@
         "segment_name": "Recently-funded startup",
         "confidence": "high",
         "reasons": [
-          "Series A $18M in January \u2014 engineering hiring expected"
+          "Series A $18M in January — engineering hiring expected"
         ]
       },
       "firmographics": {
@@ -48,20 +48,17 @@
         "data": 4
       }
     },
-    "instruction": "Write a cold outreach email to the VP Engineering at Luminary AI (Segment 1 \u2014 Recently-funded startup, confidence=high). Ground every claim in the supplied hiring signal brief.",
-    "prior_thread": []
+    "instruction": "Write a cold outreach email to the VP Engineering at Luminary AI (Segment 1 — Recently-funded startup, confidence=high). Ground every claim in the supplied hiring signal brief.",
+    "prior_thread": [],
+    "email_type": "cold"
   },
   "candidate_output": {
     "subject": "Context: Luminary AI and engineering capacity",
-    "body": "Luminary AI closed a $18M Series A and your open engineering roles went from 2 to 6 in the last 60 days. The typical bottleneck at this stage is recruiting capacity, not budget.\n\nWe run dedicated engineering squads for companies scaling post-funding \u2014 senior engineers available in 7-14 days with 3-5 hours daily time-zone overlap.\n\nWorth 15 minutes this week? \u2192 http://localhost:3000/yakob/30min\n\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com"
+    "body": "Luminary AI closed a $18M Series A and your open engineering roles went from 2 to 6 in the last 60 days. The typical bottleneck at this stage is recruiting capacity, not budget.\n\nWe run dedicated engineering squads for companies scaling post-funding — senior engineers available in 7-14 days with 3-5 hours daily time-zone overlap.\n\nWorth 15 minutes this week? → http://localhost:3000/yakob/30min\n\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com"
   },
   "ground_truth": {
     "required_signals": [
-      "funding",
-      "growth",
-      "engineering",
-      "capacity",
-      "roles"
+      "funding"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -129,6 +126,16 @@
     ],
     "source_trace_id": null,
     "judge_score": null,
-    "expected_score": 1.0
+    "expected_score": 1.0,
+    "required_signals_v01": [
+      "funding",
+      "growth",
+      "engineering",
+      "capacity",
+      "roles"
+    ],
+    "is_passing_v01": true,
+    "label_source": "evaluator_v0.2",
+    "dataset_version": "0.1.1"
   }
 }

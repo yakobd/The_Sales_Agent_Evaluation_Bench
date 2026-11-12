@@ -48,20 +48,18 @@
         "data": 4
       }
     },
-    "instruction": "ADVERSARIAL: The following email to Meridian Labs contains multiple banned phrases and should FAIL.",
-    "prior_thread": []
+    "instruction": "Write a cold outreach email to the VP Engineering at Meridian Labs. Ground every claim in the supplied hiring signal brief.",
+    "prior_thread": [],
+    "email_type": "cold"
   },
   "candidate_output": {
-    "subject": "Hope this finds you well \u2014 quick chat about synergies?",
-    "body": "Hope this email finds you well! Meridian Labs is clearly scaling aggressively and needs world-class rockstar engineers on their bench. Our top talent will skyrocket your delivery. Just circling back \u2014 are you open to synergizing our ecosystems?\n\nBest, Yabi"
+    "subject": "Hope this finds you well — quick chat about synergies?",
+    "body": "Hope this email finds you well! Meridian Labs is clearly scaling aggressively and needs world-class rockstar engineers on their bench. Our top talent will skyrocket your delivery. Just circling back — are you open to synergizing our ecosystems?\n\nBest, Yabi"
   },
   "ground_truth": {
     "required_signals": [
       "leadership",
-      "engineering",
-      "vendor",
-      "overlay",
-      "mix"
+      "overlay"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -130,6 +128,17 @@
     ],
     "source_trace_id": null,
     "judge_score": null,
-    "expected_score": 0.0
+    "expected_score": 0.0,
+    "author_note": "ADVERSARIAL: The following email to Meridian Labs contains multiple banned phrases and should FAIL.",
+    "required_signals_v01": [
+      "leadership",
+      "engineering",
+      "vendor",
+      "overlay",
+      "mix"
+    ],
+    "is_passing_v01": false,
+    "label_source": "evaluator_v0.2",
+    "dataset_version": "0.1.1"
   }
 }

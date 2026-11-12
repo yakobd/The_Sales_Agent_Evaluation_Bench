@@ -18,7 +18,7 @@
       "firmographics": {
         "company": "Ray Platform",
         "website": "https://rayplatform.com",
-        "description": "Ray Platform \u2014 technology company",
+        "description": "Ray Platform — technology company",
         "num_employees": "51-200"
       },
       "ai_maturity": {
@@ -43,21 +43,19 @@
         "data": 4
       }
     },
-    "instruction": "Write outreach for Ray Platform \u2014 3 sector peers posted data contracts engineer roles, Ray has none",
-    "prior_thread": []
+    "instruction": "Write outreach for Ray Platform — 3 sector peers posted data contracts engineer roles, Ray has none",
+    "prior_thread": [],
+    "email_type": "cold"
   },
   "candidate_output": {
     "subject": "Ray Platform's AI Data Contracts Gap",
-    "body": "Three of Ray's sector peers recently posted data contracts engineer roles. Ray has no such role listed.\n\nAI systems trained on unstructured data create technical debt through inconsistent schema validation, lineage tracking, and quality enforcement. Without explicit contracts, models risk ingesting malformed training data from connected platforms.\n\nWould you like to discuss Ray's current data governance architecture for AI pipelines?\n\nWorth 15 minutes this week? \u2192 http://localhost:3000/yakob/30min\n\nResearch Partner / Tenacious Intelligence Corporation / gettenacious.com"
+    "body": "Three of Ray's sector peers recently posted data contracts engineer roles. Ray has no such role listed.\n\nAI systems trained on unstructured data create technical debt through inconsistent schema validation, lineage tracking, and quality enforcement. Without explicit contracts, models risk ingesting malformed training data from connected platforms.\n\nWould you like to discuss Ray's current data governance architecture for AI pipelines?\n\nWorth 15 minutes this week? → http://localhost:3000/yakob/30min\n\nResearch Partner / Tenacious Intelligence Corporation / gettenacious.com"
   },
   "ground_truth": {
     "required_signals": [
       "ai",
-      "capability",
       "ml",
-      "platform",
-      "peer",
-      "data"
+      "peer"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -124,6 +122,17 @@
     "judge_score": null,
     "expected_score": 1.0,
     "generator_model": "qwen/qwen3-235b-a22b",
-    "contamination_note": "Moved from held_out to dev \u2014 n-gram or embedding contamination violation detected by contamination_check.py"
+    "contamination_note": "Moved from held_out to dev — n-gram or embedding contamination violation detected by contamination_check.py",
+    "required_signals_v01": [
+      "ai",
+      "capability",
+      "ml",
+      "platform",
+      "peer",
+      "data"
+    ],
+    "is_passing_v01": true,
+    "label_source": "evaluator_v0.2",
+    "dataset_version": "0.1.1"
   }
 }

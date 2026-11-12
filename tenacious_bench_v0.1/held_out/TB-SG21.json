@@ -13,7 +13,7 @@
         "segment_name": "Post-layoff restructuring",
         "confidence": "high",
         "reasons": [
-          "Style guide labeled: Cold PDF attachment"
+          "layoffs.fyi: 11 contractions in the prospect's sub-sector in 90 days (4 the quarter before)"
         ]
       },
       "firmographics": {
@@ -31,6 +31,12 @@
       },
       "leadership_signal": {
         "leadership_change_detected": false
+      },
+      "sector_layoff_signal": {
+        "source": "layoffs.fyi",
+        "contractions_last_90_days": 11,
+        "contractions_prior_quarter": 4,
+        "moved_to_offshore_managed_teams_within_60_days": 3
       }
     },
     "bench_summary": {
@@ -44,8 +50,9 @@
         "data": 4
       }
     },
-    "instruction": "STYLE GUIDE EXAMPLE (SG-B09): BAD \u2014 should FAIL. Cold PDF attachment",
-    "prior_thread": []
+    "instruction": "Write a re-engagement email to Marcus Health. The previous conversation is in prior_thread.",
+    "prior_thread": [],
+    "email_type": "re_engagement"
   },
   "candidate_output": {
     "subject": "Tenacious capabilities deck review pages 8 and 12",
@@ -123,6 +130,12 @@
     "source_trace_id": null,
     "judge_score": null,
     "expected_score": 0.0,
-    "style_guide_label": "Cold PDF attachment"
+    "style_guide_label": "Cold PDF attachment",
+    "author_note": "STYLE GUIDE EXAMPLE (SG-B09): BAD — should FAIL. Cold PDF attachment",
+    "scenario": "Style guide labeled: Cold PDF attachment",
+    "brief_reconstructed": true,
+    "reconstruction_note": "Facts restored from the scenario/labelled draft that this task was written against; the v0.1 conversion had dropped them. See tools/repair_tasks_phase2.py.",
+    "label_source": "tenacious_style_guide",
+    "dataset_version": "0.1.1"
   }
 }

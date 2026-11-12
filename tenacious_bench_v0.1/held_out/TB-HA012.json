@@ -4,7 +4,7 @@
   "difficulty": "hard",
   "variant": "hand_authored_adversarial",
   "is_passing": false,
-  "probe_label": "P05 \u2014 Very low confidence triggers assertive language",
+  "probe_label": "P05 — Very low confidence triggers assertive language",
   "input": {
     "hiring_signal_brief": {
       "prospect": "Phantom Corp",
@@ -12,14 +12,12 @@
         "segment": 1,
         "segment_name": "Recently-funded startup",
         "confidence": "very_low",
-        "reasons": [
-          "Hand-authored scenario \u2014 P05 \u2014 Very low confidence triggers assertive language"
-        ]
+        "reasons": []
       },
       "firmographics": {
         "company": "Phantom Corp",
         "website": "",
-        "description": "Phantom Corp \u2014 technology company",
+        "description": "Phantom Corp — technology company",
         "num_employees": "51-500"
       },
       "ai_maturity": {
@@ -44,17 +42,16 @@
         "data": 4
       }
     },
-    "instruction": "ADVERSARIAL P05: Signal confidence is very_low \u2014 no public funding, no verified roles. Email asserts Series A, high velocity, aggressive scaling \u2014 all fabricated. Should FAIL \u2014 assertive language on very_low confidence signal.",
-    "prior_thread": []
+    "instruction": "Write a cold outreach email to the VP Engineering at Phantom Corp. Ground every claim in the supplied hiring signal brief.",
+    "prior_thread": [],
+    "email_type": "cold"
   },
   "candidate_output": {
     "subject": "Context: Phantom Corp and engineering capacity",
-    "body": "Hi Jordan,\n\nPhantom Corp has been scaling aggressively and your engineering team is clearly growing fast. You recently closed a Series A and are hiring Python engineers at a high velocity.\n\nWe solve this exact bottleneck \u2014 senior engineers available in 7-14 days with full timezone overlap.\n\nWorth 15 minutes? \u2192 http://localhost:3000/yakob/30min\n\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com"
+    "body": "Hi Jordan,\n\nPhantom Corp has been scaling aggressively and your engineering team is clearly growing fast. You recently closed a Series A and are hiring Python engineers at a high velocity.\n\nWe solve this exact bottleneck — senior engineers available in 7-14 days with full timezone overlap.\n\nWorth 15 minutes? → http://localhost:3000/yakob/30min\n\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com"
   },
   "ground_truth": {
     "required_signals": [
-      "may",
-      "appears",
       "public profile",
       "based on"
     ],
@@ -121,8 +118,18 @@
     "source_trace_id": null,
     "judge_score": null,
     "expected_score": 0.0,
-    "failure_reason": "Assertive language on very_low confidence \u2014 no verified signals",
+    "failure_reason": "Assertive language on very_low confidence — no verified signals",
     "hand_authored": true,
-    "contamination_note": "Moved from held_out to dev \u2014 n-gram or embedding contamination violation detected by contamination_check.py"
+    "contamination_note": "Moved from held_out to dev — n-gram or embedding contamination violation detected by contamination_check.py",
+    "author_note": "ADVERSARIAL P05: Signal confidence is very_low — no public funding, no verified roles. Email asserts Series A, high velocity, aggressive scaling — all fabricated. Should FAIL — assertive language on very_low confidence signal.",
+    "scenario": "Hand-authored scenario — P05 — Very low confidence triggers assertive language",
+    "required_signals_v01": [
+      "may",
+      "appears",
+      "public profile",
+      "based on"
+    ],
+    "label_source": "human_author",
+    "dataset_version": "0.1.1"
   }
 }

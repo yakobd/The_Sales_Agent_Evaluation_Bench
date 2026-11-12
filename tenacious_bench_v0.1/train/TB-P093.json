@@ -19,7 +19,7 @@
       "firmographics": {
         "company": "Prism Intelligence",
         "website": "https://prismintelligence.com",
-        "description": "Prism Intelligence \u2014 technology company",
+        "description": "Prism Intelligence — technology company",
         "num_employees": "51-200"
       },
       "ai_maturity": {
@@ -47,21 +47,19 @@
         "data": 4
       }
     },
-    "instruction": "ADVERSARIAL: banned phrases email to Prism Intelligence",
-    "prior_thread": []
+    "instruction": "Write a cold outreach email to the VP Engineering at Prism Intelligence. Ground every claim in the supplied hiring signal brief.",
+    "prior_thread": [],
+    "email_type": "cold"
   },
   "candidate_output": {
-    "subject": "Hope this finds you well \u2014 quick chat?",
-    "body": "Hope this email finds you well! Prism Intelligence is clearly scaling aggressively with world-class rockstar engineers on their bench. Our top talent will skyrocket your delivery. Just circling back \u2014 quick question about synergizing?\n\nBest, Yabi"
+    "subject": "Hope this finds you well — quick chat?",
+    "body": "Hope this email finds you well! Prism Intelligence is clearly scaling aggressively with world-class rockstar engineers on their bench. Our top talent will skyrocket your delivery. Just circling back — quick question about synergizing?\n\nBest, Yabi"
   },
   "ground_truth": {
     "required_signals": [
       "ai",
-      "capability",
       "ml",
-      "platform",
-      "peer",
-      "data"
+      "peer"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -129,6 +127,18 @@
     ],
     "source_trace_id": null,
     "judge_score": null,
-    "expected_score": 0.0
+    "expected_score": 0.0,
+    "author_note": "ADVERSARIAL: banned phrases email to Prism Intelligence",
+    "required_signals_v01": [
+      "ai",
+      "capability",
+      "ml",
+      "platform",
+      "peer",
+      "data"
+    ],
+    "is_passing_v01": false,
+    "label_source": "evaluator_v0.2",
+    "dataset_version": "0.1.1"
   }
 }

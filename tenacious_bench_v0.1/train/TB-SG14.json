@@ -11,16 +11,17 @@
       "icp_classification": {
         "segment": 1,
         "segment_name": "Recently-funded startup",
-        "confidence": "high",
+        "confidence": "low",
         "reasons": [
-          "Style guide labeled: Asserts on weak signal"
+          "Two open data engineer roles on the careers page (weak signal)"
         ]
       },
       "firmographics": {
         "company": "Tom Data",
         "website": "",
         "description": "Technology company",
-        "num_employees": "51-200"
+        "num_employees": "51-200",
+        "country_code": "USA"
       },
       "ai_maturity": {
         "ai_maturity_score": 1,
@@ -31,6 +32,9 @@
       },
       "leadership_signal": {
         "leadership_change_detected": false
+      },
+      "job_post_signal": {
+        "open_data_engineer_roles": 2
       }
     },
     "bench_summary": {
@@ -44,12 +48,13 @@
         "data": 4
       }
     },
-    "instruction": "STYLE GUIDE EXAMPLE (SG-B02): BAD \u2014 should FAIL. Asserts on weak signal",
-    "prior_thread": []
+    "instruction": "Write a cold outreach email to the VP Engineering at Tom Data. Ground every claim in the supplied hiring signal brief.",
+    "prior_thread": [],
+    "email_type": "cold"
   },
   "candidate_output": {
     "subject": "Quick chat: your aggressive hiring",
-    "body": "Hi Tom,\n\nI see you are scaling aggressively \u2014 your engineering team is clearly growing fast and you must be feeling the pain of recruiting velocity right now. Companies in your stage always hit a wall around month four after a Series A.\n\nWe solve this exact problem. Tenacious places top talent in 48 hours and we will skyrocket your delivery throughput.\n\nQuick question \u2014 do you have 15 minutes this week?\n\nBest,\nYabi"
+    "body": "Hi Tom,\n\nI see you are scaling aggressively — your engineering team is clearly growing fast and you must be feeling the pain of recruiting velocity right now. Companies in your stage always hit a wall around month four after a Series A.\n\nWe solve this exact problem. Tenacious places top talent in 48 hours and we will skyrocket your delivery throughput.\n\nQuick question — do you have 15 minutes this week?\n\nBest,\nYabi"
   },
   "ground_truth": {
     "required_signals": [
@@ -125,6 +130,12 @@
     "source_trace_id": null,
     "judge_score": null,
     "expected_score": 0.0,
-    "style_guide_label": "Asserts on weak signal"
+    "style_guide_label": "Asserts on weak signal",
+    "author_note": "STYLE GUIDE EXAMPLE (SG-B02): BAD — should FAIL. Asserts on weak signal",
+    "scenario": "Style guide labeled: Asserts on weak signal",
+    "brief_reconstructed": true,
+    "reconstruction_note": "Facts restored from the scenario/labelled draft that this task was written against; the v0.1 conversion had dropped them. See tools/repair_tasks_phase2.py.",
+    "label_source": "tenacious_style_guide",
+    "dataset_version": "0.1.1"
   }
 }

@@ -13,7 +13,7 @@
         "segment_name": "AI capability gap",
         "confidence": "high",
         "reasons": [
-          "Style guide labeled: Two-line micro-touch post-engagement nurture"
+          "Post-call follow-up (see prior_thread)"
         ]
       },
       "firmographics": {
@@ -44,12 +44,23 @@
         "data": 4
       }
     },
-    "instruction": "STYLE GUIDE EXAMPLE (SG-G12): GOOD \u2014 should PASS. Two-line micro-touch post-engagement nurture",
-    "prior_thread": []
+    "instruction": "Write a short follow-up email to Kevin Loyalty. The earlier contact is in prior_thread.",
+    "prior_thread": [
+      {
+        "from": "meeting_notes",
+        "date": "yesterday",
+        "body": "Call with Kevin: he named three loyalty-platform competitors; his team is evaluating a dbt + Snowflake stack; internal review next Thursday; agreed to follow up after it."
+      }
+    ],
+    "email_type": "follow_up",
+    "competitor_gap_brief": {
+      "prospect_sector": "loyalty platforms",
+      "finding": "3 competitors named by the prospect publicly use dbt + Snowflake"
+    }
   },
   "candidate_output": {
     "subject": "Quick thought after our call",
-    "body": "Hi Kevin,\n\nAfter we spoke yesterday I went back and looked \u2014 three of the loyalty platforms you mentioned as competitors are now publicly using the same dbt-plus-Snowflake stack you are evaluating. Worth knowing as you scope the build.\n\nNo reply needed. I will follow up after your internal review next Thursday as agreed.\n\nBest,\nYabi"
+    "body": "Hi Kevin,\n\nAfter we spoke yesterday I went back and looked — three of the loyalty platforms you mentioned as competitors are now publicly using the same dbt-plus-Snowflake stack you are evaluating. Worth knowing as you scope the build.\n\nNo reply needed. I will follow up after your internal review next Thursday as agreed.\n\nBest,\nYabi"
   },
   "ground_truth": {
     "required_signals": [
@@ -92,7 +103,7 @@
       "i hope this email finds you"
     ],
     "max_subject_length": 60,
-    "must_end_with_cta": true
+    "must_end_with_cta": false
   },
   "rubric": {
     "grounding": {
@@ -125,6 +136,12 @@
     "source_trace_id": null,
     "judge_score": null,
     "expected_score": 1.0,
-    "style_guide_label": "Two-line micro-touch post-engagement nurture"
+    "style_guide_label": "Two-line micro-touch post-engagement nurture",
+    "author_note": "STYLE GUIDE EXAMPLE (SG-G12): GOOD — should PASS. Two-line micro-touch post-engagement nurture",
+    "scenario": "Style guide labeled: Two-line micro-touch post-engagement nurture",
+    "brief_reconstructed": true,
+    "reconstruction_note": "Facts restored from the scenario/labelled draft that this task was written against; the v0.1 conversion had dropped them. See tools/repair_tasks_phase2.py.",
+    "label_source": "tenacious_style_guide",
+    "dataset_version": "0.1.1"
   }
 }

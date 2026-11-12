@@ -13,7 +13,7 @@
         "segment_name": "Recently-funded startup",
         "confidence": "high",
         "reasons": [
-          "Style guide labeled: Signal fabrication wrong funding round"
+          "New CTO (Priya) announced on the 14th, about three weeks ago"
         ]
       },
       "firmographics": {
@@ -30,7 +30,11 @@
         "layoff_detected": false
       },
       "leadership_signal": {
-        "leadership_change_detected": false
+        "leadership_change_detected": true,
+        "leader_name": "Priya",
+        "leader_title": "CTO",
+        "announced": "on the 14th",
+        "days_since_hire": 21
       }
     },
     "bench_summary": {
@@ -44,19 +48,19 @@
         "data": 4
       }
     },
-    "instruction": "STYLE GUIDE EXAMPLE (SG-B12): BAD \u2014 should FAIL. Signal fabrication wrong funding round",
-    "prior_thread": []
+    "instruction": "Write a cold outreach email to the VP Engineering at Helix Inc. Ground every claim in the supplied hiring signal brief.",
+    "prior_thread": [],
+    "email_type": "cold"
   },
   "candidate_output": {
     "subject": "Re: your 40M Series C",
-    "body": "Hi Priya,\n\nCongratulations on closing your $40M Series C last month \u2014 exciting moment for the team. With that level of capital, scaling engineering aggressively is the obvious next move.\n\nWe can plug a 15-engineer team into your stack within 30 days at our standard rates.\n\nWant to set up a 15-minute call to discuss?\n\nBest,\nYabi"
+    "body": "Hi Priya,\n\nCongratulations on closing your $40M Series C last month — exciting moment for the team. With that level of capital, scaling engineering aggressively is the obvious next move.\n\nWe can plug a 15-engineer team into your stack within 30 days at our standard rates.\n\nWant to set up a 15-minute call to discuss?\n\nBest,\nYabi"
   },
   "ground_truth": {
     "required_signals": [
       "announcement",
       "14th",
-      "90 days",
-      "vendor"
+      "90 days"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -127,6 +131,18 @@
     "judge_score": null,
     "expected_score": 0.0,
     "style_guide_label": "Signal fabrication wrong funding round",
-    "contamination_note": "Moved from held_out to dev \u2014 n-gram or embedding contamination violation detected by contamination_check.py"
+    "contamination_note": "Moved from held_out to dev — n-gram or embedding contamination violation detected by contamination_check.py",
+    "author_note": "STYLE GUIDE EXAMPLE (SG-B12): BAD — should FAIL. Signal fabrication wrong funding round",
+    "scenario": "Style guide labeled: Signal fabrication wrong funding round",
+    "brief_reconstructed": true,
+    "reconstruction_note": "Facts restored from the scenario/labelled draft that this task was written against; the v0.1 conversion had dropped them. See tools/repair_tasks_phase2.py.",
+    "required_signals_v01": [
+      "announcement",
+      "14th",
+      "90 days",
+      "vendor"
+    ],
+    "label_source": "tenacious_style_guide",
+    "dataset_version": "0.1.1"
   }
 }

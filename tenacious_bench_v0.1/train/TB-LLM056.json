@@ -3,7 +3,7 @@
   "source_mode": "multi_llm_synthesis",
   "difficulty": "hard",
   "variant": "llm_generated_v2",
-  "is_passing": true,
+  "is_passing": false,
   "input": {
     "hiring_signal_brief": {
       "prospect": "Dune Engineering",
@@ -18,7 +18,7 @@
       "firmographics": {
         "company": "Dune Engineering",
         "website": "https://duneengineering.com",
-        "description": "Dune Engineering \u2014 technology company",
+        "description": "Dune Engineering — technology company",
         "num_employees": "51-200"
       },
       "ai_maturity": {
@@ -43,20 +43,17 @@
         "data": 4
       }
     },
-    "instruction": "Write outreach for Dune Engineering \u2014 Leadership change rumored but not confirmed publicly",
-    "prior_thread": []
+    "instruction": "Write outreach for Dune Engineering — Leadership change rumored but not confirmed publicly",
+    "prior_thread": [],
+    "email_type": "cold"
   },
   "candidate_output": {
     "subject": "Dune Engineering's Leadership Shift?",
-    "body": "Dear [Name], \n\nWe\u2019ve heard unconfirmed reports of potential leadership changes at Dune Engineering. If true, how might this affect your team\u2019s structure or talent needs?\n\nI\u2019d welcome 15 minutes to discuss any implications. \n\nWorth 15 minutes this week? \u2192 http://localhost:3000/yakob/30min\n\nResearch Partner / Tenacious Intelligence Corporation / gettenacious.com"
+    "body": "Dear [Name], \n\nWe’ve heard unconfirmed reports of potential leadership changes at Dune Engineering. If true, how might this affect your team’s structure or talent needs?\n\nI’d welcome 15 minutes to discuss any implications. \n\nWorth 15 minutes this week? → http://localhost:3000/yakob/30min\n\nResearch Partner / Tenacious Intelligence Corporation / gettenacious.com"
   },
   "ground_truth": {
     "required_signals": [
-      "leadership",
-      "engineering",
-      "vendor",
-      "mix",
-      "new"
+      "leadership"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -122,6 +119,16 @@
     "source_trace_id": null,
     "judge_score": null,
     "expected_score": 1.0,
-    "generator_model": "qwen/qwen3-235b-a22b"
+    "generator_model": "qwen/qwen3-235b-a22b",
+    "required_signals_v01": [
+      "leadership",
+      "engineering",
+      "vendor",
+      "mix",
+      "new"
+    ],
+    "is_passing_v01": true,
+    "label_source": "evaluator_v0.2",
+    "dataset_version": "0.1.1"
   }
 }

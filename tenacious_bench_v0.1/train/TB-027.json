@@ -3,7 +3,7 @@
   "source_mode": "trace_derived",
   "difficulty": "hard",
   "variant": "v3_low_confidence",
-  "is_passing": true,
+  "is_passing": false,
   "input": {
     "hiring_signal_brief": {
       "prospect": "Linear",
@@ -12,7 +12,7 @@
         "segment_name": "Recently-funded startup",
         "confidence": "very_low",
         "reasons": [
-          "No strong signals \u2014 defaulting to Segment 1"
+          "No strong signals — defaulting to Segment 1"
         ]
       },
       "firmographics": {
@@ -50,21 +50,16 @@
         "data": 4
       }
     },
-    "instruction": "Write a cold outreach email to Linear. Signal confidence is very_low \u2014 use interrogative or conditional language. Do not assert facts you cannot verify.",
-    "prior_thread": []
+    "instruction": "Write a cold outreach email to Linear. Signal confidence is very_low — use interrogative or conditional language. Do not assert facts you cannot verify.",
+    "prior_thread": [],
+    "email_type": "cold"
   },
   "candidate_output": {
     "subject": "Context: Linear and engineering capacity",
-    "body": "Linear may have engineering capacity needs based on public profile \u2014 typical bottleneck for teams at this stage is recruiting capacity, not budget.\n\nWe run dedicated engineering squads for companies scaling post-funding \u2014 senior engineers available in 7\u201314 days with 3\u20135 hours daily time-zone overlap.\n\nWorth 15 minutes this week to walk through how this lands for Linear? \u2192 http://localhost:3000/yakob/30min\n\n\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com"
+    "body": "Linear may have engineering capacity needs based on public profile — typical bottleneck for teams at this stage is recruiting capacity, not budget.\n\nWe run dedicated engineering squads for companies scaling post-funding — senior engineers available in 7–14 days with 3–5 hours daily time-zone overlap.\n\nWorth 15 minutes this week to walk through how this lands for Linear? → http://localhost:3000/yakob/30min\n\n\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com"
   },
   "ground_truth": {
-    "required_signals": [
-      "may",
-      "appears",
-      "public",
-      "profile",
-      "based"
-    ],
+    "required_signals": [],
     "forbidden_phrases": [
       "just circling back",
       "hope this finds you well",
@@ -130,6 +125,16 @@
     ],
     "source_trace_id": "thread_20260427_114842",
     "judge_score": null,
-    "expected_score": 1.0
+    "expected_score": 1.0,
+    "required_signals_v01": [
+      "may",
+      "appears",
+      "public",
+      "profile",
+      "based"
+    ],
+    "is_passing_v01": true,
+    "label_source": "evaluator_v0.2",
+    "dataset_version": "0.1.1"
   }
 }

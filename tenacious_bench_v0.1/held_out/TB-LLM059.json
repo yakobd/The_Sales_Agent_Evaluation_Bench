@@ -3,7 +3,7 @@
   "source_mode": "multi_llm_synthesis",
   "difficulty": "easy",
   "variant": "llm_generated_v2",
-  "is_passing": true,
+  "is_passing": false,
   "input": {
     "hiring_signal_brief": {
       "prospect": "Prism Systems",
@@ -18,7 +18,7 @@
       "firmographics": {
         "company": "Prism Systems",
         "website": "https://prismsystems.com",
-        "description": "Prism Systems \u2014 technology company",
+        "description": "Prism Systems — technology company",
         "num_employees": "51-200"
       },
       "ai_maturity": {
@@ -43,21 +43,19 @@
         "data": 4
       }
     },
-    "instruction": "Write outreach for Prism Systems \u2014 6 peer companies posted senior ML engineer roles in 90 days, Prism has none",
-    "prior_thread": []
+    "instruction": "Write outreach for Prism Systems — 6 peer companies posted senior ML engineer roles in 90 days, Prism has none",
+    "prior_thread": [],
+    "email_type": "cold"
   },
   "candidate_output": {
     "subject": "Addressing Prism's AI Talent Gap",
-    "body": "Hi [Name],\n\nNoticed 6 peer companies in your space have posted senior ML engineer roles in the past 90 days, while Prism Systems has not. This signals a potential misalignment in talent strategy as AI demands evolve.\n\nTwo readings: Either the market is overcorrecting, or there's a window to strengthen your team before competitors do.\n\nWorth 15 minutes this week? \u2192 http://localhost:3000/yakob/30min\n\nBest,\nResearch Partner / Tenacious Intelligence Corporation / gettenacious.com"
+    "body": "Hi [Name],\n\nNoticed 6 peer companies in your space have posted senior ML engineer roles in the past 90 days, while Prism Systems has not. This signals a potential misalignment in talent strategy as AI demands evolve.\n\nTwo readings: Either the market is overcorrecting, or there's a window to strengthen your team before competitors do.\n\nWorth 15 minutes this week? → http://localhost:3000/yakob/30min\n\nBest,\nResearch Partner / Tenacious Intelligence Corporation / gettenacious.com"
   },
   "ground_truth": {
     "required_signals": [
       "ai",
-      "capability",
       "ml",
-      "platform",
-      "peer",
-      "data"
+      "peer"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -123,6 +121,17 @@
     "source_trace_id": null,
     "judge_score": null,
     "expected_score": 1.0,
-    "generator_model": "qwen/qwen3-235b-a22b"
+    "generator_model": "qwen/qwen3-235b-a22b",
+    "required_signals_v01": [
+      "ai",
+      "capability",
+      "ml",
+      "platform",
+      "peer",
+      "data"
+    ],
+    "is_passing_v01": true,
+    "label_source": "evaluator_v0.2",
+    "dataset_version": "0.1.1"
   }
 }

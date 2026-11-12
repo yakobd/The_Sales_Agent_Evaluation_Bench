@@ -19,7 +19,7 @@
       "firmographics": {
         "company": "Prism Intelligence",
         "website": "https://prismintelligence.com",
-        "description": "Prism Intelligence \u2014 technology company",
+        "description": "Prism Intelligence — technology company",
         "num_employees": "51-200"
       },
       "ai_maturity": {
@@ -47,21 +47,19 @@
         "data": 4
       }
     },
-    "instruction": "Write a cold outreach email to the VP Engineering at Prism Intelligence (Segment 4 \u2014 AI capability gap, confidence=low).",
-    "prior_thread": []
+    "instruction": "Write a cold outreach email to the VP Engineering at Prism Intelligence (Segment 4 — AI capability gap, confidence=low).",
+    "prior_thread": [],
+    "email_type": "cold"
   },
   "candidate_output": {
     "subject": "Question on Prism Intelligence AI capability",
-    "body": "Public signal suggests Prism Intelligence may be building toward specialized AI capability. Teams at this stage often hit a talent bottleneck before a budget one.\n\nWe deliver fixed-scope AI and data engineering projects \u2014 ML platform builds, agentic systems, data contracts \u2014 typically 3 to 4 months.\n\nIf you have already scoped this and decided against it, I would genuinely be curious why. If not, 15 minutes: \u2192 http://localhost:3000/yakob/30min\n\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com"
+    "body": "Public signal suggests Prism Intelligence may be building toward specialized AI capability. Teams at this stage often hit a talent bottleneck before a budget one.\n\nWe deliver fixed-scope AI and data engineering projects — ML platform builds, agentic systems, data contracts — typically 3 to 4 months.\n\nIf you have already scoped this and decided against it, I would genuinely be curious why. If not, 15 minutes: → http://localhost:3000/yakob/30min\n\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com"
   },
   "ground_truth": {
     "required_signals": [
       "ai",
-      "capability",
       "ml",
-      "platform",
-      "peer",
-      "data"
+      "peer"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -128,6 +126,17 @@
     ],
     "source_trace_id": null,
     "judge_score": null,
-    "expected_score": 1.0
+    "expected_score": 1.0,
+    "required_signals_v01": [
+      "ai",
+      "capability",
+      "ml",
+      "platform",
+      "peer",
+      "data"
+    ],
+    "is_passing_v01": true,
+    "label_source": "evaluator_v0.2",
+    "dataset_version": "0.1.1"
   }
 }

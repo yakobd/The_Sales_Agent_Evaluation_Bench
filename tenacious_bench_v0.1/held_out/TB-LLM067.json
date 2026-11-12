@@ -18,7 +18,7 @@
       "firmographics": {
         "company": "Flux Intelligence",
         "website": "https://fluxintelligence.com",
-        "description": "Flux Intelligence \u2014 technology company",
+        "description": "Flux Intelligence — technology company",
         "num_employees": "51-200"
       },
       "ai_maturity": {
@@ -43,21 +43,19 @@
         "data": 4
       }
     },
-    "instruction": "Write outreach for Flux Intelligence \u2014 AI maturity 3/3, 3 peers building agentic systems squads",
-    "prior_thread": []
+    "instruction": "Write outreach for Flux Intelligence — AI maturity 3/3, 3 peers building agentic systems squads",
+    "prior_thread": [],
+    "email_type": "cold"
   },
   "candidate_output": {
     "subject": "Closing Flux's AI Gap with Targeted Expertise",
-    "body": "Flux's AI maturity demands specialized execution. With 3 peers advancing agentic systems, your team needs tailored talent to maintain pace. We've architected squads focused on agentic workflows for companies at your maturity stage. Can we discuss a focused approach to fill this critical gap? Worth 15 minutes this week? \u2192 http://localhost:3000/yakob/30min\nResearch Partner / Tenacious Intelligence Corporation / gettenacious.com"
+    "body": "Flux's AI maturity demands specialized execution. With 3 peers advancing agentic systems, your team needs tailored talent to maintain pace. We've architected squads focused on agentic workflows for companies at your maturity stage. Can we discuss a focused approach to fill this critical gap? Worth 15 minutes this week? → http://localhost:3000/yakob/30min\nResearch Partner / Tenacious Intelligence Corporation / gettenacious.com"
   },
   "ground_truth": {
     "required_signals": [
       "ai",
-      "capability",
       "ml",
-      "platform",
-      "peer",
-      "data"
+      "peer"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -124,6 +122,17 @@
     "judge_score": null,
     "expected_score": 1.0,
     "generator_model": "qwen/qwen3-235b-a22b",
-    "contamination_note": "Moved from held_out to dev \u2014 n-gram or embedding contamination violation detected by contamination_check.py"
+    "contamination_note": "Moved from held_out to dev — n-gram or embedding contamination violation detected by contamination_check.py",
+    "required_signals_v01": [
+      "ai",
+      "capability",
+      "ml",
+      "platform",
+      "peer",
+      "data"
+    ],
+    "is_passing_v01": true,
+    "label_source": "evaluator_v0.2",
+    "dataset_version": "0.1.1"
   }
 }

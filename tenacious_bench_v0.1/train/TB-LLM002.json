@@ -3,7 +3,7 @@
   "source_mode": "multi_llm_synthesis",
   "difficulty": "medium",
   "variant": "llm_generated",
-  "is_passing": true,
+  "is_passing": false,
   "generator_model": "qwen/qwen3-235b-a22b",
   "input": {
     "hiring_signal_brief": {
@@ -19,7 +19,7 @@
       "firmographics": {
         "company": "Praxis Engineering",
         "website": "https://praxisengineering.com",
-        "description": "Praxis Engineering \u2014 technology company",
+        "description": "Praxis Engineering — technology company",
         "num_employees": "51-200"
       },
       "ai_maturity": {
@@ -46,19 +46,16 @@
       }
     },
     "instruction": "Write a cold outreach email to the VP Engineering at Praxis Engineering (Leadership change, confidence=high). Signal: New VP Engineering hired 55 days ago from Stripe",
-    "prior_thread": []
+    "prior_thread": [],
+    "email_type": "cold"
   },
   "candidate_output": {
     "subject": "Stripe Engineering Leader at Praxis",
-    "body": "Hi [Name], Praxis Engineering\u2019s recent leadership change brings a seasoned Stripe engineering leader into uncharted territory. Our research shows that technical teams under new leadership often face unique alignment challenges within the first 90 days. How does your Stripe experience inform your approach to scaling Praxis\u2019s engineering strategy? I\u2019d welcome 15 minutes to discuss. [Cal.com link]"
+    "body": "Hi [Name], Praxis Engineering’s recent leadership change brings a seasoned Stripe engineering leader into uncharted territory. Our research shows that technical teams under new leadership often face unique alignment challenges within the first 90 days. How does your Stripe experience inform your approach to scaling Praxis’s engineering strategy? I’d welcome 15 minutes to discuss. [Cal.com link]"
   },
   "ground_truth": {
     "required_signals": [
-      "leadership",
-      "engineering",
-      "vendor",
-      "mix",
-      "new"
+      "leadership"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -127,6 +124,16 @@
     "source_trace_id": null,
     "judge_score": null,
     "expected_score": 1.0,
-    "generator_model": "qwen/qwen3-235b-a22b"
+    "generator_model": "qwen/qwen3-235b-a22b",
+    "required_signals_v01": [
+      "leadership",
+      "engineering",
+      "vendor",
+      "mix",
+      "new"
+    ],
+    "is_passing_v01": true,
+    "label_source": "evaluator_v0.2",
+    "dataset_version": "0.1.1"
   }
 }

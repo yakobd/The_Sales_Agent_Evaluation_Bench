@@ -3,7 +3,7 @@
   "source_mode": "multi_llm_synthesis",
   "difficulty": "medium",
   "variant": "llm_generated_v2",
-  "is_passing": true,
+  "is_passing": false,
   "input": {
     "hiring_signal_brief": {
       "prospect": "Shore Platform",
@@ -18,7 +18,7 @@
       "firmographics": {
         "company": "Shore Platform",
         "website": "https://shoreplatform.com",
-        "description": "Shore Platform \u2014 technology company",
+        "description": "Shore Platform — technology company",
         "num_employees": "51-200"
       },
       "ai_maturity": {
@@ -43,20 +43,17 @@
         "data": 4
       }
     },
-    "instruction": "Write outreach for Shore Platform \u2014 VP Engineering hired 40 days ago, previously at Stripe",
-    "prior_thread": []
+    "instruction": "Write outreach for Shore Platform — VP Engineering hired 40 days ago, previously at Stripe",
+    "prior_thread": [],
+    "email_type": "cold"
   },
   "candidate_output": {
     "subject": "New VP Engineering at Shore Platform (Stripe Alum)",
-    "body": "Hi [First Name],\n\nCongratulations on joining Shore Platform as VP Engineering. Your background scaling systems at Stripe aligns with Shore\u2019s current focus on engineering velocity.\n\nLeadership transitions within the first 90 days often determine long-term outcomes. We specialize in helping technical teams accelerate impact during these windows.\n\nWorth 15 minutes this week? \u2192 http://localhost:3000/yakob/30min\n\nBest,\n[Your Name]\nResearch Partner / Tenacious Intelligence Corporation / gettenacious.com"
+    "body": "Hi [First Name],\n\nCongratulations on joining Shore Platform as VP Engineering. Your background scaling systems at Stripe aligns with Shore’s current focus on engineering velocity.\n\nLeadership transitions within the first 90 days often determine long-term outcomes. We specialize in helping technical teams accelerate impact during these windows.\n\nWorth 15 minutes this week? → http://localhost:3000/yakob/30min\n\nBest,\n[Your Name]\nResearch Partner / Tenacious Intelligence Corporation / gettenacious.com"
   },
   "ground_truth": {
     "required_signals": [
-      "leadership",
-      "engineering",
-      "vendor",
-      "mix",
-      "new"
+      "leadership"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -122,6 +119,16 @@
     "source_trace_id": null,
     "judge_score": null,
     "expected_score": 1.0,
-    "generator_model": "qwen/qwen3-235b-a22b"
+    "generator_model": "qwen/qwen3-235b-a22b",
+    "required_signals_v01": [
+      "leadership",
+      "engineering",
+      "vendor",
+      "mix",
+      "new"
+    ],
+    "is_passing_v01": true,
+    "label_source": "evaluator_v0.2",
+    "dataset_version": "0.1.1"
   }
 }

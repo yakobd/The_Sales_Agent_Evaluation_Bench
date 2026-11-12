@@ -3,7 +3,7 @@
   "source_mode": "trace_derived",
   "difficulty": "medium",
   "variant": "v4_reengagement",
-  "is_passing": true,
+  "is_passing": false,
   "input": {
     "hiring_signal_brief": {
       "prospect": "Stripe",
@@ -12,7 +12,7 @@
         "segment_name": "Post-layoff restructuring",
         "confidence": "high",
         "reasons": [
-          "Layoff detected \u2014 cost restructuring likely"
+          "Layoff detected — cost restructuring likely"
         ]
       },
       "firmographics": {
@@ -35,7 +35,7 @@
         "date": "11/3/2022",
         "stage": "Series H",
         "country": "United States",
-        "icp_signal": "Segment 2 \u2014 cost restructuring pitch",
+        "icp_signal": "Segment 2 — cost restructuring pitch",
         "note": "Layoff detected from layoffs.fyi dataset (2 records found)"
       },
       "leadership_signal": {
@@ -57,7 +57,8 @@
       }
     },
     "instruction": "It has been 7 days since your outreach to Stripe with no reply. Write a re-engagement email with a new data point. Do not use 'following up', 'circling back', or guilt language. Max 100 words.",
-    "prior_thread": []
+    "prior_thread": [],
+    "email_type": "re_engagement"
   },
   "candidate_output": {
     "subject": "New: peer hiring data for Stripe",
@@ -65,8 +66,6 @@
   },
   "ground_truth": {
     "required_signals": [
-      "new",
-      "data",
       "peer",
       "sector",
       "companies"
@@ -137,6 +136,16 @@
     "source_trace_id": "thread_20260427_114623",
     "judge_score": null,
     "expected_score": 1.0,
-    "contamination_note": "Moved from held_out to dev \u2014 n-gram or embedding contamination violation detected by contamination_check.py"
+    "contamination_note": "Moved from held_out to dev — n-gram or embedding contamination violation detected by contamination_check.py",
+    "required_signals_v01": [
+      "new",
+      "data",
+      "peer",
+      "sector",
+      "companies"
+    ],
+    "is_passing_v01": true,
+    "label_source": "evaluator_v0.2",
+    "dataset_version": "0.1.1"
   }
 }

@@ -3,7 +3,7 @@
   "source_mode": "multi_llm_synthesis",
   "difficulty": "medium",
   "variant": "llm_generated",
-  "is_passing": true,
+  "is_passing": false,
   "input": {
     "hiring_signal_brief": {
       "prospect": "Apex Cloud",
@@ -18,7 +18,7 @@
       "firmographics": {
         "company": "Apex Cloud",
         "website": "https://apexcloud.com",
-        "description": "Apex Cloud \u2014 technology company",
+        "description": "Apex Cloud — technology company",
         "num_employees": "51-200"
       },
       "ai_maturity": {
@@ -43,20 +43,17 @@
         "data": 4
       }
     },
-    "instruction": "Write outreach for Apex Cloud \u2014 Seed extension $8M. First 5 engineering hires visible on LinkedIn.",
-    "prior_thread": []
+    "instruction": "Write outreach for Apex Cloud — Seed extension $8M. First 5 engineering hires visible on LinkedIn.",
+    "prior_thread": [],
+    "email_type": "cold"
   },
   "candidate_output": {
     "subject": "Scaling Engineering Team at Apex?",
-    "body": "Hi [First Name],\n\nApex Cloud's recent $8M seed extension caught my attention, especially seeing your engineering team's early growth on LinkedIn. At Tenacious Intelligence, we focus on helping startups like yours secure high-impact technical talent without dilution.\n\nWould you benefit from exploring focused hiring strategies for your next critical roles? Let's discuss how we can align with your current priorities.\n\nWorth 15 minutes this week? \u2192 http://localhost:3000/yakob/30min\n\nResearch Partner / Tenacious Intelligence Corporation / gettenacious.com"
+    "body": "Hi [First Name],\n\nApex Cloud's recent $8M seed extension caught my attention, especially seeing your engineering team's early growth on LinkedIn. At Tenacious Intelligence, we focus on helping startups like yours secure high-impact technical talent without dilution.\n\nWould you benefit from exploring focused hiring strategies for your next critical roles? Let's discuss how we can align with your current priorities.\n\nWorth 15 minutes this week? → http://localhost:3000/yakob/30min\n\nResearch Partner / Tenacious Intelligence Corporation / gettenacious.com"
   },
   "ground_truth": {
     "required_signals": [
-      "funding",
-      "growth",
-      "engineering",
-      "capacity",
-      "roles"
+      "funding"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -122,6 +119,16 @@
     "source_trace_id": null,
     "judge_score": null,
     "expected_score": 1.0,
-    "generator_model": "qwen/qwen3-235b-a22b"
+    "generator_model": "qwen/qwen3-235b-a22b",
+    "required_signals_v01": [
+      "funding",
+      "growth",
+      "engineering",
+      "capacity",
+      "roles"
+    ],
+    "is_passing_v01": true,
+    "label_source": "evaluator_v0.2",
+    "dataset_version": "0.1.1"
   }
 }

@@ -4,7 +4,7 @@
   "difficulty": "hard",
   "variant": "hand_authored_adversarial",
   "is_passing": false,
-  "probe_label": "P22 \u2014 Stale enrichment: uses Yellow.ai brief for Stripe",
+  "probe_label": "P22 — Stale enrichment: uses Yellow.ai brief for Stripe",
   "input": {
     "hiring_signal_brief": {
       "prospect": "Stripe",
@@ -12,14 +12,12 @@
         "segment": 2,
         "segment_name": "Post-layoff restructuring",
         "confidence": "high",
-        "reasons": [
-          "Hand-authored scenario \u2014 P22 \u2014 Stale enrichment: uses Yellow.ai brief for Stripe"
-        ]
+        "reasons": []
       },
       "firmographics": {
         "company": "Stripe",
         "website": "",
-        "description": "Stripe \u2014 technology company",
+        "description": "Stripe — technology company",
         "num_employees": "51-500"
       },
       "ai_maturity": {
@@ -44,18 +42,18 @@
         "data": 4
       }
     },
-    "instruction": "ADVERSARIAL P22: This email sends Yellow.ai enrichment data (200 employees, KT Prasad) to a Stripe contact. Wrong enrichment brief used \u2014 cross-company data contamination. Should FAIL.",
-    "prior_thread": []
+    "instruction": "Write a cold outreach email to the VP Engineering at Stripe. Ground every claim in the supplied hiring signal brief.",
+    "prior_thread": [],
+    "email_type": "cold"
   },
   "candidate_output": {
     "subject": "Note on Stripe restructuring",
-    "body": "Hi Alex,\n\nStripe has gone through a recent restructuring \u2014 your team contracted by about 200 employees in March 2023 and you recently brought in KT Prasad as Chief Revenue Officer International Region.\n\nCompanies in this state often need to preserve delivery capacity while reshaping cost structure.\n\nWorth 15 minutes? \u2192 http://localhost:3000/yakob/30min\n\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com"
+    "body": "Hi Alex,\n\nStripe has gone through a recent restructuring — your team contracted by about 200 employees in March 2023 and you recently brought in KT Prasad as Chief Revenue Officer International Region.\n\nCompanies in this state often need to preserve delivery capacity while reshaping cost structure.\n\nWorth 15 minutes? → http://localhost:3000/yakob/30min\n\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com"
   },
   "ground_truth": {
     "required_signals": [
       "stripe",
-      "restructuring",
-      "cost"
+      "restructuring"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -120,6 +118,15 @@
     "judge_score": null,
     "expected_score": 0.0,
     "failure_reason": "Yellow.ai enrichment data sent to Stripe contact",
-    "hand_authored": true
+    "hand_authored": true,
+    "author_note": "ADVERSARIAL P22: This email sends Yellow.ai enrichment data (200 employees, KT Prasad) to a Stripe contact. Wrong enrichment brief used — cross-company data contamination. Should FAIL.",
+    "scenario": "Hand-authored scenario — P22 — Stale enrichment: uses Yellow.ai brief for Stripe",
+    "required_signals_v01": [
+      "stripe",
+      "restructuring",
+      "cost"
+    ],
+    "label_source": "human_author",
+    "dataset_version": "0.1.1"
   }
 }

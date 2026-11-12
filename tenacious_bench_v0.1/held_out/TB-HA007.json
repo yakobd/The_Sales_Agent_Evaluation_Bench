@@ -4,7 +4,7 @@
   "difficulty": "medium",
   "variant": "hand_authored_adversarial",
   "is_passing": false,
-  "probe_label": "P28 \u2014 German prospect receives US startup framing",
+  "probe_label": "P28 — German prospect receives US startup framing",
   "input": {
     "hiring_signal_brief": {
       "prospect": "Personio",
@@ -13,14 +13,18 @@
         "segment_name": "Recently-funded startup",
         "confidence": "high",
         "reasons": [
-          "Hand-authored scenario \u2014 P28 \u2014 German prospect receives US startup framing"
+          "Series E closed",
+          "Open engineering roles tripled",
+          "HQ Munich (CET)"
         ]
       },
       "firmographics": {
         "company": "Personio",
         "website": "",
-        "description": "Personio \u2014 technology company",
-        "num_employees": "51-500"
+        "description": "Personio — technology company",
+        "num_employees": "51-500",
+        "country_code": "DEU",
+        "location": "Munich, Germany"
       },
       "ai_maturity": {
         "ai_maturity_score": 1,
@@ -31,6 +35,12 @@
       },
       "leadership_signal": {
         "leadership_change_detected": false
+      },
+      "funding": {
+        "round": "Series E"
+      },
+      "job_post_signal": {
+        "open_engineering_roles_change": "tripled"
       }
     },
     "bench_summary": {
@@ -44,17 +54,17 @@
         "data": 4
       }
     },
-    "instruction": "ADVERSARIAL P28: Personio is a German company (Munich). US East Coast overlap is wrong \u2014 should reference CET overlap. Should FAIL \u2014 US-centric language for EU prospect.",
-    "prior_thread": []
+    "instruction": "Write a cold outreach email to the VP Engineering at Personio. Ground every claim in the supplied hiring signal brief.",
+    "prior_thread": [],
+    "email_type": "cold"
   },
   "candidate_output": {
     "subject": "Context: Personio and engineering capacity",
-    "body": "Hi Klaus,\n\nPersonio closed your Series E and your open engineering roles have tripled. The typical bottleneck for teams at your stage is recruiting capacity, not budget.\n\nWe run dedicated engineering squads for companies scaling post-funding \u2014 senior engineers available in 7-14 days with 3-5 hours daily US East Coast overlap.\n\nWorth 15 minutes this week? \u2192 http://localhost:3000/yakob/30min\n\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com"
+    "body": "Hi Klaus,\n\nPersonio closed your Series E and your open engineering roles have tripled. The typical bottleneck for teams at your stage is recruiting capacity, not budget.\n\nWe run dedicated engineering squads for companies scaling post-funding — senior engineers available in 7-14 days with 3-5 hours daily US East Coast overlap.\n\nWorth 15 minutes this week? → http://localhost:3000/yakob/30min\n\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com"
   },
   "ground_truth": {
     "required_signals": [
       "series e",
-      "engineering",
       "cet",
       "european"
     ],
@@ -121,6 +131,18 @@
     "judge_score": null,
     "expected_score": 0.0,
     "failure_reason": "US East Coast overlap sent to German Munich prospect",
-    "hand_authored": true
+    "hand_authored": true,
+    "author_note": "ADVERSARIAL P28: Personio is a German company (Munich). US East Coast overlap is wrong — should reference CET overlap. Should FAIL — US-centric language for EU prospect.",
+    "scenario": "Hand-authored scenario — P28 — German prospect receives US startup framing",
+    "brief_reconstructed": true,
+    "reconstruction_note": "Facts restored from the scenario/labelled draft that this task was written against; the v0.1 conversion had dropped them. See tools/repair_tasks_phase2.py.",
+    "required_signals_v01": [
+      "series e",
+      "engineering",
+      "cet",
+      "european"
+    ],
+    "label_source": "human_author",
+    "dataset_version": "0.1.1"
   }
 }

@@ -4,7 +4,7 @@
   "difficulty": "hard",
   "variant": "hand_authored_adversarial",
   "is_passing": false,
-  "probe_label": "LinkedIn roast test \u2014 maximum violations in one email",
+  "probe_label": "LinkedIn roast test — maximum violations in one email",
   "input": {
     "hiring_signal_brief": {
       "prospect": "Generic Corp",
@@ -12,14 +12,12 @@
         "segment": 1,
         "segment_name": "Recently-funded startup",
         "confidence": "low",
-        "reasons": [
-          "Hand-authored scenario \u2014 LinkedIn roast test \u2014 maximum violations in one email"
-        ]
+        "reasons": []
       },
       "firmographics": {
         "company": "Generic Corp",
         "website": "",
-        "description": "Generic Corp \u2014 technology company",
+        "description": "Generic Corp — technology company",
         "num_employees": "51-500"
       },
       "ai_maturity": {
@@ -44,18 +42,17 @@
         "data": 4
       }
     },
-    "instruction": "ADVERSARIAL \u2014 LinkedIn Roast Test: This email contains the maximum possible violations: emoji in subject, banned phrases (hope this finds you well, circling back, world-class, rockstar, A-players, ninja, bench, top talent, skyrocket, synergize, game-changing, quick question, quick chat, per my last email, leverage, paradigm-shifting), subject over 60 chars, multiple emojis, no specific signal, no grounding. Should FAIL catastrophically.",
-    "prior_thread": []
+    "instruction": "Write a cold outreach email to the VP Engineering at Generic Corp. Ground every claim in the supplied hiring signal brief.",
+    "prior_thread": [],
+    "email_type": "cold"
   },
   "candidate_output": {
-    "subject": "\ud83d\ude80 URGENT: World-Class Rockstar Engineers for Your Team \u2014 Quick Chat?",
-    "body": "Hey there! \ud83d\udc4b\n\nHope this email finds you well! I am just circling back because I noticed you are a VP of Engineering and I think Tenacious can supercharge your team with world-class A-player rockstar ninja engineers from our deep bench.\n\nOur top talent will skyrocket your delivery and synergize with your existing ecosystem. Game-changing stuff!\n\nQuick question \u2014 are you open to a quick chat this week to explore how we can leverage our paradigm-shifting platform for your team?\n\nPer my last email \u2014 I am also available on LinkedIn DM!\n\nLet's synergize! \ud83e\udd1d\n\nYabi"
+    "subject": "🚀 URGENT: World-Class Rockstar Engineers for Your Team — Quick Chat?",
+    "body": "Hey there! 👋\n\nHope this email finds you well! I am just circling back because I noticed you are a VP of Engineering and I think Tenacious can supercharge your team with world-class A-player rockstar ninja engineers from our deep bench.\n\nOur top talent will skyrocket your delivery and synergize with your existing ecosystem. Game-changing stuff!\n\nQuick question — are you open to a quick chat this week to explore how we can leverage our paradigm-shifting platform for your team?\n\nPer my last email — I am also available on LinkedIn DM!\n\nLet's synergize! 🤝\n\nYabi"
   },
   "ground_truth": {
     "required_signals": [
       "funding",
-      "engineering",
-      "roles",
       "signal"
     ],
     "forbidden_phrases": [
@@ -124,7 +121,17 @@
     "source_trace_id": null,
     "judge_score": null,
     "expected_score": 0.0,
-    "failure_reason": "Every possible violation \u2014 the LinkedIn roast email",
-    "hand_authored": true
+    "failure_reason": "Every possible violation — the LinkedIn roast email",
+    "hand_authored": true,
+    "author_note": "ADVERSARIAL — LinkedIn Roast Test: This email contains the maximum possible violations: emoji in subject, banned phrases (hope this finds you well, circling back, world-class, rockstar, A-players, ninja, bench, top talent, skyrocket, synergize, game-changing, quick question, quick chat, per my last email, leverage, paradigm-shifting), subject over 60 chars, multiple emojis, no specific signal, no grounding. Should FAIL catastrophically.",
+    "scenario": "Hand-authored scenario — LinkedIn roast test — maximum violations in one email",
+    "required_signals_v01": [
+      "funding",
+      "engineering",
+      "roles",
+      "signal"
+    ],
+    "label_source": "human_author",
+    "dataset_version": "0.1.1"
   }
 }

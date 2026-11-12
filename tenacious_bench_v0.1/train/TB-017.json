@@ -12,7 +12,7 @@
         "segment_name": "Post-layoff restructuring",
         "confidence": "high",
         "reasons": [
-          "Layoff detected \u2014 cost restructuring likely"
+          "Layoff detected — cost restructuring likely"
         ]
       },
       "firmographics": {
@@ -35,7 +35,7 @@
         "date": "1/31/2023",
         "stage": "Post-IPO",
         "country": "United States",
-        "icp_signal": "Segment 2 \u2014 cost restructuring pitch",
+        "icp_signal": "Segment 2 — cost restructuring pitch",
         "note": "Layoff detected from layoffs.fyi dataset (1 records found)"
       },
       "leadership_signal": {
@@ -56,19 +56,18 @@
         "data": 4
       }
     },
-    "instruction": "ADVERSARIAL TASK: The following email was sent to Hubspot (Segment 2) but uses a Segment 4 pitch angle and multiple banned phrases. This email should FAIL scoring.",
-    "prior_thread": []
+    "instruction": "Write a cold outreach email to the VP Engineering at Hubspot. Ground every claim in the supplied hiring signal brief.",
+    "prior_thread": [],
+    "email_type": "cold"
   },
   "candidate_output": {
-    "subject": "Hope this finds you well \u2014 quick chat?",
+    "subject": "Hope this finds you well — quick chat?",
     "body": "Hope this email finds you well! Hubspot is clearly scaling aggressively and your top talent bench needs world-class rockstar engineers to skyrocket your AI platform. Our proprietary agentic systems will 10x your delivery throughput. Just circling back to see if you'd be open to a quick chat about synergizing our ecosystems?\n\nBest, Yabi"
   },
   "ground_truth": {
     "required_signals": [
       "restructuring",
-      "cost",
-      "layoff",
-      "restructure"
+      "layoff"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -138,6 +137,16 @@
     ],
     "source_trace_id": "thread_20260427_115927",
     "judge_score": null,
-    "expected_score": 0.0
+    "expected_score": 0.0,
+    "author_note": "ADVERSARIAL TASK: The following email was sent to Hubspot (Segment 2) but uses a Segment 4 pitch angle and multiple banned phrases. This email should FAIL scoring.",
+    "required_signals_v01": [
+      "restructuring",
+      "cost",
+      "layoff",
+      "restructure"
+    ],
+    "is_passing_v01": false,
+    "label_source": "evaluator_v0.2",
+    "dataset_version": "0.1.1"
   }
 }
