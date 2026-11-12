@@ -1,0 +1,31 @@
+{
+  "teacher": "meta-llama/llama-3.3-70b-instruct",
+  "evaluator": "scoring_evaluator.py v0.2.1 (tag evaluator-v0.2.1-frozen)",
+  "input_tasks": 430,
+  "pairs": 567,
+  "train_pairs": 512,
+  "val_pairs": 55,
+  "distinct_user_prompts": 358,
+  "val_prospects": 26,
+  "system_prompt": "prompting.TRAINED",
+  "counts": {
+    "accepted:v01_train": 142,
+    "accepted_try1": 543,
+    "accepted_try2": 50,
+    "rejected:v01_train": 13,
+    "residual:NO_SPECIFIC_SIGNAL": 8,
+    "residual:LAYOFF_UNSUPPORTED": 1,
+    "residual:ASSERTIVE_ON_WEAK_SIGNAL": 1,
+    "human_labelled_good": 13,
+    "residual:BANNED_PHRASE": 1,
+    "residual:CAPACITY_EXCEEDS_BENCH": 7,
+    "accepted:w10_real_company": 407,
+    "duplicate_dropped": 1,
+    "accepted:w10_real_company_reply": 44,
+    "rejected:w10_real_company_reply": 4,
+    "style_filter_internal_score_dropped": 38,
+    "decontaminated_pairs_dropped": 1,
+    "decontaminated_input_tasks": 2
+  },
+  "spend_usd_total": 0.330198
+}

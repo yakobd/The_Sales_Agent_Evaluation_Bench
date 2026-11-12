@@ -47,7 +47,7 @@ import re
 import sys
 from pathlib import Path
 
-VERSION = "0.2"
+VERSION = "0.2.1"
 DIMENSIONS = ("grounding", "honesty", "commercial_safety", "tone", "format")
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -285,13 +285,15 @@ def _brief_signal_patterns(task: dict) -> list[str]:
     brief = task.get("input", {}).get("hiring_signal_brief", {}) or {}
     f = brief_facts(task)
     pats: list[str] = []
-    if f["has_layoff"]:
+    # Only VALID signals can be required: a signal outside its recency window must not
+    # be the basis of the pitch (honesty), so grounding cannot demand it either (v0.2.1).
+    if f["has_layoff"] and f["layoff_recent"] is not False:
         pats += SIGNAL_WORDS["layoff"]
-    if f["has_leadership"]:
+    if f["has_leadership"] and f["leadership_recent"] is not False:
         lead = brief.get("leadership_signal", {}) or {}
         pats += SIGNAL_WORDS["leadership"] + [r"(cto|vp engineering|vp of engineering|head of engineering|chief \w+ officer)"]
         pats += [re.escape(str(lead[k]).lower()) for k in ("leader_title", "leader_name") if lead.get(k)]
-    if f["has_funding"]:
+    if f["has_funding"] and f["funding_recent"] is not False:
         pats += SIGNAL_WORDS["funding"]
     if f["ai_score"] >= 2:
         pats += SIGNAL_WORDS["ai"]

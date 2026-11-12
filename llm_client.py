@@ -34,7 +34,10 @@ BUDGET_USD = float(os.getenv("TB_BUDGET_USD", "5.00"))
 BUCKETS = {"dataset_authoring", "training", "held_out_eval", "reserve"}
 URL = "https://openrouter.ai/api/v1/chat/completions"
 
+import threading
+
 _cache: dict | None = None
+_lock = threading.Lock()  # cost log + cache are shared by worker threads
 
 
 class BudgetExceeded(RuntimeError):
@@ -71,12 +74,12 @@ def chat(model: str, messages: list[dict], *, bucket: str, purpose: str,
     if response_format:
         body["response_format"] = response_format
     key = hashlib.sha256(json.dumps(body, sort_keys=True, ensure_ascii=False).encode("utf-8")).hexdigest()
-    cache = _load_cache()
-    if key in cache:
-        return cache[key]["content"]
-
-    if spent_usd() >= BUDGET_USD:
-        raise BudgetExceeded(f"logged spend ${spent_usd():.4f} >= budget ${BUDGET_USD:.2f} (TB_BUDGET_USD)")
+    with _lock:
+        cache = _load_cache()
+        if key in cache:
+            return cache[key]["content"]
+        if spent_usd() >= BUDGET_USD:
+            raise BudgetExceeded(f"logged spend ${spent_usd():.4f} >= budget ${BUDGET_USD:.2f} (TB_BUDGET_USD)")
     api_key = os.getenv("OPENROUTER_API_KEY")
     if not api_key:
         raise RuntimeError("OPENROUTER_API_KEY not set (see .env.example)")
@@ -97,11 +100,12 @@ def chat(model: str, messages: list[dict], *, bucket: str, purpose: str,
                 "prompt_tokens": usage.get("prompt_tokens"), "completion_tokens": usage.get("completion_tokens"),
                 "cost_usd": float(usage.get("cost") or 0.0), "latency_s": round(time.time() - t0, 2),
             }
-            with COST_LOG.open("a", encoding="utf-8") as fh:
-                fh.write(json.dumps(rec) + "\n")
-            cache[key] = {"content": content, "usage": usage}
-            with CACHE.open("a", encoding="utf-8") as fh:
-                fh.write(json.dumps({"key": key, "response": cache[key]}, ensure_ascii=False) + "\n")
+            with _lock:
+                with COST_LOG.open("a", encoding="utf-8") as fh:
+                    fh.write(json.dumps(rec) + "\n")
+                cache[key] = {"content": content, "usage": usage}
+                with CACHE.open("a", encoding="utf-8") as fh:
+                    fh.write(json.dumps({"key": key, "response": cache[key]}, ensure_ascii=False) + "\n")
             return content
         except (requests.RequestException, KeyError, ValueError) as e:  # network / malformed reply
             last_err = e

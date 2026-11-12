@@ -1,9 +1,62 @@
 {
-  "training_pairs": 128,
-  "held_out_tasks": 3,
-  "dev_tasks": 112,
-  "train_held_overlap": 0,
-  "train_dev_overlap": 0,
-  "status": "PASSED",
-  "violations": []
+  "pairs": 567,
+  "distinct_input_tasks": 366,
+  "targets_failing_evaluator": [],
+  "held_out_prospects_in_training": [],
+  "by_source": {
+    "teacher:v01_train": 106,
+    "human_labelled_good": 13,
+    "teacher:w10_real_company": 405,
+    "teacher:w10_real_company_reply": 43
+  },
+  "by_email_type": {
+    "cold": 496,
+    "reply": 61,
+    "re_engagement": 9,
+    "referral": 1
+  },
+  "contamination_vs_held_out": {
+    "ngram": {
+      "n": 68,
+      "tasks_with_overlap": 0,
+      "passed": true,
+      "violations": []
+    },
+    "embedding": {
+      "model": "sentence-transformers/all-MiniLM-L6-v2",
+      "threshold": 0.85,
+      "n": 68,
+      "max_cosine": 0.7352,
+      "mean_max_cosine": 0.6383,
+      "top5": [
+        {
+          "task_id": "TB-H014",
+          "most_similar": "TB-007",
+          "cosine": 0.7352
+        },
+        {
+          "task_id": "TB-H110",
+          "most_similar": "TR-R034",
+          "cosine": 0.7307
+        },
+        {
+          "task_id": "TB-H010",
+          "most_similar": "TB-007",
+          "cosine": 0.7168
+        },
+        {
+          "task_id": "TB-H001",
+          "most_similar": "TB-017",
+          "cosine": 0.7161
+        },
+        {
+          "task_id": "TB-H023",
+          "most_similar": "TR-W062",
+          "cosine": 0.7076
+        }
+      ],
+      "passed": true
+    }
+  },
+  "passed": true
 }

@@ -11,13 +11,13 @@
         "good_failed": 6
       },
       "evaluator_assigned_labels": {
-        "n": 254,
-        "agree": 183,
-        "rate": 0.72,
-        "good_passed": 91,
-        "bad_failed": 92,
-        "bad_passed": 71,
-        "good_failed": 0
+        "n": 322,
+        "agree": 193,
+        "rate": 0.599,
+        "good_passed": 96,
+        "bad_failed": 97,
+        "bad_passed": 128,
+        "good_failed": 1
       }
     },
     "disagreements": [
@@ -128,11 +128,11 @@
         "good_failed": 0
       },
       "evaluator_assigned_labels": {
-        "n": 254,
-        "agree": 254,
+        "n": 322,
+        "agree": 322,
         "rate": 1.0,
-        "good_passed": 91,
-        "bad_failed": 163,
+        "good_passed": 97,
+        "bad_failed": 225,
         "bad_passed": 0,
         "good_failed": 0
       }
