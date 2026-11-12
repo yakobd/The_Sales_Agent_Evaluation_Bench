@@ -24,7 +24,10 @@ from scoring_evaluator_v01 import score_task
 HELD_OUT_DIR = Path(__file__).parent.parent / 'tenacious_bench_v0.1' / 'held_out'
 
 def main():
-    tasks = [json.loads(f.read_text())
+    for stream in (sys.stdout, sys.stderr):  # UTF-8 output on Windows consoles
+        if hasattr(stream, "reconfigure"):
+            stream.reconfigure(encoding="utf-8")
+    tasks = [json.loads(f.read_text(encoding="utf-8"))
              for f in sorted(HELD_OUT_DIR.glob('TB-*.json'))]
 
     print(f"Tenacious-Bench v0.1 — Held-Out Scoring")

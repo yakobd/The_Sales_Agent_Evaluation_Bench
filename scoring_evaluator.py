@@ -550,6 +550,10 @@ def _demo_tasks() -> list:
 
 
 if __name__ == "__main__":
+    # Windows consoles default to cp1252 and crash on "—" or "✅"; force UTF-8 output.
+    for stream in (sys.stdout, sys.stderr):
+        if hasattr(stream, "reconfigure"):
+            stream.reconfigure(encoding="utf-8")
     ap = argparse.ArgumentParser(description=f"Tenacious-Bench evaluator v{VERSION}")
     ap.add_argument("--task", help="task JSON file")
     ap.add_argument("--output", help="candidate email JSON {subject, body}; default: task's stored candidate")
