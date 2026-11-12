@@ -88,11 +88,12 @@ def main():
     tasks = load_held_out()
     gens = [json.loads(l) for l in Path(args.generations).read_text(encoding="utf-8").splitlines() if l.strip()]
     conds = sorted({g["condition"] for g in gens})
-    traces, scores, dims, latency, tokens = [], {}, {}, {}, {}
+    traces, scores, dims, latency, tokens, codes = [], {}, {}, {}, {}, {}
 
     def record(cond, tid, email, extra):
         r = E.score_task(tasks[tid], email)
         scores.setdefault(cond, {})[tid] = int(r["all_pass"])
+        codes.setdefault(cond, {})[tid] = {v["code"] for v in r["violations"]}
         for d in E.DIMENSIONS:
             dims.setdefault(cond, {}).setdefault(d, []).append(int(r["checks"][d]["pass"]))
         traces.append({"task_id": tid, "condition": cond, "email_type": tasks[tid]["input"]["email_type"],
@@ -157,6 +158,16 @@ def main():
         reply_ids = [i for i in all_ids if i not in cold_ids]
         if reply_ids and "prompt_engineered" in scores:
             results["comparisons"]["replies_trained_vs_prompt_engineered"] = paired(scores["trained"], scores["prompt_engineered"], reply_ids, rng)
+    # Sensitivity: is Delta B just the "[First Name]" habit? Re-pass ignoring placeholder violations
+    # (the prompt-engineered system prompt explicitly forbids them, so the main result keeps them).
+    ignore = {"TEMPLATE_PLACEHOLDER"}
+    lenient = {c: {i: int(not (codes[c][i] - ignore))
+                   for i in codes[c]} for c in codes}
+    if "trained" in lenient and "prompt_engineered" in lenient:
+        results["sensitivity_ignore_template_placeholder"] = {
+            "pass_at_1": {c: round(statistics.mean(lenient[c].values()), 4) for c in ("base_short", "prompt_engineered", "trained") if c in lenient},
+            "delta_B_trained_vs_prompt_engineered": paired(lenient["trained"], lenient["prompt_engineered"], all_ids, rng),
+        }
     results["delta_C"] = ("not computed: Week 10 tau2-Bench retail (0.333) and Tenacious-Bench measure different tasks; "
                           "subtracting them is not meaningful")
     if args.training_log:
@@ -170,7 +181,8 @@ def main():
                             "adapter uses the short system prompt; prompt_engineered carries the full rule set on every call.")
 
     out = Path(args.out_prefix)
-    out.with_suffix(".json").write_text(json.dumps(results, indent=2), encoding="utf-8")
+    out_json = out.parent / (out.name + ".json")  # not with_suffix: "v0.2" would lose ".2"
+    out_json.write_text(json.dumps(results, indent=2), encoding="utf-8")
     trace_path = out.parent / "held_out_traces_v0.2.jsonl"
     with trace_path.open("w", encoding="utf-8", newline="\n") as fh:
         for tr in traces:
@@ -185,7 +197,12 @@ def main():
         print(f"{k:42s} delta {v['delta']:+.3f}  CI [{v['ci95'][0]:+.3f}, {v['ci95'][1]:+.3f}]  "
               f"p_boot {v['p_bootstrap_one_sided']:.4f}  McNemar {v['mcnemar_exact_one_sided']:.4f}  "
               f"{'SIGNIFICANT' if v['significant_at_0.05'] else 'not significant'}")
-    print(f"-> {out.with_suffix('.json').name}, {trace_path.name}")
+    if "sensitivity_ignore_template_placeholder" in results:
+        s = results["sensitivity_ignore_template_placeholder"]
+        v = s["delta_B_trained_vs_prompt_engineered"]
+        print(f"sensitivity (placeholders ignored): pass@1 {s['pass_at_1']}  delta_B {v['delta']:+.3f} "
+              f"CI [{v['ci95'][0]:+.3f}, {v['ci95'][1]:+.3f}]  McNemar {v['mcnemar_exact_one_sided']:.4f}")
+    print(f"-> {out_json.name}, {trace_path.name}")
 
 
 if __name__ == "__main__":

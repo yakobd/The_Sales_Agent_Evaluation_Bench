@@ -19,3 +19,6 @@ ablations/held_out_traces_v0.2.jsonl
 ablations/generations.jsonl
 ablations/adapter.zip
 ablations/generations_run1_INVALID_rightpad.jsonl
+ablations/adapter/
+ablations/generations_all.jsonl
+ablations/week10_v2_generations.jsonl
