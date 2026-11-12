@@ -111,14 +111,17 @@ def main():
         tokens.setdefault(g["condition"], []).append(g.get("new_tokens") or 0)
         record(g["condition"], g["task_id"], email, {"raw_text": g["text"], "new_tokens": g.get("new_tokens"),
                                                      "per_email_seconds_batched": round(per_email_s, 3)})
+    cold_ids = sorted(scores.get("week10", {}))
+    cold_only = set()  # e.g. week10_v2: template composers have no reply writer
     for c in conds:
-        missing = set(tasks) - set(scores.get(c, {}))
-        if missing:
-            raise SystemExit(f"condition {c} is missing {len(missing)} tasks")
+        covered = set(scores.get(c, {}))
+        if covered == set(cold_ids):
+            cold_only.add(c)
+        elif set(tasks) - covered:
+            raise SystemExit(f"condition {c} is missing {len(set(tasks) - covered)} tasks")
 
     rng = np.random.default_rng(config.SEED)
     all_ids = sorted(tasks)
-    cold_ids = sorted(scores.get("week10", {}))
     prompt_chars = {c: statistics.mean(len(json.dumps(PR.render_messages(tasks[i], "prompt_engineered" if c == "prompt_engineered" else "trained"), ensure_ascii=False))
                                        for i in all_ids) for c in conds}
     results = {
@@ -130,7 +133,7 @@ def main():
         "comparisons": {},
     }
     for c in ["week10"] + conds:
-        ids = cold_ids if c == "week10" else all_ids
+        ids = cold_ids if (c == "week10" or c in cold_only) else all_ids
         sc = [scores[c][i] for i in ids]
         results["conditions"][c] = {
             "n": len(ids), "pass_at_1": round(statistics.mean(sc), 4), "ci95": ci_pass_rate(sc, rng),
@@ -138,7 +141,7 @@ def main():
             "per_dimension_pass_rate": {d: round(statistics.mean(v), 4) for d, v in dims[c].items()},
             **({"mean_new_tokens": round(statistics.mean(tokens[c]), 1),
                 "mean_seconds_per_email_batched": round(statistics.mean(latency[c]), 3),
-                "mean_prompt_chars": round(prompt_chars[c])} if c in latency else
+                "mean_prompt_chars": round(prompt_chars[c])} if (c in latency and c not in cold_only) else
                {"mean_new_tokens": 0, "mean_seconds_per_email_batched": 0.0, "note": "deterministic template, no model call"}),
         }
     if "trained" in scores:
@@ -148,6 +151,9 @@ def main():
             results["comparisons"]["delta_B_trained_vs_prompt_engineered"] = paired(scores["trained"], scores["prompt_engineered"], all_ids, rng)
         if "base_short" in scores:
             results["comparisons"]["training_effect_trained_vs_base_short"] = paired(scores["trained"], scores["base_short"], all_ids, rng)
+        if "week10_v2" in scores:
+            results["comparisons"]["trained_vs_week10_v2_honest_template_cold"] = paired(
+                scores["trained"], scores["week10_v2"], cold_ids, rng)
         reply_ids = [i for i in all_ids if i not in cold_ids]
         if reply_ids and "prompt_engineered" in scores:
             results["comparisons"]["replies_trained_vs_prompt_engineered"] = paired(scores["trained"], scores["prompt_engineered"], reply_ids, rng)
