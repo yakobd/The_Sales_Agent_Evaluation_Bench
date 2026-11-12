@@ -58,6 +58,9 @@ def summarize(rows):
 
 
 def main():
+    for stream in (sys.stdout, sys.stderr):  # UTF-8 output on Windows consoles
+        if hasattr(stream, "reconfigure"):
+            stream.reconfigure(encoding="utf-8")
     ap = argparse.ArgumentParser()
     ap.add_argument("--json", help="write full report here")
     args = ap.parse_args()
