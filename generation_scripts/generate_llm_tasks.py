@@ -9,6 +9,10 @@ Cost:  ~$0.05-0.10 for 30-40 tasks
 Model: Qwen3-Next-80B via OpenRouter (cheap dev-tier)
 """
 
+import sys as _sys
+from pathlib import Path as _Path
+_sys.path.insert(0, str(_Path(__file__).resolve().parents[1]))
+from config import REPO_ROOT, WEEK10_DIR  # noqa: E402  (repo-relative paths)
 import json
 import os
 import re
@@ -19,13 +23,13 @@ from pathlib import Path
 from datetime import datetime
 from dotenv import load_dotenv
 
-load_dotenv('/home/yakob/week11-sales-bench/.env')
+load_dotenv(REPO_ROOT / '.env')
 
-sys.path.insert(0, '/home/yakob/week11-sales-bench')
+sys.path.insert(0, str(REPO_ROOT))
 from scoring_evaluator import score_task
 
-OUTPUT_DIR  = Path("/home/yakob/week11-sales-bench/tenacious_bench_v0.1")
-SCRIPTS_DIR = Path("/home/yakob/week11-sales-bench/generation_scripts")
+OUTPUT_DIR  = (REPO_ROOT / 'tenacious_bench_v0.1')
+SCRIPTS_DIR = (REPO_ROOT / 'generation_scripts')
 
 OPENROUTER_KEY = os.getenv('OPENROUTER_API_KEY')
 GENERATOR_MODEL = "qwen/qwen3-235b-a22b"

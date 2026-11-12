@@ -8,15 +8,19 @@ Check 3: Time-shift verification (source window documented)
 Outputs: contamination_check.json
 """
 
+import sys as _sys
+from pathlib import Path as _Path
+_sys.path.insert(0, str(_Path(__file__).resolve().parents[0]))
+from config import REPO_ROOT, WEEK10_DIR  # noqa: E402  (repo-relative paths)
 import json
 import re
 from pathlib import Path
 from datetime import datetime
 from collections import defaultdict
 
-OUTPUT_DIR  = Path("/home/yakob/week11-sales-bench/tenacious_bench_v0.1")
-SCRIPTS_DIR = Path("/home/yakob/week11-sales-bench/generation_scripts")
-RESULTS_DIR = Path("/home/yakob/week11-sales-bench")
+OUTPUT_DIR  = (REPO_ROOT / 'tenacious_bench_v0.1')
+SCRIPTS_DIR = (REPO_ROOT / 'generation_scripts')
+RESULTS_DIR = REPO_ROOT
 
 
 def load_partition(partition: str) -> list:

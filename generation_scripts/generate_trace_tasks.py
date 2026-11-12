@@ -8,6 +8,10 @@ Why:  Highest fidelity — real system behavior, real enrichment data
 Tools: email_agent.py, hiring_signal_brief JSON files
 """
 
+import sys as _sys
+from pathlib import Path as _Path
+_sys.path.insert(0, str(_Path(__file__).resolve().parents[1]))
+from config import REPO_ROOT, WEEK10_DIR  # noqa: E402  (repo-relative paths)
 import json
 import sys
 import glob
@@ -15,15 +19,15 @@ from pathlib import Path
 from datetime import datetime
 
 # Add Week 10 agent to path
-WEEK10 = Path("/home/yakob/week10-conversion-engine")
+WEEK10 = WEEK10_DIR
 sys.path.insert(0, str(WEEK10))
 
 from agent.email_agent import generate_outreach_email
 
 TRACES_DIR   = WEEK10 / "data/traces"
 ENRICHMENT_DIR = WEEK10 / "data/enrichment_outputs"
-OUTPUT_DIR   = Path("/home/yakob/week11-sales-bench/tenacious_bench_v0.1")
-SCRIPTS_DIR  = Path("/home/yakob/week11-sales-bench/generation_scripts")
+OUTPUT_DIR   = (REPO_ROOT / 'tenacious_bench_v0.1')
+SCRIPTS_DIR  = (REPO_ROOT / 'generation_scripts')
 
 # Segment definitions
 SEGMENT_NAMES = {

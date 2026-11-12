@@ -10,13 +10,17 @@ Why:   Fills gaps Mode 1 cannot — Segments 3 and 4, diverse signals
 Tools: Pure Python, no LLM calls
 """
 
+import sys as _sys
+from pathlib import Path as _Path
+_sys.path.insert(0, str(_Path(__file__).resolve().parents[1]))
+from config import REPO_ROOT, WEEK10_DIR  # noqa: E402  (repo-relative paths)
 import json
 from pathlib import Path
 from datetime import datetime
 from collections import Counter
 
-OUTPUT_DIR  = Path("/home/yakob/week11-sales-bench/tenacious_bench_v0.1")
-SCRIPTS_DIR = Path("/home/yakob/week11-sales-bench/generation_scripts")
+OUTPUT_DIR  = (REPO_ROOT / 'tenacious_bench_v0.1')
+SCRIPTS_DIR = (REPO_ROOT / 'generation_scripts')
 
 FORBIDDEN_PHRASES = [
     "just circling back", "hope this finds you well",
