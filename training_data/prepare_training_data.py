@@ -18,7 +18,7 @@ from pathlib import Path
 from datetime import datetime
 
 sys.path.insert(0, str(REPO_ROOT))
-from scoring_evaluator import score_task
+from scoring_evaluator_v01 import score_task
 
 TRAIN_DIR   = (REPO_ROOT / 'tenacious_bench_v0.1/train')
 OUTPUT_DIR  = (REPO_ROOT / 'training_data')

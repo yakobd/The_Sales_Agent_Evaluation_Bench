@@ -19,7 +19,7 @@ from pathlib import Path
 
 random.seed(42)
 sys.path.insert(0, str(Path(__file__).parent.parent))
-from scoring_evaluator import score_task
+from scoring_evaluator_v01 import score_task
 
 HELD_OUT_DIR = Path(__file__).parent.parent / 'tenacious_bench_v0.1' / 'held_out'
 
