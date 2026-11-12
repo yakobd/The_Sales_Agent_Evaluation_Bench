@@ -308,7 +308,7 @@ def test_v01_label_errors_are_caught(task_id, expected):
 
 def test_ablation_baseline_with_placeholders_now_fails():
     """v0.1 scored this held-out baseline email 1.0 despite '[Your Company]'."""
-    rec = json.loads((config.REPO_ROOT / "ablations" / "held_out_traces.jsonl")
+    rec = json.loads((config.REPO_ROOT / "archive" / "v0.1" / "held_out_traces.jsonl")
                      .read_text(encoding="utf-8").splitlines()[0])
     r = E.score_task(load(rec["task_id"]), rec["baseline"]["output"])
     assert rec["baseline"]["score"] == 1.0 and r["overall_score"] == 0.0

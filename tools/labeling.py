@@ -102,8 +102,19 @@ def brief_view(t):
     return rows
 
 
+def round1_tasks():
+    """Later rounds must re-label exactly the round-1 tasks. Re-sampling is not stable:
+    strata depend on the evaluator verdict, which changed (v0.2 -> v0.2.1) after round 1."""
+    ids = json.loads((OUT / "round1_manifest.json").read_text(encoding="utf-8"))["task_ids"]
+    by_id = {t["task_id"]: t for t in candidates()}
+    missing = [i for i in ids if i not in by_id]
+    if missing:
+        raise SystemExit(f"round-1 tasks no longer in train/dev: {missing}")
+    return sorted((by_id[i] for i in ids), key=lambda t: t["task_id"])
+
+
 def make(round_no: int):
-    tasks = select_tasks()
+    tasks = select_tasks() if round_no == 1 else round1_tasks()
     order = list(range(len(tasks)))
     random.Random(config.SEED + round_no).shuffle(order)
     OUT.mkdir(exist_ok=True)

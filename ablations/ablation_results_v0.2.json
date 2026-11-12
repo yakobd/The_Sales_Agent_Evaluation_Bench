@@ -216,6 +216,12 @@
       "significant_at_0.05": true
     }
   },
+  "diagnostic_null_note_cold": {
+    "pass": 49,
+    "n": 54,
+    "pass_at_1": 0.9074,
+    "note": "a two-sentence note with no signal and no pitch; the evaluator measures safety, not persuasiveness"
+  },
   "delta_C": "not computed: Week 10 tau2-Bench retail (0.333) and Tenacious-Bench measure different tasks; subtracting them is not meaningful",
   "training_run": {
     "run_id": "tenacious-bench-v0.2-sft-seed42",

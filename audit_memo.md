@@ -1,3 +1,5 @@
+> **v0.2 correction note.** This Act I gap analysis still stands: τ²-Bench retail does not grade grounding, tone or commercial safety. Two of its inputs do not. The Week 10 "Delta A +0.167, p = 0.0005" compared runs that used different models, and a same-model reference scored 0.7267. Several cited trace IDs are not present in the Week 10 repository. See [LIMITATIONS_AND_CORRECTIONS.md](LIMITATIONS_AND_CORRECTIONS.md).
+
 # Audit Memo — What τ²-Bench Retail Fails to Grade
 **Tenacious-Bench v0.1 | Yakob Dereje | TenX Academy Week 11 | April 28, 2026**
 
