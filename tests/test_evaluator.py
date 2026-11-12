@@ -149,6 +149,32 @@ class TestHonesty:
         assert "REGION_TIMEZONE_MISMATCH" in codes(t, e)
         assert "REGION_TIMEZONE_MISMATCH" not in codes(task(), e)  # US prospect: fine
 
+    @pytest.mark.parametrize("code,flag", [("DE", True), ("GB", True), ("KE", True), ("NLD", True),
+                                           ("OM", True), ("KR", True), ("US", False), ("CA", False),
+                                           ("", False), ("nan", False)])
+    def test_region_from_iso_codes(self, code, flag):
+        e = email(GOOD_BODY.replace("Teams in", "We keep US East Coast hours. Teams in"))
+        t = task(input__hiring_signal_brief__firmographics={"company": "Acme", "country_code": code})
+        assert ("REGION_TIMEZONE_MISMATCH" in codes(t, e)) is flag
+
+    def test_stale_funding_cannot_be_called_recent(self):
+        e = email(GOOD_BODY.replace("Teams in", "Teams that recently raised often hire fast. Teams in"))
+        t = task(input__hiring_signal_brief__funding={"round": "Series A", "announced_on": "2014-05-20", "recent": False})
+        assert "FUNDING_NOT_RECENT" in codes(t, e)
+        t["input"]["hiring_signal_brief"]["funding"]["recent"] = True
+        assert "FUNDING_NOT_RECENT" not in codes(t, e)
+
+    def test_stale_layoff_and_leadership(self):
+        """W10 told an Omani firm about its 'recent restructuring' from a 2020 layoff."""
+        t = task(input__hiring_signal_brief__layoff_signal={"layoff_detected": True, "date": "4/2/2020",
+                                                            "within_window": False})
+        e = email("Acme has gone through a recent restructuring after the layoff." + CTA + SIG)
+        assert "LAYOFF_NOT_RECENT" in codes(t, e)
+        t2 = task(input__hiring_signal_brief__leadership_signal={"leadership_change_detected": True,
+                                                                 "within_window": False})
+        e2 = email(GOOD_BODY.replace("Teams in", "Your new CTO will review vendors in the first 90 days. Teams in"))
+        assert "LEADERSHIP_NOT_RECENT" in codes(t2, e2)
+
     def test_segment4_pitch_needs_ai_maturity_2(self):
         e = email(GOOD_BODY.replace("Teams in", "We staff agentic systems squads. Teams in"))
         assert "SEGMENT4_PITCH_LOW_AI_MATURITY" in codes(task(), e)

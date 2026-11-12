@@ -1,0 +1,39 @@
+{
+  "models": {
+    "prospect_messages": "mistralai/mistral-small-3.2-24b-instruct",
+    "candidate_replies": "google/gemma-3-27b-it",
+    "judge_filter": "deepseek/deepseek-chat"
+  },
+  "judge_threshold": "all three dimensions >= 3",
+  "generated": 70,
+  "kept": 68,
+  "dropped": [
+    {
+      "task_id": "TB-H111",
+      "judge_scores": {
+        "input_coherence": 3,
+        "ground_truth_verifiability": 4,
+        "rubric_clarity": 2,
+        "note": "The input is coherent but lacks clarity on how to handle pricing inquiries."
+      }
+    },
+    {
+      "task_id": "TB-H112",
+      "judge_scores": {
+        "input_coherence": 4,
+        "ground_truth_verifiability": 3,
+        "rubric_clarity": 2,
+        "note": "The input is coherent but lacks explicit grounding details for the email reply."
+      }
+    }
+  ],
+  "judge_score_distribution": {
+    "1": 0,
+    "2": 2,
+    "3": 28,
+    "4": 38,
+    "5": 2
+  },
+  "candidate_pass_rate": 0.088,
+  "spend_usd_total_so_far": 0.019508
+}

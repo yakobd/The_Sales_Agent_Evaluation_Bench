@@ -347,10 +347,18 @@ def main():
         path = next(p for p in git_ls(ORIGINAL_SG_COMMIT, "tenacious_bench_v0.1") if p.endswith(f"/{tid}.json"))
         original_sg[tid] = json.loads(git_show(ORIGINAL_SG_COMMIT, path))["candidate_output"]
 
+    retired_file = config.REPO_ROOT / "reports" / "retired_held_out_v01.json"
+    retired = set(json.loads(retired_file.read_text(encoding="utf-8"))["task_ids"]) if retired_file.exists() else set()
+
     log, counts = [], Counter()
     for path in git_ls(BASE_COMMIT, "tenacious_bench_v0.1"):
         task = json.loads(git_show(BASE_COMMIT, path))
         fixed = repair(task, original_sg, log)
+        if fixed["task_id"] in retired:  # Phase 3 moved the public v0.1 held-out to dev
+            path = path.replace("/held_out/", "/dev/")
+            fixed["metadata"].update({"partition": "dev", "retired_from": "held_out_v0.1",
+                                      "retirement_note": "Retired from v0.1 held-out: public in git and contaminated "
+                                                         "(8-gram overlap with train)."})
         for entry in (log[-1]["changes"] if log and log[-1]["task_id"] == task["task_id"] else []):
             counts[entry.split(" (")[0].split(" for ")[0].split(" ->")[0] if not entry.startswith("label") else "label changed"] += 1
         if not args.dry_run:
