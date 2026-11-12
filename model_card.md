@@ -1,202 +1,130 @@
-# Model Card — tenacious-bench-adapter
+# Model Card: tenacious-bench-adapter v0.2
 
-## Model Details
+> Replaces the v0.1 card, which described a Qwen2.5-0.5B adapter and reported results that were invalid (the adapter was never loaded in that evaluation). See [LIMITATIONS_AND_CORRECTIONS.md](LIMITATIONS_AND_CORRECTIONS.md). The Hugging Face page still shows v0.1 until it is republished.
 
-- **Model name:** yakobd/tenacious-bench-adapter
-- **Model type:** LoRA adapter for causal language model
-- **Backbone:** unsloth/Qwen2.5-0.5B-Instruct
-- **Adapter library:** PEFT with LoRA
-- **Training framework:** Unsloth + HuggingFace TRL SFTTrainer
-- **HuggingFace URL:** https://huggingface.co/yakobd/tenacious-bench-adapter
-- **License:** CC-BY-4.0
+## Model details
 
-## Intended Use
+| | |
+|---|---|
+| **Type** | LoRA adapter (PEFT) for a causal language model |
+| **Backbone** | `unsloth/Qwen3.5-2B`, revision `fffbc0d8711cf87df6d1f97938c5e50ef94aadc7`, used with `enable_thinking=False` |
+| **LoRA** | 16-bit; r=16, α=16, dropout 0 |
+| **LoRA targets** | q_proj, k_proj, v_proj, o_proj, gate_proj, up_proj, down_proj |
+| **Size** | about 44 MB (`adapter_model.safetensors`) |
+| **Framework** | Unsloth 2026.11.4, TRL 1.15.0, PEFT 0.21.2, Transformers 5.17.0, Torch 2.14.1 |
+| **Author** | Yakob Dereje (TenX Academy TRP1, Week 11) |
+| **License** | CC-BY-4.0 for the adapter. The backbone keeps its own license. |
 
-This adapter is trained to generate Tenacious Intelligence Corporation-style
-B2B outreach emails that comply with the Tenacious style guide v2.
+## Intended use
 
-**Primary use:** Replace the email composition step in the Tenacious Conversion
-Engine (Week 10) with a style-constrained generator.
+The adapter writes **first-touch cold emails and replies** for the fictional B2B engineering-services firm Tenacious, from:
 
-**Out-of-scope use:** General-purpose email writing, non-B2B contexts, languages
-other than English.
+- a structured `hiring_signal_brief`
+- a `bench_summary` of available engineers
+- an optional prior thread
 
-## Training Data
+It is meant to be a drop-in replacement for the template composer in the Week 10 Conversion Engine. It is a research artifact. Outputs are drafts for human review.
 
-- **Dataset:** Tenacious-Bench v0.1 training partition + augmentation
-- **Original pairs:** 128 SFT chat-template pairs
-- **Augmented pairs:** 2,413 variations (20 per original pair)
-- **Total pairs:** 2,541 (meets 1,000–3,000 challenge target)
-- **Augmentation accept rate:** 94.3%
-- **Format:** system + user + assistant (chat template)
-- **Source modes:** trace-derived, multi-LLM synthesis, programmatic, hand-authored
-- **Segments:** Seg1=35, Seg2=38, Seg3=35, Seg4=20
-- **Quality filter:** scoring_evaluator.py pass@1=1.0 required
-- **Dataset URL:** https://huggingface.co/datasets/yakobd/tenacious-bench
+**Out of scope:**
 
-## Training Procedure
+- **Sending without review.** Do not send its output without a person reading it first.
+- **Other inputs.** Any prompt that is not shaped like this brief.
+- **Other languages.** Anything other than English.
+- **Final decisions.** Any decision about pricing, contracts or staffing commitments. The model is trained to *avoid* making these, not to make them correctly.
 
-- **Hardware:** Google Colab T4 (free tier, 15.6GB VRAM)
-- **Training cost:** $0.00
-- **Epochs:** 3
-- **Total steps:** 954
-- **Batch size:** 2 per device × 4 gradient accumulation = 8 effective
-- **Warmup steps:** 50
-- **Learning rate:** 2e-4
-- **Precision:** fp16
-- **Wall time:** 19.1 minutes
-- **Seed:** 42
+## Prompt format
 
-## LoRA Configuration
+Use the chat template with the short system prompt `prompting.TRAINED`, and the user message from `prompting.render_user(task)`. Parse the output with `prompting.parse_email`. The model was trained with **this prompt only**. The long rule-set prompt is the baseline it is compared against, not its intended input.
 
-- **r:** 16
-- **lora_alpha:** 32
-- **lora_dropout:** 0.05
-- **target_modules:** q_proj, v_proj, k_proj, o_proj
-- **trainable_params:** 2,162,688 (0.44% of backbone)
+## Training data
 
-## Loss Curve
+All training data comes from the Tenacious-Bench v0.2 train partition and train-only real-company briefs. Full details are in [methodology.md §5](methodology.md#5-training-data-sft).
 
-| Step | Loss   |
-|------|--------|
-| 50   | 2.699  |
-| 100  | 0.539  |
-| 150  | 0.314  |
-| 200  | 0.253  |
-| 300  | 0.209  |
-| 500  | 0.140  |
-| 700  | 0.107  |
-| 900  | 0.100  |
-| 954  | 0.099  |
+- **Pairs:** 512 train and 55 validation, covering 358 distinct prompts. Validation is split by prospect.
+- **Targets:** a Llama-3.3-70B teacher, rejection-sampled against the frozen evaluator with one feedback rewrite allowed. Human-labelled good drafts are included as written.
+- **Filtered out:**
+  - targets that quote the internal AI-maturity score
+  - inputs whose 8-grams overlap the held-out
+- **Exclusions:** no held-out prospect, and no model output from the family under test (Qwen), appears in the targets.
 
-Loss converged after step 500. Final loss: 0.099.
+## Training procedure
 
-## Evaluation Results
+| Setting | Value |
+|---|---|
+| Epochs | 2 (128 steps) |
+| Learning rate | 2e-4, linear schedule, 5% warmup |
+| Batch | 2 per device × 4 gradient-accumulation steps |
+| Optimiser | adamw_8bit, weight decay 0.01 |
+| Precision | fp16 |
+| Max sequence length | 2048 |
+| Seed | 42 |
+| Loss | assistant tokens only |
+| Hardware | Google Colab T4 (free), 17.3 minutes |
 
-Evaluated on Tenacious-Bench v0.1 held-out partition (n=57 tasks,
-29 passing + 25 failing + 3 original, mix of all 4 ICP segments).
+| Step | 25 | 50 | 75 | 100 | 125 | 128 |
+|---|---|---|---|---|---|---|
+| Validation loss | 0.681 | 0.581 | 0.545 | 0.521 | 0.508 | 0.507 |
 
-| System | Avg Score | Delta |
-|--------|-----------|-------|
-| Week 10 baseline | 0.491 | — |
-| Prompt-engineered (no training) | 0.614 | +0.123 |
-| **Trained adapter (this model)** | **0.754** | **+0.263** |
+Training loss went from 1.91 at step 5 to 0.33 at step 125. Validation loss decreased throughout, with no sign of overfitting. A second run reproduced every logged loss to within 3e-4. The log is in [ablations/training_run_seed42.json](ablations/training_run_seed42.json).
 
-- **Delta A** (trained vs baseline): **+0.263** (p=0.0000, highly significant)
-- **Delta B** (trained vs prompt-engineered): **+0.140** (training beats PE ✅)
-- **Delta C** (trained vs τ²-Bench retail 0.333): **+0.421** [informational]
-- **95% CI for Delta A:** [0.140, 0.386] — entirely positive
-- **Statistical test:** paired bootstrap, n_bootstrap=10,000, seed=42
-- **Sample size:** n=57 held-out tasks
+## Evaluation
 
-### Judge Bias Audit Status
+The test set is the sealed Tenacious-Bench v0.2 held-out: 68 tasks (54 cold emails to real companies, 14 replies), never used in training or decontaminated against it. Scoring uses `scoring_evaluator.py` v0.2.1 (frozen), with greedy decoding and one prompt at a time.
 
-**Inter-rater agreement:** Computed on 30 tasks labeled
-twice 24 hours apart. Agreement exceeded 80% on all 5
-rubric dimensions (overall 93%). No rubric revision was
-required.
+| System | pass@1 | 95% CI |
+|---|---|---|
+| Qwen3.5-2B, short prompt (same prompt as the adapter) | 0.015 | [0.000, 0.044] |
+| Qwen3.5-2B, full-rules prompt | 0.103 | [0.044, 0.176] |
+| **This adapter** | **0.868** | **[0.779, 0.941]** |
+| Week 10 original template (cold) | 0.037 | |
+| Week 10 honest template v2 (cold) | 0.982 | |
 
-**Bias audit status:** The judge was NOT tested for the
-three known LLM-as-a-judge biases before reporting Delta A.
+**Pass rate by dimension (adapter):**
 
-**Position bias:** Unknown. Output presentation order was
-not randomized during evaluation. A position-swap audit
-has not been run. Red flag threshold: slot_A_win_rate
-> 0.65 in both orderings, or flip_rate > 0.35.
+| Dimension | Pass rate |
+|---|---|
+| Grounding | 0.97 |
+| Honesty | 0.96 |
+| Commercial safety | 0.97 |
+| Tone | 0.99 |
+| Format | 0.99 |
 
-**Length bias:** Partially screened. A length-score
-correlation check on existing deterministic artifacts
-showed negative correlation between output length and
-score — no obvious positive length bias in saved
-deterministic artifacts. The live LLM judge has not
-been audited separately.
+The cold-task pass rate is 0.870 and the reply pass rate is 12/14.
 
-**Self-preference bias:** Partially mitigated. Generator
-and judge used different Qwen model families. This
-prevents direct self-grading but does not eliminate
-shared post-training style familiarity bias.
+**Paired comparisons:**
 
-**Conservative interpretation:** Delta A = +0.263
-(p<0.0001) is a strong result under the current judge
-protocol. Because the judge was not fully audited for
-position, length, or self-preference bias, systematic
-judge bias could explain part of the lift. The result
-should be read as improvement under current judge
-protocol, pending full bias audit.
+| Comparison | Δ | 95% CI |
+|---|---|---|
+| Adapter vs same-prompt base | +0.853 | [+0.765, +0.926] |
+| Adapter vs full-rules prompt | +0.765 | [+0.662, +0.868] |
+| Adapter vs full-rules prompt, `[First Name]` placeholders ignored | +0.426 | [+0.309, +0.544] |
 
-## How to Use
+All three have exact McNemar p < 0.0001.
 
-```python
-from peft import PeftModel
-from transformers import AutoModelForCausalLM, AutoTokenizer
+**Cost and latency (T4):**
 
-backbone  = "unsloth/Qwen2.5-0.5B-Instruct"
-adapter   = "yakobd/tenacious-bench-adapter"
+| | Mean output tokens | Single-request latency |
+|---|---|---|
+| Adapter | 103 | about 2.8 s |
+| Full-rules prompt | 128 | about 3.2 s |
 
-tokenizer = AutoTokenizer.from_pretrained(backbone)
-model     = AutoModelForCausalLM.from_pretrained(backbone)
-model     = PeftModel.from_pretrained(model, adapter)
+The adapter also needs no rule block in the prompt.
 
-messages = [
-    {"role": "system", "content": "You are a Tenacious Intelligence Corporation outreach writer..."},
-    {"role": "user",   "content": "Company: Yellow.ai\nSegment: 2 — Post-layoff restructuring\n..."}
-]
+## Limitations and risks
 
-inputs = tokenizer.apply_chat_template(messages, return_tensors="pt")
-output = model.generate(**inputs, max_new_tokens=200)
-print(tokenizer.decode(output[0]))
-```
+- **Remaining failures on the held-out (9 of 68):**
+  - Called a stale layoff "recent": 3.
+  - Promised 10 senior Go engineers when 4 were available: 2. This is the most serious failure.
+  - Named no grounded signal: 2.
+  - Subject line over 60 characters: 1.
+  - Evaluator false positive on the company name "Synergy": 1.
 
-## Limitations
-
-1. **Single-turn only** — trained on cold outreach emails. Multi-turn conversation
-   quality is not evaluated.
-2. **Segment 4 underrepresented** — only 20 training pairs for AI capability gap
-   segment. Performance on Segment 4 may be weaker.
-3. **Simulated adapter inference** — Delta A (+0.263, p<0.0001) measures the effect
-   of system-prompt simulation — injecting the condensed Tenacious style guide v2
-   as a system prompt to the base Qwen2.5-0.5B-Instruct model — compared to
-   baseline (no system prompt). The trained LoRA adapter weights were not loaded
-   during evaluation.
-
-   **Validity as a proxy**: System-prompt simulation and LoRA adapter inference
-   operate on different parts of the forward pass. The adapter modifies weight
-   matrices W_eff = W₀ + (α/r)·B@A; system-prompt simulation modifies input
-   activations while leaving weights unchanged. For rule-based rubric dimensions
-   (banned phrases, ICP fingerprints, timezone tokens, honesty flags), the two
-   approaches produce equivalent scores when the system prompt successfully encodes
-   the same constraints the adapter learned — because these dimensions are sensitive
-   to string presence, not token-distribution shape. For the tone-marker dimension
-   (LLM sub-judge), fine-grained distributional differences between the two
-   approaches may produce divergent scores.
-
-   **Conservative interpretation**: Delta A should be read as a valid proxy for the
-   four rule-based dimensions and an unvalidated proxy for tone. Given that 4 of 5
-   rubric dimensions are rule-based, the adapter result is unlikely to differ by
-   more than the tone-marker dimension's weight (estimated ≤15% of overall score).
-4. **Augmentation-based training data** — 94.3% of training pairs are augmented
-   variations of 128 originals. Diversity is lower than 2,541 independently
-   authored pairs would provide.
-
-## Environmental Impact
-
-- **Training hardware:** Google Colab T4 (shared cloud infrastructure)
-- **Training time:** 19.1 minutes
-- **Estimated CO2:** negligible (<0.01 kg CO2eq)
+  Keep the bench check and the signal-recency check in code. Do not rely on the weights alone.
+- **Safe is not the same as persuasive.** The metric rewards emails that are safe. An honest rule-based template scores higher on cold tasks (0.982), mostly by abstaining. A content-free note passes 49 of the 54 cold tasks. Nothing here shows the adapter books more meetings.
+- **The honesty score is an upper bound.** On human-labelled tasks, the evaluator caught only 63% of the honesty judgments a human made. It misses vague overclaims such as "scaling aggressively".
+- **Narrow testing.** One seed, one backbone, and a small held-out (wide confidence intervals; the reply slice has only 14 tasks).
+- **Synthetic setting.** The client is fictional, and the replies are synthetic. Firmographics come from a July 2024 snapshot.
 
 ## Citation
 
-@misc{tenacious-bench-adapter-2026,
-author    = {Yakob Dereje},
-title     = {tenacious-bench-adapter: LoRA adapter for Tenacious-style B2B outreach},
-year      = {2026},
-publisher = {HuggingFace},
-url       = {https://huggingface.co/yakobd/tenacious-bench-adapter}
-}
-
-## Attribution
-
-- Backbone: Qwen2.5-0.5B-Instruct (Alibaba Cloud, Apache 2.0)
-- Training framework: Unsloth (Apache 2.0), HuggingFace TRL (Apache 2.0)
-- Training data: Tenacious-Bench v0.1 (Yakob Dereje, CC-BY-4.0)
-- Workflow domain: Tenacious Intelligence Corporation (fictional B2B sales context)
+See [README.md](README.md#citation).

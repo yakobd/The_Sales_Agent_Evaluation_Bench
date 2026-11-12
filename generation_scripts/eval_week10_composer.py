@@ -63,6 +63,12 @@ def main():
         n = len(rows)
         for name in ("v1", "v2"):
             print(f"{name}: pass@1 {res[name]['pass']}/{n} = {res[name]['pass'] / n:.3f} | violations {dict(viol[name].most_common(6))}")
+        report = {"evaluator": f"v{E.VERSION}", "n_briefs": n, "source": "training_data/week10_train_briefs.jsonl",
+                  **{name: {"pass": res[name]["pass"], "pass_at_1": round(res[name]["pass"] / n, 4),
+                            "violations": dict(viol[name].most_common())} for name in ("v1", "v2")}}
+        out = config.REPO_ROOT / "reports" / "week10_composer_train_briefs.json"
+        out.write_text(json.dumps(report, indent=2), encoding="utf-8")
+        print("wrote", out)
         sample = rows[0]["brief"]
         print("\nexample v2 email for", sample["prospect"], ":\n" + v2(sample)["body"])
     else:

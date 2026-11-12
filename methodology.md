@@ -1,161 +1,195 @@
-# Methodology — Path Declaration and Justification
-**Tenacious-Bench v0.1 | Yakob Dereje | TenX Academy Week 11 | April 28, 2026**
+# Methodology
+
+**Tenacious-Bench v0.2 · Path A (supervised fine-tuning of the email composer)**
+
+This document says what was built, in what order, and which decisions protect the held-out result. What the results do *not* show is in [LIMITATIONS_AND_CORRECTIONS.md](LIMITATIONS_AND_CORRECTIONS.md).
 
 ---
 
-## Path Declaration
+## 1. Problem and path choice
 
-**Selected Path: A — Supervised Fine-Tuning of a Generation Component**
+The Week 10 Conversion Engine enriches a prospect into a `hiring_signal_brief`. The brief covers firmographics, funding, layoffs, leadership changes and AI maturity. The engine then writes a cold email from the brief. Week 10's own probe library left these failures open:
 
-The trained component will be a LoRA adapter on Qwen 3.5 (0.8B or 2B) that replaces the
-current rule-based email composer in the Week 10 Conversion Engine. The adapter will be
-trained to produce signal-grounded outreach emails that contain only claims supported by
-the supplied hiring_signal_brief.json.
+- **P05:** no abstention on very-low-confidence signals.
+- **P09:** AI maturity overstated.
+- **P14:** stack capacity not checked against the bench.
+- **P16:** the word "bench" used in email copy.
+- **P30:** assertive wording on weak signals.
+- **P33:** sector-mismatched peer comparisons.
 
----
+All of these are **generation failures**: the system produces an email, but it says something the brief does not support. The Tenacious-Bench audit then found a larger instance on real data. Measured from the July 2024 Crunchbase snapshot, almost none of the composer's "recent" signals were inside the buying windows. Only 1 of 32 funding rounds was within 180 days, 0 of 14 layoffs within 120 days, and 1 of 8 leadership changes within 90 days. The original composer passes **10 of 204** real-company briefs ([reports/week10_composer_train_briefs.json](reports/week10_composer_train_briefs.json)).
 
-## Justification Against Week 10 Evidence
+**Path A** (SFT of the generator) addresses this directly. Path B (a preference-tuned judge) would grade the failures without preventing them. Path C (a process reward model) targets multi-step trajectory errors, and these are single-step generation errors.
 
-The path selection is driven by three categories of evidence from the Week 10 probe library
-and trace logs.
+## 2. The evaluator
 
-### Evidence 1 — Generation Quality Failures Dominate the Unresolved Probe Set
+[scoring_evaluator.py](scoring_evaluator.py) is deterministic. It scores five dimensions, and each violation carries a code and the evidence string that triggered it.
 
-Of the 34 probes in the Week 10 library, 8 remain Partial or Not Fixed. Six of these eight
-are generation-quality failures — the agent produces output but the output contains claims
-that are not grounded in the enrichment data:
+| Dimension | Fails on |
+|---|---|
+| grounding | **No specific signal.** The email names nothing from the brief. Only *in-window* signals count. For replies, the prospect's own message counts. |
+| honesty | **Unsupported or outdated claims.** <br>• Funding, layoff, leadership or peer claims the brief doesn't support <br>• Numbers not in the inputs (URLs and dates are blanked out first) <br>• Stale signals called recent: funding over 180 days old, layoff over 120, leadership change over 90 <br>• Assertive wording on low or very-low confidence <br>• A Segment 4 pitch when AI maturity is below 2 <br>• A US time-zone pitch to an EU or Africa prospect |
+| commercial_safety | **Offers or commitments the bench can't back.** <br>• Price quotes in $, €, £ or USD/EUR <br>• Contract commitments <br>• Promising more engineers than the bench has, overall or per stack <br>• SMS before the prospect has replied by email |
+| tone | **Banned phrases and patterns** from the Tenacious style guide, matched on word boundaries. |
+| format | **Structural problems.** <br>• Subject over 60 characters <br>• Template placeholders <br>• No call to action <br>• Three or more asks <br>• An attachment on first touch <br>• Body too long |
 
-- P05 (Partial): Abstention not triggered for confidence=very_low signals
-- P09 (Partial): AI maturity score over-stated in email language
-- P10 (Mitigated): Competitor gap language inserted before brief generated
-- P14 (Not Fixed): Stack-specific availability not checked before commitment
-- P30 (Partial): Assertive language used regardless of confidence field
-- P33 (Partial): Sector mismatch in gap brief produces invalid comparison claims
+An email passes (pass@1 = 1) only if all five dimensions pass. An optional LLM judge (OpenRouter, DeepSeek) is reported separately and is never part of the headline.
 
-These are not routing failures (Path C) or inconsistency failures (Path B). They are
-failures where the model generates plausible-sounding but factually unsupported text.
-SFT on grounded versus ungrounded output pairs is the direct treatment.
+**Freeze.** The evaluator went through three versions:
 
-### Evidence 2 — Trace Log Confirms Generation Failures in Production
+- **v0.1** (in [scoring_evaluator_v01.py](scoring_evaluator_v01.py)) was revised into v0.2 against 39 independently labelled tasks and the v0.1 data.
+- **v0.2** was tagged `evaluator-v0.2-frozen` in the same commit that built the new held-out.
+- **v0.2.1** (tag `evaluator-v0.2.1-frozen`) removed one internal contradiction. Grounding no longer requires stale signals, which the honesty dimension forbids citing. The problem was found in the train-side teacher pilot.
 
-Trace thread_20260424_021728 shows an early pipeline run where low enrichment confidence
-did not suppress assertive language in the email body. The email was sent (dry_run_success)
-and would have made claims the agent could not support if the prospect had asked for the
-underlying data.
+No model-generated held-out output existed before the v0.2.1 tag. Known errors found since then are logged, not fixed (see the limitations file, section 6).
 
-Trace thread_20260427_110356 (Yellow.ai, 9/9 steps) shows the corrected behavior after
-rule-based fixes: confidence=high, grounded language, tone check 5/5. The delta between
-these two traces is exactly what the SFT adapter is trained to produce consistently —
-not as a rule-based patch, but as learned generation behavior.
+## 3. Dataset
 
-Trace thread_20260428_174753 confirms the multi-turn conversation flow works correctly
-when grounding is enforced. The trained adapter must generalize this behavior to companies
-where the enrichment confidence is lower and the rule-based patches are not sufficient.
+| Partition | Tasks | Role |
+|---|---|---|
+| train | 178 | Inputs for SFT data generation |
+| dev | 115 | Iteration and rubric development, including the 57 retired v0.1 held-out tasks; never reported |
+| held_out | 68 | Final ablation only; sealed |
 
-### Evidence 3 — Path B and Path C Are Already Partially Implemented
+**Train and dev (v0.1.1).** These are the 293 v0.1 tasks, repaired. There were four authoring modes:
 
-Path B (judge or critic) is already partially present in the Week 10 system as
-agent/tone_check.py — a rule-based scorer that blocks emails scoring below 3/5 on
-Tenacious tone markers. Building a preference-tuned judge would improve an existing
-mechanism rather than address the primary failure mode.
+- **Trace-derived:** from Week 10 outputs.
+- **Programmatic:** parameter sweeps.
+- **Multi-LLM synthesis:** generated by Qwen3-235B.
+- **Hand-authored:** 39 tasks.
 
-Path C (process reward model) requires step-level trajectory annotations. The Week 10
-failure taxonomy classifies the primary failures as Tier 1 (brand damage) and Tier 2
-(missed opportunity) — not trajectory failures where locally correct steps compound
-into bad outcomes. The channel router FSM already handles trajectory decisions correctly
-in all 13 prospect threads completed during Week 10.
+The repair ([tools/repair_tasks_phase2.py](tools/repair_tasks_phase2.py), deterministic) made these changes:
 
-Path A is the only path where the trained component directly addresses the unresolved
-failure mode with no overlap with existing rule-based components.
+- Removed instructions and reasons that leaked the expected verdict, moving them to `metadata`.
+- Rebuilt per-prospect briefs that were missing the facts their emails cited.
+- Restored three style-guide drafts that an earlier commit had edited.
+- Re-derived labels with v0.2.1. The old label is kept as `metadata.is_passing_v01`.
 
----
+All 361 tasks validate against [schema.json](schema.json) (see [tools/validate_tasks.py](tools/validate_tasks.py)).
 
-## Partitioning Protocol
+**Held-out (v0.2, new).** The held-out was built by [generation_scripts/build_heldout_v2.py](generation_scripts/build_heldout_v2.py):
 
-The 200-300 task dataset will be partitioned as follows:
-- Training partition: 50% (100-150 tasks) — used for SFT training
-- Dev partition: 30% (60-90 tasks) — used for iteration and rubric calibration
-- Held-out partition: 20% (40-60 tasks) — sealed, used only for final ablation
+- **54 cold tasks.** The prospects are 54 real companies from the Crunchbase ODM sample that were never used in v0.1. Each runs through the real Week 10 pipeline (pinned to the original composer, W10 @ `ae40b34`). The candidate email is the actual Week 10 output.
+- **14 reply tasks.** These cover 8 scenarios:
+  - capacity within the bench
+  - capacity over the bench
+  - pricing request
+  - time-zone question
+  - defensive prospect
+  - data-source question
+  - contract push
+  - not now
+- **Model-family rotation.** No model family plays two roles, and none is the family under test (Qwen):
 
-The held-out partition will be sealed before training begins and will not be examined
-until the final ablation run. It will be stored in tenacious_bench_v0.1/held_out/ which
-is gitignored and will not be committed to the public repo until after the leaderboard
-is published.
+  | Role | Model |
+  |---|---|
+  | Prospect messages | Mistral Small 3.2 |
+  | Candidate replies | Gemma 3 27B |
+  | Quality filter | DeepSeek (each dimension ≥ 3 of 5; 2 of 70 dropped) |
 
----
+- **Sealing.** The files are gitignored. [reports/held_out_v0.2_manifest.json](reports/held_out_v0.2_manifest.json) commits the SHA-256 of each task, and the ablation scorer refuses to run on any mismatch.
+- **Why the v0.1 held-out was retired.** It had been committed publicly, and 48 of its 57 tasks overlapped with train. It moved to dev ([reports/retired_held_out_v01.json](reports/retired_held_out_v01.json)).
 
-## Contamination Prevention Protocol
+## 4. Contamination checks
 
-Three checks will run before any task enters the held-out partition:
+[contamination_check.py](contamination_check.py) compares held-out against train **on input fields only**: the brief, bench, prior thread, instruction and competitor brief. Outputs are what the model produces, so they are not compared. Results are in [contamination_check.json](contamination_check.json).
 
-1. N-gram overlap: less than 8-gram overlap between any held-out task and any training task
-2. Embedding similarity: cosine similarity below 0.85 for any held-out/training pair
-   using sentence-transformers/all-MiniLM-L6-v2
-3. Time-shift verification: any task referencing public data cites a source window
-   documented in generation_scripts/source_log.md
+| Check | Rule | Result |
+|---|---|---|
+| n-gram | No shared 8-gram per field. Numbers are normalised to `#` and the prospect name is masked. Boilerplate is excluded: generator template strings taken from the code, plus 8-grams that appear in ≥5% of tasks (each listed in the report). | 0 of 68 held-out tasks overlap |
+| Embedding | all-MiniLM-L6-v2 cosine below 0.85 | maximum 0.735 |
+| Time-shift | Every task documents its source and snapshot date | 68 of 68 |
 
-The contamination check script (generation_scripts/contamination_check.py) will run
-as part of the dataset publication pipeline and its output will be committed as
-contamination_check.json.
+Negative-control tests check that a copied or partially copied task is still caught. Dev vs train overlaps on 42 of 115 tasks. This is reported but not gated, because dev is never a result.
 
----
+## 5. Training data (SFT)
 
-## Inter-Rater Agreement Protocol
+[training_data/build_sft_v2.py](training_data/build_sft_v2.py) uses train-partition inputs only:
 
-30 tasks will be hand-labeled against the rubric, then re-labeled 24 hours later without
-reference to the first labels. Agreement below 80% on any rubric dimension will trigger
-a rubric revision and full relabeling. The agreement matrix will be committed to
-inter_rater_agreement.md before the dataset is published.
+- **Inputs:** 358 distinct prompts.
+  - 178 v0.1.1 train tasks.
+  - 204 real companies through the Week 10 pipeline. These are disjoint from the held-out companies (`export_week10_briefs.py --split train`).
+  - 48 reply tasks built with train-only scenario parameters.
+- **Targets:**
+  - Drafts a human labelled as good are used as written.
+  - Every other target comes from a **Llama-3.3-70B teacher**, chosen in a 3-teacher pilot. Each draft is scored by the frozen evaluator. A failing draft gets **one rewrite** with the exact violations listed, and only fully passing emails are kept: 543 on the first try and 50 after rewrite.
+- **Filters:**
+  - 38 targets that quoted the internal AI-maturity score were dropped. None of the 17 human-labelled good drafts quote it.
+  - Inputs sharing a non-template 8-gram with the held-out were dropped (2 inputs, 1 pair).
+- **Result:** 567 pairs, 512 train and 55 val. Validation is split by prospect, so no prospect appears in both.
+- **Checks:** [training_data/check_training_data.py](training_data/check_training_data.py) confirms that no target fails the evaluator and that no held-out prospect appears.
 
----
+The teacher (Llama), the student (Qwen) and the held-out generators (Mistral and Gemma) are all different families.
 
-*Path declared: A | Week 10 trace IDs cited: thread_20260424_021728, thread_20260427_110356, thread_20260428_174753 | Probe IDs cited: P05, P09, P10, P14, P30, P33*
+## 6. Training
 
----
+The notebook is [training/colab_train_and_ablate.ipynb](training/colab_train_and_ablate.ipynb); the log is [ablations/training_run_seed42.json](ablations/training_run_seed42.json).
 
-## Contamination Check Results
+| Setting | Value |
+|---|---|
+| Backbone | `unsloth/Qwen3.5-2B` at revision `fffbc0d`, thinking disabled |
+| Adapter | 16-bit LoRA, r=16, α=16, dropout 0, on all attention and MLP projections |
+| Loss | **assistant tokens only**, with a mask sanity check before training |
+| Schedule | 2 epochs, lr 2e-4 linear, warmup 5% |
+| Batch | 2 × 4 gradient accumulation |
+| Optimiser and precision | adamw_8bit, fp16, seed 42 |
+| Steps and time | 128 steps, 17.3 minutes on a Colab T4 |
+| Validation loss | 0.68 at step 25, falling to 0.507 at step 128 |
 
-Three checks were run before sealing the held-out partition, per Chen et al. EMNLP 2025 (Contamination Survey — synthesis_memos/memo_03_contamination.md).
+A second run reproduced the first run's loss curve to within 3e-4.
 
-### Check 1 — N-gram Overlap (threshold: 8-gram)
-**Result: FAILED — 55 violations found**
-Root cause: programmatic tasks use identical email body templates across companies. "Note on Yellow.ai restructuring" and "Note on Stripe restructuring" share 70+ 8-grams because only the company name differs. These are not semantic duplicates but structural ones.
-**Resolution:** Move all 55 violated held-out tasks to the dev partition. Re-run check to confirm held-out is clean.
+**Generation.** Generation is greedy, with up to 320 new tokens and repetition penalty 1.05. Prompts are processed **one at a time with left padding**. The first run generated in batches of 8 after the trainer had switched the tokenizer to right padding, and 56 of 68 outputs were corrupted. That run is quarantined and was never scored. The notebook now asserts that at least 80% of outputs are well-formed.
 
-### Check 2 — Embedding Similarity (threshold: cosine 0.85, model: all-MiniLM-L6-v2)
-**Result: FAILED — 5 violations found**
-Five held-out tasks had cosine similarity >= 0.85 with training tasks. All 5 are also caught by the n-gram check — no additional unique violations.
-**Resolution:** Same as Check 1 — move to dev partition.
+## 7. Ablation design
 
-### Check 3 — Time-Shift Verification
-**Result: PASSED — 0 issues**
-All 299 tasks have documented source windows: trace-derived tasks cite Week 10 thread IDs (2026-04-23 to 2026-04-28), programmatic tasks use synthetic profiles with no external data dependency, LLM tasks cite generation date (2026-04-29), style guide tasks cite Tenacious internal document (private, April 2026).
+There are four model conditions, plus two deterministic templates that run on cold tasks only (they have no reply writer). Every model condition uses the same prompt renderer ([prompting.py](prompting.py)) and the same weights, except where the comparison is about the adapter.
 
-### Overall Contamination Status
-Checks 1 and 2 failed. Fix pending (Day 4). Check 3 passed. Full report in contamination_check.json.
+| Condition | Weights | System prompt |
+|---|---|---|
+| `base_short` | Qwen3.5-2B | short (`TRAINED`) |
+| `prompt_engineered` | Qwen3.5-2B | full rule set (`PROMPT_ENGINEERED`) |
+| `trained` | Qwen3.5-2B + LoRA | short (`TRAINED`) |
+| `week10` | original composer (template) | n/a |
+| `week10_v2` | honest composer (template, W10 `fix/honest-composer`) | n/a |
 
----
+The untrained conditions run in the same Colab session as the trained one, under `model.disable_adapter()`. As a result, **training_effect** (trained vs base_short) isolates the adapter: the prompt is identical, and only the weights differ.
 
-## Paper Citations Supporting Path A Decision
+**Statistics** ([ablations/score_ablation.py](ablations/score_ablation.py)):
 
-Two papers from the required reading directly support the Path A (SFT generation) choice:
+- Paired per-task differences in pass@1.
+- 95% bootstrap CI (10,000 resamples, seed 42).
+- One-sided bootstrap p-value.
+- Exact McNemar test on the discordant pairs.
 
-**1. LIMA: Less Is More for Alignment (Zhou et al., NeurIPS 2023)**
-LIMA's Superficial Alignment Hypothesis states that fine-tuning teaches style and format, not new knowledge. This directly supports Path A because my Week 10 failure evidence (P06, P10, P30) shows the base model already knows how to write professional B2B emails — it lacks only the Tenacious-specific style constraints. A small SFT adapter teaching those constraints (23 banned phrases, 60-char subject limit, confidence-aware hedging) is the correct treatment. LIMA also shows that 100-150 high-quality examples is sufficient for single-task domain alignment — which justifies my dataset size of 100-150 training examples after quality filtering. Full analysis in synthesis_memos/memo_06_lima.md.
+Two robustness checks are reported:
 
-**2. Tülu 3: Pushing Frontiers in Open Language Model Post-Training (Lambert et al., 2024)**
-Tülu 3 documents that data curation quality determines final model quality more than model scale or training duration. This supports Path A because my Week 10 evidence shows generation quality failures (P06: assertive language on weak signals, P10: gap claims without brief) are caused by poor data grounding — exactly what a curated SFT dataset of grounded examples can fix. Tülu 3's hyperparameter recommendations (lr=2e-5, r=16, alpha=32, warmup=0.03) are adopted directly for the Day 5 training run. The paper's 3-5 epoch default is rejected in favor of 2 epochs maximum for my 100-150 example dataset to prevent memorization. Full analysis in synthesis_memos/memo_05_tulu3.md.
+- **Placeholder sensitivity:** Delta B recomputed with `TEMPLATE_PLACEHOLDER` ignored.
+- **Null-note diagnostic:** a content-free note scored on cold tasks, to show what the metric does not reward.
 
-## Anti-Leakage Policy
+**Delta C** (vs τ²-Bench retail) is not computed, because the two benchmarks score different tasks.
 
-Following Li et al. (2025) "Preference Leakage: A Contamination Problem in LLM-as-a-Judge",
-the pipeline enforces a strict rotation rule: the same model never both generates and judges
-the same task.
+## 8. Human validation
 
-Rotation policy:
-- Frontier seed author: Claude Sonnet (Anthropic)
-- Bulk variation generator: Qwen3 (Alibaba, via OpenRouter)
-- Quality judge / filter: DeepSeek (DeepSeek AI, via OpenRouter)
+[tools/labeling.py](tools/labeling.py) samples 30 train or dev tasks. Hand-authored tasks are excluded. The sample is stratified by authoring mode × evaluator verdict (seed 42) and rendered as a blind HTML packet. The packet shows the brief, the thread and the email, but no evaluator output and no metadata.
 
-No model family appears in more than one role for the same task.
-This policy is documented here and enforced in generation_scripts/generate_llm_tasks_v2.py.
+- **Round 1:** human vs evaluator, a validity estimate. Results are in [inter_rater_agreement.md](inter_rater_agreement.md).
+- **Round 2:** the same 30 tasks in a new order, labelled at least 24 hours later. This measures the labeller's test–retest consistency.
+
+The disagreements are the work list for evaluator v0.3. They were **not** fed back into v0.2.1.
+
+## 9. Cost
+
+Every OpenRouter call goes through [llm_client.py](llm_client.py), which logs the model, tokens, cost and latency to [cost_log.jsonl](cost_log.jsonl) under a $5 cap, with a response cache. The total is **$0.33** over 889 calls. Training and generation ran on a free Colab T4. See [cost_log.md](cost_log.md).
+
+## 10. Reading notes behind the design
+
+| Source | Influence on the design |
+|---|---|
+| LIMA (Zhou et al., 2023) | A few hundred clean pairs suffice for style and format alignment, so 512 filtered pairs over 358 prompts, not thousands of near-duplicates. |
+| Tülu 3 (Lambert et al., 2024) | Curation and decontamination against the evaluation set. |
+| Magpie | Synthetic input diversity. |
+| Li et al. (2025), preference leakage | Model-family rotation. |
+| Contamination survey | Input-side n-gram, embedding and time-shift checks. |
+| Gebru et al. and Pushkarna et al. | [datasheet.md](datasheet.md). |
+
+Notes are in [synthesis_memos/](synthesis_memos/).

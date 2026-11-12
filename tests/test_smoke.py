@@ -49,3 +49,14 @@ def test_evaluator_v01_demo_regression():
     result = score_dataset(DEMO_TASKS)
     assert result["pass_at_1"] == 0.667
     assert [r["overall_score"] for r in result["results"]] == [1.0, 0.0, 1.0]
+
+
+def test_evidence_graph_is_current():
+    """Every headline number resolves from its source file and matches evidence_graph.json."""
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("beg", config.REPO_ROOT / "tools" / "build_evidence_graph.py")
+    beg = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(beg)
+    fresh = beg.build()["claims"]
+    committed = json.loads((config.REPO_ROOT / "evidence_graph.json").read_text(encoding="utf-8"))["claims"]
+    assert {k: v["value"] for k, v in fresh.items()} == {k: v["value"] for k, v in committed.items()}

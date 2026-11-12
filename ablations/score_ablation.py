@@ -168,6 +168,17 @@ def main():
             "pass_at_1": {c: round(statistics.mean(lenient[c].values()), 4) for c in ("base_short", "prompt_engineered", "trained") if c in lenient},
             "delta_B_trained_vs_prompt_engineered": paired(lenient["trained"], lenient["prompt_engineered"], all_ids, rng),
         }
+    # Diagnostic: an almost content-free note. If it passes, the evaluator is measuring safety, not usefulness.
+    null_pass = []
+    for i in cold_ids:
+        name = tasks[i]["input"]["hiring_signal_brief"]["prospect"]
+        note = {"subject": f"Engineering capacity at {name}"[:60],
+                "body": "Is engineering capacity on your roadmap this quarter? If useful, here is a 15-minute slot: "
+                        "https://cal.com/tenacious/15min"}
+        null_pass.append(int(E.score_task(tasks[i], note)["all_pass"]))
+    results["diagnostic_null_note_cold"] = {
+        "pass": sum(null_pass), "n": len(null_pass), "pass_at_1": round(statistics.mean(null_pass), 4) if null_pass else None,
+        "note": "a two-sentence note with no signal and no pitch; the evaluator measures safety, not persuasiveness"}
     results["delta_C"] = ("not computed: Week 10 tau2-Bench retail (0.333) and Tenacious-Bench measure different tasks; "
                           "subtracting them is not meaningful")
     if args.training_log:
@@ -202,6 +213,8 @@ def main():
         v = s["delta_B_trained_vs_prompt_engineered"]
         print(f"sensitivity (placeholders ignored): pass@1 {s['pass_at_1']}  delta_B {v['delta']:+.3f} "
               f"CI [{v['ci95'][0]:+.3f}, {v['ci95'][1]:+.3f}]  McNemar {v['mcnemar_exact_one_sided']:.4f}")
+    nn = results["diagnostic_null_note_cold"]
+    print(f"diagnostic: content-free two-sentence note passes {nn['pass']}/{nn['n']} cold tasks")
     print(f"-> {out_json.name}, {trace_path.name}")
 
 

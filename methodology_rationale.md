@@ -1,3 +1,5 @@
+> **v0.2 correction note.** The trace IDs below were cited as evidence in v0.1. Of the 6 trace IDs cited across the v0.1 docs, 5 do not exist in the Week 10 repository. The v0.2 evidence for Path A is the real-company measurement in [methodology.md §1](methodology.md#1-problem-and-path-choice): the original composer passes 10 of 204 briefs. The final hyperparameters also differ from those stated here (see [model_card.md](model_card.md)).
+
 # Methodology Rationale — Path A SFT
 
 ## Path Selection: Path A — Supervised Fine-Tuning
