@@ -13,7 +13,7 @@
         "segment_name": "Recently-funded startup",
         "confidence": "high",
         "reasons": [
-          "Style guide labeled: Fake urgency and discount"
+          "Post-call follow-up (see prior_thread)"
         ]
       },
       "firmographics": {
@@ -23,7 +23,7 @@
         "num_employees": "51-200"
       },
       "ai_maturity": {
-        "ai_maturity_score": 1,
+        "ai_maturity_score": 2,
         "confidence": "high"
       },
       "layoff_signal": {
@@ -44,12 +44,17 @@
         "data": 4
       }
     },
-    "instruction": "STYLE GUIDE EXAMPLE (SG-B07): BAD \u2014 should FAIL. Fake urgency and discount",
-    "prior_thread": []
+    "instruction": "Write a cold outreach email to the VP Engineering at Kevin Loyalty. Ground every claim in the supplied hiring signal brief.",
+    "prior_thread": [],
+    "email_type": "cold",
+    "competitor_gap_brief": {
+      "prospect_sector": "loyalty platforms",
+      "finding": "3 competitors named by the prospect publicly use dbt + Snowflake"
+    }
   },
   "candidate_output": {
     "subject": "URGENT: Last open slot for Q1 30 percent off",
-    "body": "Hi Kevin,\n\nTenacious has one remaining slot in our Q1 cohort. Because of strong demand, this slot will not be available after Friday.\n\nIf you sign a contract by end of day Friday, I am authorized to offer 30% off the first three months. After that, the slot goes to the next company on the waitlist.\n\nDo not miss out \u2014 book a call here: gettenacious.com/yabi\n\nBest,\nYabi"
+    "body": "Hi Kevin,\n\nTenacious has one remaining slot in our Q1 cohort. Because of strong demand, this slot will not be available after Friday.\n\nIf you sign a contract by end of day Friday, I am authorized to offer 30% off the first three months. After that, the slot goes to the next company on the waitlist.\n\nDo not miss out — book a call here: gettenacious.com/yabi\n\nBest,\nYabi"
   },
   "ground_truth": {
     "required_signals": [
@@ -124,6 +129,12 @@
     "source_trace_id": null,
     "judge_score": null,
     "expected_score": 0.0,
-    "style_guide_label": "Fake urgency and discount"
+    "style_guide_label": "Fake urgency and discount",
+    "author_note": "STYLE GUIDE EXAMPLE (SG-B07): BAD — should FAIL. Fake urgency and discount",
+    "scenario": "Style guide labeled: Fake urgency and discount",
+    "brief_reconstructed": true,
+    "reconstruction_note": "Facts restored from the scenario/labelled draft that this task was written against; the v0.1 conversion had dropped them. See tools/repair_tasks_phase2.py.",
+    "label_source": "tenacious_style_guide",
+    "dataset_version": "0.1.1"
   }
 }

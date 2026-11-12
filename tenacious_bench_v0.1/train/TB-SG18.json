@@ -12,9 +12,7 @@
         "segment": 1,
         "segment_name": "Recently-funded startup",
         "confidence": "high",
-        "reasons": [
-          "Style guide labeled: Generic templated outreach with unfilled tokens"
-        ]
+        "reasons": []
       },
       "firmographics": {
         "company": "Unknown Company",
@@ -44,8 +42,9 @@
         "data": 4
       }
     },
-    "instruction": "STYLE GUIDE EXAMPLE (SG-B06): BAD \u2014 should FAIL. Generic templated outreach with unfilled tokens",
-    "prior_thread": []
+    "instruction": "Write a cold outreach email to the VP Engineering at Unknown Company. Ground every claim in the supplied hiring signal brief.",
+    "prior_thread": [],
+    "email_type": "cold"
   },
   "candidate_output": {
     "subject": "Hey scaling your engineering team?",
@@ -54,7 +53,6 @@
   "ground_truth": {
     "required_signals": [
       "funding",
-      "engineering",
       "signal"
     ],
     "forbidden_phrases": [
@@ -126,6 +124,15 @@
     "source_trace_id": null,
     "judge_score": null,
     "expected_score": 0.0,
-    "style_guide_label": "Generic templated outreach with unfilled tokens"
+    "style_guide_label": "Generic templated outreach with unfilled tokens",
+    "author_note": "STYLE GUIDE EXAMPLE (SG-B06): BAD — should FAIL. Generic templated outreach with unfilled tokens",
+    "scenario": "Style guide labeled: Generic templated outreach with unfilled tokens",
+    "required_signals_v01": [
+      "funding",
+      "engineering",
+      "signal"
+    ],
+    "label_source": "tenacious_style_guide",
+    "dataset_version": "0.1.1"
   }
 }

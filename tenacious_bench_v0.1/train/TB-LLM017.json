@@ -3,7 +3,7 @@
   "source_mode": "multi_llm_synthesis",
   "difficulty": "medium",
   "variant": "llm_generated_v2",
-  "is_passing": true,
+  "is_passing": false,
   "input": {
     "hiring_signal_brief": {
       "prospect": "Dune Platform",
@@ -18,7 +18,7 @@
       "firmographics": {
         "company": "Dune Platform",
         "website": "https://duneplatform.com",
-        "description": "Dune Platform \u2014 technology company",
+        "description": "Dune Platform — technology company",
         "num_employees": "51-200"
       },
       "ai_maturity": {
@@ -43,20 +43,17 @@
         "data": 4
       }
     },
-    "instruction": "Write outreach for Dune Platform \u2014 Series A detected but amount unconfirmed, 4 open roles",
-    "prior_thread": []
+    "instruction": "Write outreach for Dune Platform — Series A detected but amount unconfirmed, 4 open roles",
+    "prior_thread": [],
+    "email_type": "cold"
   },
   "candidate_output": {
     "subject": "Dune Platform's Growth Hiring Needs?",
-    "body": "Hi [First Name],\n\nCongrats on Dune Platform's recent Series A momentum and the 4 new roles posted. I work with technical teams scaling through early-stage growth phases, specializing in connecting specialized talent to high-intent opportunities.\n\nWould you benefit from exploring candidates already engaging with our network this week? My role focuses on pre-vetting professionals aligned with emerging technical platforms like yours.\n\nWorth 15 minutes this week? \u2192 http://localhost:3000/yakob/30min\n\nResearch Partner / Tenacious Intelligence Corporation / gettenacious.com"
+    "body": "Hi [First Name],\n\nCongrats on Dune Platform's recent Series A momentum and the 4 new roles posted. I work with technical teams scaling through early-stage growth phases, specializing in connecting specialized talent to high-intent opportunities.\n\nWould you benefit from exploring candidates already engaging with our network this week? My role focuses on pre-vetting professionals aligned with emerging technical platforms like yours.\n\nWorth 15 minutes this week? → http://localhost:3000/yakob/30min\n\nResearch Partner / Tenacious Intelligence Corporation / gettenacious.com"
   },
   "ground_truth": {
     "required_signals": [
-      "funding",
-      "growth",
-      "engineering",
-      "capacity",
-      "roles"
+      "funding"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -122,6 +119,16 @@
     "source_trace_id": null,
     "judge_score": null,
     "expected_score": 1.0,
-    "generator_model": "qwen/qwen3-235b-a22b"
+    "generator_model": "qwen/qwen3-235b-a22b",
+    "required_signals_v01": [
+      "funding",
+      "growth",
+      "engineering",
+      "capacity",
+      "roles"
+    ],
+    "is_passing_v01": true,
+    "label_source": "evaluator_v0.2",
+    "dataset_version": "0.1.1"
   }
 }

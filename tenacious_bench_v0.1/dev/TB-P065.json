@@ -12,8 +12,8 @@
         "segment_name": "Post-layoff restructuring",
         "confidence": "low",
         "reasons": [
-          "Layoff detected \u2014 150 employees, March 2024",
-          "Recent funding detected \u2014 fresh budget available"
+          "Layoff detected — 150 employees, March 2024",
+          "Recent funding detected — fresh budget available"
         ]
       },
       "firmographics": {
@@ -49,19 +49,17 @@
         "data": 4
       }
     },
-    "instruction": "Write a cold outreach email to the VP Engineering at Horizon Cloud (Segment 2 \u2014 Post-layoff restructuring, confidence=low). Ground every claim in the supplied hiring signal brief.",
-    "prior_thread": []
+    "instruction": "Write a cold outreach email to the VP Engineering at Horizon Cloud (Segment 2 — Post-layoff restructuring, confidence=low). Ground every claim in the supplied hiring signal brief.",
+    "prior_thread": [],
+    "email_type": "cold"
   },
   "candidate_output": {
     "subject": "Note on Horizon Cloud restructuring",
-    "body": "Horizon Cloud has gone through a recent restructuring. Companies in this state often need to preserve delivery capacity while reshaping cost structure.\n\nTenacious provides managed engineering teams that preserve delivery capacity while reducing cost \u2014 our engineers are full-time employees, not contractors.\n\nWorth 15 minutes this week to walk through how this lands for Horizon Cloud? \u2192 http://localhost:3000/yakob/30min\n\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com"
+    "body": "Horizon Cloud has gone through a recent restructuring. Companies in this state often need to preserve delivery capacity while reshaping cost structure.\n\nTenacious provides managed engineering teams that preserve delivery capacity while reducing cost — our engineers are full-time employees, not contractors.\n\nWorth 15 minutes this week to walk through how this lands for Horizon Cloud? → http://localhost:3000/yakob/30min\n\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com"
   },
   "ground_truth": {
     "required_signals": [
-      "restructuring",
-      "cost",
-      "delivery",
-      "capacity"
+      "restructuring"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -129,6 +127,15 @@
     "source_trace_id": null,
     "judge_score": null,
     "expected_score": 1.0,
-    "contamination_note": "Moved from held_out to dev \u2014 n-gram or embedding contamination violation detected by contamination_check.py"
+    "contamination_note": "Moved from held_out to dev — n-gram or embedding contamination violation detected by contamination_check.py",
+    "required_signals_v01": [
+      "restructuring",
+      "cost",
+      "delivery",
+      "capacity"
+    ],
+    "is_passing_v01": true,
+    "label_source": "evaluator_v0.2",
+    "dataset_version": "0.1.1"
   }
 }

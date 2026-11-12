@@ -3,7 +3,7 @@
   "source_mode": "multi_llm_synthesis",
   "difficulty": "medium",
   "variant": "llm_generated_v2",
-  "is_passing": true,
+  "is_passing": false,
   "input": {
     "hiring_signal_brief": {
       "prospect": "Ridge Platform",
@@ -18,7 +18,7 @@
       "firmographics": {
         "company": "Ridge Platform",
         "website": "https://ridgeplatform.com",
-        "description": "Ridge Platform \u2014 technology company",
+        "description": "Ridge Platform — technology company",
         "num_employees": "51-200"
       },
       "ai_maturity": {
@@ -43,20 +43,17 @@
         "data": 4
       }
     },
-    "instruction": "Write outreach for Ridge Platform \u2014 Series B $42M, hiring data and ML engineers aggressively",
-    "prior_thread": []
+    "instruction": "Write outreach for Ridge Platform — Series B $42M, hiring data and ML engineers aggressively",
+    "prior_thread": [],
+    "email_type": "cold"
   },
   "candidate_output": {
     "subject": "Hiring Data/ML Engineers at Ridge?",
-    "body": "Hi [First Name], I noticed Ridge is scaling their Data/ML teams with 8 new roles posted in the last 30 days. With $42M Series B funding, you\u2019re likely prioritizing technical talent to accelerate product development. I help companies like Ridge identify high-signal candidates through targeted sourcing and skills-based screening. Worth 15 minutes this week? \u2192 http://localhost:3000/yakob/30min\n\nResearch Partner / Tenacious Intelligence Corporation / gettenacious.com"
+    "body": "Hi [First Name], I noticed Ridge is scaling their Data/ML teams with 8 new roles posted in the last 30 days. With $42M Series B funding, you’re likely prioritizing technical talent to accelerate product development. I help companies like Ridge identify high-signal candidates through targeted sourcing and skills-based screening. Worth 15 minutes this week? → http://localhost:3000/yakob/30min\n\nResearch Partner / Tenacious Intelligence Corporation / gettenacious.com"
   },
   "ground_truth": {
     "required_signals": [
-      "funding",
-      "growth",
-      "engineering",
-      "capacity",
-      "roles"
+      "funding"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -122,6 +119,16 @@
     "source_trace_id": null,
     "judge_score": null,
     "expected_score": 1.0,
-    "generator_model": "qwen/qwen3-235b-a22b"
+    "generator_model": "qwen/qwen3-235b-a22b",
+    "required_signals_v01": [
+      "funding",
+      "growth",
+      "engineering",
+      "capacity",
+      "roles"
+    ],
+    "is_passing_v01": true,
+    "label_source": "evaluator_v0.2",
+    "dataset_version": "0.1.1"
   }
 }

@@ -3,7 +3,7 @@
   "source_mode": "multi_llm_synthesis",
   "difficulty": "medium",
   "variant": "llm_generated_v2",
-  "is_passing": true,
+  "is_passing": false,
   "input": {
     "hiring_signal_brief": {
       "prospect": "Slate Software",
@@ -18,7 +18,7 @@
       "firmographics": {
         "company": "Slate Software",
         "website": "https://slatesoftware.com",
-        "description": "Slate Software \u2014 technology company",
+        "description": "Slate Software — technology company",
         "num_employees": "51-200"
       },
       "ai_maturity": {
@@ -43,19 +43,17 @@
         "data": 4
       }
     },
-    "instruction": "Write outreach for Slate Software \u2014 Laid off 120 engineers in March, now rehiring selectively",
-    "prior_thread": []
+    "instruction": "Write outreach for Slate Software — Laid off 120 engineers in March, now rehiring selectively",
+    "prior_thread": [],
+    "email_type": "cold"
   },
   "candidate_output": {
-    "subject": "Slate Software\u2019s Selective Rebuilding Effort",
-    "body": "Hi [First Name],\n\nSlate\u2019s decision to rehire selectively after March\u2019s restructuring signals a clear focus on strategic growth. At Tenacious Intelligence, we specialize in helping companies rebuild teams with precision\u2014prioritizing quality over quantity.\n\nI\u2019d like to connect about how we might support your technical hiring needs as you rebuild. Our process aligns with your approach: targeted, intentional, and built for long-term impact.\n\nWorth 15 minutes this week? \u2192 http://localhost:3000/yakob/30min\n\nBest,\n[Your Name]"
+    "subject": "Slate Software’s Selective Rebuilding Effort",
+    "body": "Hi [First Name],\n\nSlate’s decision to rehire selectively after March’s restructuring signals a clear focus on strategic growth. At Tenacious Intelligence, we specialize in helping companies rebuild teams with precision—prioritizing quality over quantity.\n\nI’d like to connect about how we might support your technical hiring needs as you rebuild. Our process aligns with your approach: targeted, intentional, and built for long-term impact.\n\nWorth 15 minutes this week? → http://localhost:3000/yakob/30min\n\nBest,\n[Your Name]"
   },
   "ground_truth": {
     "required_signals": [
-      "restructuring",
-      "cost",
-      "delivery",
-      "capacity"
+      "restructuring"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -121,6 +119,15 @@
     "source_trace_id": null,
     "judge_score": null,
     "expected_score": 1.0,
-    "generator_model": "qwen/qwen3-235b-a22b"
+    "generator_model": "qwen/qwen3-235b-a22b",
+    "required_signals_v01": [
+      "restructuring",
+      "cost",
+      "delivery",
+      "capacity"
+    ],
+    "is_passing_v01": true,
+    "label_source": "evaluator_v0.2",
+    "dataset_version": "0.1.1"
   }
 }

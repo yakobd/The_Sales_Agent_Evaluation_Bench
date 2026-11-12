@@ -4,7 +4,7 @@
   "difficulty": "hard",
   "variant": "hand_authored_adversarial",
   "is_passing": false,
-  "probe_label": "P33 \u2014 Gap brief compares AI company to dental practices",
+  "probe_label": "P33 — Gap brief compares AI company to dental practices",
   "input": {
     "hiring_signal_brief": {
       "prospect": "Yellow.ai",
@@ -12,14 +12,12 @@
         "segment": 4,
         "segment_name": "AI capability gap",
         "confidence": "high",
-        "reasons": [
-          "Hand-authored scenario \u2014 P33 \u2014 Gap brief compares AI company to dental practices"
-        ]
+        "reasons": []
       },
       "firmographics": {
         "company": "Yellow.ai",
         "website": "",
-        "description": "Yellow.ai \u2014 technology company",
+        "description": "Yellow.ai — technology company",
         "num_employees": "51-500"
       },
       "ai_maturity": {
@@ -44,18 +42,37 @@
         "data": 4
       }
     },
-    "instruction": "ADVERSARIAL P33: Yellow.ai is a conversational AI platform. The gap brief incorrectly compares it to dental practices \u2014 classic sector mismatch from random fallback. Should FAIL \u2014 nonsensical peer comparison destroys research credibility.",
-    "prior_thread": []
+    "instruction": "Write a cold outreach email to the VP Engineering at Yellow.ai. Ground every claim in the supplied hiring signal brief.",
+    "prior_thread": [],
+    "email_type": "cold",
+    "competitor_gap_brief": {
+      "prospect_sector": "conversational AI",
+      "selection_method": "random_fallback (sector match failed)",
+      "peers": [
+        {
+          "name": "Bright Dental",
+          "sector": "dental practice"
+        },
+        {
+          "name": "MedSpring Clinics",
+          "sector": "healthcare clinics"
+        },
+        {
+          "name": "Valley Orthodontics",
+          "sector": "dental practice"
+        }
+      ],
+      "finding": "3 peers posted senior MLOps roles in the last 90 days"
+    }
   },
   "candidate_output": {
     "subject": "Question on Yellow.ai AI capability gap",
-    "body": "Hi Raghu,\n\nThree companies adjacent to Yellow.ai in your sector posted senior MLOps engineer roles in the last 90 days \u2014 including Bright Dental, MedSpring Clinics, and Valley Orthodontics. Your team has not.\n\nWe staff specialized AI and data engineering squads on fixed-scope engagements, typically 3-4 months.\n\nWorth 15 minutes? \u2192 http://localhost:3000/yakob/30min\n\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com"
+    "body": "Hi Raghu,\n\nThree companies adjacent to Yellow.ai in your sector posted senior MLOps engineer roles in the last 90 days — including Bright Dental, MedSpring Clinics, and Valley Orthodontics. Your team has not.\n\nWe staff specialized AI and data engineering squads on fixed-scope engagements, typically 3-4 months.\n\nWorth 15 minutes? → http://localhost:3000/yakob/30min\n\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com"
   },
   "ground_truth": {
     "required_signals": [
       "ai",
       "ml",
-      "platform",
       "peer",
       "conversational"
     ],
@@ -121,7 +138,20 @@
     "source_trace_id": null,
     "judge_score": null,
     "expected_score": 0.0,
-    "failure_reason": "AI company compared to dental practices \u2014 sector mismatch P33",
-    "hand_authored": true
+    "failure_reason": "AI company compared to dental practices — sector mismatch P33",
+    "hand_authored": true,
+    "author_note": "ADVERSARIAL P33: Yellow.ai is a conversational AI platform. The gap brief incorrectly compares it to dental practices — classic sector mismatch from random fallback. Should FAIL — nonsensical peer comparison destroys research credibility.",
+    "scenario": "Hand-authored scenario — P33 — Gap brief compares AI company to dental practices",
+    "brief_reconstructed": true,
+    "reconstruction_note": "Facts restored from the scenario/labelled draft that this task was written against; the v0.1 conversion had dropped them. See tools/repair_tasks_phase2.py.",
+    "required_signals_v01": [
+      "ai",
+      "ml",
+      "platform",
+      "peer",
+      "conversational"
+    ],
+    "label_source": "human_author",
+    "dataset_version": "0.1.1"
   }
 }

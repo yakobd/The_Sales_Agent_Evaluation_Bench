@@ -3,7 +3,7 @@
   "source_mode": "multi_llm_synthesis",
   "difficulty": "easy",
   "variant": "llm_generated_v2",
-  "is_passing": true,
+  "is_passing": false,
   "input": {
     "hiring_signal_brief": {
       "prospect": "Focus Intelligence",
@@ -18,7 +18,7 @@
       "firmographics": {
         "company": "Focus Intelligence",
         "website": "https://focusintelligence.com",
-        "description": "Focus Intelligence \u2014 technology company",
+        "description": "Focus Intelligence — technology company",
         "num_employees": "51-200"
       },
       "ai_maturity": {
@@ -43,21 +43,19 @@
         "data": 4
       }
     },
-    "instruction": "Write outreach for Focus Intelligence \u2014 4 adjacent companies building agentic systems, Focus has no ML roles",
-    "prior_thread": []
+    "instruction": "Write outreach for Focus Intelligence — 4 adjacent companies building agentic systems, Focus has no ML roles",
+    "prior_thread": [],
+    "email_type": "cold"
   },
   "candidate_output": {
     "subject": "Targeting Focus' Agentic Systems Gap",
-    "body": "Hi [Name],\n\nFocus Intelligence's strategic AI focus aligns with market demands, but the absence of ML roles creates a gap in agentic systems development. Four adjacent companies are actively building these systems, presenting a risk of being outpaced.\n\nAs a Tenacious Intelligence Research Partner, I help firms address technical capability gaps while maintaining core focus. How would you assess the value of closing this gap before Q4?\n\nWorth 15 minutes this week? \u2192 http://localhost:3000/yakob/30min\n\nBest,\n[Your Name]\nResearch Partner / Tenacious Intelligence Corporation / gettenacious.com"
+    "body": "Hi [Name],\n\nFocus Intelligence's strategic AI focus aligns with market demands, but the absence of ML roles creates a gap in agentic systems development. Four adjacent companies are actively building these systems, presenting a risk of being outpaced.\n\nAs a Tenacious Intelligence Research Partner, I help firms address technical capability gaps while maintaining core focus. How would you assess the value of closing this gap before Q4?\n\nWorth 15 minutes this week? → http://localhost:3000/yakob/30min\n\nBest,\n[Your Name]\nResearch Partner / Tenacious Intelligence Corporation / gettenacious.com"
   },
   "ground_truth": {
     "required_signals": [
       "ai",
-      "capability",
       "ml",
-      "platform",
-      "peer",
-      "data"
+      "peer"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -123,6 +121,17 @@
     "source_trace_id": null,
     "judge_score": null,
     "expected_score": 1.0,
-    "generator_model": "qwen/qwen3-235b-a22b"
+    "generator_model": "qwen/qwen3-235b-a22b",
+    "required_signals_v01": [
+      "ai",
+      "capability",
+      "ml",
+      "platform",
+      "peer",
+      "data"
+    ],
+    "is_passing_v01": true,
+    "label_source": "evaluator_v0.2",
+    "dataset_version": "0.1.1"
   }
 }

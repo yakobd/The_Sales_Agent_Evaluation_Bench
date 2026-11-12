@@ -235,7 +235,14 @@ def load(task_id):
 
 @pytest.mark.parametrize("task_id,expected", [
     ("TB-HA003", "NUMBER_NOT_IN_INPUTS"),          # another company's data in the email (P22)
-    ("TB-HA008", "PEER_CLAIM_UNSUPPORTED"),        # AI company compared to dental practices (P33)
+    ("TB-HA008", "PEER_SECTOR_MISMATCH"),          # AI company compared to dental practices (P33)
+    ("TB-HA005", "REGION_TIMEZONE_MISMATCH"),      # Pacific time for an Amsterdam prospect (P27)
+    ("TB-HA007", "REGION_TIMEZONE_MISMATCH"),      # US East Coast overlap for Munich (P28)
+    ("TB-HA004", "SMS_BEFORE_REPLY"),              # SMS before the prospect replied (P25)
+    ("TB-SG20", "SEGMENT4_PITCH_LOW_AI_MATURITY"), # Segment-4 pitch at AI maturity 0 (P03)
+    ("TB-SG14", "ASSERTIVE_ON_WEAK_SIGNAL"),       # "scaling aggressively" on a weak signal
+    ("TB-SG22", "MULTIPLE_ASKS"),                  # four stacked asks
+    ("TB-SG21", "ATTACHMENT_IN_FIRST_TOUCH"),      # cold PDF attachment
     ("TB-HA012", "ASSERTIVE_ON_WEAK_SIGNAL"),      # assertive on very_low confidence (P05/P30)
     ("TB-HA014", "PRICE_QUOTE"),                   # fabricated $1.44M TCV (P13)
     ("TB-HA014", "CONTRACT_COMMITMENT"),
@@ -255,9 +262,10 @@ def test_known_bad_tasks_are_caught(task_id, expected):
     ("TB-061", "FUNDING_UNSUPPORTED"),             # W10 template "post-funding" without funding
 ])
 def test_v01_label_errors_are_caught(task_id, expected):
-    """These are labelled is_passing=True only because v0.1 assigned the label."""
+    """v0.1 labelled these passing; v0.2 relabelled them (old label kept in metadata)."""
     t = load(task_id)
-    assert t["is_passing"] is True and t["source_mode"] != "hand_authored"
+    assert t["source_mode"] != "hand_authored"
+    assert t["metadata"]["is_passing_v01"] is True and t["is_passing"] is False
     assert expected in codes(t, t["candidate_output"])
 
 
@@ -270,14 +278,25 @@ def test_ablation_baseline_with_placeholders_now_fails():
     assert "TEMPLATE_PLACEHOLDER" in {v["code"] for v in r["violations"]}
 
 
-def test_no_independently_bad_task_passes_except_known_data_gaps():
-    """Every hand-labelled bad email must fail, except tasks whose brief is
-    missing the fact needed to judge them (repaired in Phase 2)."""
-    pending_data_repair = {"TB-HA005"}  # brief lacks prospect country (EU) -> region rule can't fire
-    escaped = []
+def test_evaluator_matches_every_independent_label():
+    """All 39 human-labelled tasks: bad emails fail, good emails pass.
+    NOTE: v0.2's rules were developed while looking at these tasks, so this is
+    development-set agreement, not a held-out validity estimate."""
+    wrong = []
     for f in config.BENCH_DIR.rglob("TB-*.json"):
         t = json.loads(f.read_text(encoding="utf-8"))
-        if t["source_mode"] == "hand_authored" and not t["is_passing"]:
-            if E.score_task(t)["all_pass"] and t["task_id"] not in pending_data_repair:
-                escaped.append(t["task_id"])
-    assert escaped == []
+        if t["source_mode"] == "hand_authored" and E.score_task(t)["all_pass"] != t["is_passing"]:
+            wrong.append(t["task_id"])
+    assert wrong == []
+
+
+def test_idiom_is_not_an_attachment():
+    e = email(GOOD_BODY.replace("Teams in", "No strings attached. Teams in"))
+    assert "ATTACHMENT_IN_FIRST_TOUCH" not in codes(task(), e)
+
+
+def test_three_enumerated_asks_flagged_two_allowed():
+    two = GOOD_BODY.replace("Teams in", "First, a data point. Second, a question. Teams in")
+    three = GOOD_BODY.replace("Teams in", "First, x. Second, y. Third, z. Teams in")
+    assert "MULTIPLE_ASKS" not in codes(task(), email(two))
+    assert "MULTIPLE_ASKS" in codes(task(), email(three))

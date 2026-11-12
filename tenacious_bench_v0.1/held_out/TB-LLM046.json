@@ -3,7 +3,7 @@
   "source_mode": "multi_llm_synthesis",
   "difficulty": "easy",
   "variant": "llm_generated_v2",
-  "is_passing": true,
+  "is_passing": false,
   "input": {
     "hiring_signal_brief": {
       "prospect": "Bay Analytics",
@@ -18,7 +18,7 @@
       "firmographics": {
         "company": "Bay Analytics",
         "website": "https://bayanalytics.com",
-        "description": "Bay Analytics \u2014 technology company",
+        "description": "Bay Analytics — technology company",
         "num_employees": "51-200"
       },
       "ai_maturity": {
@@ -43,20 +43,17 @@
         "data": 4
       }
     },
-    "instruction": "Write outreach for Bay Analytics \u2014 New Head of Engineering from Twilio, 25 days ago",
-    "prior_thread": []
+    "instruction": "Write outreach for Bay Analytics — New Head of Engineering from Twilio, 25 days ago",
+    "prior_thread": [],
+    "email_type": "cold"
   },
   "candidate_output": {
     "subject": "New Twilio Engineering Leader at Bay Analytics?",
-    "body": "Hi [Name],\n\nCongrats on the leadership transition at Bay Analytics. With your new Head of Engineering coming from Twilio\u2019s high-scale infrastructure background, there\u2019s likely a 25-day reassessment window underway for team structure and tooling.\n\nWould you benefit from a focused conversation on optimizing engineering workflows during this transition?\n\nWorth 15 minutes this week? \u2192 http://localhost:3000/yakob/30min\n\nResearch Partner / Tenacious Intelligence Corporation / gettenacious.com"
+    "body": "Hi [Name],\n\nCongrats on the leadership transition at Bay Analytics. With your new Head of Engineering coming from Twilio’s high-scale infrastructure background, there’s likely a 25-day reassessment window underway for team structure and tooling.\n\nWould you benefit from a focused conversation on optimizing engineering workflows during this transition?\n\nWorth 15 minutes this week? → http://localhost:3000/yakob/30min\n\nResearch Partner / Tenacious Intelligence Corporation / gettenacious.com"
   },
   "ground_truth": {
     "required_signals": [
-      "leadership",
-      "engineering",
-      "vendor",
-      "mix",
-      "new"
+      "leadership"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -122,6 +119,16 @@
     "source_trace_id": null,
     "judge_score": null,
     "expected_score": 1.0,
-    "generator_model": "qwen/qwen3-235b-a22b"
+    "generator_model": "qwen/qwen3-235b-a22b",
+    "required_signals_v01": [
+      "leadership",
+      "engineering",
+      "vendor",
+      "mix",
+      "new"
+    ],
+    "is_passing_v01": true,
+    "label_source": "evaluator_v0.2",
+    "dataset_version": "0.1.1"
   }
 }

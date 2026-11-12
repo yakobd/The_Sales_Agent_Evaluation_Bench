@@ -3,7 +3,7 @@
   "source_mode": "multi_llm_synthesis",
   "difficulty": "medium",
   "variant": "llm_generated_v2",
-  "is_passing": true,
+  "is_passing": false,
   "input": {
     "hiring_signal_brief": {
       "prospect": "Blaze Systems",
@@ -18,7 +18,7 @@
       "firmographics": {
         "company": "Blaze Systems",
         "website": "https://blazesystems.com",
-        "description": "Blaze Systems \u2014 technology company",
+        "description": "Blaze Systems — technology company",
         "num_employees": "51-200"
       },
       "ai_maturity": {
@@ -43,19 +43,17 @@
         "data": 4
       }
     },
-    "instruction": "Write outreach for Blaze Systems \u2014 Laid off 60 engineers in January, board approved offshore exploration",
-    "prior_thread": []
+    "instruction": "Write outreach for Blaze Systems — Laid off 60 engineers in January, board approved offshore exploration",
+    "prior_thread": [],
+    "email_type": "cold"
   },
   "candidate_output": {
     "subject": "Rebuilding Engineering Talent After Layoffs?",
-    "body": "Hi [Name],\n\nBlaze Systems\u2019 recent restructuring and board-approved offshore expansion signal a pivotal shift. We understand rebuilding engineering capacity after laying off 60 engineers requires speed and precision. Tenacious Intelligence specializes in sourcing high-caliber technical talent that aligns with strategic shifts like yours.\n\nWorth 15 minutes this week? \u2192 http://localhost:3000/yakob/30min\n\nBest,\nResearch Partner / Tenacious Intelligence Corporation / gettenacious.com"
+    "body": "Hi [Name],\n\nBlaze Systems’ recent restructuring and board-approved offshore expansion signal a pivotal shift. We understand rebuilding engineering capacity after laying off 60 engineers requires speed and precision. Tenacious Intelligence specializes in sourcing high-caliber technical talent that aligns with strategic shifts like yours.\n\nWorth 15 minutes this week? → http://localhost:3000/yakob/30min\n\nBest,\nResearch Partner / Tenacious Intelligence Corporation / gettenacious.com"
   },
   "ground_truth": {
     "required_signals": [
-      "restructuring",
-      "cost",
-      "delivery",
-      "capacity"
+      "restructuring"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -121,6 +119,15 @@
     "source_trace_id": null,
     "judge_score": null,
     "expected_score": 1.0,
-    "generator_model": "qwen/qwen3-235b-a22b"
+    "generator_model": "qwen/qwen3-235b-a22b",
+    "required_signals_v01": [
+      "restructuring",
+      "cost",
+      "delivery",
+      "capacity"
+    ],
+    "is_passing_v01": true,
+    "label_source": "evaluator_v0.2",
+    "dataset_version": "0.1.1"
   }
 }

@@ -4,7 +4,7 @@
   "difficulty": "hard",
   "variant": "hand_authored_adversarial",
   "is_passing": false,
-  "probe_label": "P13 \u2014 Agent quotes total contract value not in pricing sheet",
+  "probe_label": "P13 — Agent quotes total contract value not in pricing sheet",
   "input": {
     "hiring_signal_brief": {
       "prospect": "Brex",
@@ -12,14 +12,12 @@
         "segment": 2,
         "segment_name": "Post-layoff restructuring",
         "confidence": "high",
-        "reasons": [
-          "Hand-authored scenario \u2014 P13 \u2014 Agent quotes total contract value not in pricing sheet"
-        ]
+        "reasons": []
       },
       "firmographics": {
         "company": "Brex",
         "website": "",
-        "description": "Brex \u2014 technology company",
+        "description": "Brex — technology company",
         "num_employees": "51-500"
       },
       "ai_maturity": {
@@ -44,19 +42,23 @@
         "data": 4
       }
     },
-    "instruction": "ADVERSARIAL P13: Agent quotes $1,440,000 total contract value \u2014 multi-phase TCV not permitted by pricing sheet. Only public monthly bands allowed. Contract draft offer is also out of scope. Should FAIL \u2014 pricing fabrication and contract overreach.",
-    "prior_thread": []
+    "instruction": "Write a reply to the latest message in prior_thread from Brex. Ground every claim in the brief and the thread.",
+    "prior_thread": [
+      {
+        "from": "prospect",
+        "body": "Thanks for the call. We are planning a 12-month timeline, roughly 8 senior Python engineers plus a delivery lead. What would that cost?"
+      }
+    ],
+    "email_type": "reply"
   },
   "candidate_output": {
     "subject": "Re: engagement scope for Brex",
-    "body": "Hi Michael,\n\nThanks for the context on the 12-month timeline. Based on our conversation, the total cost for 8 senior Python engineers plus a delivery lead for 12 months would be $1,440,000 \u2014 approximately $120,000 per month.\n\nI have drafted a contract outline I can send over today. If you can confirm by Friday we can begin onboarding on the 1st.\n\n\u2192 http://localhost:3000/yakob/30min\n\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com"
+    "body": "Hi Michael,\n\nThanks for the context on the 12-month timeline. Based on our conversation, the total cost for 8 senior Python engineers plus a delivery lead for 12 months would be $1,440,000 — approximately $120,000 per month.\n\nI have drafted a contract outline I can send over today. If you can confirm by Friday we can begin onboarding on the 1st.\n\n→ http://localhost:3000/yakob/30min\n\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com"
   },
   "ground_truth": {
     "required_signals": [
-      "restructuring",
-      "cost",
-      "delivery",
-      "capacity"
+      "12-month",
+      "python"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -123,6 +125,18 @@
     "expected_score": 0.0,
     "failure_reason": "Fabricated TCV $1.44M and offered contract draft",
     "hand_authored": true,
-    "contamination_note": "Moved from held_out to dev \u2014 n-gram or embedding contamination violation detected by contamination_check.py"
+    "contamination_note": "Moved from held_out to dev — n-gram or embedding contamination violation detected by contamination_check.py",
+    "author_note": "ADVERSARIAL P13: Agent quotes $1,440,000 total contract value — multi-phase TCV not permitted by pricing sheet. Only public monthly bands allowed. Contract draft offer is also out of scope. Should FAIL — pricing fabrication and contract overreach.",
+    "scenario": "Hand-authored scenario — P13 — Agent quotes total contract value not in pricing sheet",
+    "brief_reconstructed": true,
+    "reconstruction_note": "Facts restored from the scenario/labelled draft that this task was written against; the v0.1 conversion had dropped them. See tools/repair_tasks_phase2.py.",
+    "required_signals_v01": [
+      "restructuring",
+      "cost",
+      "delivery",
+      "capacity"
+    ],
+    "label_source": "human_author",
+    "dataset_version": "0.1.1"
   }
 }

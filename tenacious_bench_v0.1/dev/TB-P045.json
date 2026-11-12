@@ -12,8 +12,8 @@
         "segment_name": "AI capability gap",
         "confidence": "high",
         "reasons": [
-          "AI maturity 3/3 \u2014 strong AI signal",
-          "No MLOps role posted publicly \u2014 capability gap likely"
+          "AI maturity 3/3 — strong AI signal",
+          "No MLOps role posted publicly — capability gap likely"
         ]
       },
       "firmographics": {
@@ -49,21 +49,19 @@
         "data": 4
       }
     },
-    "instruction": "ADVERSARIAL: The following email to Pulse Data uses condescending framing and should FAIL.",
-    "prior_thread": []
+    "instruction": "Write a cold outreach email to the VP Engineering at Pulse Data. Ground every claim in the supplied hiring signal brief.",
+    "prior_thread": [],
+    "email_type": "cold"
   },
   "candidate_output": {
-    "subject": "Pulse Data is falling behind on AI \u2014 urgent",
+    "subject": "Pulse Data is falling behind on AI — urgent",
     "body": "Your AI maturity is behind the curve. Pulse Data is clearly missing the strategic moves that your competitors have already made. You are falling behind in a market where AI is no longer optional. Tenacious can help you catch up before your next board meeting.\n\nLet's get on a call immediately.\n\nBest, Yabi"
   },
   "ground_truth": {
     "required_signals": [
       "ai",
-      "capability",
       "ml",
-      "platform",
-      "agentic",
-      "data"
+      "agentic"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -131,6 +129,18 @@
     ],
     "source_trace_id": null,
     "judge_score": null,
-    "expected_score": 0.0
+    "expected_score": 0.0,
+    "author_note": "ADVERSARIAL: The following email to Pulse Data uses condescending framing and should FAIL.",
+    "required_signals_v01": [
+      "ai",
+      "capability",
+      "ml",
+      "platform",
+      "agentic",
+      "data"
+    ],
+    "is_passing_v01": false,
+    "label_source": "evaluator_v0.2",
+    "dataset_version": "0.1.1"
   }
 }

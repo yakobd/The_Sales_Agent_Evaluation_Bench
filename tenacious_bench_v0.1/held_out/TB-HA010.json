@@ -4,7 +4,7 @@
   "difficulty": "hard",
   "variant": "hand_authored_adversarial",
   "is_passing": false,
-  "probe_label": "P34 \u2014 Defensive CTO reply triggers gap escalation",
+  "probe_label": "P34 — Defensive CTO reply triggers gap escalation",
   "input": {
     "hiring_signal_brief": {
       "prospect": "Retool",
@@ -12,14 +12,12 @@
         "segment": 4,
         "segment_name": "AI capability gap",
         "confidence": "high",
-        "reasons": [
-          "Hand-authored scenario \u2014 P34 \u2014 Defensive CTO reply triggers gap escalation"
-        ]
+        "reasons": []
       },
       "firmographics": {
         "company": "Retool",
         "website": "",
-        "description": "Retool \u2014 technology company",
+        "description": "Retool — technology company",
         "num_employees": "51-500"
       },
       "ai_maturity": {
@@ -44,19 +42,33 @@
         "data": 4
       }
     },
-    "instruction": "ADVERSARIAL P34: CTO replied 'We are already aware of our competitors.' This response doubles down on the gap finding instead of acknowledging and pivoting. Condescending escalation on a defensive reply. Should FAIL.",
-    "prior_thread": []
+    "instruction": "Write a reply to the latest message in prior_thread from Retool. Ground every claim in the brief and the thread.",
+    "prior_thread": [
+      {
+        "from": "tenacious",
+        "body": "Three companies adjacent to Retool in the internal-tools space posted senior MLOps roles in the last 90 days; your team has not, at least publicly. Worth 15 minutes?"
+      },
+      {
+        "from": "prospect",
+        "body": "We are already aware of our competitors."
+      }
+    ],
+    "email_type": "reply",
+    "competitor_gap_brief": {
+      "prospect_sector": "internal tools platforms",
+      "finding": "3 peers posted senior MLOps roles in the last 90 days",
+      "prospect_has_public_mlops_role": false
+    }
   },
   "candidate_output": {
     "subject": "Re: Question on Retool AI capability gap",
-    "body": "Hi David,\n\nI understand you are already aware of your competitors \u2014 but the data is clear: your AI maturity is still behind where your sector peers are. Three companies in your space have already built MLOps functions that you are missing.\n\nI strongly recommend we connect before your next board meeting to close this gap before it becomes a competitive liability.\n\n\u2192 http://localhost:3000/yakob/30min\n\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com"
+    "body": "Hi David,\n\nI understand you are already aware of your competitors — but the data is clear: your AI maturity is still behind where your sector peers are. Three companies in your space have already built MLOps functions that you are missing.\n\nI strongly recommend we connect before your next board meeting to close this gap before it becomes a competitive liability.\n\n→ http://localhost:3000/yakob/30min\n\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com"
   },
   "ground_truth": {
     "required_signals": [
       "ai",
       "ml",
-      "peer",
-      "capability"
+      "peer"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -121,6 +133,18 @@
     "judge_score": null,
     "expected_score": 0.0,
     "failure_reason": "Doubles down on gap claim after defensive CTO reply",
-    "hand_authored": true
+    "hand_authored": true,
+    "author_note": "ADVERSARIAL P34: CTO replied 'We are already aware of our competitors.' This response doubles down on the gap finding instead of acknowledging and pivoting. Condescending escalation on a defensive reply. Should FAIL.",
+    "scenario": "Hand-authored scenario — P34 — Defensive CTO reply triggers gap escalation",
+    "brief_reconstructed": true,
+    "reconstruction_note": "Facts restored from the scenario/labelled draft that this task was written against; the v0.1 conversion had dropped them. See tools/repair_tasks_phase2.py.",
+    "required_signals_v01": [
+      "ai",
+      "ml",
+      "peer",
+      "capability"
+    ],
+    "label_source": "human_author",
+    "dataset_version": "0.1.1"
   }
 }

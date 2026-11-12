@@ -4,7 +4,7 @@
   "difficulty": "medium",
   "variant": "hand_authored_adversarial",
   "is_passing": true,
-  "probe_label": "P27 \u2014 Correct: EU prospect gets CET overlap language",
+  "probe_label": "P27 — Correct: EU prospect gets CET overlap language",
   "input": {
     "hiring_signal_brief": {
       "prospect": "Adyen",
@@ -13,14 +13,17 @@
         "segment_name": "Leadership change",
         "confidence": "high",
         "reasons": [
-          "Hand-authored scenario \u2014 P27 \u2014 Correct: EU prospect gets CET overlap language"
+          "New CTO appointed 30 days ago",
+          "HQ Amsterdam (CET)"
         ]
       },
       "firmographics": {
         "company": "Adyen",
         "website": "",
-        "description": "Adyen \u2014 technology company",
-        "num_employees": "51-500"
+        "description": "Adyen — technology company",
+        "num_employees": "51-500",
+        "country_code": "NLD",
+        "location": "Amsterdam, Netherlands"
       },
       "ai_maturity": {
         "ai_maturity_score": 1,
@@ -30,7 +33,9 @@
         "layoff_detected": false
       },
       "leadership_signal": {
-        "leadership_change_detected": true
+        "leadership_change_detected": true,
+        "leader_title": "CTO",
+        "days_since_hire": 30
       }
     },
     "bench_summary": {
@@ -44,18 +49,17 @@
         "data": 4
       }
     },
-    "instruction": "CORRECT P27: EU prospect gets CET overlap language. Timezone matches Amsterdam headquarters. Should PASS.",
-    "prior_thread": []
+    "instruction": "Write a cold outreach email to the VP Engineering at Adyen. Ground every claim in the supplied hiring signal brief.",
+    "prior_thread": [],
+    "email_type": "cold"
   },
   "candidate_output": {
     "subject": "Context: engineering vendor mix at Adyen",
-    "body": "Hi Lars,\n\nAdyen recently brought in new engineering leadership \u2014 the CTO appointment 30 days ago is the kind of moment when vendor mix typically gets a fresh look.\n\nTenacious provides managed engineering teams with 3-5 hours of daily CET overlap \u2014 our engineers work European business hours with full timezone alignment.\n\nWorth 15 minutes? \u2192 http://localhost:3000/yakob/30min\n\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com"
+    "body": "Hi Lars,\n\nAdyen recently brought in new engineering leadership — the CTO appointment 30 days ago is the kind of moment when vendor mix typically gets a fresh look.\n\nTenacious provides managed engineering teams with 3-5 hours of daily CET overlap — our engineers work European business hours with full timezone alignment.\n\nWorth 15 minutes? → http://localhost:3000/yakob/30min\n\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com"
   },
   "ground_truth": {
     "required_signals": [
       "leadership",
-      "engineering",
-      "vendor",
       "cet"
     ],
     "forbidden_phrases": [
@@ -121,6 +125,18 @@
     "judge_score": null,
     "expected_score": 1.0,
     "failure_reason": null,
-    "hand_authored": true
+    "hand_authored": true,
+    "author_note": "CORRECT P27: EU prospect gets CET overlap language. Timezone matches Amsterdam headquarters. Should PASS.",
+    "scenario": "Hand-authored scenario — P27 — Correct: EU prospect gets CET overlap language",
+    "brief_reconstructed": true,
+    "reconstruction_note": "Facts restored from the scenario/labelled draft that this task was written against; the v0.1 conversion had dropped them. See tools/repair_tasks_phase2.py.",
+    "required_signals_v01": [
+      "leadership",
+      "engineering",
+      "vendor",
+      "cet"
+    ],
+    "label_source": "human_author",
+    "dataset_version": "0.1.1"
   }
 }

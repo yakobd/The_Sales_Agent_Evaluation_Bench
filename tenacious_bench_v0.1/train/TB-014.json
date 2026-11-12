@@ -12,7 +12,7 @@
         "segment_name": "Post-layoff restructuring",
         "confidence": "high",
         "reasons": [
-          "Layoff detected \u2014 cost restructuring likely"
+          "Layoff detected — cost restructuring likely"
         ]
       },
       "firmographics": {
@@ -35,7 +35,7 @@
         "date": "1/31/2023",
         "stage": "Post-IPO",
         "country": "United States",
-        "icp_signal": "Segment 2 \u2014 cost restructuring pitch",
+        "icp_signal": "Segment 2 — cost restructuring pitch",
         "note": "Layoff detected from layoffs.fyi dataset (1 records found)"
       },
       "leadership_signal": {
@@ -56,19 +56,24 @@
         "data": 4
       }
     },
-    "prior_thread": [],
-    "instruction": "The prospect at Hubspot has replied saying: 'Your recent restructuring context resonates. We are indeed looking at cost optim'. Write a warm reply that acknowledges their response and offers a booking link. Max 200 words."
+    "prior_thread": [
+      {
+        "from": "prospect",
+        "body": "Your recent restructuring context resonates. We are indeed looking at cost optim"
+      }
+    ],
+    "instruction": "The prospect at Hubspot has replied saying: 'Your recent restructuring context resonates. We are indeed looking at cost optim'. Write a warm reply that acknowledges their response and offers a booking link. Max 200 words.",
+    "email_type": "reply"
   },
   "candidate_output": {
     "subject": "Re: Note on Hubspot restructuring",
-    "body": "Thanks for the reply \u2014 good to know the context lands.\n\nGiven what you shared, the fastest next step is a 30-minute call with our delivery lead. They can walk through exactly how we structure engagements for Hubspot's stage and answer questions on timeline and capacity.\n\nBook directly here: http://localhost:3000/yakob/30min?utm_source=email_reply\n\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com"
+    "body": "Thanks for the reply — good to know the context lands.\n\nGiven what you shared, the fastest next step is a 30-minute call with our delivery lead. They can walk through exactly how we structure engagements for Hubspot's stage and answer questions on timeline and capacity.\n\nBook directly here: http://localhost:3000/yakob/30min?utm_source=email_reply\n\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com"
   },
   "ground_truth": {
     "required_signals": [
       "book",
       "call",
       "30min",
-      "delivery",
       "localhost"
     ],
     "forbidden_phrases": [
@@ -136,6 +141,16 @@
     ],
     "source_trace_id": "thread_20260427_115927",
     "judge_score": null,
-    "expected_score": 1.0
+    "expected_score": 1.0,
+    "required_signals_v01": [
+      "book",
+      "call",
+      "30min",
+      "delivery",
+      "localhost"
+    ],
+    "is_passing_v01": true,
+    "label_source": "evaluator_v0.2",
+    "dataset_version": "0.1.1"
   }
 }

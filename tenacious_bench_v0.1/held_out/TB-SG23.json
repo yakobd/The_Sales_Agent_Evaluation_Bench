@@ -13,7 +13,7 @@
         "segment_name": "Recently-funded startup",
         "confidence": "high",
         "reasons": [
-          "Style guide labeled: Pricing fabrication for multi-phase engagement"
+          "Warm prospect: replied about a December start (see prior_thread)"
         ]
       },
       "firmographics": {
@@ -44,8 +44,14 @@
         "data": 4
       }
     },
-    "instruction": "STYLE GUIDE EXAMPLE (SG-B11): BAD \u2014 should FAIL. Pricing fabrication for multi-phase engagement",
-    "prior_thread": []
+    "instruction": "Write a reply to the latest message in prior_thread from Camila Systems. Ground every claim in the brief and the thread.",
+    "prior_thread": [
+      {
+        "from": "prospect",
+        "body": "Thanks for the call yesterday. Can you send pricing for the 12-month engagement we discussed?"
+      }
+    ],
+    "email_type": "reply"
   },
   "candidate_output": {
     "subject": "Quote: 1.2M for the 12-month engagement",
@@ -124,6 +130,12 @@
     "source_trace_id": null,
     "judge_score": null,
     "expected_score": 0.0,
-    "style_guide_label": "Pricing fabrication for multi-phase engagement"
+    "style_guide_label": "Pricing fabrication for multi-phase engagement",
+    "author_note": "STYLE GUIDE EXAMPLE (SG-B11): BAD — should FAIL. Pricing fabrication for multi-phase engagement",
+    "scenario": "Style guide labeled: Pricing fabrication for multi-phase engagement",
+    "brief_reconstructed": true,
+    "reconstruction_note": "Facts restored from the scenario/labelled draft that this task was written against; the v0.1 conversion had dropped them. See tools/repair_tasks_phase2.py.",
+    "label_source": "tenacious_style_guide",
+    "dataset_version": "0.1.1"
   }
 }

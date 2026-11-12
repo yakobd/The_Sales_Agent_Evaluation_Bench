@@ -3,7 +3,7 @@
   "source_mode": "multi_llm_synthesis",
   "difficulty": "medium",
   "variant": "llm_generated_v2",
-  "is_passing": true,
+  "is_passing": false,
   "input": {
     "hiring_signal_brief": {
       "prospect": "Gulf Systems",
@@ -12,13 +12,13 @@
         "segment_name": "Leadership change",
         "confidence": "medium",
         "reasons": [
-          "VP Engineering change detected 55 days ago \u2014 limited public signal"
+          "VP Engineering change detected 55 days ago — limited public signal"
         ]
       },
       "firmographics": {
         "company": "Gulf Systems",
         "website": "https://gulfsystems.com",
-        "description": "Gulf Systems \u2014 technology company",
+        "description": "Gulf Systems — technology company",
         "num_employees": "51-200"
       },
       "ai_maturity": {
@@ -43,20 +43,17 @@
         "data": 4
       }
     },
-    "instruction": "Write outreach for Gulf Systems \u2014 VP Engineering change detected 55 days ago \u2014 limited public signal",
-    "prior_thread": []
+    "instruction": "Write outreach for Gulf Systems — VP Engineering change detected 55 days ago — limited public signal",
+    "prior_thread": [],
+    "email_type": "cold"
   },
   "candidate_output": {
     "subject": "New Leadership at Gulf Systems?",
-    "body": "Hi [Name],\n\nWe noticed a potential transition in your engineering leadership 55 days ago. Curious if this shift is opening opportunities for strategic talent alignment?\n\nAs a research partner, we specialize in connecting tech-driven companies with engineering leaders who align with evolving strategic goals. Our process prioritizes discretion and precision.\n\nWorth 15 minutes this week? \u2192 http://localhost:3000/yakob/30min\n\nBest,\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com"
+    "body": "Hi [Name],\n\nWe noticed a potential transition in your engineering leadership 55 days ago. Curious if this shift is opening opportunities for strategic talent alignment?\n\nAs a research partner, we specialize in connecting tech-driven companies with engineering leaders who align with evolving strategic goals. Our process prioritizes discretion and precision.\n\nWorth 15 minutes this week? → http://localhost:3000/yakob/30min\n\nBest,\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com"
   },
   "ground_truth": {
     "required_signals": [
-      "leadership",
-      "engineering",
-      "vendor",
-      "mix",
-      "new"
+      "leadership"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -122,6 +119,16 @@
     "source_trace_id": null,
     "judge_score": null,
     "expected_score": 1.0,
-    "generator_model": "qwen/qwen3-235b-a22b"
+    "generator_model": "qwen/qwen3-235b-a22b",
+    "required_signals_v01": [
+      "leadership",
+      "engineering",
+      "vendor",
+      "mix",
+      "new"
+    ],
+    "is_passing_v01": true,
+    "label_source": "evaluator_v0.2",
+    "dataset_version": "0.1.1"
   }
 }

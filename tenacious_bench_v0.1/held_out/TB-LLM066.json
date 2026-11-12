@@ -3,7 +3,7 @@
   "source_mode": "multi_llm_synthesis",
   "difficulty": "easy",
   "variant": "llm_generated_v2",
-  "is_passing": true,
+  "is_passing": false,
   "input": {
     "hiring_signal_brief": {
       "prospect": "Spark Analytics",
@@ -18,7 +18,7 @@
       "firmographics": {
         "company": "Spark Analytics",
         "website": "https://sparkanalytics.com",
-        "description": "Spark Analytics \u2014 technology company",
+        "description": "Spark Analytics — technology company",
         "num_employees": "51-200"
       },
       "ai_maturity": {
@@ -43,21 +43,19 @@
         "data": 4
       }
     },
-    "instruction": "Write outreach for Spark Analytics \u2014 5 peer companies with public MLOps roles, Spark AI maturity 2/3",
-    "prior_thread": []
+    "instruction": "Write outreach for Spark Analytics — 5 peer companies with public MLOps roles, Spark AI maturity 2/3",
+    "prior_thread": [],
+    "email_type": "cold"
   },
   "candidate_output": {
     "subject": "Spark Analytics' AI Capability Gap: Let's Discuss",
-    "body": "Hi [First Name], I noticed Spark Analytics has positioned itself as a leader in data-driven insights, but there\u2019s a visible gap between your current AI maturity (Stage 2/3) and the full potential of enterprise-grade MLOps. Five peer companies have already begun building MLOps scalability teams\u2014either deliberately investing or still scoping their approach. Where does Spark stand in this spectrum?\n\nWorth 15 minutes this week? \u2192 http://localhost:3000/yakob/30min\nResearch Partner / Tenacious Intelligence Corporation / gettenacious.com"
+    "body": "Hi [First Name], I noticed Spark Analytics has positioned itself as a leader in data-driven insights, but there’s a visible gap between your current AI maturity (Stage 2/3) and the full potential of enterprise-grade MLOps. Five peer companies have already begun building MLOps scalability teams—either deliberately investing or still scoping their approach. Where does Spark stand in this spectrum?\n\nWorth 15 minutes this week? → http://localhost:3000/yakob/30min\nResearch Partner / Tenacious Intelligence Corporation / gettenacious.com"
   },
   "ground_truth": {
     "required_signals": [
       "ai",
-      "capability",
       "ml",
-      "platform",
-      "peer",
-      "data"
+      "peer"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -124,6 +122,17 @@
     "judge_score": null,
     "expected_score": 1.0,
     "generator_model": "qwen/qwen3-235b-a22b",
-    "contamination_note": "Moved from held_out to dev \u2014 n-gram or embedding contamination violation detected by contamination_check.py"
+    "contamination_note": "Moved from held_out to dev — n-gram or embedding contamination violation detected by contamination_check.py",
+    "required_signals_v01": [
+      "ai",
+      "capability",
+      "ml",
+      "platform",
+      "peer",
+      "data"
+    ],
+    "is_passing_v01": true,
+    "label_source": "evaluator_v0.2",
+    "dataset_version": "0.1.1"
   }
 }

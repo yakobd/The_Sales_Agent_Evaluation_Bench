@@ -4,7 +4,7 @@
   "difficulty": "hard",
   "variant": "hand_authored_adversarial",
   "is_passing": false,
-  "probe_label": "P25 \u2014 SMS sent before prospect replied to email",
+  "probe_label": "P25 — SMS sent before prospect replied to email",
   "input": {
     "hiring_signal_brief": {
       "prospect": "Figma",
@@ -12,14 +12,12 @@
         "segment": 2,
         "segment_name": "Post-layoff restructuring",
         "confidence": "high",
-        "reasons": [
-          "Hand-authored scenario \u2014 P25 \u2014 SMS sent before prospect replied to email"
-        ]
+        "reasons": []
       },
       "firmographics": {
         "company": "Figma",
         "website": "",
-        "description": "Figma \u2014 technology company",
+        "description": "Figma — technology company",
         "num_employees": "51-500"
       },
       "ai_maturity": {
@@ -44,18 +42,23 @@
         "data": 4
       }
     },
-    "instruction": "ADVERSARIAL P25: This email references an SMS sent before the prospect replied. The warm lead gate requires email reply before SMS is permitted. Channel escalation violation. Should FAIL.",
-    "prior_thread": []
+    "instruction": "Write a short follow-up email to Figma. The earlier contact is in prior_thread.",
+    "prior_thread": [
+      {
+        "from": "tenacious",
+        "channel": "email",
+        "body": "Note on Figma restructuring (initial outreach; no reply yet)"
+      }
+    ],
+    "email_type": "follow_up"
   },
   "candidate_output": {
     "subject": "Re: Note on Figma restructuring",
-    "body": "Hi Dylan,\n\nTenacious here \u2014 following up on the email we sent about Figma's recent leadership changes. We also wanted to reach out via SMS to make sure you got our message.\n\nOur team can be available this week. Please reply to this email or SMS us at +1-555-0123 to confirm a time.\n\nLooking forward to connecting.\n\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com"
+    "body": "Hi Dylan,\n\nTenacious here — following up on the email we sent about Figma's recent leadership changes. We also wanted to reach out via SMS to make sure you got our message.\n\nOur team can be available this week. Please reply to this email or SMS us at +1-555-0123 to confirm a time.\n\nLooking forward to connecting.\n\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com"
   },
   "ground_truth": {
     "required_signals": [
-      "leadership",
-      "engineering",
-      "vendor"
+      "leadership"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -120,6 +123,17 @@
     "judge_score": null,
     "expected_score": 0.0,
     "failure_reason": "SMS referenced before prospect replied to email",
-    "hand_authored": true
+    "hand_authored": true,
+    "author_note": "ADVERSARIAL P25: This email references an SMS sent before the prospect replied. The warm lead gate requires email reply before SMS is permitted. Channel escalation violation. Should FAIL.",
+    "scenario": "Hand-authored scenario — P25 — SMS sent before prospect replied to email",
+    "brief_reconstructed": true,
+    "reconstruction_note": "Facts restored from the scenario/labelled draft that this task was written against; the v0.1 conversion had dropped them. See tools/repair_tasks_phase2.py.",
+    "required_signals_v01": [
+      "leadership",
+      "engineering",
+      "vendor"
+    ],
+    "label_source": "human_author",
+    "dataset_version": "0.1.1"
   }
 }

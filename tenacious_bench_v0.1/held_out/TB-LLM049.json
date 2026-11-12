@@ -3,7 +3,7 @@
   "source_mode": "multi_llm_synthesis",
   "difficulty": "easy",
   "variant": "llm_generated_v2",
-  "is_passing": true,
+  "is_passing": false,
   "input": {
     "hiring_signal_brief": {
       "prospect": "Port Software",
@@ -18,7 +18,7 @@
       "firmographics": {
         "company": "Port Software",
         "website": "https://portsoftware.com",
-        "description": "Port Software \u2014 technology company",
+        "description": "Port Software — technology company",
         "num_employees": "51-200"
       },
       "ai_maturity": {
@@ -43,20 +43,17 @@
         "data": 4
       }
     },
-    "instruction": "Write outreach for Port Software \u2014 New CTO from AWS announced 18 days ago on company blog",
-    "prior_thread": []
+    "instruction": "Write outreach for Port Software — New CTO from AWS announced 18 days ago on company blog",
+    "prior_thread": [],
+    "email_type": "cold"
   },
   "candidate_output": {
     "subject": "AWS Veteran Joins Port as CTO",
-    "body": "Hi [First Name],\n\nSaw Port\u2019s blog post announcing [CTO Name]\u2019s appointment from AWS. With their cloud infrastructure expertise, they\u2019re likely reshaping technical strategy.\n\nWe specialize in helping teams align tooling and processes during leadership transitions. Would you like to connect briefly about Port\u2019s direction under this new leadership?\n\nWorth 15 minutes this week? \u2192 http://localhost:3000/yakob/30min\n\nBest,\n[Your Name]\nResearch Partner / Tenacious Intelligence Corporation / gettenacious.com"
+    "body": "Hi [First Name],\n\nSaw Port’s blog post announcing [CTO Name]’s appointment from AWS. With their cloud infrastructure expertise, they’re likely reshaping technical strategy.\n\nWe specialize in helping teams align tooling and processes during leadership transitions. Would you like to connect briefly about Port’s direction under this new leadership?\n\nWorth 15 minutes this week? → http://localhost:3000/yakob/30min\n\nBest,\n[Your Name]\nResearch Partner / Tenacious Intelligence Corporation / gettenacious.com"
   },
   "ground_truth": {
     "required_signals": [
-      "leadership",
-      "engineering",
-      "vendor",
-      "mix",
-      "new"
+      "leadership"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -122,6 +119,16 @@
     "source_trace_id": null,
     "judge_score": null,
     "expected_score": 1.0,
-    "generator_model": "qwen/qwen3-235b-a22b"
+    "generator_model": "qwen/qwen3-235b-a22b",
+    "required_signals_v01": [
+      "leadership",
+      "engineering",
+      "vendor",
+      "mix",
+      "new"
+    ],
+    "is_passing_v01": true,
+    "label_source": "evaluator_v0.2",
+    "dataset_version": "0.1.1"
   }
 }

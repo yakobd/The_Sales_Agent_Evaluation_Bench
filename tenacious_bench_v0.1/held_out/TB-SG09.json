@@ -13,7 +13,7 @@
         "segment_name": "Recently-funded startup",
         "confidence": "high",
         "reasons": [
-          "Style guide labeled: Bench-gated honest decline of overreach"
+          "Warm prospect asking about rapid scale-up (see prior_thread)"
         ]
       },
       "firmographics": {
@@ -41,11 +41,18 @@
         "node": 8,
         "ml": 6,
         "go": 4,
-        "data": 4
+        "data": 4,
+        "infra": 4
       }
     },
-    "instruction": "STYLE GUIDE EXAMPLE (SG-G09): GOOD \u2014 should PASS. Bench-gated honest decline of overreach",
-    "prior_thread": []
+    "instruction": "Write a reply to the latest message in prior_thread from Will Engineering. Ground every claim in the brief and the thread.",
+    "prior_thread": [
+      {
+        "from": "prospect",
+        "body": "Can you scale to 15 engineers on our Go and infra-heavy stack within 30 days?"
+      }
+    ],
+    "email_type": "reply"
   },
   "candidate_output": {
     "subject": "Re: scaling to 15 engineers in 30 days",
@@ -126,6 +133,12 @@
     "source_trace_id": null,
     "judge_score": null,
     "expected_score": 1.0,
-    "style_guide_label": "Bench-gated honest decline of overreach"
+    "style_guide_label": "Bench-gated honest decline of overreach",
+    "author_note": "STYLE GUIDE EXAMPLE (SG-G09): GOOD — should PASS. Bench-gated honest decline of overreach",
+    "scenario": "Style guide labeled: Bench-gated honest decline of overreach",
+    "brief_reconstructed": true,
+    "reconstruction_note": "Facts restored from the scenario/labelled draft that this task was written against; the v0.1 conversion had dropped them. See tools/repair_tasks_phase2.py.",
+    "label_source": "tenacious_style_guide",
+    "dataset_version": "0.1.1"
   }
 }

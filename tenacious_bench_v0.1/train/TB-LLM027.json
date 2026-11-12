@@ -3,7 +3,7 @@
   "source_mode": "multi_llm_synthesis",
   "difficulty": "easy",
   "variant": "llm_generated_v2",
-  "is_passing": true,
+  "is_passing": false,
   "input": {
     "hiring_signal_brief": {
       "prospect": "Cove Technologies",
@@ -18,7 +18,7 @@
       "firmographics": {
         "company": "Cove Technologies",
         "website": "https://covetechnologies.com",
-        "description": "Cove Technologies \u2014 technology company",
+        "description": "Cove Technologies — technology company",
         "num_employees": "51-200"
       },
       "ai_maturity": {
@@ -43,20 +43,17 @@
         "data": 4
       }
     },
-    "instruction": "Write outreach for Cove Technologies \u2014 Seed extension $5M, team of 6 engineers, first senior hires expected",
-    "prior_thread": []
+    "instruction": "Write outreach for Cove Technologies — Seed extension $5M, team of 6 engineers, first senior hires expected",
+    "prior_thread": [],
+    "email_type": "cold"
   },
   "candidate_output": {
     "subject": "Help with Senior Engineering Hires?",
-    "body": "Hi [First Name],\n\nCongrats on Cove's $5M seed extension and assembling the core engineering team. With your upcoming senior hires, we'd like to share resources to streamline technical recruiting.\n\nNo strings attached \u2013 just a curated shortlist of proven engineering leaders aligned with Cove's early-stage needs. We focus on quality over quantity, respecting your time and bandwidth.\n\nWorth 15 minutes this week? \u2192 http://localhost:3000/yakob/30min\n\nBest,\n[Your Name]\nResearch Partner / Tenacious Intelligence Corporation / gettenacious.com"
+    "body": "Hi [First Name],\n\nCongrats on Cove's $5M seed extension and assembling the core engineering team. With your upcoming senior hires, we'd like to share resources to streamline technical recruiting.\n\nNo strings attached – just a curated shortlist of proven engineering leaders aligned with Cove's early-stage needs. We focus on quality over quantity, respecting your time and bandwidth.\n\nWorth 15 minutes this week? → http://localhost:3000/yakob/30min\n\nBest,\n[Your Name]\nResearch Partner / Tenacious Intelligence Corporation / gettenacious.com"
   },
   "ground_truth": {
     "required_signals": [
-      "funding",
-      "growth",
-      "engineering",
-      "capacity",
-      "roles"
+      "funding"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -122,6 +119,16 @@
     "source_trace_id": null,
     "judge_score": null,
     "expected_score": 1.0,
-    "generator_model": "qwen/qwen3-235b-a22b"
+    "generator_model": "qwen/qwen3-235b-a22b",
+    "required_signals_v01": [
+      "funding",
+      "growth",
+      "engineering",
+      "capacity",
+      "roles"
+    ],
+    "is_passing_v01": true,
+    "label_source": "evaluator_v0.2",
+    "dataset_version": "0.1.1"
   }
 }

@@ -3,7 +3,7 @@
   "source_mode": "multi_llm_synthesis",
   "difficulty": "medium",
   "variant": "llm_generated_v2",
-  "is_passing": true,
+  "is_passing": false,
   "input": {
     "hiring_signal_brief": {
       "prospect": "Shade Intelligence",
@@ -18,7 +18,7 @@
       "firmographics": {
         "company": "Shade Intelligence",
         "website": "https://shadeintelligence.com",
-        "description": "Shade Intelligence \u2014 technology company",
+        "description": "Shade Intelligence — technology company",
         "num_employees": "51-200"
       },
       "ai_maturity": {
@@ -43,21 +43,19 @@
         "data": 4
       }
     },
-    "instruction": "Write outreach for Shade Intelligence \u2014 AI maturity 2/3, sector peers advancing faster on ML stack",
-    "prior_thread": []
+    "instruction": "Write outreach for Shade Intelligence — AI maturity 2/3, sector peers advancing faster on ML stack",
+    "prior_thread": [],
+    "email_type": "cold"
   },
   "candidate_output": {
     "subject": "Research Finding: AI Capability Gaps at Shade Intelligence",
-    "body": "Dear [Name],\n\nRecent research indicates Shade Intelligence operates at AI maturity level 2/3, with peers advancing faster on ML stack development. This capability gap risks downstream impacts on [specific business outcome]. Our analysis suggests targeted improvements could yield measurable gains within 6-8 months.\n\nWorth 15 minutes this week? \u2192 http://localhost:3000/yakob/30min\n\n[Research Partner]\nTenacious Intelligence Corporation\ngettenacious.com"
+    "body": "Dear [Name],\n\nRecent research indicates Shade Intelligence operates at AI maturity level 2/3, with peers advancing faster on ML stack development. This capability gap risks downstream impacts on [specific business outcome]. Our analysis suggests targeted improvements could yield measurable gains within 6-8 months.\n\nWorth 15 minutes this week? → http://localhost:3000/yakob/30min\n\n[Research Partner]\nTenacious Intelligence Corporation\ngettenacious.com"
   },
   "ground_truth": {
     "required_signals": [
       "ai",
-      "capability",
       "ml",
-      "platform",
-      "peer",
-      "data"
+      "peer"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -124,6 +122,17 @@
     "judge_score": null,
     "expected_score": 1.0,
     "generator_model": "qwen/qwen3-235b-a22b",
-    "contamination_note": "Moved from held_out to dev \u2014 n-gram or embedding contamination violation detected by contamination_check.py"
+    "contamination_note": "Moved from held_out to dev — n-gram or embedding contamination violation detected by contamination_check.py",
+    "required_signals_v01": [
+      "ai",
+      "capability",
+      "ml",
+      "platform",
+      "peer",
+      "data"
+    ],
+    "is_passing_v01": true,
+    "label_source": "evaluator_v0.2",
+    "dataset_version": "0.1.1"
   }
 }

@@ -3,7 +3,7 @@
   "source_mode": "multi_llm_synthesis",
   "difficulty": "easy",
   "variant": "llm_generated_v2",
-  "is_passing": true,
+  "is_passing": false,
   "input": {
     "hiring_signal_brief": {
       "prospect": "Cyan Software",
@@ -18,7 +18,7 @@
       "firmographics": {
         "company": "Cyan Software",
         "website": "https://cyansoftware.com",
-        "description": "Cyan Software \u2014 technology company",
+        "description": "Cyan Software — technology company",
         "num_employees": "51-200"
       },
       "ai_maturity": {
@@ -43,20 +43,17 @@
         "data": 4
       }
     },
-    "instruction": "Write outreach for Cyan Software \u2014 Series B $35M closed last month, 7 open engineering roles",
-    "prior_thread": []
+    "instruction": "Write outreach for Cyan Software — Series B $35M closed last month, 7 open engineering roles",
+    "prior_thread": [],
+    "email_type": "cold"
   },
   "candidate_output": {
-    "subject": "Cyan\u2019s Series B Momentum & Engineering Hiring",
-    "body": "Hi [First Name],\n\nCongratulations on Cyan\u2019s $35M Series B win last month. With 7 open roles, scaling engineering is key to maintaining that momentum.\n\nWe help companies like Cyan identify high-potential candidates who align with their technical roadmap and culture. Our process focuses on engineers who thrive in high-growth environments.\n\nWorth 15 minutes this week? \u2192 http://localhost:3000/yakob/30min\n\nBest,\n[Your Name] Research Partner / Tenacious Intelligence Corporation / gettenacious.com"
+    "subject": "Cyan’s Series B Momentum & Engineering Hiring",
+    "body": "Hi [First Name],\n\nCongratulations on Cyan’s $35M Series B win last month. With 7 open roles, scaling engineering is key to maintaining that momentum.\n\nWe help companies like Cyan identify high-potential candidates who align with their technical roadmap and culture. Our process focuses on engineers who thrive in high-growth environments.\n\nWorth 15 minutes this week? → http://localhost:3000/yakob/30min\n\nBest,\n[Your Name] Research Partner / Tenacious Intelligence Corporation / gettenacious.com"
   },
   "ground_truth": {
     "required_signals": [
-      "funding",
-      "growth",
-      "engineering",
-      "capacity",
-      "roles"
+      "funding"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -122,6 +119,16 @@
     "source_trace_id": null,
     "judge_score": null,
     "expected_score": 1.0,
-    "generator_model": "qwen/qwen3-235b-a22b"
+    "generator_model": "qwen/qwen3-235b-a22b",
+    "required_signals_v01": [
+      "funding",
+      "growth",
+      "engineering",
+      "capacity",
+      "roles"
+    ],
+    "is_passing_v01": true,
+    "label_source": "evaluator_v0.2",
+    "dataset_version": "0.1.1"
   }
 }

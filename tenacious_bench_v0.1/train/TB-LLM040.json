@@ -3,7 +3,7 @@
   "source_mode": "multi_llm_synthesis",
   "difficulty": "easy",
   "variant": "llm_generated_v2",
-  "is_passing": true,
+  "is_passing": false,
   "input": {
     "hiring_signal_brief": {
       "prospect": "Stone Platform",
@@ -18,7 +18,7 @@
       "firmographics": {
         "company": "Stone Platform",
         "website": "https://stoneplatform.com",
-        "description": "Stone Platform \u2014 technology company",
+        "description": "Stone Platform — technology company",
         "num_employees": "51-200"
       },
       "ai_maturity": {
@@ -43,19 +43,17 @@
         "data": 4
       }
     },
-    "instruction": "Write outreach for Stone Platform \u2014 300 layoffs in February, cost restructuring confirmed by CEO",
-    "prior_thread": []
+    "instruction": "Write outreach for Stone Platform — 300 layoffs in February, cost restructuring confirmed by CEO",
+    "prior_thread": [],
+    "email_type": "cold"
   },
   "candidate_output": {
     "subject": "Supporting Stone Platform's Restructuring Vision",
-    "body": "Hi [First Name],\n\nStone Platform\u2019s recent announcement of 300 layoffs and CEO-confirmed cost restructuring signals a pivotal transition phase. I\u2019m reaching out to explore how we might support your team\u2019s strategic realignment during this period of recalibration.\n\nTenacious Intelligence specializes in helping organizations navigate post-layoff dynamics while maintaining operational momentum. Our focus is on actionable insights that balance team morale with efficiency demands\u2014critical during high-visibility restructuring.\n\nWorth 15 minutes this week? \u2192 http://localhost:3000/yakob/30min\n\nResearch Partner / Tenacious Intelligence Corporation / gettenacious.com"
+    "body": "Hi [First Name],\n\nStone Platform’s recent announcement of 300 layoffs and CEO-confirmed cost restructuring signals a pivotal transition phase. I’m reaching out to explore how we might support your team’s strategic realignment during this period of recalibration.\n\nTenacious Intelligence specializes in helping organizations navigate post-layoff dynamics while maintaining operational momentum. Our focus is on actionable insights that balance team morale with efficiency demands—critical during high-visibility restructuring.\n\nWorth 15 minutes this week? → http://localhost:3000/yakob/30min\n\nResearch Partner / Tenacious Intelligence Corporation / gettenacious.com"
   },
   "ground_truth": {
     "required_signals": [
-      "restructuring",
-      "cost",
-      "delivery",
-      "capacity"
+      "restructuring"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -121,6 +119,15 @@
     "source_trace_id": null,
     "judge_score": null,
     "expected_score": 1.0,
-    "generator_model": "qwen/qwen3-235b-a22b"
+    "generator_model": "qwen/qwen3-235b-a22b",
+    "required_signals_v01": [
+      "restructuring",
+      "cost",
+      "delivery",
+      "capacity"
+    ],
+    "is_passing_v01": true,
+    "label_source": "evaluator_v0.2",
+    "dataset_version": "0.1.1"
   }
 }

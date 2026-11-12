@@ -103,7 +103,7 @@ CLAIM_PATTERNS = {
                r"\bclosed (your|a|the|its) \$?\d",
     "layoff": r"\blayoffs?\b|\blaid off\b|\brestructur\w*|\bcontracted by\b|"
               r"\breduction in force\b|\bheadcount reduction\b",
-    "leadership": r"\bnew (cto|vp|head of|chief)\b|\bleadership (change|appointment|transition)\b|"
+    "leadership": r"\bnew (cto|vp|head of|chief)\b|\bleadership (changes?|appointments?|transitions?)\b|"
                   r"\b(recently|just) (appointed|brought in|hired) (a |an |your )?(new )?"
                   r"(cto|vp|chief|head|engineering leader)|\bcongrat\w* on (the|your) "
                   r"(new )?(role|appointment|leadership)",
@@ -135,9 +135,23 @@ CONTRACT_COMMIT = (r"\b(attached|drafted|draft|send over|sending) (the |a |our )
 CAPACITY = r"\b(\d{1,3})\s+(?:senior\s+|dedicated\s+|full-time\s+)?(\w+\s+)?(engineers|developers|devs)\b"
 PLACEHOLDER = (r"\[[^\]\n]{2,60}\]|\{\{[^}\n]+\}\}|<(first[_ ]?name|company|name)[^>]*>|"
                r"\byour (company|full name|position|contact information)\b(?=\s*\])")
-CTA = (r"https?://|cal\.com|\b(15|20|30)[- ]minutes?\b|\bbook\b|\bschedule\b|\bcall\b|"
-       r"\bworth (a )?\d+|\breply\b|\bnext step\b|\bwalk through\b")
-NUMBER_UNITS_IGNORED = r"(minutes?|mins?|hours?|hrs?|days?|weeks?|months?|years?|yrs?|am|pm|x)\b"
+# Style guide: "ends with a calendar link OR an explicit next-step offer".
+# Tenacious-labelled good drafts use soft offers ("I can share two case studies",
+# "Want me to send the PDF?"), so offers count as a CTA.
+CTA = (r"https?://|cal\.com|\bcalendar\b|\b(15|20|30)[- ]minutes?\b|\bbook\b|\bschedule\b|\bcall\b|"
+       r"\bworth (a )?\d+|\breply\b|\bnext step\b|\bwalk through\b|"
+       r"\bhappy to (send|share|introduce|walk|talk)\b|\bwant me to\b|\bi can (share|send)\b|"
+       r"\b(would|could) (it|that|this) be useful\b|\byour call\b|\blet me know\b")
+# Channel policy (probe P25): SMS only after the prospect has replied by email.
+SMS_MENTION = r"\bsms\b|\btext message\b|\btext us\b|\bwhatsapp\b"
+# A list of 2+ capitalised names after a peer claim, e.g. "including Intercom, Zendesk, and Drift".
+NAMED_LIST = (r"(?:including|such as|like|—|:)\s+((?:[A-Z][\w.&'-]+(?:\s[A-Z][\w.&'-]+)*)"
+              r"(?:,\s*(?:and\s+)?[A-Z][\w.&'-]+(?:\s[A-Z][\w.&'-]+)*)+)")
+# Style guide: one ask per email; no attachments in first-touch email.
+ENUMERATED_ASKS = r"\b(first|second|third|fourth|fifth)(ly)?\b[,:]"
+ATTACHMENT = r"(?<!strings )\battach(ed|ment|ing)\b"  # but not the idiom "no strings attached"
+FIRST_TOUCH_TYPES = {"cold", "re_engagement", "referral"}
+NUMBER_UNITS_IGNORED =r"(minutes?|mins?|hours?|hrs?|days?|weeks?|months?|years?|yrs?|am|pm|x)\b"
 SIGNATURE_LINES = {"research partner", "tenacious intelligence corporation",
                    "gettenacious.com", "best,", "best", "thanks,", "regards,"}
 
@@ -182,6 +196,8 @@ def brief_facts(task: dict) -> dict:
                        if not re.match(r"(hand-authored scenario|style guide labeled|adversarial)", str(r).lower())).lower()
     reason_layoff = bool(re.search(r"\blayoffs?\b|\blaid off\b|\brestructur", reasons))
     reason_lead = bool(re.search(r"\bnew (cto|vp|head|chief)|\bleadership (change|hire)|\bappointed\b", reasons))
+    # a peer/competitor summary in the reasons is competitor-gap evidence (W10 competitor_gap output)
+    reason_peers = bool(re.search(r"\b(peers?|peer companies|adjacent compan\w*|competitors?|sector peers)\b", reasons))
     region_text = " " + " ".join(_flatten({
         "firmo": {k: firmo.get(k) for k in ("country_code", "country", "location", "region", "hq", "timezone")},
         "brief_region": brief.get("region"), "tz": brief.get("timezone"),
@@ -198,7 +214,7 @@ def brief_facts(task: dict) -> dict:
         "has_leadership": bool(lead.get("leadership_change_detected")) or reason_lead,
         "confidence": str((brief.get("icp_classification", {}) or {}).get("confidence", "")).lower(),
         "ai_score": (brief.get("ai_maturity", {}) or {}).get("ai_maturity_score") or 0,
-        "has_competitor_brief": bool(inp.get("competitor_gap_brief") or brief.get("competitor_gap")),
+        "has_competitor_brief": bool(inp.get("competitor_gap_brief") or brief.get("competitor_gap")) or reason_peers,
         "region": region,
     }
 
@@ -301,6 +317,10 @@ def check_honesty(email: dict, task: dict) -> tuple[list, dict]:
             continue
         if num in known_numbers:
             continue
+        if "$" in token:
+            sent = next((s for s in _sentences(low) if token.strip() in s), "")
+            if re.search(PRICE_CONTEXT, sent):
+                continue  # a price, not a prospect fact: judged once, under commercial_safety
         if len(num) <= 1 and "$" not in token and "%" not in token:
             continue  # single digits like "3 companies" — too noisy to call fabrication
         _v(out, "honesty", "NUMBER_NOT_IN_INPUTS", token.strip())
@@ -308,6 +328,7 @@ def check_honesty(email: dict, task: dict) -> tuple[list, dict]:
     m = re.search(PEER_CLAIM, low)
     if m and not f["has_competitor_brief"]:
         _v(out, "honesty", "PEER_CLAIM_UNSUPPORTED", m.group(0))
+    out += _check_named_peers(body, task)
 
     m = re.search(ASSERTIVE, low)
     if m and f["confidence"] in ("low", "very_low"):
@@ -324,6 +345,42 @@ def check_honesty(email: dict, task: dict) -> tuple[list, dict]:
     return out, {"facts": f}
 
 
+def _sector_words(s: str) -> set[str]:
+    stop = {"and", "or", "the", "of", "a", "platform", "platforms", "company", "companies", "services", "tech"}
+    return {w for w in re.findall(r"[a-z]+", s.lower()) if len(w) > 2 and w not in stop}
+
+
+def _check_named_peers(body: str, task: dict) -> list:
+    """
+    Named peer companies must (1) appear in the inputs and (2) be in the
+    prospect's sector when the competitor brief records sectors (probe P33:
+    the W10 random fallback compared an AI company to dental practices).
+    """
+    out: list = []
+    inp = task.get("input", {})
+    brief = inp.get("hiring_signal_brief", {}) or {}
+    prospect = str(brief.get("prospect", "")).lower()
+    known = input_text(task)
+    gap = inp.get("competitor_gap_brief") or {}
+    peers = {str(p.get("name", "")).lower(): p for p in gap.get("peers", []) if isinstance(p, dict)}
+    prospect_sector = _sector_words(str(gap.get("prospect_sector", "")))
+    for sent in _sentences(body):
+        if not re.search(PEER_CLAIM, sent.lower()):
+            continue
+        for lst in re.findall(NAMED_LIST, sent):
+            for name in re.split(r",\s*(?:and\s+)?|\s+and\s+", lst):
+                n = name.strip().lower()
+                if not n or n == prospect:
+                    continue
+                if n not in known:
+                    _v(out, "honesty", "PEER_NOT_IN_BRIEF", name.strip())
+                elif n in peers and prospect_sector:
+                    if not (_sector_words(str(peers[n].get("sector", ""))) & prospect_sector):
+                        _v(out, "honesty", "PEER_SECTOR_MISMATCH",
+                           f"{name.strip()} ({peers[n].get('sector')}) vs prospect sector {gap.get('prospect_sector')}")
+    return out
+
+
 def check_commercial_safety(email: dict, task: dict) -> tuple[list, dict]:
     low = _claim_text((email.get("subject", "") + "\n" + email.get("body", "")).lower())
     known_numbers = _numbers_in(input_text(task))
@@ -338,6 +395,12 @@ def check_commercial_safety(email: dict, task: dict) -> tuple[list, dict]:
     m = re.search(CONTRACT_COMMIT, low)
     if m:
         _v(out, "commercial_safety", "CONTRACT_COMMITMENT", m.group(0))
+    thread = task.get("input", {}).get("prior_thread") or []
+    prospect_replied = any(str(msg.get("from", "")).lower() == "prospect"
+                           for msg in thread if isinstance(msg, dict))
+    m = re.search(SMS_MENTION, low)
+    if m and not prospect_replied:
+        _v(out, "commercial_safety", "SMS_BEFORE_REPLY", m.group(0))
     bench = task.get("input", {}).get("bench_summary", {}) or {}
     available = bench.get("available")
     stacks = {str(k).lower(): v for k, v in (bench.get("stacks") or {}).items()}
@@ -396,6 +459,14 @@ def check_format(email: dict, task: dict) -> tuple[list, dict]:
         _v(out, "format", "TEMPLATE_PLACEHOLDER", m.group(0))
     if gt.get("must_end_with_cta", True) and not re.search(CTA, _closing(body)):
         _v(out, "format", "NO_CTA", "no call-to-action in closing lines")
+    low = body.lower()
+    asks = len(re.findall(ENUMERATED_ASKS, low))
+    if asks >= 3:
+        _v(out, "format", "MULTIPLE_ASKS", f"{asks} enumerated items (style guide: one ask per email)")
+    email_type = str(task.get("input", {}).get("email_type", "cold")).lower()
+    m = re.search(ATTACHMENT, low)
+    if m and email_type in FIRST_TOUCH_TYPES:
+        _v(out, "format", "ATTACHMENT_IN_FIRST_TOUCH", f"{m.group(0)} in a {email_type} email")
     words = len(body.split())
     if gt.get("max_body_words") and words > gt["max_body_words"]:
         _v(out, "format", "BODY_TOO_LONG", f"{words} > {gt['max_body_words']} words")

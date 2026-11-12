@@ -12,7 +12,7 @@
         "segment_name": "Recently-funded startup",
         "confidence": "medium",
         "reasons": [
-          "Series B $32M detected \u2014 scaling expected"
+          "Series B $32M detected — scaling expected"
         ]
       },
       "firmographics": {
@@ -48,20 +48,17 @@
         "data": 4
       }
     },
-    "instruction": "Write a cold outreach email to the VP Engineering at Prism Networks (Segment 1 \u2014 Recently-funded startup, confidence=medium). Ground every claim in the supplied hiring signal brief.",
-    "prior_thread": []
+    "instruction": "Write a cold outreach email to the VP Engineering at Prism Networks (Segment 1 — Recently-funded startup, confidence=medium). Ground every claim in the supplied hiring signal brief.",
+    "prior_thread": [],
+    "email_type": "cold"
   },
   "candidate_output": {
     "subject": "Context: Prism Networks and engineering capacity",
-    "body": "Prism Networks appears to have open engineering roles based on public signals \u2014 if hiring velocity is ahead of your full-time search, that is the pattern we solve most often.\n\nWe run dedicated engineering squads for companies scaling post-funding \u2014 senior engineers available in 7-14 days with 3-5 hours daily time-zone overlap.\n\nWorth 15 minutes this week? \u2192 http://localhost:3000/yakob/30min\n\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com"
+    "body": "Prism Networks appears to have open engineering roles based on public signals — if hiring velocity is ahead of your full-time search, that is the pattern we solve most often.\n\nWe run dedicated engineering squads for companies scaling post-funding — senior engineers available in 7-14 days with 3-5 hours daily time-zone overlap.\n\nWorth 15 minutes this week? → http://localhost:3000/yakob/30min\n\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com"
   },
   "ground_truth": {
     "required_signals": [
-      "funding",
-      "growth",
-      "engineering",
-      "capacity",
-      "roles"
+      "funding"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -130,6 +127,16 @@
     "source_trace_id": null,
     "judge_score": null,
     "expected_score": 1.0,
-    "contamination_note": "Moved from held_out to dev \u2014 n-gram or embedding contamination violation detected by contamination_check.py"
+    "contamination_note": "Moved from held_out to dev — n-gram or embedding contamination violation detected by contamination_check.py",
+    "required_signals_v01": [
+      "funding",
+      "growth",
+      "engineering",
+      "capacity",
+      "roles"
+    ],
+    "is_passing_v01": true,
+    "label_source": "evaluator_v0.2",
+    "dataset_version": "0.1.1"
   }
 }

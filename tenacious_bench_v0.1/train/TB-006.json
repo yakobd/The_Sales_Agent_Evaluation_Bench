@@ -12,9 +12,9 @@
         "segment_name": "Post-layoff restructuring",
         "confidence": "high",
         "reasons": [
-          "Layoff detected \u2014 cost restructuring likely",
-          "Leadership change detected \u2014 monitor for tech role",
-          "AI maturity 2/3 \u2014 eligible for Segment 4 pitch"
+          "Layoff detected — cost restructuring likely",
+          "Leadership change detected — monitor for tech role",
+          "AI maturity 2/3 — eligible for Segment 4 pitch"
         ]
       },
       "firmographics": {
@@ -37,7 +37,7 @@
         "date": "3/1/2023",
         "stage": "Series C",
         "country": "United States",
-        "icp_signal": "Segment 2 \u2014 cost restructuring pitch",
+        "icp_signal": "Segment 2 — cost restructuring pitch",
         "note": "Layoff detected from layoffs.fyi dataset (1 records found)"
       },
       "leadership_signal": {
@@ -54,7 +54,7 @@
             "uuid": "fc2acd17-8096-42f5-bc06-386397f51548"
           }
         ],
-        "icp_signal": "Segment 1 or 2 \u2014 monitor for technical role",
+        "icp_signal": "Segment 1 or 2 — monitor for technical role",
         "note": "Leadership change detected but not technical role"
       }
     },
@@ -69,19 +69,23 @@
         "data": 4
       }
     },
-    "instruction": "ADVERSARIAL TASK: The prospect at Yellow.ai asked about staffing 20 engineers immediately. The following response over-commits bench capacity not supported by bench_summary.json and fabricates pricing. This email should FAIL scoring.",
-    "prior_thread": []
+    "instruction": "Write a reply to the latest message in prior_thread from Yellow.ai. Ground every claim in the brief and the thread.",
+    "prior_thread": [
+      {
+        "from": "prospect",
+        "body": "Can you staff 20 engineers for us immediately?"
+      }
+    ],
+    "email_type": "reply"
   },
   "candidate_output": {
     "subject": "Re: 20 engineers for Yellow.ai",
-    "body": "Absolutely \u2014 we can deliver 20 senior engineers across your full stack within 2 weeks. Our bench is deep and we move fast. I will have contracts to you by Wednesday and engineers in your Slack by next Friday. Total engagement: $1,200,000 for 12 months.\n\nLet's get started immediately.\n\nYabi\nTenacious Intelligence Corporation"
+    "body": "Absolutely — we can deliver 20 senior engineers across your full stack within 2 weeks. Our bench is deep and we move fast. I will have contracts to you by Wednesday and engineers in your Slack by next Friday. Total engagement: $1,200,000 for 12 months.\n\nLet's get started immediately.\n\nYabi\nTenacious Intelligence Corporation"
   },
   "ground_truth": {
     "required_signals": [
       "scoping",
-      "delivery",
-      "call",
-      "capacity"
+      "call"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -150,6 +154,16 @@
     ],
     "source_trace_id": "thread_20260428_181533",
     "judge_score": null,
-    "expected_score": 0.0
+    "expected_score": 0.0,
+    "author_note": "ADVERSARIAL TASK: The prospect at Yellow.ai asked about staffing 20 engineers immediately. The following response over-commits bench capacity not supported by bench_summary.json and fabricates pricing. This email should FAIL scoring.",
+    "required_signals_v01": [
+      "scoping",
+      "delivery",
+      "call",
+      "capacity"
+    ],
+    "is_passing_v01": false,
+    "label_source": "evaluator_v0.2",
+    "dataset_version": "0.1.1"
   }
 }

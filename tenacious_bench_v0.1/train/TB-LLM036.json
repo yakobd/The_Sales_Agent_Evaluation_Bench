@@ -3,7 +3,7 @@
   "source_mode": "multi_llm_synthesis",
   "difficulty": "hard",
   "variant": "llm_generated_v2",
-  "is_passing": true,
+  "is_passing": false,
   "input": {
     "hiring_signal_brief": {
       "prospect": "Ember Platform",
@@ -12,13 +12,13 @@
         "segment_name": "Post-layoff restructuring",
         "confidence": "low",
         "reasons": [
-          "Possible restructuring signal \u2014 website down, leadership quiet"
+          "Possible restructuring signal — website down, leadership quiet"
         ]
       },
       "firmographics": {
         "company": "Ember Platform",
         "website": "https://emberplatform.com",
-        "description": "Ember Platform \u2014 technology company",
+        "description": "Ember Platform — technology company",
         "num_employees": "51-200"
       },
       "ai_maturity": {
@@ -43,19 +43,17 @@
         "data": 4
       }
     },
-    "instruction": "Write outreach for Ember Platform \u2014 Possible restructuring signal \u2014 website down, leadership quiet",
-    "prior_thread": []
+    "instruction": "Write outreach for Ember Platform — Possible restructuring signal — website down, leadership quiet",
+    "prior_thread": [],
+    "email_type": "cold"
   },
   "candidate_output": {
     "subject": "Ember Platform's Strategic Direction?",
-    "body": "Hi [First Name],\n\nWe've noticed Ember's website has been down and leadership hasn't been active lately. I'm reaching out to understand what's next for the team.\n\nTenacious helps companies navigate transitions like team restructuring or strategic shifts. If you're open to sharing, I'd like to learn more about Ember's plans and see if we can assist.\n\nWorth 15 minutes this week? \u2192 http://localhost:3000/yakob/30min\n\nBest,\n[Your Name]\nResearch Partner / Tenacious Intelligence Corporation / gettenacious.com"
+    "body": "Hi [First Name],\n\nWe've noticed Ember's website has been down and leadership hasn't been active lately. I'm reaching out to understand what's next for the team.\n\nTenacious helps companies navigate transitions like team restructuring or strategic shifts. If you're open to sharing, I'd like to learn more about Ember's plans and see if we can assist.\n\nWorth 15 minutes this week? → http://localhost:3000/yakob/30min\n\nBest,\n[Your Name]\nResearch Partner / Tenacious Intelligence Corporation / gettenacious.com"
   },
   "ground_truth": {
     "required_signals": [
-      "restructuring",
-      "cost",
-      "delivery",
-      "capacity"
+      "restructuring"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -121,6 +119,15 @@
     "source_trace_id": null,
     "judge_score": null,
     "expected_score": 1.0,
-    "generator_model": "qwen/qwen3-235b-a22b"
+    "generator_model": "qwen/qwen3-235b-a22b",
+    "required_signals_v01": [
+      "restructuring",
+      "cost",
+      "delivery",
+      "capacity"
+    ],
+    "is_passing_v01": true,
+    "label_source": "evaluator_v0.2",
+    "dataset_version": "0.1.1"
   }
 }
