@@ -33,9 +33,14 @@ def test_leak_detector_catches_injected_label():
     assert not V.LEAK.search("Write a cold outreach email to the VP Engineering at Adyen.")
 
 
+V01 = {k: t for k, t in TASKS.items() if t["metadata"].get("dataset_version") == "0.1.1"}
+HELD = {k: t for k, t in TASKS.items() if t["metadata"]["partition"] == "held_out"}
+
+
 def test_counts_and_partitions():
-    assert len(TASKS) == 293
-    human = [t for t in TASKS.values() if t["source_mode"] == "hand_authored"]
+    assert len(V01) == 293  # all v0.1 tasks now live in train/dev
+    assert all(t["metadata"]["partition"] in ("train", "dev") for t in V01.values())
+    human = [t for t in V01.values() if t["source_mode"] == "hand_authored"]
     assert len(human) == 39
     assert sum(t["is_passing"] for t in human) == 17  # human labels unchanged by the repair
     assert all(t["metadata"]["label_source"] in ("human_author", "tenacious_style_guide") for t in human)
@@ -56,9 +61,29 @@ def test_threads_carry_context_that_was_hidden_in_instructions():
 
 
 def test_every_v01_label_change_is_recorded():
-    for t in TASKS.values():
+    for t in V01.values():
         if t["metadata"]["label_source"] == "evaluator_v0.2":
             assert isinstance(t["metadata"]["is_passing_v01"], bool)
+
+
+def test_retired_held_out_is_in_dev():
+    retired = json.loads((config.REPO_ROOT / "reports" / "retired_held_out_v01.json").read_text(encoding="utf-8"))
+    assert len(retired["task_ids"]) == 57
+    for tid in retired["task_ids"]:
+        assert TASKS[tid]["metadata"]["partition"] == "dev" and TASKS[tid]["metadata"]["retired_from"] == "held_out_v0.1"
+
+
+def test_sealed_held_out_matches_manifest():
+    """The held-out is gitignored; when present it must match the committed SHA-256 manifest."""
+    import hashlib
+    import pytest
+    manifest = json.loads((config.REPO_ROOT / "reports" / "held_out_v0.2_manifest.json").read_text(encoding="utf-8"))
+    files = sorted(config.HELD_OUT_DIR.glob("TB-*.json"))
+    if not files:
+        pytest.skip("sealed held-out not present in this checkout (expected in a public clone)")
+    got = {f.stem: hashlib.sha256(f.read_bytes()).hexdigest() for f in files}
+    assert got == manifest["sha256"]
+    assert not set(HELD) & set(V01)  # no task id shared with train/dev
 
 
 def test_repair_log_exists_and_matches():

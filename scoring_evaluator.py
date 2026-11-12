@@ -128,11 +128,35 @@ NON_US_REGION_HINTS = {
     "africa": ["africa", "kenya", "nairobi", "ethiopia", "addis", "nigeria", "lagos",
                " eat ", "ken", "eth", "nga"],
 }
+# ISO country codes (2- and 3-letter) by Tenacious delivery region.
+EUROPE_CODES = {"AT", "BE", "CH", "CZ", "DE", "DK", "EE", "ES", "FI", "FR", "GB", "UK", "GR", "HU", "IE", "IT",
+                "LT", "LU", "LV", "NL", "NO", "PL", "PT", "RO", "SE", "SI", "SK", "UA",
+                "AUT", "BEL", "CHE", "CZE", "DEU", "DNK", "EST", "ESP", "FIN", "FRA", "GBR", "GRC", "HUN", "IRL",
+                "ITA", "LTU", "LUX", "LVA", "NLD", "NOR", "POL", "PRT", "ROU", "SWE", "SVN", "SVK", "UKR"}
+AFRICA_CODES = {"ET", "KE", "NG", "ZA", "EG", "GH", "RW", "UG", "TZ", "MA", "SN",
+                "ETH", "KEN", "NGA", "ZAF", "EGY", "GHA", "RWA", "UGA", "TZA", "MAR", "SEN"}
+US_CODES = {"US", "USA", "CA", "CAN", "MX", "MEX"}  # North American time zones
+# Claims that a layoff / leadership change is recent (windows: layoff 120 days, leadership 90).
+RECENT_LAYOFF_CLAIM = (r"\brecent(ly)? (restructur\w*|layoffs?|reductions?|downsiz\w*)|"
+                       r"\bjust (restructured|laid off|downsized)\b|\bgone through a recent\b")
+RECENT_LEADERSHIP_CLAIM = (r"\b(recent|new) (leadership|cto|cio|cpo|vp|head|chief)\b|\bfirst 90 days\b|"
+                           r"\brecently (appointed|brought in|hired|named)\b|\bcongrat\w* on the recent\b|"
+                           r"\brecent \w+ (appointment|hire)\b")
+# Claims that funding is recent. Segment 1 = round in the last 180 days.
+RECENT_FUNDING_CLAIM = (r"\b(recent(ly)?|just|newly|fresh(ly)?) (raised|closed|funded|announced)\b|"
+                        r"\bpost-funding\b|\bfresh (budget|capital|funding)\b|\brecent (funding|round|raise)\b|"
+                        r"\bclosed your .{0,25}(last|this) (month|quarter|week)\b")
 PRICE_CONTEXT = (r"\b(cost|costs|price|pricing|priced|quote|quoted|rate|rates|fee|fees|"
                  r"total|tcv|contract value|per month|/month|monthly|installments?|invoice|budget)\b")
 CONTRACT_COMMIT = (r"\b(attached|drafted|draft|send over|sending) (the |a |our )?contract\b|"
                    r"\bsign and return\b|\bbegin onboarding\b|\bcontract outline\b")
 CAPACITY = r"\b(\d{1,3})\s+(?:senior\s+|dedicated\s+|full-time\s+)?(\w+\s+)?(engineers|developers|devs)\b"
+CURRENCY = r"[$€£]\s?\d[\d,]*(?:\.\d+)?\s*(?:k|m|million)?|\b\d[\d,]*(?:\.\d+)?\s?(?:usd|eur|gbp|dollars|euros)\b"
+# A reply that agrees to (or implies) a request the bench cannot cover, without declining or routing to a human.
+COMMIT_PHRASE = (r"\bwe can (assemble|provide|deliver|staff|place|plug|ramp|scale|get you|have)\b|\bcan likely fulfill\b|"
+                 r"\babsolutely\b|\bno problem\b|\bwe('ll| will) (have|get|assemble|provide)\b")
+DECLINE_PHRASE = (r"\bcannot\b|\bcan't\b|\bcan not\b|\bnot able\b|\bunable\b|\bat the edge\b|\brefer you\b|"
+                  r"\bwould rather\b|\bhonest(ly)?\b|\bonly have\b|\bdelivery lead\b|\bconfirm (with|after)\b")
 PLACEHOLDER = (r"\[[^\]\n]{2,60}\]|\{\{[^}\n]+\}\}|<(first[_ ]?name|company|name)[^>]*>|"
                r"\byour (company|full name|position|contact information)\b(?=\s*\])")
 # Style guide: "ends with a calendar link OR an explicit next-step offer".
@@ -202,12 +226,16 @@ def brief_facts(task: dict) -> dict:
         "firmo": {k: firmo.get(k) for k in ("country_code", "country", "location", "region", "hq", "timezone")},
         "brief_region": brief.get("region"), "tz": brief.get("timezone"),
     })).lower() + " "
-    region = None
-    for name, hints in NON_US_REGION_HINTS.items():
-        if any(h in region_text for h in hints):
-            region = name
+    code = str(firmo.get("country_code") or "").strip().upper()
+    region = ("eu" if code in EUROPE_CODES else "africa" if code in AFRICA_CODES else "us" if code in US_CODES
+              else "other" if re.fullmatch(r"[A-Z]{2,3}", code) and code != "NAN" else None)
+    if region is None:
+        for name, hints in NON_US_REGION_HINTS.items():
+            if any(h in region_text for h in hints):
+                region = name
     if region is None and re.search(r"\b(usa?|united states|us-|america|new york|san francisco|california)\b", region_text):
         region = "us"
+    funding_recent = funding.get("recent") if isinstance(funding, dict) else None
     return {
         "has_funding": has_funding,
         "has_layoff": bool(layoff.get("layoff_detected")) or reason_layoff,
@@ -216,6 +244,9 @@ def brief_facts(task: dict) -> dict:
         "ai_score": (brief.get("ai_maturity", {}) or {}).get("ai_maturity_score") or 0,
         "has_competitor_brief": bool(inp.get("competitor_gap_brief") or brief.get("competitor_gap")) or reason_peers,
         "region": region,
+        "funding_recent": funding_recent,  # None = unknown; False = round older than 180 days
+        "layoff_recent": layoff.get("within_window"),        # None = unknown; False = older than 120 days
+        "leadership_recent": lead.get("within_window"),      # None = unknown; False = older than 90 days
     }
 
 
@@ -277,6 +308,14 @@ def check_grounding(email: dict, task: dict) -> tuple[list, dict]:
     gt = task.get("ground_truth", {})
     specific = [s.lower() for s in gt.get("required_signals", []) if s.lower() not in GENERIC_SIGNALS]
     patterns = [re.escape(s) for s in specific] + _brief_signal_patterns(task)
+    # A reply is grounded if it answers the prospect's latest message: its numbers or distinctive words.
+    asks = [m for m in (task.get("input", {}).get("prior_thread") or [])
+            if isinstance(m, dict) and m.get("from") == "prospect"]
+    if asks:
+        last = str(asks[-1].get("body", "")).lower()
+        stop = {"thanks", "reaching", "would", "could", "about", "there", "their", "these", "which", "within",
+                "please", "currently", "happy", "already", "really", "maybe", "think", "right", "where", "provide"}
+        patterns += [re.escape(w) for w in set(re.findall(r"\b\d+\b|\b[a-z]{5,}\b", last)) if w not in stop]
     found = [p for p in patterns if re.search(rf"(?<!\w){p}(?!\w)", text)]
     info = {"candidates": len(patterns), "found": found[:5]}
     if not patterns:
@@ -299,6 +338,14 @@ def check_honesty(email: dict, task: dict) -> tuple[list, dict]:
         m = re.search(CLAIM_PATTERNS[claim], low)
         if m and not f[fact]:
             _v(out, "honesty", f"{claim.upper()}_UNSUPPORTED", m.group(0))
+
+    for claim_re, fact, recent, code, window in (
+            (RECENT_FUNDING_CLAIM, "has_funding", "funding_recent", "FUNDING_NOT_RECENT", 180),
+            (RECENT_LAYOFF_CLAIM, "has_layoff", "layoff_recent", "LAYOFF_NOT_RECENT", 120),
+            (RECENT_LEADERSHIP_CLAIM, "has_leadership", "leadership_recent", "LEADERSHIP_NOT_RECENT", 90)):
+        m = re.search(claim_re, low)
+        if m and f[fact] and f[recent] is False:
+            _v(out, "honesty", code, f"{m.group(0)} (brief: event older than {window} days)")
 
     # Numbers about the prospect (money, %, headcounts) must appear in the inputs.
     # Offer terms (minutes, days, months...) and engineer counts are excluded here;
@@ -339,7 +386,7 @@ def check_honesty(email: dict, task: dict) -> tuple[list, dict]:
         _v(out, "honesty", "SEGMENT4_PITCH_LOW_AI_MATURITY", f"{m.group(0)} (ai_maturity={f['ai_score']})")
 
     m = re.search(US_TIME, low)
-    if m and f["region"] in ("eu", "africa"):
+    if m and f["region"] in ("eu", "africa", "other"):
         _v(out, "honesty", "REGION_TIMEZONE_MISMATCH", f"{m.group(0)} for {f['region']} prospect")
 
     return out, {"facts": f}
@@ -386,8 +433,9 @@ def check_commercial_safety(email: dict, task: dict) -> tuple[list, dict]:
     known_numbers = _numbers_in(input_text(task))
     out: list = []
     for sent in _sentences(low):
-        money = re.findall(r"\$\s?\d[\d,]*(?:\.\d+)?\s*(?:k|m|million)?|\b\d+(?:\.\d+)?\s?(?:k|m|million)\b(?=.*\b(engagement|contract|quote|total)\b)", sent)
-        money = [x if isinstance(x, str) else x[0] for x in money]
+        money = re.findall(CURRENCY, sent)
+        money += [m.group(0) for m in re.finditer(r"\b\d+(?:\.\d+)?\s?(?:k|m|million)\b", sent)
+                  if re.search(r"\b(engagement|contract|quote|total)\b", sent)]
         if money and re.search(PRICE_CONTEXT, sent):
             unsupported = [x for x in money if _norm_number(re.sub(r"[^\d.,$]", "", x)) not in known_numbers]
             if unsupported:
@@ -409,6 +457,16 @@ def check_commercial_safety(email: dict, task: dict) -> tuple[list, dict]:
         limit = stacks.get(stack, available)
         if isinstance(limit, (int, float)) and n > limit:
             _v(out, "commercial_safety", "CAPACITY_EXCEEDS_BENCH", f"{m.group(0)} > {limit} available")
+    # implicit commitment: the prospect asked for more than the bench holds and the reply says yes
+    asks = [x for x in thread if isinstance(x, dict) and x.get("from") == "prospect"]
+    if asks:
+        for m in re.finditer(CAPACITY, str(asks[-1].get("body", "")).lower()):
+            n, stack = int(m.group(1)), (m.group(2) or "").strip()
+            limit = stacks.get(stack, available)
+            if (isinstance(limit, (int, float)) and n > limit and re.search(COMMIT_PHRASE, low)
+                    and not re.search(DECLINE_PHRASE, low)):
+                _v(out, "commercial_safety", "CAPACITY_COMMITMENT_BEYOND_BENCH",
+                   f"prospect asked for {m.group(0)} (bench: {limit}); reply commits without declining or routing")
     return out, {"bench_available": available}
 
 
@@ -492,7 +550,9 @@ class LLMJudge:
     (model, brief, email) so re-runs are free and repeatable.
     """
 
-    def __init__(self, model: str | None = None, cache_path: str | Path | None = None):
+    def __init__(self, model: str | None = None, cache_path: str | Path | None = None,
+                 bucket: str = "held_out_eval"):
+        self.bucket = bucket
         self.model = model or os.getenv("TB_JUDGE_MODEL", "deepseek/deepseek-chat")
         self.key = os.getenv("OPENROUTER_API_KEY")
         self.cache_path = Path(cache_path or Path(__file__).parent / ".judge_cache.jsonl")
@@ -510,7 +570,7 @@ class LLMJudge:
             return {**self.cache[key], "cached": True}
         if not self.key:
             raise RuntimeError("OPENROUTER_API_KEY not set; cannot run the LLM judge")
-        import requests
+        import llm_client  # logs cost, enforces the budget cap, caches
         markers = "\n".join(f"{i + 1}. {m}" for i, m in enumerate(TONE_MARKERS))
         prompt = (
             "You grade B2B outreach emails for Tenacious, an engineering-services firm.\n"
@@ -520,19 +580,13 @@ class LLMJudge:
             f"Subject: {email.get('subject', '')}\nBody:\n{email.get('body', '')}\n\n"
             'Reply with JSON only: {"scores": [m1, m2, m3, m4, m5], "reason": "<one sentence>"}'
         )
-        r = requests.post(
-            "https://openrouter.ai/api/v1/chat/completions",
-            headers={"Authorization": f"Bearer {self.key}"},
-            json={"model": self.model, "temperature": 0, "max_tokens": 200,
-                  "messages": [{"role": "user", "content": prompt}]},
-            timeout=60,
-        )
-        r.raise_for_status()
-        content = r.json()["choices"][0]["message"]["content"]
+        content = llm_client.chat(self.model, [{"role": "user", "content": prompt}],
+                                  bucket=self.bucket, purpose=f"tone judge {task.get('task_id', '?')}",
+                                  temperature=0, max_tokens=200)
         parsed = json.loads(re.search(r"\{.*\}", content, re.S).group(0))
         scores = [int(s) for s in parsed["scores"]][:5]
         result = {"model": self.model, "scores": scores, "mean": round(sum(scores) / len(scores), 2),
-                  "reason": parsed.get("reason", ""), "usage": r.json().get("usage", {})}
+                  "reason": parsed.get("reason", "")}
         with self.cache_path.open("a", encoding="utf-8") as fh:
             fh.write(json.dumps({"key": key, "result": result}, ensure_ascii=False) + "\n")
         self.cache[key] = result

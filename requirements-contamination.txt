@@ -1,0 +1,8 @@
+# Embedding check in contamination_check.py (CPU is enough). Install with:
+#   pip install --index-url https://download.pytorch.org/whl/cpu torch==2.15.0
+#   pip install -r requirements-contamination.txt
+torch==2.15.0
+sentence-transformers==6.3.0
+transformers==5.22.2
+scikit-learn==1.9.1
+huggingface_hub==2.4.0
