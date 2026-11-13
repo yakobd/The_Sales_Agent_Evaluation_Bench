@@ -1,0 +1,254 @@
+{
+  "held_out_n": 68,
+  "n_cold": 54,
+  "n_reply": 14,
+  "evaluator": "v0.2.1",
+  "hard_policies": {
+    "PRICE_QUOTE": "pricing must come from a human",
+    "CONTRACT_COMMITMENT": "contracts must come from a human",
+    "CAPACITY_EXCEEDS_BENCH": "promises more engineers than the bench has",
+    "CAPACITY_COMMITMENT_BEYOND_BENCH": "commits capacity the bench cannot cover",
+    "SMS_BEFORE_REPLY": "no SMS before the prospect replies by email",
+    "FUNDING_NOT_RECENT": "calls a stale funding round recent",
+    "LAYOFF_NOT_RECENT": "calls a stale layoff recent",
+    "LEADERSHIP_NOT_RECENT": "calls a stale leadership change recent",
+    "TEMPLATE_PLACEHOLDER": "unsendable: template placeholder left in",
+    "SUBJECT_TOO_LONG": "unsendable: subject over the channel limit"
+  },
+  "pipelines": {
+    "trained": {
+      "pass_at_1": 0.8676,
+      "pass_at_1_cold": 0.8704,
+      "pass_at_1_reply": 0.8571,
+      "sent_by": {
+        "model": 68
+      },
+      "model_share_of_sent": 1.0,
+      "gate_fire_rate": null,
+      "gate_fired_on": {},
+      "residual_violations": {
+        "LAYOFF_NOT_RECENT": 3,
+        "NO_SPECIFIC_SIGNAL": 2,
+        "CAPACITY_EXCEEDS_BENCH": 2,
+        "BANNED_PHRASE": 1,
+        "SUBJECT_TOO_LONG": 1
+      }
+    },
+    "trained+gate": {
+      "pass_at_1": 0.9412,
+      "pass_at_1_cold": 0.9444,
+      "pass_at_1_reply": 0.9286,
+      "sent_by": {
+        "model": 62,
+        "fallback:template": 4,
+        "fallback:holding_reply": 2
+      },
+      "model_share_of_sent": 0.9118,
+      "gate_fire_rate": 0.0882,
+      "gate_fired_on": {
+        "LAYOFF_NOT_RECENT": 3,
+        "CAPACITY_EXCEEDS_BENCH": 2,
+        "SUBJECT_TOO_LONG": 1
+      },
+      "residual_violations": {
+        "NO_SPECIFIC_SIGNAL": 3,
+        "BANNED_PHRASE": 1
+      }
+    },
+    "trained+router+gate": {
+      "pass_at_1": 0.9412,
+      "pass_at_1_cold": 0.9444,
+      "pass_at_1_reply": 0.9286,
+      "sent_by": {
+        "template": 50,
+        "model": 16,
+        "fallback:holding_reply": 2
+      },
+      "model_share_of_sent": 0.2353,
+      "gate_fire_rate": 0.1111,
+      "gate_fired_on": {
+        "CAPACITY_EXCEEDS_BENCH": 2
+      },
+      "residual_violations": {
+        "NO_SPECIFIC_SIGNAL": 3,
+        "BANNED_PHRASE": 1
+      }
+    },
+    "prompt_engineered": {
+      "pass_at_1": 0.1029,
+      "pass_at_1_cold": 0.037,
+      "pass_at_1_reply": 0.3571,
+      "sent_by": {
+        "model": 68
+      },
+      "model_share_of_sent": 1.0,
+      "gate_fire_rate": null,
+      "gate_fired_on": {},
+      "residual_violations": {
+        "TEMPLATE_PLACEHOLDER": 51,
+        "FUNDING_NOT_RECENT": 11,
+        "SEGMENT4_PITCH_LOW_AI_MATURITY": 10,
+        "BANNED_PHRASE": 9,
+        "SUBJECT_TOO_LONG": 7,
+        "NO_CTA": 5,
+        "LEADERSHIP_NOT_RECENT": 4,
+        "CAPACITY_EXCEEDS_BENCH": 3,
+        "LAYOFF_NOT_RECENT": 2,
+        "NUMBER_NOT_IN_INPUTS": 2,
+        "LEADERSHIP_UNSUPPORTED": 2,
+        "NO_SPECIFIC_SIGNAL": 2,
+        "PEER_CLAIM_UNSUPPORTED": 1,
+        "PRICE_QUOTE": 1
+      }
+    },
+    "prompt_engineered+gate": {
+      "pass_at_1": 0.8824,
+      "pass_at_1_cold": 0.9815,
+      "pass_at_1_reply": 0.5,
+      "sent_by": {
+        "fallback:template": 52,
+        "model": 12,
+        "fallback:holding_reply": 4
+      },
+      "model_share_of_sent": 0.1765,
+      "gate_fire_rate": 0.8235,
+      "gate_fired_on": {
+        "TEMPLATE_PLACEHOLDER": 51,
+        "FUNDING_NOT_RECENT": 11,
+        "SUBJECT_TOO_LONG": 7,
+        "LEADERSHIP_NOT_RECENT": 4,
+        "CAPACITY_EXCEEDS_BENCH": 3,
+        "LAYOFF_NOT_RECENT": 2,
+        "PRICE_QUOTE": 1
+      },
+      "residual_violations": {
+        "NO_SPECIFIC_SIGNAL": 4,
+        "BANNED_PHRASE": 3,
+        "SEGMENT4_PITCH_LOW_AI_MATURITY": 2,
+        "LEADERSHIP_UNSUPPORTED": 1,
+        "NUMBER_NOT_IN_INPUTS": 1
+      }
+    },
+    "prompt_engineered+router+gate": {
+      "pass_at_1": 0.8824,
+      "pass_at_1_cold": 0.9815,
+      "pass_at_1_reply": 0.5,
+      "sent_by": {
+        "template": 50,
+        "fallback:template": 4,
+        "model": 10,
+        "fallback:holding_reply": 4
+      },
+      "model_share_of_sent": 0.1471,
+      "gate_fire_rate": 0.4444,
+      "gate_fired_on": {
+        "TEMPLATE_PLACEHOLDER": 4,
+        "FUNDING_NOT_RECENT": 2,
+        "CAPACITY_EXCEEDS_BENCH": 2,
+        "LEADERSHIP_NOT_RECENT": 1,
+        "LAYOFF_NOT_RECENT": 1
+      },
+      "residual_violations": {
+        "NO_SPECIFIC_SIGNAL": 4,
+        "BANNED_PHRASE": 3,
+        "SEGMENT4_PITCH_LOW_AI_MATURITY": 2,
+        "LEADERSHIP_UNSUPPORTED": 1,
+        "NUMBER_NOT_IN_INPUTS": 1
+      }
+    },
+    "week10_v2 (cold only)": {
+      "pass_at_1_cold": 0.9815
+    }
+  },
+  "comparisons": {
+    "trained+gate_vs_trained": {
+      "n": 68,
+      "a_pass_at_1": 0.9412,
+      "b_pass_at_1": 0.8676,
+      "delta": 0.0735,
+      "ci95": [
+        0.0147,
+        0.1471
+      ],
+      "p_bootstrap_one_sided": 0.0063,
+      "mcnemar_exact_one_sided": 0.03125,
+      "discordant": {
+        "a_only_pass": 5,
+        "b_only_pass": 0
+      },
+      "significant_at_0.05": true
+    },
+    "trained+router+gate_vs_trained": {
+      "n": 68,
+      "a_pass_at_1": 0.9412,
+      "b_pass_at_1": 0.8676,
+      "delta": 0.0735,
+      "ci95": [
+        0.0147,
+        0.1324
+      ],
+      "p_bootstrap_one_sided": 0.0044,
+      "mcnemar_exact_one_sided": 0.03125,
+      "discordant": {
+        "a_only_pass": 5,
+        "b_only_pass": 0
+      },
+      "significant_at_0.05": true
+    },
+    "prompt_engineered+gate_vs_prompt_engineered": {
+      "n": 68,
+      "a_pass_at_1": 0.8824,
+      "b_pass_at_1": 0.1029,
+      "delta": 0.7794,
+      "ci95": [
+        0.6765,
+        0.8676
+      ],
+      "p_bootstrap_one_sided": 0.0,
+      "mcnemar_exact_one_sided": 0.0,
+      "discordant": {
+        "a_only_pass": 53,
+        "b_only_pass": 0
+      },
+      "significant_at_0.05": true
+    },
+    "prompt_engineered+router+gate_vs_prompt_engineered": {
+      "n": 68,
+      "a_pass_at_1": 0.8824,
+      "b_pass_at_1": 0.1029,
+      "delta": 0.7794,
+      "ci95": [
+        0.6765,
+        0.8676
+      ],
+      "p_bootstrap_one_sided": 0.0,
+      "mcnemar_exact_one_sided": 0.0,
+      "discordant": {
+        "a_only_pass": 53,
+        "b_only_pass": 0
+      },
+      "significant_at_0.05": true
+    },
+    "trained+router+gate_vs_week10_v2_cold": {
+      "n": 54,
+      "a_pass_at_1": 0.9444,
+      "b_pass_at_1": 0.9815,
+      "delta": -0.037,
+      "ci95": [
+        -0.0926,
+        0.0
+      ],
+      "p_bootstrap_one_sided": 1.0,
+      "mcnemar_exact_one_sided": 1.0,
+      "discordant": {
+        "a_only_pass": 0,
+        "b_only_pass": 2
+      },
+      "significant_at_0.05": false
+    }
+  },
+  "router": {
+    "to_template": 50,
+    "to_model": 18
+  }
+}

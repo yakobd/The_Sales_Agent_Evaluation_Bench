@@ -28,12 +28,12 @@ import sys
 from pathlib import Path
 
 import numpy as np
-from scipy.stats import binomtest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import config  # noqa: E402
 import prompting as PR  # noqa: E402
 import scoring_evaluator as E  # noqa: E402
+from creative_qa.stats import paired  # noqa: E402,F401  (shared with the dashboard)
 
 N_BOOT = 10_000
 HERE = Path(__file__).resolve().parent
@@ -49,24 +49,6 @@ def load_held_out():
     if set(tasks) != set(manifest["sha256"]):
         raise SystemExit("held-out task set differs from the sealed manifest")
     return tasks
-
-
-def paired(a: dict, b: dict, ids: list, rng: np.random.Generator) -> dict:
-    """a, b: task_id -> 0/1. Returns delta, CI, bootstrap p, McNemar p."""
-    x = np.array([a[i] for i in ids], float)
-    y = np.array([b[i] for i in ids], float)
-    d = x - y
-    idx = rng.integers(0, len(ids), size=(N_BOOT, len(ids)))
-    boots = d[idx].mean(axis=1)
-    lo, hi = np.percentile(boots, [2.5, 97.5])
-    wins, losses = int(((x == 1) & (y == 0)).sum()), int(((x == 0) & (y == 1)).sum())
-    mcnemar = binomtest(wins, wins + losses, 0.5, alternative="greater").pvalue if wins + losses else 1.0
-    return {"n": len(ids), "a_pass_at_1": round(x.mean(), 4), "b_pass_at_1": round(y.mean(), 4),
-            "delta": round(d.mean(), 4), "ci95": [round(lo, 4), round(hi, 4)],
-            "p_bootstrap_one_sided": round(float((boots <= 0).mean()), 5),
-            "mcnemar_exact_one_sided": round(float(mcnemar), 6),
-            "discordant": {"a_only_pass": wins, "b_only_pass": losses},
-            "significant_at_0.05": bool(lo > 0 and (boots <= 0).mean() < 0.05)}
 
 
 def ci_pass_rate(scores: list, rng) -> list:

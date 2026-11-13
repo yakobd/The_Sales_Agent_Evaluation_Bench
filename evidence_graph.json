@@ -246,6 +246,100 @@
       ],
       "produced_by": "ablations/score_ablation.py"
     },
+    "gate_trained_pass": {
+      "claim": "Trained model + pre-send policy gate, pass@1",
+      "value": 0.9412,
+      "source_file": "ablations/gated_results_v0.2.json",
+      "json_path": [
+        "pipelines",
+        "trained+gate",
+        "pass_at_1"
+      ],
+      "produced_by": "ablations/score_gated.py"
+    },
+    "gate_trained_fire": {
+      "claim": "Gate fire rate on trained-model drafts",
+      "value": 0.0882,
+      "source_file": "ablations/gated_results_v0.2.json",
+      "json_path": [
+        "pipelines",
+        "trained+gate",
+        "gate_fire_rate"
+      ],
+      "produced_by": "ablations/score_gated.py"
+    },
+    "gate_trained_model_share": {
+      "claim": "Share of sent emails written by the trained model (with gate)",
+      "value": 0.9118,
+      "source_file": "ablations/gated_results_v0.2.json",
+      "json_path": [
+        "pipelines",
+        "trained+gate",
+        "model_share_of_sent"
+      ],
+      "produced_by": "ablations/score_gated.py"
+    },
+    "gate_pe_pass": {
+      "claim": "Prompt-engineered + gate, pass@1",
+      "value": 0.8824,
+      "source_file": "ablations/gated_results_v0.2.json",
+      "json_path": [
+        "pipelines",
+        "prompt_engineered+gate",
+        "pass_at_1"
+      ],
+      "produced_by": "ablations/score_gated.py"
+    },
+    "gate_pe_fire": {
+      "claim": "Gate fire rate on prompt-engineered drafts",
+      "value": 0.8235,
+      "source_file": "ablations/gated_results_v0.2.json",
+      "json_path": [
+        "pipelines",
+        "prompt_engineered+gate",
+        "gate_fire_rate"
+      ],
+      "produced_by": "ablations/score_gated.py"
+    },
+    "gate_vs_trained": {
+      "claim": "Trained+gate minus trained (paired)",
+      "value": 0.0735,
+      "source_file": "ablations/gated_results_v0.2.json",
+      "json_path": [
+        "comparisons",
+        "trained+gate_vs_trained",
+        "delta"
+      ],
+      "produced_by": "ablations/score_gated.py"
+    },
+    "gate_vs_trained_ci": {
+      "claim": "Trained+gate minus trained, 95% CI",
+      "value": [
+        0.0147,
+        0.1471
+      ],
+      "source_file": "ablations/gated_results_v0.2.json",
+      "json_path": [
+        "comparisons",
+        "trained+gate_vs_trained",
+        "ci95"
+      ],
+      "produced_by": "ablations/score_gated.py"
+    },
+    "hybrid_vs_v2_ci": {
+      "claim": "Trained+router+gate minus honest template (cold), 95% CI",
+      "value": [
+        -0.0926,
+        0.0
+      ],
+      "source_file": "ablations/gated_results_v0.2.json",
+      "json_path": [
+        "comparisons",
+        "trained+router+gate_vs_week10_v2_cold",
+        "ci95"
+      ],
+      "produced_by": "ablations/score_gated.py"
+    },
     "trained_tokens": {
       "claim": "Trained mean output tokens",
       "value": 102.9,
