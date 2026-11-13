@@ -173,7 +173,7 @@ Two robustness checks are reported:
 [tools/labeling.py](tools/labeling.py) samples 30 train or dev tasks. Hand-authored tasks are excluded. The sample is stratified by authoring mode × evaluator verdict (seed 42) and rendered as a blind HTML packet. The packet shows the brief, the thread and the email, but no evaluator output and no metadata.
 
 - **Round 1:** human vs evaluator, a validity estimate. Results are in [inter_rater_agreement.md](inter_rater_agreement.md).
-- **Round 2:** the same 30 tasks in a new order, labelled at least 24 hours later. This measures the labeller's test–retest consistency.
+- **Round 2:** the same 30 tasks in a new order. The protocol asks for a gap of at least 24 hours; the actual gap was about 10 hours. This measures the labeller's test–retest consistency.
 
 The disagreements are the work list for evaluator v0.3. They were **not** fed back into v0.2.1.
 

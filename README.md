@@ -100,7 +100,7 @@ The scorer refuses to run if any held-out file's SHA-256 differs from [reports/h
 | [labeling/](labeling/) · [tools/labeling.py](tools/labeling.py) | **Blind human labelling.** Packets, raw labels and the agreement scorer. |
 | [llm_client.py](llm_client.py) · [cost_log.jsonl](cost_log.jsonl) | Every OpenRouter call is logged and budget-capped. Total spend is $0.33 of a $5 cap (see [cost_log.md](cost_log.md)). |
 | [methodology.md](methodology.md) · [datasheet.md](datasheet.md) · [model_card.md](model_card.md) · [inter_rater_agreement.md](inter_rater_agreement.md) | Documentation. |
-| [memo.md](memo.md) · [blog_post.md](blog_post.md) | Decision memo and write-up, with v0.2 numbers. |
+| [memo.md](memo.md) ([PDF](memo.pdf)) · [blog_post.md](blog_post.md) | Decision memo (2 pages, CEO/CFO) and write-up, with v0.2 numbers. |
 | [synthesis_memos/](synthesis_memos/) | Reading notes (LIMA, Tülu 3, Magpie, datasheets, contamination, LLM-as-judge). |
 | [archive/v0.1/](archive/v0.1/) | The retracted v0.1 results, kept for traceability. |
 

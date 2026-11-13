@@ -226,7 +226,16 @@ def score():
         report["human_vs_evaluator"][d] = {"agree": agree_e, "agreement": round(agree_e / len(ids), 3),
                                            "cohen_kappa": cohen_kappa(a, ev)}
     hum = ["P" if all(r1[i][d] == "P" for d in DIMS) else "F" for i in ids]
-    evo = ["P" if E.score_task(tasks[i])["all_pass"] else "F" for i in ids]
+    hum2 = ["P" if all(r2[i][d] == "P" for d in DIMS) else "F" for i in ids]
+    agree_o = sum(x == y for x, y in zip(hum, hum2))
+    report["test_retest_overall"] = {"round1_pass": hum.count("P"), "round2_pass": hum2.count("P"), "agree": agree_o,
+                                     "agreement": round(agree_o / len(ids), 3), "cohen_kappa": cohen_kappa(hum, hum2)}
+    m1, m2 = (json.loads((OUT / f"round{n}_manifest.json").read_text(encoding="utf-8")) for n in (1, 2))
+    report["note"] = ("Same labeller (the author) both rounds; measures self-consistency, not inter-annotator agreement. "
+                      "Protocol gap >= 24h; actual gap ~10h (round 1 labels saved 2026-11-12 23:18, round 2 submitted "
+                      "2026-11-13 ~09:40 +03:00), so test-retest is an upper bound.")
+    report["round_task_lists_identical"] = sorted(m1["task_ids"]) == sorted(m2["task_ids"])
+    evo =["P" if E.score_task(tasks[i])["all_pass"] else "F" for i in ids]
     report["human_vs_evaluator"]["overall"] = {"agree": sum(x == y for x, y in zip(hum, evo)),
                                                "agreement": round(sum(x == y for x, y in zip(hum, evo)) / len(ids), 3),
                                                "cohen_kappa": cohen_kappa(hum, evo)}

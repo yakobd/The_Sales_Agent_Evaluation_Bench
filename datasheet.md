@@ -127,4 +127,4 @@ The 57-task v0.1 held-out was retired to dev, because it was public and contamin
   - An evaluator that addresses the round 1 human disagreements and the "Synergy" false positive.
   - A usefulness and specificity dimension.
   - More held-out tasks with in-window signals, so the cold slice is not dominated by abstention.
-  - Round 2 test–retest labels.
+  - A second, independent labeller, plus a test–retest with a full 24-hour gap.
