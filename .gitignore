@@ -7,3 +7,18 @@ tenacious_bench_v0.1/held_out/
 tenacious_style_guide_v2.md
 tenacious_seed/
 tenacious_style_guide_v2.md
+.pytest_cache/
+.llm_cache.jsonl
+.judge_cache.jsonl
+# held-out source data: sealed (only manifest.json is public)
+generation_scripts/week10_export/week10_briefs.jsonl
+# Colab bundle contains rendered held-out prompts (sealed)
+training/colab_bundle.zip
+# per-email held-out traces (reveal sealed prospects) - release only after the leaderboard decision
+ablations/held_out_traces_v0.2.jsonl
+ablations/generations.jsonl
+ablations/adapter.zip
+ablations/generations_run1_INVALID_rightpad.jsonl
+ablations/adapter/
+ablations/generations_all.jsonl
+ablations/week10_v2_generations.jsonl

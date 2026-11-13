@@ -4,7 +4,7 @@
   "difficulty": "hard",
   "variant": "hand_authored_adversarial",
   "is_passing": true,
-  "probe_label": "P05 \u2014 Correct: very low confidence triggers hedged language",
+  "probe_label": "P05 — Correct: very low confidence triggers hedged language",
   "input": {
     "hiring_signal_brief": {
       "prospect": "Phantom Corp",
@@ -12,14 +12,12 @@
         "segment": 1,
         "segment_name": "Recently-funded startup",
         "confidence": "very_low",
-        "reasons": [
-          "Hand-authored scenario \u2014 P05 \u2014 Correct: very low confidence triggers hedged language"
-        ]
+        "reasons": []
       },
       "firmographics": {
         "company": "Phantom Corp",
         "website": "",
-        "description": "Phantom Corp \u2014 technology company",
+        "description": "Phantom Corp — technology company",
         "num_employees": "51-500"
       },
       "ai_maturity": {
@@ -44,16 +42,16 @@
         "data": 4
       }
     },
-    "instruction": "CORRECT P05: Very low confidence \u2014 email uses 'may have', 'based on your public profile', 'cannot tell from the outside'. Correctly hedges all claims. Should PASS.",
-    "prior_thread": []
+    "instruction": "Write a cold outreach email to the VP Engineering at Phantom Corp. Ground every claim in the supplied hiring signal brief.",
+    "prior_thread": [],
+    "email_type": "cold"
   },
   "candidate_output": {
     "subject": "Context: Phantom Corp and engineering",
-    "body": "Hi Jordan,\n\nPhantom Corp may have open engineering roles based on your public profile \u2014 I cannot tell from the outside whether hiring is keeping pace or whether the queue is longer than the postings suggest.\n\nWe place managed engineering teams, one-month minimum, 3-5 hours daily overlap. If the real need is larger than what is visible publicly, a 15-minute conversation costs nothing.\n\n\u2192 http://localhost:3000/yakob/30min\n\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com"
+    "body": "Hi Jordan,\n\nPhantom Corp may have open engineering roles based on your public profile — I cannot tell from the outside whether hiring is keeping pace or whether the queue is longer than the postings suggest.\n\nWe place managed engineering teams, one-month minimum, 3-5 hours daily overlap. If the real need is larger than what is visible publicly, a 15-minute conversation costs nothing.\n\n→ http://localhost:3000/yakob/30min\n\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com"
   },
   "ground_truth": {
     "required_signals": [
-      "may",
       "public profile",
       "cannot tell"
     ],
@@ -122,6 +120,15 @@
     "expected_score": 1.0,
     "failure_reason": null,
     "hand_authored": true,
-    "contamination_note": "Moved from held_out to dev \u2014 n-gram or embedding contamination violation detected by contamination_check.py"
+    "contamination_note": "Moved from held_out to dev — n-gram or embedding contamination violation detected by contamination_check.py",
+    "author_note": "CORRECT P05: Very low confidence — email uses 'may have', 'based on your public profile', 'cannot tell from the outside'. Correctly hedges all claims. Should PASS.",
+    "scenario": "Hand-authored scenario — P05 — Correct: very low confidence triggers hedged language",
+    "required_signals_v01": [
+      "may",
+      "public profile",
+      "cannot tell"
+    ],
+    "label_source": "human_author",
+    "dataset_version": "0.1.1"
   }
 }

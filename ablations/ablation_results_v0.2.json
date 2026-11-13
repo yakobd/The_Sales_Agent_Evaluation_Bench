@@ -1,0 +1,255 @@
+{
+  "held_out": {
+    "n_tasks": 68,
+    "n_cold": 54,
+    "n_reply": 14,
+    "sealed_manifest_verified": true
+  },
+  "evaluator": "scoring_evaluator.py v0.2.1 (git tag evaluator-v0.2.1-frozen)",
+  "seed": 42,
+  "n_bootstrap": 10000,
+  "conditions": {
+    "week10": {
+      "n": 54,
+      "pass_at_1": 0.037,
+      "ci95": [
+        0.0,
+        0.0926
+      ],
+      "pass_at_1_cold": 0.037,
+      "per_dimension_pass_rate": {
+        "grounding": 1,
+        "honesty": 0.037,
+        "commercial_safety": 1,
+        "tone": 0.9815,
+        "format": 1
+      },
+      "mean_new_tokens": 0,
+      "mean_seconds_per_email_batched": 0.0,
+      "note": "deterministic template, no model call"
+    },
+    "base_short": {
+      "n": 68,
+      "pass_at_1": 0.0147,
+      "ci95": [
+        0.0,
+        0.0441
+      ],
+      "pass_at_1_cold": 0,
+      "per_dimension_pass_rate": {
+        "grounding": 1,
+        "honesty": 0.6029,
+        "commercial_safety": 0.9412,
+        "tone": 0.4706,
+        "format": 0.0147
+      },
+      "mean_new_tokens": 253.3,
+      "mean_seconds_per_email_batched": 5.735,
+      "mean_prompt_chars": 2140
+    },
+    "prompt_engineered": {
+      "n": 68,
+      "pass_at_1": 0.1029,
+      "ci95": [
+        0.0438,
+        0.1765
+      ],
+      "pass_at_1_cold": 0.037,
+      "per_dimension_pass_rate": {
+        "grounding": 0.9706,
+        "honesty": 0.6029,
+        "commercial_safety": 0.9412,
+        "tone": 0.8676,
+        "format": 0.2059
+      },
+      "mean_new_tokens": 128.4,
+      "mean_seconds_per_email_batched": 3.201,
+      "mean_prompt_chars": 4783
+    },
+    "trained": {
+      "n": 68,
+      "pass_at_1": 0.8676,
+      "ci95": [
+        0.7794,
+        0.9412
+      ],
+      "pass_at_1_cold": 0.8704,
+      "per_dimension_pass_rate": {
+        "grounding": 0.9706,
+        "honesty": 0.9559,
+        "commercial_safety": 0.9706,
+        "tone": 0.9853,
+        "format": 0.9853
+      },
+      "mean_new_tokens": 102.9,
+      "mean_seconds_per_email_batched": 2.868,
+      "mean_prompt_chars": 2140
+    },
+    "week10_v2": {
+      "n": 54,
+      "pass_at_1": 0.9815,
+      "ci95": [
+        0.9444,
+        1.0
+      ],
+      "pass_at_1_cold": 0.9815,
+      "per_dimension_pass_rate": {
+        "grounding": 1,
+        "honesty": 1,
+        "commercial_safety": 1,
+        "tone": 0.9815,
+        "format": 1
+      },
+      "mean_new_tokens": 0,
+      "mean_seconds_per_email_batched": 0.0,
+      "note": "deterministic template, no model call"
+    }
+  },
+  "comparisons": {
+    "delta_A_trained_vs_week10_cold": {
+      "n": 54,
+      "a_pass_at_1": 0.8704,
+      "b_pass_at_1": 0.037,
+      "delta": 0.8333,
+      "ci95": [
+        0.7222,
+        0.9259
+      ],
+      "p_bootstrap_one_sided": 0.0,
+      "mcnemar_exact_one_sided": 0.0,
+      "discordant": {
+        "a_only_pass": 45,
+        "b_only_pass": 0
+      },
+      "significant_at_0.05": true
+    },
+    "delta_B_trained_vs_prompt_engineered": {
+      "n": 68,
+      "a_pass_at_1": 0.8676,
+      "b_pass_at_1": 0.1029,
+      "delta": 0.7647,
+      "ci95": [
+        0.6618,
+        0.8676
+      ],
+      "p_bootstrap_one_sided": 0.0,
+      "mcnemar_exact_one_sided": 0.0,
+      "discordant": {
+        "a_only_pass": 52,
+        "b_only_pass": 0
+      },
+      "significant_at_0.05": true
+    },
+    "training_effect_trained_vs_base_short": {
+      "n": 68,
+      "a_pass_at_1": 0.8676,
+      "b_pass_at_1": 0.0147,
+      "delta": 0.8529,
+      "ci95": [
+        0.7647,
+        0.9265
+      ],
+      "p_bootstrap_one_sided": 0.0,
+      "mcnemar_exact_one_sided": 0.0,
+      "discordant": {
+        "a_only_pass": 58,
+        "b_only_pass": 0
+      },
+      "significant_at_0.05": true
+    },
+    "trained_vs_week10_v2_honest_template_cold": {
+      "n": 54,
+      "a_pass_at_1": 0.8704,
+      "b_pass_at_1": 0.9815,
+      "delta": -0.1111,
+      "ci95": [
+        -0.2037,
+        -0.037
+      ],
+      "p_bootstrap_one_sided": 1.0,
+      "mcnemar_exact_one_sided": 1.0,
+      "discordant": {
+        "a_only_pass": 0,
+        "b_only_pass": 6
+      },
+      "significant_at_0.05": false
+    },
+    "replies_trained_vs_prompt_engineered": {
+      "n": 14,
+      "a_pass_at_1": 0.8571,
+      "b_pass_at_1": 0.3571,
+      "delta": 0.5,
+      "ci95": [
+        0.2143,
+        0.7857
+      ],
+      "p_bootstrap_one_sided": 0.0001,
+      "mcnemar_exact_one_sided": 0.007812,
+      "discordant": {
+        "a_only_pass": 7,
+        "b_only_pass": 0
+      },
+      "significant_at_0.05": true
+    }
+  },
+  "sensitivity_ignore_template_placeholder": {
+    "pass_at_1": {
+      "base_short": 0.0735,
+      "prompt_engineered": 0.4412,
+      "trained": 0.8676
+    },
+    "delta_B_trained_vs_prompt_engineered": {
+      "n": 68,
+      "a_pass_at_1": 0.8676,
+      "b_pass_at_1": 0.4412,
+      "delta": 0.4265,
+      "ci95": [
+        0.3088,
+        0.5441
+      ],
+      "p_bootstrap_one_sided": 0.0,
+      "mcnemar_exact_one_sided": 0.0,
+      "discordant": {
+        "a_only_pass": 30,
+        "b_only_pass": 1
+      },
+      "significant_at_0.05": true
+    }
+  },
+  "diagnostic_null_note_cold": {
+    "pass": 49,
+    "n": 54,
+    "pass_at_1": 0.9074,
+    "note": "a two-sentence note with no signal and no pitch; the evaluator measures safety, not persuasiveness"
+  },
+  "delta_C": "not computed: Week 10 tau2-Bench retail (0.333) and Tenacious-Bench measure different tasks; subtracting them is not meaningful",
+  "training_run": {
+    "run_id": "tenacious-bench-v0.2-sft-seed42",
+    "backbone": "unsloth/Qwen3.5-2B",
+    "backbone_revision": "fffbc0d8711cf87df6d1f97938c5e50ef94aadc7",
+    "train_pairs": 512,
+    "val_pairs": 55,
+    "steps": 128,
+    "wall_time_minutes": 17.3,
+    "gpu": "Tesla T4",
+    "single_request_latency_s": {
+      "trained": [
+        2.799,
+        2.773,
+        2.777,
+        2.88,
+        2.712
+      ],
+      "prompt_engineered": [
+        3.862,
+        2.208,
+        3.121,
+        3.053,
+        3.731
+      ]
+    },
+    "final_train_loss": 0.3304,
+    "final_eval_loss": 0.507
+  },
+  "cost_note": "All model conditions ran on a free Colab T4 ($0). Relative inference cost is proportional to tokens processed: compare mean_prompt_chars (input) and mean_new_tokens (output). The trained adapter uses the short system prompt; prompt_engineered carries the full rule set on every call."
+}

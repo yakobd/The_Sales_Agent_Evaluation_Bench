@@ -1,0 +1,18 @@
+{
+  "evaluator": "v0.2.1",
+  "n_briefs": 204,
+  "source": "training_data/week10_train_briefs.jsonl",
+  "v1": {
+    "pass": 10,
+    "pass_at_1": 0.049,
+    "violations": {
+      "FUNDING_UNSUPPORTED": 120,
+      "FUNDING_NOT_RECENT": 74
+    }
+  },
+  "v2": {
+    "pass": 204,
+    "pass_at_1": 1.0,
+    "violations": {}
+  }
+}

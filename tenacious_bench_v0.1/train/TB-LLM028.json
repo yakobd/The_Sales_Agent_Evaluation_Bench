@@ -18,7 +18,7 @@
       "firmographics": {
         "company": "Arc Systems",
         "website": "https://arcsystems.com",
-        "description": "Arc Systems \u2014 technology company",
+        "description": "Arc Systems — technology company",
         "num_employees": "51-200"
       },
       "ai_maturity": {
@@ -43,20 +43,17 @@
         "data": 4
       }
     },
-    "instruction": "Write outreach for Arc Systems \u2014 Funding detected but stage unclear, 3 open roles",
-    "prior_thread": []
+    "instruction": "Write outreach for Arc Systems — Funding detected but stage unclear, 3 open roles",
+    "prior_thread": [],
+    "email_type": "cold"
   },
   "candidate_output": {
-    "subject": "Arc Systems' Funding & Hiring Strategy \u2013 15 mins?",
-    "body": "Hi Yakob,\n\nSaw Arc Systems\u2019 recent funding news \u2013 if confirmed, how will this shape Arc\u2019s hiring approach? Three open roles suggest alignment with strategic growth, though team-building priorities may shift with new capital.\n\nCurious to discuss how your talent strategy might evolve alongside product development timelines. Would you be open to a brief conversation about sourcing specialized engineering or product talent in this phase?\n\nWorth 15 minutes this week? \u2192 http://localhost:3000/yakob/30min\n\nResearch Partner / Tenacious Intelligence Corporation / gettenacious.com"
+    "subject": "Arc Systems' Funding & Hiring Strategy – 15 mins?",
+    "body": "Hi Yakob,\n\nSaw Arc Systems’ recent funding news – if confirmed, how will this shape Arc’s hiring approach? Three open roles suggest alignment with strategic growth, though team-building priorities may shift with new capital.\n\nCurious to discuss how your talent strategy might evolve alongside product development timelines. Would you be open to a brief conversation about sourcing specialized engineering or product talent in this phase?\n\nWorth 15 minutes this week? → http://localhost:3000/yakob/30min\n\nResearch Partner / Tenacious Intelligence Corporation / gettenacious.com"
   },
   "ground_truth": {
     "required_signals": [
-      "funding",
-      "growth",
-      "engineering",
-      "capacity",
-      "roles"
+      "funding"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -122,6 +119,16 @@
     "source_trace_id": null,
     "judge_score": null,
     "expected_score": 1.0,
-    "generator_model": "qwen/qwen3-235b-a22b"
+    "generator_model": "qwen/qwen3-235b-a22b",
+    "required_signals_v01": [
+      "funding",
+      "growth",
+      "engineering",
+      "capacity",
+      "roles"
+    ],
+    "is_passing_v01": true,
+    "label_source": "evaluator_v0.2",
+    "dataset_version": "0.1.1"
   }
 }

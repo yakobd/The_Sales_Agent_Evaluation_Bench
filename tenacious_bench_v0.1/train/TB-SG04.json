@@ -13,7 +13,8 @@
         "segment_name": "AI capability gap",
         "confidence": "high",
         "reasons": [
-          "Style guide labeled: Capability gap AI maturity 2 high confidence"
+          "AI maturity 2/3 (high confidence)",
+          "3 adjacent loyalty-platform peers posted senior MLOps roles in 90 days; none at Felix publicly"
         ]
       },
       "firmographics": {
@@ -44,8 +45,14 @@
         "data": 4
       }
     },
-    "instruction": "STYLE GUIDE EXAMPLE (SG-G04): GOOD \u2014 should PASS. Capability gap AI maturity 2 high confidence",
-    "prior_thread": []
+    "instruction": "Write a cold outreach email to the VP Engineering at Felix Platform. Ground every claim in the supplied hiring signal brief.",
+    "prior_thread": [],
+    "email_type": "cold",
+    "competitor_gap_brief": {
+      "prospect_sector": "loyalty platforms",
+      "finding": "3 adjacent loyalty-platform companies posted senior MLOps roles in the last 90 days",
+      "prospect_has_public_mlops_role": false
+    }
   },
   "candidate_output": {
     "subject": "Question: your MLOps function in 2026",
@@ -125,6 +132,12 @@
     "source_trace_id": null,
     "judge_score": null,
     "expected_score": 1.0,
-    "style_guide_label": "Capability gap AI maturity 2 high confidence"
+    "style_guide_label": "Capability gap AI maturity 2 high confidence",
+    "author_note": "STYLE GUIDE EXAMPLE (SG-G04): GOOD — should PASS. Capability gap AI maturity 2 high confidence",
+    "scenario": "Style guide labeled: Capability gap AI maturity 2 high confidence",
+    "brief_reconstructed": true,
+    "reconstruction_note": "Facts restored from the scenario/labelled draft that this task was written against; the v0.1 conversion had dropped them. See tools/repair_tasks_phase2.py.",
+    "label_source": "tenacious_style_guide",
+    "dataset_version": "0.1.1"
   }
 }

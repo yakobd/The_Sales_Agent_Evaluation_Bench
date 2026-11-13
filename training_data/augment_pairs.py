@@ -7,24 +7,28 @@ Cost: ~$2-3 total.
 No new benchmark tasks added — total stays at 293.
 """
 
+import sys as _sys
+from pathlib import Path as _Path
+_sys.path.insert(0, str(_Path(__file__).resolve().parents[1]))
+from config import REPO_ROOT, WEEK10_DIR  # noqa: E402  (repo-relative paths)
 import json, os, re, sys, time, random, requests
 from pathlib import Path
 from datetime import datetime
 from dotenv import load_dotenv
 
-load_dotenv('/home/yakob/week11-sales-bench/.env')
+load_dotenv(REPO_ROOT / '.env')
 
 KEY   = os.getenv('OPENROUTER_API_KEY')
 MODEL = "qwen/qwen-2.5-72b-instruct"
 
-INPUT_FILE  = Path('/home/yakob/week11-sales-bench/training_data/training_pairs.jsonl')
-OUTPUT_FILE = Path('/home/yakob/week11-sales-bench/training_data/training_pairs_augmented.jsonl')
-LOG_FILE    = Path('/home/yakob/week11-sales-bench/training_data/augmentation_log.json')
+INPUT_FILE  = (REPO_ROOT / 'training_data/training_pairs.jsonl')
+OUTPUT_FILE = (REPO_ROOT / 'training_data/training_pairs_augmented.jsonl')
+LOG_FILE    = (REPO_ROOT / 'training_data/augmentation_log.json')
 
 TARGET_TOTAL     = 2560
 VARIATIONS_EACH  = 20  # 128 * 20 = 2560
 
-SYSTEM_PROMPT = open('/home/yakob/week11-sales-bench/training_data/prepare_training_data.py').read()
+SYSTEM_PROMPT = open(REPO_ROOT / 'training_data/prepare_training_data.py', encoding='utf-8').read()
 import re as _re
 match = _re.search(r'SYSTEM_PROMPT = """(.+?)"""', SYSTEM_PROMPT, _re.DOTALL)
 SYSTEM_PROMPT = match.group(1).strip() if match else ""

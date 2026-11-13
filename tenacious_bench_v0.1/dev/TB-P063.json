@@ -12,7 +12,7 @@
         "segment_name": "Recently-funded startup",
         "confidence": "medium",
         "reasons": [
-          "Series B $32M detected \u2014 scaling expected"
+          "Series B $32M detected — scaling expected"
         ]
       },
       "firmographics": {
@@ -48,20 +48,17 @@
         "data": 4
       }
     },
-    "instruction": "ADVERSARIAL: The following email to Prism Networks uses condescending framing and should FAIL.",
-    "prior_thread": []
+    "instruction": "Write a cold outreach email to the VP Engineering at Prism Networks. Ground every claim in the supplied hiring signal brief.",
+    "prior_thread": [],
+    "email_type": "cold"
   },
   "candidate_output": {
-    "subject": "Prism Networks is falling behind on AI \u2014 urgent",
+    "subject": "Prism Networks is falling behind on AI — urgent",
     "body": "Your AI maturity is behind the curve. Prism Networks is clearly missing the strategic moves that your competitors have already made. You are falling behind in a market where AI is no longer optional. Tenacious can help you catch up before your next board meeting.\n\nLet's get on a call immediately.\n\nBest, Yabi"
   },
   "ground_truth": {
     "required_signals": [
-      "funding",
-      "growth",
-      "engineering",
-      "capacity",
-      "roles"
+      "funding"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -130,6 +127,17 @@
     "source_trace_id": null,
     "judge_score": null,
     "expected_score": 0.0,
-    "contamination_note": "Moved from held_out to dev \u2014 n-gram or embedding contamination violation detected by contamination_check.py"
+    "contamination_note": "Moved from held_out to dev — n-gram or embedding contamination violation detected by contamination_check.py",
+    "author_note": "ADVERSARIAL: The following email to Prism Networks uses condescending framing and should FAIL.",
+    "required_signals_v01": [
+      "funding",
+      "growth",
+      "engineering",
+      "capacity",
+      "roles"
+    ],
+    "is_passing_v01": false,
+    "label_source": "evaluator_v0.2",
+    "dataset_version": "0.1.1"
   }
 }

@@ -12,13 +12,13 @@
         "segment_name": "Recently-funded startup",
         "confidence": "medium",
         "reasons": [
-          "Series A detected \u2014 funding amount unconfirmed"
+          "Series A detected — funding amount unconfirmed"
         ]
       },
       "firmographics": {
         "company": "Flux Software",
         "website": "https://fluxsoftware.io",
-        "description": "Flux Software \u2014 technology company",
+        "description": "Flux Software — technology company",
         "num_employees": "51-200"
       },
       "ai_maturity": {
@@ -46,20 +46,17 @@
         "data": 4
       }
     },
-    "instruction": "ADVERSARIAL: banned phrases email to Flux Software",
-    "prior_thread": []
+    "instruction": "Write a cold outreach email to the VP Engineering at Flux Software. Ground every claim in the supplied hiring signal brief.",
+    "prior_thread": [],
+    "email_type": "cold"
   },
   "candidate_output": {
-    "subject": "Hope this finds you well \u2014 quick chat?",
-    "body": "Hope this email finds you well! Flux Software is clearly scaling aggressively with world-class rockstar engineers on their bench. Our top talent will skyrocket your delivery. Just circling back \u2014 quick question about synergizing?\n\nBest, Yabi"
+    "subject": "Hope this finds you well — quick chat?",
+    "body": "Hope this email finds you well! Flux Software is clearly scaling aggressively with world-class rockstar engineers on their bench. Our top talent will skyrocket your delivery. Just circling back — quick question about synergizing?\n\nBest, Yabi"
   },
   "ground_truth": {
     "required_signals": [
-      "funding",
-      "growth",
-      "engineering",
-      "capacity",
-      "roles"
+      "funding"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -128,6 +125,17 @@
     "source_trace_id": null,
     "judge_score": null,
     "expected_score": 0.0,
-    "contamination_note": "Moved from held_out to dev \u2014 n-gram or embedding contamination violation detected by contamination_check.py"
+    "contamination_note": "Moved from held_out to dev — n-gram or embedding contamination violation detected by contamination_check.py",
+    "author_note": "ADVERSARIAL: banned phrases email to Flux Software",
+    "required_signals_v01": [
+      "funding",
+      "growth",
+      "engineering",
+      "capacity",
+      "roles"
+    ],
+    "is_passing_v01": false,
+    "label_source": "evaluator_v0.2",
+    "dataset_version": "0.1.1"
   }
 }

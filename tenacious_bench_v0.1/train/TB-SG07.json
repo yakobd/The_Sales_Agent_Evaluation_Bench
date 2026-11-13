@@ -13,7 +13,7 @@
         "segment_name": "Recently-funded startup",
         "confidence": "high",
         "reasons": [
-          "Style guide labeled: Warm reply with routing to human delivery lead"
+          "Warm prospect: replied about a December start (see prior_thread)"
         ]
       },
       "firmographics": {
@@ -44,8 +44,14 @@
         "data": 4
       }
     },
-    "instruction": "STYLE GUIDE EXAMPLE (SG-G07): GOOD \u2014 should PASS. Warm reply with routing to human delivery lead",
-    "prior_thread": []
+    "instruction": "Write a reply to the latest message in prior_thread from Camila Systems. Ground every claim in the brief and the thread.",
+    "prior_thread": [
+      {
+        "from": "prospect",
+        "body": "Thanks. We are looking at a December start, probably three Python engineers and one data engineer for about six months. What would that look like?"
+      }
+    ],
+    "email_type": "reply"
   },
   "candidate_output": {
     "subject": "Re: scope of the three-engineer engagement",
@@ -125,6 +131,12 @@
     "source_trace_id": null,
     "judge_score": null,
     "expected_score": 1.0,
-    "style_guide_label": "Warm reply with routing to human delivery lead"
+    "style_guide_label": "Warm reply with routing to human delivery lead",
+    "author_note": "STYLE GUIDE EXAMPLE (SG-G07): GOOD — should PASS. Warm reply with routing to human delivery lead",
+    "scenario": "Style guide labeled: Warm reply with routing to human delivery lead",
+    "brief_reconstructed": true,
+    "reconstruction_note": "Facts restored from the scenario/labelled draft that this task was written against; the v0.1 conversion had dropped them. See tools/repair_tasks_phase2.py.",
+    "label_source": "tenacious_style_guide",
+    "dataset_version": "0.1.1"
   }
 }

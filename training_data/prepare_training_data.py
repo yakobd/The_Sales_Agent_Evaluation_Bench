@@ -8,16 +8,20 @@ How:   Filter passing tasks, score each, keep top quality examples
 Cost:  $0.00 — no API calls
 """
 
+import sys as _sys
+from pathlib import Path as _Path
+_sys.path.insert(0, str(_Path(__file__).resolve().parents[1]))
+from config import REPO_ROOT, WEEK10_DIR  # noqa: E402  (repo-relative paths)
 import json
 import sys
 from pathlib import Path
 from datetime import datetime
 
-sys.path.insert(0, '/home/yakob/week11-sales-bench')
-from scoring_evaluator import score_task
+sys.path.insert(0, str(REPO_ROOT))
+from scoring_evaluator_v01 import score_task
 
-TRAIN_DIR   = Path('/home/yakob/week11-sales-bench/tenacious_bench_v0.1/train')
-OUTPUT_DIR  = Path('/home/yakob/week11-sales-bench/training_data')
+TRAIN_DIR   = (REPO_ROOT / 'tenacious_bench_v0.1/train')
+OUTPUT_DIR  = (REPO_ROOT / 'training_data')
 OUTPUT_FILE = OUTPUT_DIR / 'training_pairs.jsonl'
 STATS_FILE  = OUTPUT_DIR / 'preparation_log.json'
 

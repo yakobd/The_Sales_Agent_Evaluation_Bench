@@ -3,7 +3,7 @@
   "source_mode": "multi_llm_synthesis",
   "difficulty": "hard",
   "variant": "llm_generated",
-  "is_passing": true,
+  "is_passing": false,
   "input": {
     "hiring_signal_brief": {
       "prospect": "Vertex AI Labs",
@@ -18,7 +18,7 @@
       "firmographics": {
         "company": "Vertex AI Labs",
         "website": "https://vertexailabs.com",
-        "description": "Vertex AI Labs \u2014 technology company",
+        "description": "Vertex AI Labs — technology company",
         "num_employees": "51-200"
       },
       "ai_maturity": {
@@ -43,21 +43,19 @@
         "data": 4
       }
     },
-    "instruction": "Write outreach for Vertex AI Labs \u2014 AI maturity score 2/3. Partial ML stack signal.",
-    "prior_thread": []
+    "instruction": "Write outreach for Vertex AI Labs — AI maturity score 2/3. Partial ML stack signal.",
+    "prior_thread": [],
+    "email_type": "cold"
   },
   "candidate_output": {
     "subject": "Addressing Your AI Maturity Challenges?",
-    "body": "Hi [Name],\n\nI noticed Vertex AI Labs has an AI maturity score of 2/3. Are you encountering challenges in scaling ML infrastructure or integrating models into production? Many teams at this stage struggle with fragmented workflows or skills gaps. I'd like to understand your specific hurdles and share how we help companies bridge these gaps.\n\nWorth 15 minutes this week? \u2192 http://localhost:3000/yakob/30min\n\nResearch Partner / Tenacious Intelligence Corporation / gettenacious.com"
+    "body": "Hi [Name],\n\nI noticed Vertex AI Labs has an AI maturity score of 2/3. Are you encountering challenges in scaling ML infrastructure or integrating models into production? Many teams at this stage struggle with fragmented workflows or skills gaps. I'd like to understand your specific hurdles and share how we help companies bridge these gaps.\n\nWorth 15 minutes this week? → http://localhost:3000/yakob/30min\n\nResearch Partner / Tenacious Intelligence Corporation / gettenacious.com"
   },
   "ground_truth": {
     "required_signals": [
       "ai",
-      "capability",
       "ml",
-      "platform",
-      "peer",
-      "data"
+      "peer"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -123,6 +121,17 @@
     "source_trace_id": null,
     "judge_score": null,
     "expected_score": 1.0,
-    "generator_model": "qwen/qwen3-235b-a22b"
+    "generator_model": "qwen/qwen3-235b-a22b",
+    "required_signals_v01": [
+      "ai",
+      "capability",
+      "ml",
+      "platform",
+      "peer",
+      "data"
+    ],
+    "is_passing_v01": true,
+    "label_source": "evaluator_v0.2",
+    "dataset_version": "0.1.1"
   }
 }

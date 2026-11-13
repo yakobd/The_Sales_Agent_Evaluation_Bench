@@ -13,7 +13,7 @@
         "segment_name": "Post-layoff restructuring",
         "confidence": "high",
         "reasons": [
-          "Style guide labeled: Post-layoff cost-pressure pitch mid-market restructuring"
+          "Team contracted by about 12% in March"
         ]
       },
       "firmographics": {
@@ -27,7 +27,9 @@
         "confidence": "high"
       },
       "layoff_signal": {
-        "layoff_detected": true
+        "layoff_detected": true,
+        "percentage_laid_off": "12%",
+        "date": "March"
       },
       "leadership_signal": {
         "leadership_change_detected": false
@@ -44,19 +46,18 @@
         "data": 4
       }
     },
-    "instruction": "STYLE GUIDE EXAMPLE (SG-G02): GOOD \u2014 should PASS. Post-layoff cost-pressure pitch mid-market restructuring",
-    "prior_thread": []
+    "instruction": "Write a cold outreach email to the VP Engineering at Daniel Corp. Ground every claim in the supplied hiring signal brief.",
+    "prior_thread": [],
+    "email_type": "cold"
   },
   "candidate_output": {
     "subject": "Context: lower-cost engineering capacity post-restructure",
-    "body": "Hi Daniel,\n\nI saw the announcement that your team contracted by about 12% in March. Companies in your stage often need to maintain delivery output while reducing fully-loaded cost \u2014 that is the engagement pattern we run most often.\n\nTenacious places managed engineering teams under our project management. Senior engineers in Python, data, and ML start from $X,XXX/month, with a one-month minimum and two-week extension blocks. No long-term commitment.\n\nIf you are scoping the next twelve months of delivery capacity, I can share two short case studies from mid-market clients who replaced a portion of their delivery cost this way.\n\nWorth 15 minutes this week? https://cal.com/yakob/30min\n\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com\n\nBest,\nYabi\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com"
+    "body": "Hi Daniel,\n\nI saw the announcement that your team contracted by about 12% in March. Companies in your stage often need to maintain delivery output while reducing fully-loaded cost — that is the engagement pattern we run most often.\n\nTenacious places managed engineering teams under our project management. Senior engineers in Python, data, and ML start from $X,XXX/month, with a one-month minimum and two-week extension blocks. No long-term commitment.\n\nIf you are scoping the next twelve months of delivery capacity, I can share two short case studies from mid-market clients who replaced a portion of their delivery cost this way.\n\nBest,\nYabi\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com"
   },
   "ground_truth": {
     "required_signals": [
       "12%",
-      "march",
-      "cost",
-      "delivery"
+      "march"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -125,6 +126,18 @@
     "source_trace_id": null,
     "judge_score": null,
     "expected_score": 1.0,
-    "style_guide_label": "Post-layoff cost-pressure pitch mid-market restructuring"
+    "style_guide_label": "Post-layoff cost-pressure pitch mid-market restructuring",
+    "author_note": "STYLE GUIDE EXAMPLE (SG-G02): GOOD — should PASS. Post-layoff cost-pressure pitch mid-market restructuring",
+    "scenario": "Style guide labeled: Post-layoff cost-pressure pitch mid-market restructuring",
+    "brief_reconstructed": true,
+    "reconstruction_note": "Facts restored from the scenario/labelled draft that this task was written against; the v0.1 conversion had dropped them. See tools/repair_tasks_phase2.py.",
+    "required_signals_v01": [
+      "12%",
+      "march",
+      "cost",
+      "delivery"
+    ],
+    "label_source": "tenacious_style_guide",
+    "dataset_version": "0.1.1"
   }
 }

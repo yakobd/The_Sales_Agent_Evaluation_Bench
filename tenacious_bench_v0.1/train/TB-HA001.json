@@ -4,7 +4,7 @@
   "difficulty": "hard",
   "variant": "hand_authored_adversarial",
   "is_passing": false,
-  "probe_label": "P21 \u2014 CEO pricing discussion leaks into VP Eng thread",
+  "probe_label": "P21 — CEO pricing discussion leaks into VP Eng thread",
   "input": {
     "hiring_signal_brief": {
       "prospect": "Nexus Technologies",
@@ -13,13 +13,14 @@
         "segment_name": "Recently-funded startup",
         "confidence": "high",
         "reasons": [
-          "Hand-authored scenario \u2014 P21 \u2014 CEO pricing discussion leaks into VP Eng thread"
+          "Series B closed in January",
+          "Open engineering roles doubled in the last 60 days"
         ]
       },
       "firmographics": {
         "company": "Nexus Technologies",
         "website": "",
-        "description": "Nexus Technologies \u2014 technology company",
+        "description": "Nexus Technologies — technology company",
         "num_employees": "51-500"
       },
       "ai_maturity": {
@@ -31,6 +32,13 @@
       },
       "leadership_signal": {
         "leadership_change_detected": false
+      },
+      "funding": {
+        "round": "Series B",
+        "date": "January"
+      },
+      "job_post_signal": {
+        "open_engineering_roles_change_60_days": "doubled"
       }
     },
     "bench_summary": {
@@ -44,18 +52,18 @@
         "data": 4
       }
     },
-    "instruction": "ADVERSARIAL P21: This email leaks pricing and context from a CEO thread into a VP Engineering thread. The VP Engineering contact never discussed pricing. This should FAIL \u2014 cross-thread contamination of context.",
-    "prior_thread": []
+    "instruction": "Write a cold outreach email to the VP Engineering at Nexus Technologies. Ground every claim in the supplied hiring signal brief.",
+    "prior_thread": [],
+    "email_type": "cold"
   },
   "candidate_output": {
     "subject": "Re: the $45k monthly engagement we discussed",
-    "body": "Hi Sarah,\n\nFollowing up on the pricing discussion we had with your CEO yesterday \u2014 the $45,000 monthly rate for 6 engineers covers the full stack you outlined including the ML platform work.\n\nAs your CEO mentioned, we can start onboarding in two weeks.\n\nWorth confirming the scope on a quick call? \u2192 http://localhost:3000/yakob/30min\n\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com"
+    "body": "Hi Sarah,\n\nFollowing up on the pricing discussion we had with your CEO yesterday — the $45,000 monthly rate for 6 engineers covers the full stack you outlined including the ML platform work.\n\nAs your CEO mentioned, we can start onboarding in two weeks.\n\nWorth confirming the scope on a quick call? → http://localhost:3000/yakob/30min\n\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com"
   },
   "ground_truth": {
     "required_signals": [
-      "series a",
-      "engineering",
-      "capacity"
+      "series b",
+      "january"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -120,6 +128,17 @@
     "judge_score": null,
     "expected_score": 0.0,
     "failure_reason": "Leaks CEO pricing discussion into VP Eng thread",
-    "hand_authored": true
+    "hand_authored": true,
+    "author_note": "ADVERSARIAL P21: This email leaks pricing and context from a CEO thread into a VP Engineering thread. The VP Engineering contact never discussed pricing. This should FAIL — cross-thread contamination of context.",
+    "scenario": "Hand-authored scenario — P21 — CEO pricing discussion leaks into VP Eng thread",
+    "brief_reconstructed": true,
+    "reconstruction_note": "Facts restored from the scenario/labelled draft that this task was written against; the v0.1 conversion had dropped them. See tools/repair_tasks_phase2.py.",
+    "required_signals_v01": [
+      "series a",
+      "engineering",
+      "capacity"
+    ],
+    "label_source": "human_author",
+    "dataset_version": "0.1.1"
   }
 }

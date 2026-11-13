@@ -1,134 +1,493 @@
 {
-  "version": "1.0",
-  "generated": "2026-05-01",
-  "author": "Yakob Dereje",
-  "description": "Maps every numeric claim in memo and blog post to its source",
+  "version": "0.2",
+  "generated": "2026-11-13",
+  "generator": "tools/build_evidence_graph.py",
+  "note": "v0.1 claims (0.754, Delta A +0.263, 93% inter-rater) were invalid; see LIMITATIONS_AND_CORRECTIONS.md and archive/v0.1/evidence_graph_v0.1.json",
   "claims": {
-    "delta_a_plus_0263": {
-      "claim": "Trained adapter lifts pass@1 by +0.263 over Week 10 baseline",
-      "value": 0.263,
-      "source_file": "ablations/ablation_results.json",
-      "source_field": "delta_a",
-      "verification": "averages.trained_adapter (0.754) - averages.baseline (0.491)"
-    },
-    "delta_a_pvalue": {
-      "claim": "Delta A is statistically significant at p=0.0000",
-      "value": 0.0,
-      "source_file": "ablations/ablation_results.json",
-      "source_field": "statistical_test.p_value",
-      "verification": "paired bootstrap n=10000 seed=42"
-    },
-    "delta_a_ci": {
-      "claim": "95% CI for Delta A is [0.140, 0.386]",
-      "value": [
-        0.14,
-        0.386
+    "heldout_n": {
+      "claim": "Sealed held-out size",
+      "value": 68,
+      "source_file": "ablations/ablation_results_v0.2.json",
+      "json_path": [
+        "held_out",
+        "n_tasks"
       ],
-      "source_file": "ablations/ablation_results.json",
-      "source_field": "statistical_test.ci_95_low + ci_95_high"
+      "produced_by": "generation_scripts/build_heldout_v2.py"
     },
-    "delta_b_plus_0140": {
-      "claim": "Training beats prompt engineering by +0.140",
-      "value": 0.14,
-      "source_file": "ablations/ablation_results.json",
-      "source_field": "delta_b",
-      "verification": "averages.trained_adapter (0.754) - averages.prompt_engineered (0.614)"
+    "heldout_cold": {
+      "claim": "Held-out cold tasks",
+      "value": 54,
+      "source_file": "ablations/ablation_results_v0.2.json",
+      "json_path": [
+        "held_out",
+        "n_cold"
+      ],
+      "produced_by": "generation_scripts/build_heldout_v2.py"
     },
-    "delta_c_plus_0421": {
-      "claim": "Delta C vs tau2-Bench retail baseline is +0.421 (informational)",
-      "value": 0.421,
-      "source_file": "ablations/ablation_results.json",
-      "source_field": "delta_c",
-      "verification": "averages.trained_adapter (0.754) - week10_tau2_baseline (0.333)"
+    "heldout_reply": {
+      "claim": "Held-out reply tasks",
+      "value": 14,
+      "source_file": "ablations/ablation_results_v0.2.json",
+      "json_path": [
+        "held_out",
+        "n_reply"
+      ],
+      "produced_by": "generation_scripts/build_heldout_v2.py"
     },
-    "baseline_score_0491": {
-      "claim": "Week 10 baseline scores 0.491 on Tenacious-Bench held-out",
-      "value": 0.491,
-      "source_file": "ablations/ablation_results.json",
-      "source_field": "averages.baseline"
+    "p1_week10": {
+      "claim": "Original Week 10 composer pass@1 (cold)",
+      "value": 0.037,
+      "source_file": "ablations/ablation_results_v0.2.json",
+      "json_path": [
+        "conditions",
+        "week10",
+        "pass_at_1"
+      ],
+      "produced_by": "ablations/score_ablation.py"
     },
-    "trained_score_0754": {
-      "claim": "Trained adapter scores 0.754 on Tenacious-Bench held-out",
-      "value": 0.754,
-      "source_file": "ablations/ablation_results.json",
-      "source_field": "averages.trained_adapter"
+    "p1_base_short": {
+      "claim": "Qwen3.5-2B short prompt, no adapter, pass@1",
+      "value": 0.0147,
+      "source_file": "ablations/ablation_results_v0.2.json",
+      "json_path": [
+        "conditions",
+        "base_short",
+        "pass_at_1"
+      ],
+      "produced_by": "ablations/score_ablation.py"
     },
-    "held_out_n57": {
-      "claim": "Held-out partition contains 57 tasks",
-      "value": 57,
-      "source_file": "ablations/ablation_results.json",
-      "source_field": "held_out_tasks"
+    "p1_prompt_engineered": {
+      "claim": "Qwen3.5-2B full-rules prompt pass@1",
+      "value": 0.1029,
+      "source_file": "ablations/ablation_results_v0.2.json",
+      "json_path": [
+        "conditions",
+        "prompt_engineered",
+        "pass_at_1"
+      ],
+      "produced_by": "ablations/score_ablation.py"
     },
-    "training_pairs_2541": {
-      "claim": "Training dataset contains 2,541 pairs",
-      "value": 2541,
-      "source_file": "training/training_run_v2.log",
-      "source_field": "training_pairs"
+    "p1_trained": {
+      "claim": "Qwen3.5-2B + LoRA pass@1",
+      "value": 0.8676,
+      "source_file": "ablations/ablation_results_v0.2.json",
+      "json_path": [
+        "conditions",
+        "trained",
+        "pass_at_1"
+      ],
+      "produced_by": "ablations/score_ablation.py"
     },
-    "training_cost_zero": {
-      "claim": "Training cost was $0.00 on Google Colab T4",
+    "p1_trained_ci": {
+      "claim": "Trained pass@1 95% bootstrap CI",
+      "value": [
+        0.7794,
+        0.9412
+      ],
+      "source_file": "ablations/ablation_results_v0.2.json",
+      "json_path": [
+        "conditions",
+        "trained",
+        "ci95"
+      ],
+      "produced_by": "ablations/score_ablation.py"
+    },
+    "p1_week10_v2": {
+      "claim": "Honest Week 10 template v2 pass@1 (cold)",
+      "value": 0.9815,
+      "source_file": "ablations/ablation_results_v0.2.json",
+      "json_path": [
+        "conditions",
+        "week10_v2",
+        "pass_at_1"
+      ],
+      "produced_by": "ablations/score_ablation.py"
+    },
+    "delta_A": {
+      "claim": "Delta A: trained - week10 (cold)",
+      "value": 0.8333,
+      "source_file": "ablations/ablation_results_v0.2.json",
+      "json_path": [
+        "comparisons",
+        "delta_A_trained_vs_week10_cold",
+        "delta"
+      ],
+      "produced_by": "ablations/score_ablation.py"
+    },
+    "delta_A_ci": {
+      "claim": "Delta A 95% paired-bootstrap CI",
+      "value": [
+        0.7222,
+        0.9259
+      ],
+      "source_file": "ablations/ablation_results_v0.2.json",
+      "json_path": [
+        "comparisons",
+        "delta_A_trained_vs_week10_cold",
+        "ci95"
+      ],
+      "produced_by": "ablations/score_ablation.py"
+    },
+    "delta_A_mcnemar": {
+      "claim": "Delta A exact McNemar p (one-sided)",
       "value": 0.0,
-      "source_file": "ablations/ablation_results.json",
-      "source_field": "cost_pareto.lora_training_cost_usd"
+      "source_file": "ablations/ablation_results_v0.2.json",
+      "json_path": [
+        "comparisons",
+        "delta_A_trained_vs_week10_cold",
+        "mcnemar_exact_one_sided"
+      ],
+      "produced_by": "ablations/score_ablation.py"
     },
-    "wall_time_19min": {
-      "claim": "Training wall time was 19.1 minutes",
-      "value": 19.1,
-      "source_file": "training/training_run_v2.log",
-      "source_field": "wall_time_minutes"
+    "delta_B": {
+      "claim": "Delta B: trained - prompt_engineered",
+      "value": 0.7647,
+      "source_file": "ablations/ablation_results_v0.2.json",
+      "json_path": [
+        "comparisons",
+        "delta_B_trained_vs_prompt_engineered",
+        "delta"
+      ],
+      "produced_by": "ablations/score_ablation.py"
     },
-    "final_loss_0099": {
-      "claim": "Training converged to loss 0.099 at step 900",
-      "value": 0.099,
-      "source_file": "training/training_run_v2.log",
-      "source_field": "loss_curve.step_900"
+    "delta_B_ci": {
+      "claim": "Delta B 95% CI",
+      "value": [
+        0.6618,
+        0.8676
+      ],
+      "source_file": "ablations/ablation_results_v0.2.json",
+      "json_path": [
+        "comparisons",
+        "delta_B_trained_vs_prompt_engineered",
+        "ci95"
+      ],
+      "produced_by": "ablations/score_ablation.py"
     },
-    "benchmark_293_tasks": {
-      "claim": "Tenacious-Bench v0.1 contains 293 tasks",
-      "value": 293,
-      "source_file": "tenacious_bench_v0.1/",
-      "source_field": "train(178) + dev(58) + held_out(57)"
+    "delta_B_lenient": {
+      "claim": "Delta B with [First Name] placeholders ignored",
+      "value": 0.4265,
+      "source_file": "ablations/ablation_results_v0.2.json",
+      "json_path": [
+        "sensitivity_ignore_template_placeholder",
+        "delta_B_trained_vs_prompt_engineered",
+        "delta"
+      ],
+      "produced_by": "ablations/score_ablation.py"
     },
-    "inter_rater_93pct": {
-      "claim": "Inter-rater agreement is 93% across all rubric dimensions",
-      "value": 0.93,
-      "source_file": "inter_rater_agreement.md",
-      "source_field": "overall_agreement"
+    "delta_B_lenient_ci": {
+      "claim": "Delta B (placeholders ignored) 95% CI",
+      "value": [
+        0.3088,
+        0.5441
+      ],
+      "source_file": "ablations/ablation_results_v0.2.json",
+      "json_path": [
+        "sensitivity_ignore_template_placeholder",
+        "delta_B_trained_vs_prompt_engineered",
+        "ci95"
+      ],
+      "produced_by": "ablations/score_ablation.py"
     },
-    "contamination_passed": {
-      "claim": "All 3 contamination checks passed \u2014 0 violations",
+    "training_effect": {
+      "claim": "Adapter on vs off, same short prompt",
+      "value": 0.8529,
+      "source_file": "ablations/ablation_results_v0.2.json",
+      "json_path": [
+        "comparisons",
+        "training_effect_trained_vs_base_short",
+        "delta"
+      ],
+      "produced_by": "ablations/score_ablation.py"
+    },
+    "replies_delta": {
+      "claim": "Replies: trained - prompt_engineered",
+      "value": 0.5,
+      "source_file": "ablations/ablation_results_v0.2.json",
+      "json_path": [
+        "comparisons",
+        "replies_trained_vs_prompt_engineered",
+        "delta"
+      ],
+      "produced_by": "ablations/score_ablation.py"
+    },
+    "trained_vs_v2": {
+      "claim": "Trained - honest template v2 (cold); negative = template better",
+      "value": -0.1111,
+      "source_file": "ablations/ablation_results_v0.2.json",
+      "json_path": [
+        "comparisons",
+        "trained_vs_week10_v2_honest_template_cold",
+        "delta"
+      ],
+      "produced_by": "ablations/score_ablation.py"
+    },
+    "trained_vs_v2_ci": {
+      "claim": "Trained - honest template v2, 95% CI",
+      "value": [
+        -0.2037,
+        -0.037
+      ],
+      "source_file": "ablations/ablation_results_v0.2.json",
+      "json_path": [
+        "comparisons",
+        "trained_vs_week10_v2_honest_template_cold",
+        "ci95"
+      ],
+      "produced_by": "ablations/score_ablation.py"
+    },
+    "null_note_pass": {
+      "claim": "Content-free two-sentence note: cold tasks passed",
+      "value": 49,
+      "source_file": "ablations/ablation_results_v0.2.json",
+      "json_path": [
+        "diagnostic_null_note_cold",
+        "pass"
+      ],
+      "produced_by": "ablations/score_ablation.py"
+    },
+    "trained_tokens": {
+      "claim": "Trained mean output tokens",
+      "value": 102.9,
+      "source_file": "ablations/ablation_results_v0.2.json",
+      "json_path": [
+        "conditions",
+        "trained",
+        "mean_new_tokens"
+      ],
+      "produced_by": "ablations/score_ablation.py"
+    },
+    "pe_tokens": {
+      "claim": "Prompt-engineered mean output tokens",
+      "value": 128.4,
+      "source_file": "ablations/ablation_results_v0.2.json",
+      "json_path": [
+        "conditions",
+        "prompt_engineered",
+        "mean_new_tokens"
+      ],
+      "produced_by": "ablations/score_ablation.py"
+    },
+    "train_steps": {
+      "claim": "SFT optimizer steps",
+      "value": 128,
+      "source_file": "ablations/training_run_seed42.json",
+      "json_path": [
+        "steps"
+      ],
+      "produced_by": "training/colab_train_and_ablate.ipynb"
+    },
+    "train_minutes": {
+      "claim": "SFT wall time on a T4 (minutes)",
+      "value": 17.3,
+      "source_file": "ablations/training_run_seed42.json",
+      "json_path": [
+        "wall_time_minutes"
+      ],
+      "produced_by": "training/colab_train_and_ablate.ipynb"
+    },
+    "final_eval_loss": {
+      "claim": "Final validation loss",
+      "value": 0.507,
+      "source_file": "ablations/training_run_seed42.json",
+      "json_path": [
+        "eval_loss",
+        "-1",
+        "1"
+      ],
+      "produced_by": "training/colab_train_and_ablate.ipynb"
+    },
+    "sft_train_pairs": {
+      "claim": "SFT training pairs",
+      "value": 512,
+      "source_file": "training_data/sft_v2/stats.json",
+      "json_path": [
+        "train_pairs"
+      ],
+      "produced_by": "training_data/build_sft_v2.py"
+    },
+    "sft_val_pairs": {
+      "claim": "SFT validation pairs",
+      "value": 55,
+      "source_file": "training_data/sft_v2/stats.json",
+      "json_path": [
+        "val_pairs"
+      ],
+      "produced_by": "training_data/build_sft_v2.py"
+    },
+    "sft_teacher": {
+      "claim": "SFT teacher model",
+      "value": "meta-llama/llama-3.3-70b-instruct",
+      "source_file": "training_data/sft_v2/stats.json",
+      "json_path": [
+        "teacher"
+      ],
+      "produced_by": "training_data/build_sft_v2.py"
+    },
+    "contam_ngram": {
+      "claim": "Held-out tasks sharing a non-boilerplate input 8-gram with train",
       "value": 0,
       "source_file": "contamination_check.json",
-      "source_field": "overall_status"
+      "json_path": [
+        "gate_held_out_vs_train",
+        "ngram",
+        "tasks_with_overlap"
+      ],
+      "produced_by": "contamination_check.py"
     },
-    "week10_tau2_baseline": {
-      "claim": "Week 10 agent scored 0.333 on tau2-Bench retail",
-      "value": 0.333,
-      "source_file": "eval/score_log.json",
-      "source_field": "pass_at_1",
-      "repo": "The-Conversion-Engine"
+    "contam_cosine": {
+      "claim": "Max held-out/train embedding cosine (MiniLM-L6-v2)",
+      "value": 0.7352,
+      "source_file": "contamination_check.json",
+      "json_path": [
+        "gate_held_out_vs_train",
+        "embedding",
+        "max_cosine"
+      ],
+      "produced_by": "contamination_check.py"
     },
-    "augmentation_accept_rate": {
-      "claim": "Augmentation pipeline accepted 94.3% of generated variations",
-      "value": 0.943,
-      "source_file": "training_data/augmentation_log.json",
-      "source_field": "accept_rate"
+    "contam_dev_train": {
+      "claim": "Dev tasks sharing an input 8-gram with train (informational)",
+      "value": 42,
+      "source_file": "contamination_check.json",
+      "json_path": [
+        "informational",
+        "dev_vs_train_ngram",
+        "tasks_with_overlap"
+      ],
+      "produced_by": "contamination_check.py"
     },
-    "cost_per_task": {
-      "claim": "Inference cost per task is $0.00012",
-      "value": 0.00012,
-      "source_file": "ablations/ablation_results.json",
-      "source_field": "cost_pareto.cost_per_task_trained_usd"
+    "human_overall": {
+      "claim": "Human (round 1) vs evaluator, overall agreement",
+      "value": 0.767,
+      "source_file": "reports/human_vs_evaluator_round1.json",
+      "json_path": [
+        "overall",
+        "agreement"
+      ],
+      "produced_by": "tools/labeling.py vs-evaluator"
+    },
+    "human_kappa": {
+      "claim": "Human (round 1) vs evaluator, overall Cohen's kappa",
+      "value": 0.512,
+      "source_file": "reports/human_vs_evaluator_round1.json",
+      "json_path": [
+        "overall",
+        "cohen_kappa"
+      ],
+      "produced_by": "tools/labeling.py vs-evaluator"
+    },
+    "human_honesty": {
+      "claim": "Human vs evaluator agreement on honesty",
+      "value": 0.633,
+      "source_file": "reports/human_vs_evaluator_round1.json",
+      "json_path": [
+        "per_dimension",
+        "honesty",
+        "agreement"
+      ],
+      "produced_by": "tools/labeling.py vs-evaluator"
+    },
+    "human_honesty_missed": {
+      "claim": "Honesty failures the human caught and the evaluator passed",
+      "value": 9,
+      "source_file": "reports/human_vs_evaluator_round1.json",
+      "json_path": [
+        "per_dimension",
+        "honesty",
+        "human_fail_evaluator_pass"
+      ],
+      "produced_by": "tools/labeling.py vs-evaluator"
+    },
+    "retest_overall": {
+      "claim": "Test-retest, overall verdict (same labeller, ~10 h gap)",
+      "value": 0.933,
+      "source_file": "reports/inter_rater_agreement.json",
+      "json_path": [
+        "test_retest_overall",
+        "agreement"
+      ],
+      "produced_by": "tools/labeling.py score"
+    },
+    "human_r2_overall": {
+      "claim": "Human (round 2) vs evaluator, overall agreement",
+      "value": 0.833,
+      "source_file": "reports/human_vs_evaluator_round2.json",
+      "json_path": [
+        "overall",
+        "agreement"
+      ],
+      "produced_by": "tools/labeling.py vs-evaluator --round 2"
+    },
+    "human_r2_kappa": {
+      "claim": "Human (round 2) vs evaluator, overall kappa",
+      "value": 0.658,
+      "source_file": "reports/human_vs_evaluator_round2.json",
+      "json_path": [
+        "overall",
+        "cohen_kappa"
+      ],
+      "produced_by": "tools/labeling.py vs-evaluator --round 2"
+    },
+    "dev_agreement": {
+      "claim": "Evaluator v0.2 vs 39 independent labels (development set)",
+      "value": 1.0,
+      "source_file": "reports/evaluator_agreement_phase2.json",
+      "json_path": [
+        "v0.2",
+        "summary",
+        "independent_labels",
+        "rate"
+      ],
+      "produced_by": "tools/evaluator_agreement.py"
+    },
+    "w10_v1_train": {
+      "claim": "Original W10 composer on 204 real-company train briefs",
+      "value": 10,
+      "source_file": "reports/week10_composer_train_briefs.json",
+      "json_path": [
+        "v1",
+        "pass"
+      ],
+      "produced_by": "generation_scripts/eval_week10_composer.py"
+    },
+    "w10_v2_train": {
+      "claim": "Honest W10 composer on 204 real-company train briefs",
+      "value": 204,
+      "source_file": "reports/week10_composer_train_briefs.json",
+      "json_path": [
+        "v2",
+        "pass"
+      ],
+      "produced_by": "generation_scripts/eval_week10_composer.py"
+    },
+    "retired_v01": {
+      "claim": "v0.1 held-out tasks retired (public + contaminated)",
+      "value": 57,
+      "source_file": "reports/retired_held_out_v01.json",
+      "json_path": [
+        "task_ids",
+        "__len__"
+      ],
+      "produced_by": "tools/retire_heldout_v01.py"
+    },
+    "spend_usd": {
+      "claim": "Total OpenRouter spend, all phases",
+      "value": 0.3302,
+      "source_file": "cost_log.jsonl",
+      "json_path": [
+        "sum(cost_usd)"
+      ],
+      "produced_by": "llm_client.py (logs every call)"
+    },
+    "spend_calls": {
+      "claim": "Logged OpenRouter calls",
+      "value": 889,
+      "source_file": "cost_log.jsonl",
+      "json_path": [
+        "count(lines)"
+      ],
+      "produced_by": "llm_client.py"
     }
-  },
-  "public_artifacts": {
-    "huggingface_dataset": "https://huggingface.co/datasets/yakobd/tenacious-bench",
-    "huggingface_model": "https://huggingface.co/yakobd/tenacious-bench-adapter",
-    "github_repo": "https://github.com/yakobd/The_Sales_Agent_Evaluation_Bench",
-    "blog_post": "https://yakobdereje.substack.com/p/i-broke-my-own-sales-agent-then-built",
-    "community_engagement": "https://github.com/sierra-research/tau2-bench/issues/284",
-    "huggingface_blog_pr": "https://github.com/huggingface/blog/pull/3371",
-    "personal_site": "https://yakobd.github.io/",
-    "x_post": "https://x.com/dereje_yak45629/status/2050639955400032396"
   }
 }

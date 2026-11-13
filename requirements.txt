@@ -1,10 +1,8 @@
-requests>=2.31.0
-python-dotenv>=1.0.0
-openai>=1.0.0
-datasets>=2.14.0
-huggingface_hub>=0.20.0
-transformers>=4.37.0
-peft>=0.7.0
-trl>=0.7.0
-scipy>=1.11.0
-numpy>=1.24.0
+# Core: scoring, dataset scripts, statistics, tests. Pinned for reproducibility.
+# GPU training/inference dependencies live in requirements-train.txt (Colab only).
+jsonschema==4.26.0
+numpy==2.5.4
+pytest==9.2.0
+python-dotenv==1.2.4
+requests==2.34.2
+scipy==1.18.1

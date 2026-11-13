@@ -3,7 +3,7 @@
   "source_mode": "multi_llm_synthesis",
   "difficulty": "medium",
   "variant": "llm_generated_v2",
-  "is_passing": true,
+  "is_passing": false,
   "input": {
     "hiring_signal_brief": {
       "prospect": "Beam Systems",
@@ -18,7 +18,7 @@
       "firmographics": {
         "company": "Beam Systems",
         "website": "https://beamsystems.com",
-        "description": "Beam Systems \u2014 technology company",
+        "description": "Beam Systems — technology company",
         "num_employees": "51-200"
       },
       "ai_maturity": {
@@ -43,21 +43,19 @@
         "data": 4
       }
     },
-    "instruction": "Write outreach for Beam Systems \u2014 AI maturity 3/3, no MLOps function publicly visible, 5 peers have one",
-    "prior_thread": []
+    "instruction": "Write outreach for Beam Systems — AI maturity 3/3, no MLOps function publicly visible, 5 peers have one",
+    "prior_thread": [],
+    "email_type": "cold"
   },
   "candidate_output": {
     "subject": "Your AI Maturity, Our Specialized MLOps Support",
-    "body": "Hi [First Name],\n\nAt Beam Systems, your advanced AI maturity stands out\u2014yet we noticed no public MLOps function despite peers adopting it. Tenacious Intelligence can provide specialized MLOps capacity to bridge this gap, focusing on optimization and scalability tailored to your existing infrastructure. \n\nWorth 15 minutes this week? \u2192 http://localhost:3000/yakob/30min\n\nBest,\n[Your Name]\nResearch Partner / Tenacious Intelligence Corporation / gettenacious.com"
+    "body": "Hi [First Name],\n\nAt Beam Systems, your advanced AI maturity stands out—yet we noticed no public MLOps function despite peers adopting it. Tenacious Intelligence can provide specialized MLOps capacity to bridge this gap, focusing on optimization and scalability tailored to your existing infrastructure. \n\nWorth 15 minutes this week? → http://localhost:3000/yakob/30min\n\nBest,\n[Your Name]\nResearch Partner / Tenacious Intelligence Corporation / gettenacious.com"
   },
   "ground_truth": {
     "required_signals": [
       "ai",
-      "capability",
       "ml",
-      "platform",
-      "peer",
-      "data"
+      "peer"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -124,6 +122,17 @@
     "judge_score": null,
     "expected_score": 1.0,
     "generator_model": "qwen/qwen3-235b-a22b",
-    "contamination_note": "Moved from held_out to dev \u2014 n-gram or embedding contamination violation detected by contamination_check.py"
+    "contamination_note": "Moved from held_out to dev — n-gram or embedding contamination violation detected by contamination_check.py",
+    "required_signals_v01": [
+      "ai",
+      "capability",
+      "ml",
+      "platform",
+      "peer",
+      "data"
+    ],
+    "is_passing_v01": true,
+    "label_source": "evaluator_v0.2",
+    "dataset_version": "0.1.1"
   }
 }

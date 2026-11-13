@@ -18,7 +18,7 @@
       "firmographics": {
         "company": "Iron Cloud",
         "website": "https://ironcloud.com",
-        "description": "Iron Cloud \u2014 technology company",
+        "description": "Iron Cloud — technology company",
         "num_employees": "51-200"
       },
       "ai_maturity": {
@@ -43,19 +43,17 @@
         "data": 4
       }
     },
-    "instruction": "Write outreach for Iron Cloud \u2014 Layoff of 80 engineers, now using contractors for delivery",
-    "prior_thread": []
+    "instruction": "Write outreach for Iron Cloud — Layoff of 80 engineers, now using contractors for delivery",
+    "prior_thread": [],
+    "email_type": "cold"
   },
   "candidate_output": {
     "subject": "Rebuilding Engineering Teams Post-Layoff?",
-    "body": "Iron Cloud\u2019s shift to contractors after restructuring creates risks: fragmented knowledge, coordination delays, and scaling friction. Tenacious delivers managed engineering teams that align with your core goals\u2014avoiding the pitfalls of transactional labor. \n\nWe specialize in embedding cross-functional squads that operate as extensions of your leadership, not vendors. Unlike contractors, our teams inherit institutional context, reduce handoff overhead, and maintain velocity through defined delivery pipelines. \n\nWorth 15 minutes this week? \u2192 http://localhost:3000/yakob/30min\n\nResearch Partner / Tenacious Intelligence Corporation / gettenacious.com"
+    "body": "Iron Cloud’s shift to contractors after restructuring creates risks: fragmented knowledge, coordination delays, and scaling friction. Tenacious delivers managed engineering teams that align with your core goals—avoiding the pitfalls of transactional labor. \n\nWe specialize in embedding cross-functional squads that operate as extensions of your leadership, not vendors. Unlike contractors, our teams inherit institutional context, reduce handoff overhead, and maintain velocity through defined delivery pipelines. \n\nWorth 15 minutes this week? → http://localhost:3000/yakob/30min\n\nResearch Partner / Tenacious Intelligence Corporation / gettenacious.com"
   },
   "ground_truth": {
     "required_signals": [
-      "restructuring",
-      "cost",
-      "delivery",
-      "capacity"
+      "restructuring"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -121,6 +119,15 @@
     "source_trace_id": null,
     "judge_score": null,
     "expected_score": 1.0,
-    "generator_model": "qwen/qwen3-235b-a22b"
+    "generator_model": "qwen/qwen3-235b-a22b",
+    "required_signals_v01": [
+      "restructuring",
+      "cost",
+      "delivery",
+      "capacity"
+    ],
+    "is_passing_v01": true,
+    "label_source": "evaluator_v0.2",
+    "dataset_version": "0.1.1"
   }
 }

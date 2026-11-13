@@ -12,7 +12,7 @@
         "segment_name": "Recently-funded startup",
         "confidence": "low",
         "reasons": [
-          "No strong signals \u2014 defaulting to Segment 1"
+          "No strong signals — defaulting to Segment 1"
         ]
       },
       "firmographics": {
@@ -50,19 +50,24 @@
         "data": 4
       }
     },
-    "prior_thread": [],
-    "instruction": "The prospect at Retool has replied saying: 'Interesting context on the hiring velocity. What exactly does your engineering s'. Write a warm reply that acknowledges their response and offers a booking link. Max 200 words."
+    "prior_thread": [
+      {
+        "from": "prospect",
+        "body": "Interesting context on the hiring velocity. What exactly does your engineering s"
+      }
+    ],
+    "instruction": "The prospect at Retool has replied saying: 'Interesting context on the hiring velocity. What exactly does your engineering s'. Write a warm reply that acknowledges their response and offers a booking link. Max 200 words.",
+    "email_type": "reply"
   },
   "candidate_output": {
     "subject": "Re: Context: Retool and engineering capacity",
-    "body": "Thanks for the reply \u2014 good to know the context lands.\n\nGiven what you shared, the fastest next step is a 30-minute call with our delivery lead. They can walk through exactly how we structure engagements for Retool's stage and answer questions on timeline and capacity.\n\nBook directly here: http://localhost:3000/yakob/30min?utm_source=email_reply\n\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com"
+    "body": "Thanks for the reply — good to know the context lands.\n\nGiven what you shared, the fastest next step is a 30-minute call with our delivery lead. They can walk through exactly how we structure engagements for Retool's stage and answer questions on timeline and capacity.\n\nBook directly here: http://localhost:3000/yakob/30min?utm_source=email_reply\n\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com"
   },
   "ground_truth": {
     "required_signals": [
       "book",
       "call",
       "30min",
-      "delivery",
       "localhost"
     ],
     "forbidden_phrases": [
@@ -130,6 +135,16 @@
     ],
     "source_trace_id": "thread_20260427_114849",
     "judge_score": null,
-    "expected_score": 1.0
+    "expected_score": 1.0,
+    "required_signals_v01": [
+      "book",
+      "call",
+      "30min",
+      "delivery",
+      "localhost"
+    ],
+    "is_passing_v01": true,
+    "label_source": "evaluator_v0.2",
+    "dataset_version": "0.1.1"
   }
 }

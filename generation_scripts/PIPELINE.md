@@ -77,7 +77,7 @@ python3 generation_scripts/generate_llm_tasks.py           # Mode 3: 16 scenario
 python3 generation_scripts/generate_llm_tasks_v2.py        # Mode 3v2: 48 scenarios
 python3 generation_scripts/generate_style_guide_tasks.py   # Style guide: 24 tasks
 python3 generation_scripts/generate_hand_authored_tasks.py # Hand-authored: 15 tasks
-python3 generation_scripts/contamination_check.py          # Verify held-out clean
+python3 contamination_check.py                     # Verify held-out clean
 ```
 
 Expected output: 299 tasks across train/dev/held_out with pass@1 = 0.591 (±2pp reproducibility target).

@@ -3,7 +3,7 @@
   "source_mode": "multi_llm_synthesis",
   "difficulty": "hard",
   "variant": "llm_generated_v2",
-  "is_passing": true,
+  "is_passing": false,
   "input": {
     "hiring_signal_brief": {
       "prospect": "Dim Analytics",
@@ -18,7 +18,7 @@
       "firmographics": {
         "company": "Dim Analytics",
         "website": "https://dimanalytics.com",
-        "description": "Dim Analytics \u2014 technology company",
+        "description": "Dim Analytics — technology company",
         "num_employees": "51-200"
       },
       "ai_maturity": {
@@ -43,21 +43,19 @@
         "data": 4
       }
     },
-    "instruction": "Write outreach for Dim Analytics \u2014 AI maturity borderline 1-2, peer data limited",
-    "prior_thread": []
+    "instruction": "Write outreach for Dim Analytics — AI maturity borderline 1-2, peer data limited",
+    "prior_thread": [],
+    "email_type": "cold"
   },
   "candidate_output": {
     "subject": "AI Maturity Resources for Dim Analytics",
-    "body": "Dear [Name], I noticed Dim Analytics is navigating early-stage AI challenges. Given your current maturity level, we\u2019ve built tools to help teams like yours progress without overextending resources. No need to discuss capability gaps\u2014this is purely about accessing practical frameworks we\u2019ve developed. Worth 15 minutes this week? \u2192 http://localhost:3000/yakob/30min Best, Research Partner / Tenacious Intelligence Corporation / gettenacious.com"
+    "body": "Dear [Name], I noticed Dim Analytics is navigating early-stage AI challenges. Given your current maturity level, we’ve built tools to help teams like yours progress without overextending resources. No need to discuss capability gaps—this is purely about accessing practical frameworks we’ve developed. Worth 15 minutes this week? → http://localhost:3000/yakob/30min Best, Research Partner / Tenacious Intelligence Corporation / gettenacious.com"
   },
   "ground_truth": {
     "required_signals": [
       "ai",
-      "capability",
       "ml",
-      "platform",
-      "peer",
-      "data"
+      "peer"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -124,6 +122,17 @@
     "judge_score": null,
     "expected_score": 1.0,
     "generator_model": "qwen/qwen3-235b-a22b",
-    "contamination_note": "Moved from held_out to dev \u2014 n-gram or embedding contamination violation detected by contamination_check.py"
+    "contamination_note": "Moved from held_out to dev — n-gram or embedding contamination violation detected by contamination_check.py",
+    "required_signals_v01": [
+      "ai",
+      "capability",
+      "ml",
+      "platform",
+      "peer",
+      "data"
+    ],
+    "is_passing_v01": true,
+    "label_source": "evaluator_v0.2",
+    "dataset_version": "0.1.1"
   }
 }

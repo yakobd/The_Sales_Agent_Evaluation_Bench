@@ -3,7 +3,7 @@
   "source_mode": "multi_llm_synthesis",
   "difficulty": "medium",
   "variant": "llm_generated_v2",
-  "is_passing": true,
+  "is_passing": false,
   "input": {
     "hiring_signal_brief": {
       "prospect": "Chalk Software",
@@ -12,13 +12,13 @@
         "segment_name": "Post-layoff restructuring",
         "confidence": "medium",
         "reasons": [
-          "Restructuring detected \u2014 engineering team size unclear post-layoff"
+          "Restructuring detected — engineering team size unclear post-layoff"
         ]
       },
       "firmographics": {
         "company": "Chalk Software",
         "website": "https://chalksoftware.com",
-        "description": "Chalk Software \u2014 technology company",
+        "description": "Chalk Software — technology company",
         "num_employees": "51-200"
       },
       "ai_maturity": {
@@ -43,19 +43,17 @@
         "data": 4
       }
     },
-    "instruction": "Write outreach for Chalk Software \u2014 Restructuring detected \u2014 engineering team size unclear post-layoff",
-    "prior_thread": []
+    "instruction": "Write outreach for Chalk Software — Restructuring detected — engineering team size unclear post-layoff",
+    "prior_thread": [],
+    "email_type": "cold"
   },
   "candidate_output": {
     "subject": "Support for Chalk's Restructuring Phase",
-    "body": "Hi [First Name],\n\nChalk\u2019s recent restructuring signals a pivotal phase. With engineering team size adjustments unclear post-layoff, we understand maintaining momentum while balancing capacity could be a priority.\n\nIf your team is navigating resource gaps during this transition, we\u2019d welcome a conversation about flexible talent solutions that integrate quickly and scale with your needs.\n\nWorth 15 minutes this week? \u2192 http://localhost:3000/yakob/30min\n\nBest,\n[Your Name]\nResearch Partner / Tenacious Intelligence Corporation / gettenacious.com"
+    "body": "Hi [First Name],\n\nChalk’s recent restructuring signals a pivotal phase. With engineering team size adjustments unclear post-layoff, we understand maintaining momentum while balancing capacity could be a priority.\n\nIf your team is navigating resource gaps during this transition, we’d welcome a conversation about flexible talent solutions that integrate quickly and scale with your needs.\n\nWorth 15 minutes this week? → http://localhost:3000/yakob/30min\n\nBest,\n[Your Name]\nResearch Partner / Tenacious Intelligence Corporation / gettenacious.com"
   },
   "ground_truth": {
     "required_signals": [
-      "restructuring",
-      "cost",
-      "delivery",
-      "capacity"
+      "restructuring"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -121,6 +119,15 @@
     "source_trace_id": null,
     "judge_score": null,
     "expected_score": 1.0,
-    "generator_model": "qwen/qwen3-235b-a22b"
+    "generator_model": "qwen/qwen3-235b-a22b",
+    "required_signals_v01": [
+      "restructuring",
+      "cost",
+      "delivery",
+      "capacity"
+    ],
+    "is_passing_v01": true,
+    "label_source": "evaluator_v0.2",
+    "dataset_version": "0.1.1"
   }
 }

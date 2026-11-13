@@ -3,7 +3,7 @@
   "source_mode": "multi_llm_synthesis",
   "difficulty": "medium",
   "variant": "llm_generated_v2",
-  "is_passing": true,
+  "is_passing": false,
   "input": {
     "hiring_signal_brief": {
       "prospect": "Dusk Platform",
@@ -18,7 +18,7 @@
       "firmographics": {
         "company": "Dusk Platform",
         "website": "https://duskplatform.com",
-        "description": "Dusk Platform \u2014 technology company",
+        "description": "Dusk Platform — technology company",
         "num_employees": "51-200"
       },
       "ai_maturity": {
@@ -43,19 +43,17 @@
         "data": 4
       }
     },
-    "instruction": "Write outreach for Dusk Platform \u2014 Layoff detected but headcount unknown, funding still active",
-    "prior_thread": []
+    "instruction": "Write outreach for Dusk Platform — Layoff detected but headcount unknown, funding still active",
+    "prior_thread": [],
+    "email_type": "cold"
   },
   "candidate_output": {
     "subject": "Opportunity for Dusk Platform's Next Phase?",
-    "body": "Hi [Name],\n\nDusk Platform\u2019s recent restructuring caught my attention. With active funding and shifting priorities, we\u2019d like to help where gaps may exist\u2014whether in strategic roles, technical depth, or operational efficiency.\n\nNo assumptions here\u2014just offering support if contingent hiring or role redefinition aligns with your current needs.\n\nWorth 15 minutes this week? \u2192 http://localhost:3000/yakob/30min\n\nBest,\n[Your Name]\nResearch Partner / Tenacious Intelligence Corporation / gettenacious.com"
+    "body": "Hi [Name],\n\nDusk Platform’s recent restructuring caught my attention. With active funding and shifting priorities, we’d like to help where gaps may exist—whether in strategic roles, technical depth, or operational efficiency.\n\nNo assumptions here—just offering support if contingent hiring or role redefinition aligns with your current needs.\n\nWorth 15 minutes this week? → http://localhost:3000/yakob/30min\n\nBest,\n[Your Name]\nResearch Partner / Tenacious Intelligence Corporation / gettenacious.com"
   },
   "ground_truth": {
     "required_signals": [
-      "restructuring",
-      "cost",
-      "delivery",
-      "capacity"
+      "restructuring"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -121,6 +119,15 @@
     "source_trace_id": null,
     "judge_score": null,
     "expected_score": 1.0,
-    "generator_model": "qwen/qwen3-235b-a22b"
+    "generator_model": "qwen/qwen3-235b-a22b",
+    "required_signals_v01": [
+      "restructuring",
+      "cost",
+      "delivery",
+      "capacity"
+    ],
+    "is_passing_v01": true,
+    "label_source": "evaluator_v0.2",
+    "dataset_version": "0.1.1"
   }
 }

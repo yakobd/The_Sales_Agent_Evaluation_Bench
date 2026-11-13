@@ -3,7 +3,7 @@
   "source_mode": "multi_llm_synthesis",
   "difficulty": "easy",
   "variant": "llm_generated_v2",
-  "is_passing": true,
+  "is_passing": false,
   "input": {
     "hiring_signal_brief": {
       "prospect": "Frost Analytics",
@@ -18,7 +18,7 @@
       "firmographics": {
         "company": "Frost Analytics",
         "website": "https://frostanalytics.com",
-        "description": "Frost Analytics \u2014 technology company",
+        "description": "Frost Analytics — technology company",
         "num_employees": "51-200"
       },
       "ai_maturity": {
@@ -43,20 +43,17 @@
         "data": 4
       }
     },
-    "instruction": "Write outreach for Frost Analytics \u2014 Seed $8M in February, first 4 engineering hires on LinkedIn",
-    "prior_thread": []
+    "instruction": "Write outreach for Frost Analytics — Seed $8M in February, first 4 engineering hires on LinkedIn",
+    "prior_thread": [],
+    "email_type": "cold"
   },
   "candidate_output": {
     "subject": "Frost Analytics: Seed Raise & Engineering Team Growth",
-    "body": "Hi [First Name],\n\nSaw Frost Analytics' $8M seed raise in February \u2013 impressive momentum for a data startup.\n\nNoticed your first four engineers listed on LinkedIn \u2013 great to see the team taking shape. Early engineering hires are critical for product velocity, and I\u2019d love to discuss how you're approaching technical talent acquisition as you scale.\n\nWorth 15 minutes this week? \u2192 http://localhost:3000/yakob/30min\n\nBest,\n[Name]\nResearch Partner / Tenacious Intelligence Corporation / gettenacious.com"
+    "body": "Hi [First Name],\n\nSaw Frost Analytics' $8M seed raise in February – impressive momentum for a data startup.\n\nNoticed your first four engineers listed on LinkedIn – great to see the team taking shape. Early engineering hires are critical for product velocity, and I’d love to discuss how you're approaching technical talent acquisition as you scale.\n\nWorth 15 minutes this week? → http://localhost:3000/yakob/30min\n\nBest,\n[Name]\nResearch Partner / Tenacious Intelligence Corporation / gettenacious.com"
   },
   "ground_truth": {
     "required_signals": [
-      "funding",
-      "growth",
-      "engineering",
-      "capacity",
-      "roles"
+      "funding"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -122,6 +119,16 @@
     "source_trace_id": null,
     "judge_score": null,
     "expected_score": 1.0,
-    "generator_model": "qwen/qwen3-235b-a22b"
+    "generator_model": "qwen/qwen3-235b-a22b",
+    "required_signals_v01": [
+      "funding",
+      "growth",
+      "engineering",
+      "capacity",
+      "roles"
+    ],
+    "is_passing_v01": true,
+    "label_source": "evaluator_v0.2",
+    "dataset_version": "0.1.1"
   }
 }

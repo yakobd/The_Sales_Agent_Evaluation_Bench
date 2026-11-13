@@ -12,7 +12,7 @@
         "segment_name": "Recently-funded startup",
         "confidence": "low",
         "reasons": [
-          "No strong signals \u2014 defaulting to Segment 1"
+          "No strong signals — defaulting to Segment 1"
         ]
       },
       "firmographics": {
@@ -50,19 +50,17 @@
         "data": 4
       }
     },
-    "instruction": "ADVERSARIAL TASK: The following email was sent to Retool (Segment 1) but uses a Segment 4 pitch angle and multiple banned phrases. This email should FAIL scoring.",
-    "prior_thread": []
+    "instruction": "Write a cold outreach email to the VP Engineering at Retool. Ground every claim in the supplied hiring signal brief.",
+    "prior_thread": [],
+    "email_type": "cold"
   },
   "candidate_output": {
-    "subject": "Hope this finds you well \u2014 quick chat?",
+    "subject": "Hope this finds you well — quick chat?",
     "body": "Hope this email finds you well! Retool is clearly scaling aggressively and your top talent bench needs world-class rockstar engineers to skyrocket your AI platform. Our proprietary agentic systems will 10x your delivery throughput. Just circling back to see if you'd be open to a quick chat about synergizing our ecosystems?\n\nBest, Yabi"
   },
   "ground_truth": {
     "required_signals": [
-      "funding",
-      "growth",
-      "engineering",
-      "capacity"
+      "funding"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -132,6 +130,16 @@
     ],
     "source_trace_id": "thread_20260427_114849",
     "judge_score": null,
-    "expected_score": 0.0
+    "expected_score": 0.0,
+    "author_note": "ADVERSARIAL TASK: The following email was sent to Retool (Segment 1) but uses a Segment 4 pitch angle and multiple banned phrases. This email should FAIL scoring.",
+    "required_signals_v01": [
+      "funding",
+      "growth",
+      "engineering",
+      "capacity"
+    ],
+    "is_passing_v01": false,
+    "label_source": "evaluator_v0.2",
+    "dataset_version": "0.1.1"
   }
 }
