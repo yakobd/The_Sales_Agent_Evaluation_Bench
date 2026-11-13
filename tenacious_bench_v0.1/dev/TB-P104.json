@@ -12,13 +12,13 @@
         "segment_name": "Recently-funded startup",
         "confidence": "low",
         "reasons": [
-          "Series A $15M in April \u2014 engineering hiring expected"
+          "Series A $15M in April — engineering hiring expected"
         ]
       },
       "firmographics": {
         "company": "Crest Technologies",
         "website": "https://cresttechnologies.com",
-        "description": "Crest Technologies \u2014 technology company",
+        "description": "Crest Technologies — technology company",
         "num_employees": "11-50"
       },
       "ai_maturity": {
@@ -46,20 +46,17 @@
         "data": 4
       }
     },
-    "instruction": "Write a cold outreach email to the VP Engineering at Crest Technologies (Segment 1 \u2014 Recently-funded startup, confidence=low).",
-    "prior_thread": []
+    "instruction": "Write a cold outreach email to the VP Engineering at Crest Technologies (Segment 1 — Recently-funded startup, confidence=low).",
+    "prior_thread": [],
+    "email_type": "cold"
   },
   "candidate_output": {
     "subject": "Context: Crest Technologies and engineering capacity",
-    "body": "Crest Technologies appears to have open engineering roles based on public signals \u2014 if hiring velocity is ahead of your full-time search, that is the pattern we solve most often.\n\nWe run dedicated engineering squads for companies scaling post-funding \u2014 senior engineers available in 7-14 days with 3-5 hours daily time-zone overlap.\n\nWorth 15 minutes this week? \u2192 http://localhost:3000/yakob/30min\n\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com"
+    "body": "Crest Technologies appears to have open engineering roles based on public signals — if hiring velocity is ahead of your full-time search, that is the pattern we solve most often.\n\nWe run dedicated engineering squads for companies scaling post-funding — senior engineers available in 7-14 days with 3-5 hours daily time-zone overlap.\n\nWorth 15 minutes this week? → http://localhost:3000/yakob/30min\n\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com"
   },
   "ground_truth": {
     "required_signals": [
-      "funding",
-      "growth",
-      "engineering",
-      "capacity",
-      "roles"
+      "funding"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -126,6 +123,16 @@
     ],
     "source_trace_id": null,
     "judge_score": null,
-    "expected_score": 1.0
+    "expected_score": 1.0,
+    "required_signals_v01": [
+      "funding",
+      "growth",
+      "engineering",
+      "capacity",
+      "roles"
+    ],
+    "is_passing_v01": true,
+    "label_source": "evaluator_v0.2",
+    "dataset_version": "0.1.1"
   }
 }

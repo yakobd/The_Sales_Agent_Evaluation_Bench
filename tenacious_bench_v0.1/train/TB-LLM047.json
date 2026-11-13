@@ -3,7 +3,7 @@
   "source_mode": "multi_llm_synthesis",
   "difficulty": "hard",
   "variant": "llm_generated_v2",
-  "is_passing": true,
+  "is_passing": false,
   "input": {
     "hiring_signal_brief": {
       "prospect": "Crest Cloud",
@@ -12,13 +12,13 @@
         "segment_name": "Leadership change",
         "confidence": "low",
         "reasons": [
-          "Possible leadership change \u2014 LinkedIn title updated but no announcement"
+          "Possible leadership change — LinkedIn title updated but no announcement"
         ]
       },
       "firmographics": {
         "company": "Crest Cloud",
         "website": "https://crestcloud.com",
-        "description": "Crest Cloud \u2014 technology company",
+        "description": "Crest Cloud — technology company",
         "num_employees": "51-200"
       },
       "ai_maturity": {
@@ -43,20 +43,17 @@
         "data": 4
       }
     },
-    "instruction": "Write outreach for Crest Cloud \u2014 Possible leadership change \u2014 LinkedIn title updated but no announcement",
-    "prior_thread": []
+    "instruction": "Write outreach for Crest Cloud — Possible leadership change — LinkedIn title updated but no announcement",
+    "prior_thread": [],
+    "email_type": "cold"
   },
   "candidate_output": {
     "subject": "Crest Cloud Leadership Update?",
-    "body": "Hi [First Name],\n\nYour LinkedIn update caught our attention\u2014could Crest Cloud be exploring leadership shifts? We\u2019d love to discuss opportunities where your network might intersect with emerging priorities.\n\nWorth 15 minutes this week? \u2192 http://localhost:3000/yakob/30min\n\nResearch Partner / Tenacious Intelligence Corporation / gettenacious.com"
+    "body": "Hi [First Name],\n\nYour LinkedIn update caught our attention—could Crest Cloud be exploring leadership shifts? We’d love to discuss opportunities where your network might intersect with emerging priorities.\n\nWorth 15 minutes this week? → http://localhost:3000/yakob/30min\n\nResearch Partner / Tenacious Intelligence Corporation / gettenacious.com"
   },
   "ground_truth": {
     "required_signals": [
-      "leadership",
-      "engineering",
-      "vendor",
-      "mix",
-      "new"
+      "leadership"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -122,6 +119,16 @@
     "source_trace_id": null,
     "judge_score": null,
     "expected_score": 1.0,
-    "generator_model": "qwen/qwen3-235b-a22b"
+    "generator_model": "qwen/qwen3-235b-a22b",
+    "required_signals_v01": [
+      "leadership",
+      "engineering",
+      "vendor",
+      "mix",
+      "new"
+    ],
+    "is_passing_v01": true,
+    "label_source": "evaluator_v0.2",
+    "dataset_version": "0.1.1"
   }
 }

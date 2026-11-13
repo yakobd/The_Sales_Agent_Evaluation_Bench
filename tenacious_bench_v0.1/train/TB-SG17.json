@@ -13,7 +13,8 @@
         "segment_name": "Post-layoff restructuring",
         "confidence": "high",
         "reasons": [
-          "Style guide labeled: Aggressive third follow-up"
+          "Seed extension closed in October",
+          "First three engineering hires public on LinkedIn"
         ]
       },
       "firmographics": {
@@ -27,10 +28,17 @@
         "confidence": "high"
       },
       "layoff_signal": {
-        "layoff_detected": true
+        "layoff_detected": false
       },
       "leadership_signal": {
         "leadership_change_detected": false
+      },
+      "funding": {
+        "round": "Seed extension",
+        "date": "October"
+      },
+      "job_post_signal": {
+        "public_engineering_hires_on_linkedin": 3
       }
     },
     "bench_summary": {
@@ -44,12 +52,18 @@
         "data": 4
       }
     },
-    "instruction": "STYLE GUIDE EXAMPLE (SG-B05): BAD \u2014 should FAIL. Aggressive third follow-up",
-    "prior_thread": []
+    "instruction": "Write a short follow-up email to Ana Startup. The earlier contact is in prior_thread.",
+    "prior_thread": [
+      {
+        "from": "tenacious",
+        "body": "(three earlier emails over two weeks; no reply)"
+      }
+    ],
+    "email_type": "follow_up"
   },
   "candidate_output": {
     "subject": "Per my last three emails",
-    "body": "Hi Ana,\n\nI have sent you three emails over the last two weeks and have not heard back. I have to assume you are not interested in growing your engineering capacity, which is fine \u2014 but I would appreciate a one-line reply to confirm so I can take you off the list.\n\nIf I do not hear back by Friday, I will assume the answer is no.\n\nBest,\nYabi"
+    "body": "Hi Ana,\n\nI have sent you three emails over the last two weeks and have not heard back. I have to assume you are not interested in growing your engineering capacity, which is fine — but I would appreciate a one-line reply to confirm so I can take you off the list.\n\nIf I do not hear back by Friday, I will assume the answer is no.\n\nBest,\nYabi"
   },
   "ground_truth": {
     "required_signals": [
@@ -124,6 +138,12 @@
     "source_trace_id": null,
     "judge_score": null,
     "expected_score": 0.0,
-    "style_guide_label": "Aggressive third follow-up"
+    "style_guide_label": "Aggressive third follow-up",
+    "author_note": "STYLE GUIDE EXAMPLE (SG-B05): BAD — should FAIL. Aggressive third follow-up",
+    "scenario": "Style guide labeled: Aggressive third follow-up",
+    "brief_reconstructed": true,
+    "reconstruction_note": "Facts restored from the scenario/labelled draft that this task was written against; the v0.1 conversion had dropped them. See tools/repair_tasks_phase2.py.",
+    "label_source": "tenacious_style_guide",
+    "dataset_version": "0.1.1"
   }
 }

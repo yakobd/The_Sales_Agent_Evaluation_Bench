@@ -1,176 +1,130 @@
-# Tenacious-Bench v0.1 — Dataset Datasheet
-**Following Gebru et al. 2021 + Pushkarna et al. FAccT 2022**
-**Yakob Dereje | TenX Academy TRP1 Week 11 | April 29, 2026**
+# Datasheet: Tenacious-Bench v0.2
+
+The structure follows Gebru et al. (2021). Under each heading, the key facts come first, then the details.
+
+> This replaces the v0.1 datasheet. Its counts (299 tasks, a 58-task held-out) and its contamination claims were wrong. See [LIMITATIONS_AND_CORRECTIONS.md](LIMITATIONS_AND_CORRECTIONS.md).
 
 ---
 
 ## 1. Motivation
 
-### Telescopic
-Tenacious-Bench v0.1 is a domain-specific evaluation benchmark for B2B sales outreach agents operating under the Tenacious Intelligence Corporation style guide. It was created because no existing benchmark — including tau2-Bench retail — measures whether an agent produces factually grounded, tone-compliant, commercially safe outreach emails for Tenacious-specific prospects.
-
-### Periscopic
-The benchmark was created by Yakob Dereje as part of TenX Academy TRP1 Week 11. It addresses three specific gaps documented in audit_memo.md: (1) tau2-Bench has no grounding requirement — it cannot penalize fabricated claims; (2) tau2-Bench has no tone or style constraint — it cannot detect banned phrases or subject line violations; (3) tau2-Bench has no commercial safety dimension — it cannot detect bench over-commitment or pricing fabrication. The dataset was funded by no external party. The creators are the sole authors.
-
-### Microscopic
-The motivation is grounded in 34 adversarial probes from the Week 10 probe library (probe_library.md). Six probes remain Partial or Not Fixed after Week 10: P05 (abstention not triggered on very_low confidence), P09 (AI maturity score over-stated), P10 (competitor gap language before brief generated), P14 (NestJS availability not checked), P30 (assertive language on very_low confidence), P33 (sector mismatch in gap brief). Tenacious-Bench v0.1 is designed to measure the signal grounding cluster (P05, P06, P09, P10, P30, P33) as the primary failure mode.
-
----
+- **Why it exists.** It tests whether an automated sales agent writes outreach emails that are grounded, honest about the signal they rely on, commercially safe, on-tone and well-formed. General agent benchmarks such as τ²-Bench retail grade task completion. None of them penalises a fluent email that invents a funding round or promises engineers the bench doesn't have.
+- **Who made it.** Yakob Dereje, for TenX Academy TRP1 Week 11. It had no external funding.
+- **The gap it covers.** The tasks target failures documented in the Week 10 Conversion Engine. These are the open probes P05, P09, P14, P16, P30 and P33, plus a failure the audit found on real data: stale signals pitched as recent. The original Week 10 composer passes 10 of 204 real-company briefs.
 
 ## 2. Composition
 
-### Telescopic
-Tenacious-Bench v0.1 contains 299 evaluation tasks across 4 ICP segments, 3 difficulty levels, and 4 authoring modes. Each task is a JSON object containing a hiring signal brief, a bench summary, an instruction, a candidate email output, and a machine-verifiable scoring rubric.
+There are 361 tasks. Each is one JSON file validated by [schema.json](schema.json).
 
-### Periscopic
-| Dimension | Distribution |
-|-----------|-------------|
-| Total tasks | 299 |
-| Passing tasks | 195 (65%) |
-| Failing tasks (adversarial) | 104 (35%) |
-| Segment 1 — Funded Startup | 91 (30%) |
-| Segment 2 — Post-Layoff | 81 (27%) |
-| Segment 3 — Leadership Change | 64 (21%) |
-| Segment 4 — AI Capability Gap | 63 (21%) |
-| Easy difficulty | 59 (20%) |
-| Medium difficulty | 109 (36%) |
-| Hard difficulty | 131 (44%) |
-| Train partition | 148 (49%) |
-| Dev partition | 93 (31%) |
-| Held-out partition | 58 (19%) |
+| Partition | Tasks | Candidate labelled passing | Email types |
+|---|---|---|---|
+| train | 178 | 69 | cold 146, reply 19, re-engagement 10, follow-up 2, referral 1 |
+| dev | 115 | 39 | cold 95, reply 14, re-engagement 5, follow-up 1 |
+| held_out (sealed) | 68 | 6 | cold 54, reply 14 |
 
-### Microscopic
-Each task JSON contains the following fields: task_id (string, pattern TB-[0-9]{3,4} or TB-[A-Z]+[0-9]+), source_mode (enum: trace_derived, programmatic, multi_llm_synthesis, hand_authored), difficulty (enum: easy, medium, hard), is_passing (boolean — whether the candidate output is expected to pass all 5 rubric checks), input.hiring_signal_brief (object containing prospect name, icp_classification with segment 1-4 and confidence high/medium/low/very_low, firmographics, ai_maturity score 0-3, layoff_signal, leadership_signal), input.bench_summary (object with total_engineers=60, available=34, stacks), candidate_output (object with subject string and body string), ground_truth (object with required_signals list, forbidden_phrases list, max_subject_length=60, must_end_with_cta=boolean), rubric (5 checks each with weight=1.0), metadata (created_at, partition, probe_ids, source_trace_id, judge_score, expected_score).
+| Partition | Authoring mode |
+|---|---|
+| train | programmatic 60, trace-derived 54, multi-LLM 41, hand-authored 23 |
+| dev | programmatic 60, trace-derived 24, hand-authored 16, multi-LLM 15 |
+| held_out | trace-derived 54 (real Week 10 pipeline), multi-LLM 14 |
 
----
+**What a task contains.**
+
+| Field | Contents |
+|---|---|
+| `input.hiring_signal_brief` | <ul><li>Prospect</li><li>ICP classification: segment, confidence, reasons</li><li>Firmographics, including the Crunchbase funding list and `snapshot_date`</li><li>Layoff, leadership and job-post signals</li><li>AI maturity, scored 0–3 with a confidence</li></ul> |
+| `input.bench_summary` | Engineers available, overall and per stack |
+| `input.email_type` | One of the email types above |
+| `input.prior_thread` | Earlier messages, if any |
+| `input.instruction` | The writing instruction |
+| `input.competitor_gap_brief` | Optional peer comparison |
+| `candidate_output` | `{subject, body}` |
+| `is_passing` | The evaluator v0.2.1 verdict, or the human label for hand-authored tasks |
+| `ground_truth` | <ul><li>Required signals</li><li>Forbidden phrases</li><li>Maximum subject length</li><li>CTA requirement</li></ul> |
+| `metadata` | <ul><li>Source mode</li><li>Probe IDs</li><li>`label_source`</li><li>`is_passing_v01` (the old label)</li><li>`author_note` and `scenario` (the material that leaked the verdict, now moved out of the inputs)</li><li>Source and snapshot dates</li></ul> |
+
+**Segment mix.** The `icp_classification` was produced by the *original* Week 10 classifier, which ignored signal dates. In the held-out it puts 41 of 68 tasks in Segment 1 (funded), even though almost none of those rounds is within 180 days. That is deliberate: the benchmark tests whether a writer trusts a stale label.
+
+| Partition | Segment 1 | Segment 2 | Segment 3 | Segment 4 |
+|---|---|---|---|---|
+| train | 44 | 49 | 57 | 28 |
+| dev | 45 | 29 | 7 | 34 |
+| held_out | 41 | 19 | 8 | 0 |
+
+**Labels.**
+
+- **Hand-authored tasks (39):** labelled by a human.
+- **All other tasks:** labelled by the frozen evaluator.
+
+On 30 non-hand-authored tasks, a blind human labeller agreed with the evaluator's verdict on 77% of them (κ 0.51); see [inter_rater_agreement.md](inter_rater_agreement.md). Treat evaluator labels as noisy, especially on honesty.
+
+**Personal information.** None.
+
+- **Companies.** Prospect companies are real organisations taken from the public Crunchbase ODM sample.
+- **People.** Contact names are placeholders or synthetic, and no email in the dataset was sent.
+- **Client.** Tenacious is fictional.
 
 ## 3. Collection
 
-### Telescopic
-Tasks were authored using 4 modes: trace-derived (from real Week 10 agent outputs), programmatic (parameter sweeps), multi-LLM synthesis (Qwen3-235b via OpenRouter), and hand-authored (written by the dataset creator targeting specific failure modes).
+| Mode | How it was made |
+|---|---|
+| Trace-derived (train and dev) | Built from Week 10 pipeline runs and their composer emails, with variants (warm reply, hedged, re-engagement, adversarial wrong-segment and over-commitment). |
+| Trace-derived (held-out) | 54 real companies never used in v0.1, run through the real Week 10 pipeline pinned to the original composer (`export_week10_briefs.py`, W10 @ `ae40b34`). The candidate is the actual Week 10 output. |
+| Programmatic | Parameter sweeps over synthetic profiles: segment, confidence, bench size and region. |
+| Multi-LLM (train and dev) | Generated by Qwen3-235B via OpenRouter, filtered by the evaluator. |
+| Multi-LLM (held-out) | 14 replies over 8 scenarios. Prospect messages come from Mistral Small 3.2, candidate replies from Gemma 3 27B, and a DeepSeek filter (each dimension ≥ 3 of 5) dropped 2 of 70. No Qwen model is involved, because Qwen is the family under test. |
+| Hand-authored | Tenacious style-guide drafts (good and bad) and adversarial cases. |
 
-### Periscopic
-| Mode | Count | Method |
-|------|-------|--------|
-| trace_derived | 78 | 6 variants per company × 13 real Week 10 traces |
-| programmatic | 120 | Synthetic profiles × 3-5 task variants each |
-| multi_llm_synthesis | 62 | Qwen3-235b generator, scoring_evaluator.py filter |
-| hand_authored | 39 | 12 good + 12 bad style guide drafts + 15 adversarial |
+The full logs are in [generation_scripts/](generation_scripts/), and the OpenRouter spend for the whole project is in [cost_log.jsonl](cost_log.jsonl).
 
-Trace-derived tasks were generated by reading thread JSON files from data/traces/ in the Week 10 Conversion Engine repository, loading the corresponding hiring_signal_brief from data/enrichment_outputs/, regenerating email content using email_agent.py, then formatting into the Tenacious-Bench schema. Six variants were produced per company: standard outreach, warm reply, low confidence hedge, re-engagement, wrong segment adversarial (failing), and bench over-commitment adversarial (failing).
+**Time window.**
 
-### Microscopic
-The multi_llm_synthesis pipeline used model qwen/qwen3-235b-a22b via OpenRouter API. System prompt anchored to Tenacious style guide v2 constraints including 40+ banned phrases and Cal.com booking link requirement. Acceptance rate: 84% (57 of 68 API calls produced passing tasks after up to 3 retry attempts per scenario). Rejected tasks failed on cta_present (most common), subject_length, or tone checks. All generation logs are committed to generation_scripts/llm_generation_log.json and generation_scripts/llm_generation_v2_log.json.
+- Firmographics come from the Crunchbase snapshot dated **July 2024**.
+- Layoffs come from a layoffs.fyi mirror.
+- Signal recency is measured from the snapshot date, not from today's date.
+- Every held-out task records its source and snapshot date (the time-shift check passes for 68 of 68).
 
----
+## 4. Preprocessing and cleaning (v0.1 → v0.1.1 / v0.2)
 
-## 4. Preprocessing
+[tools/repair_tasks_phase2.py](tools/repair_tasks_phase2.py) is deterministic and logged in [reports/phase2_repairs.json](reports/phase2_repairs.json). It made five changes:
 
-### Telescopic
-Every generated task passed a 5-check filter (scoring_evaluator.py) before entering the dataset. Tasks that failed were discarded and regenerated. Hand-authored tasks were pre-verified to fail the expected checks.
+- **Removed leaked verdicts.** Instructions and reasons that gave away the expected verdict (for example "this email should pass") were moved to `metadata`.
+- **Restored facts.** Per-prospect brief facts were rebuilt where the candidate cited data the brief lacked.
+- **Restored drafts.** Three style-guide drafts that a 2026-05 commit had edited were restored.
+- **Pruned generic signals.** Required signals too generic to check were removed.
+- **Re-derived labels.** Labels were re-derived with evaluator v0.2.1; the old label is kept.
 
-### Periscopic
-Three contamination checks were run before sealing the held-out partition: n-gram overlap (threshold: 8-gram), embedding similarity (threshold: cosine 0.85 using all-MiniLM-L6-v2), and time-shift verification (source windows documented). N-gram violations were found in the programmatic partition because shared email body templates produce near-identical text across companies. Violated held-out tasks were moved to the dev partition. The contamination report is committed to contamination_check.json.
-
-Inter-rater agreement was computed on 30 tasks labeled twice 24 hours apart. Agreement exceeded 80% on all 5 rubric dimensions (overall 93%). No rubric revision was required. Results are committed to inter_rater_agreement.md.
-
-### Microscopic
-The grounding check requires at least 1 item from the required_signals list to appear (case-insensitive) in the email body. Required signals are defined per ICP segment: Segment 1 uses ["funding", "growth", "engineering", "capacity", "roles"]; Segment 2 uses ["restructuring", "cost", "delivery", "capacity"]; Segment 3 uses ["leadership", "engineering", "vendor", "mix", "new"]; Segment 4 uses ["ai", "capability", "ml", "platform", "peer", "data"]. The tone check uses a 40+ phrase list derived from Tenacious style guide v2. The LLM judge uses a rule-based fallback scoring 5 markers (direct, grounded, honest, professional, non-condescending) on a 1-5 scale; pass threshold is average >= 4.0.
-
----
+The 57-task v0.1 held-out was retired to dev, because it was public and contaminated. The list is in [reports/retired_held_out_v01.json](reports/retired_held_out_v01.json).
 
 ## 5. Uses
 
-### Telescopic
-Tenacious-Bench v0.1 is designed to evaluate B2B sales outreach agents on Tenacious-specific grounding, tone, and commercial safety constraints. It should not be used as a general email quality benchmark.
+**Intended uses.**
 
-### Periscopic
-**Intended uses:**
-- Evaluating LoRA adapters trained to produce Tenacious-style signal-grounded outreach
-- Measuring improvement on the signal grounding failure cluster (P05, P06, P09, P10, P30, P33)
-- Ablation testing of prompt engineering interventions vs trained components
-- Reproducing the Week 11 Delta A measurement
+- Scoring email-writing components of B2B outreach agents on safety and grounding.
+- Regression-testing composer changes.
+- Generating SFT or preference data from the train partition.
+- Studying evaluator reliability with the included human labels.
 
-**Should NOT be used for:**
-- Evaluating general email writing quality — tasks penalize emails that are well-written but do not reference a hiring signal brief
-- Benchmarking agents for non-Tenacious sales contexts — the 40+ banned phrases and 5 tone markers are brand-specific, not universal
-- Evaluating agents on real company behavior — all hiring signal brief inputs are synthetic enrichment outputs, not real company filings or verified public data
+**Not suitable for:**
 
-### Microscopic
-The `confidence` field in every hiring_signal_brief takes values of high, medium, low, or very_low. Tasks with confidence=very_low are intentionally included in the hard difficulty tier and test whether the agent correctly hedges language when the enrichment basis is weak (Probe P05). A task with confidence=very_low that uses assertive language scores 0 on the grounding check because the required_signals for that tier include hedging words ("may", "appears", "public profile"). This design choice is documented in synthesis_memo_03 (contamination) and synthesis_memo_01 (synthetic data).
+- **Claims about persuasiveness or reply rates.** A content-free note passes 49 of the 54 cold held-out tasks.
+- **Non-English or non-B2B outreach.**
+- **Training on dev and then reporting dev.** Dev overlaps train (42 of 115 tasks share an 8-gram).
 
-The P33 (sector mismatch) failure is present as an unresolved limitation. Tasks TB-HA008 and TB-HA009 explicitly test this: TB-HA008 (failing) compares a conversational AI company to dental practices; TB-HA009 (passing) compares the same company to Intercom, Zendesk, and Drift. The grading difference isolates whether the agent performs valid sector matching.
-
----
+**Contamination guidance.** Never train on the held-out. Anyone adding training data should run `contamination_check.py` against it. Evaluator results are only comparable when produced with the tagged evaluator version.
 
 ## 6. Distribution
 
-### Telescopic
-Tenacious-Bench v0.1 will be published on HuggingFace under the handle yakobd with license CC-BY-4.0. The held-out partition will be released after the leaderboard is published.
-
-### Periscopic
-- **License:** CC-BY-4.0
-- **HuggingFace dataset:** yakobd/tenacious-bench (to be published Day 7)
-- **GitHub repo:** github.com/yakobd/week11-sales-bench (public)
-- **Held-out partition:** gitignored from public repo, released after leaderboard publication
-- **Style guide v2:** proprietary Tenacious document — not included in the public repo. Banned phrases derived from it are included in scoring_evaluator.py.
-
-### Microscopic
-The CC-BY-4.0 license was chosen because it allows downstream researchers to use the dataset for evaluation and training while requiring attribution. The alternative MIT license was considered but CC-BY-4.0 is the standard for published ML datasets (consistent with Tenacious-Bench's intended positioning as a community benchmark). The Tenacious style guide v2 is referenced as the domain standard but not reproduced — only derived artifacts (banned phrase list, tone markers) are published.
-
----
+- **Repository.** The code, train, dev and labels are on GitHub, licensed CC-BY-4.0.
+- **Held-out.** It stays gitignored while it is in use as a test set. Its SHA-256 manifest is committed.
+- **Hugging Face.** v0.2 is not yet republished; the dataset page still shows v0.1.
 
 ## 7. Maintenance
 
-### Telescopic
-Tenacious-Bench v0.1 is maintained by Yakob Dereje. Issues and corrections can be reported via GitHub issues on the week11-sales-bench repository.
-
-### Periscopic
-- **Maintainer:** Yakob Dereje (github.com/yakobd)
-- **Versioning:** v0.1 is the initial release. v0.2 would add Segment 3/4 tasks from real trace data, fix the P33 sector mismatch limitation, and add a v0.2 held-out partition
-- **Known issues:** Programmatic tasks share email body templates
-  across companies, causing high n-gram overlap scores. This is
-  documented in contamination_check.json. The fix for v0.2 is
-  per-company body variation in the programmatic generator.
-
-- **Augmentation diversity limitation:** 94.3% of training pairs
-  are augmented variations of 128 originals. The gradient-level
-  mechanism that makes this a real problem: near-duplicate examples
-  produce highly aligned gradient signals during SFT. Repeated
-  aligned gradients push LoRA A and B matrices in similar directions
-  across training steps, causing loss to fall quickly on recurring
-  token patterns — openers, CTA phrasings, sentence shells — rather
-  than generalizable style policy. This can produce real metric
-  gains (Delta A: +0.263, p<0.0001) while the adapter captures
-  surface regularities rather than generalizable Tenacious tone.
-  To validate style learning vs memorization: (1) apply a grouped
-  holdout split where all augmentations from one original email
-  stay in the same split — sharp performance drop indicates
-  memorization; (2) compare gradient norms by module group
-  (attention: q/k/v/o vs MLP: gate/up/down) to identify whether
-  training pressure concentrated in phrase-shaping layers. Delta A
-  should be read as improvement on the measured evaluation
-  distribution pending grouped holdout validation.
-- **Error reporting:** Open an issue at github.com/yakobd/week11-sales-bench/issues
-
-### Microscopic
-Four failure modes Tenacious-Bench v0.1 does not capture that v0.2 should address:
-
-1. **Multi-turn coherence** — current tasks evaluate single email outputs only. Multi-turn conversation quality (does the warm reply correctly reference the cold outreach?) is not measured.
-
-2. **Real prospect behavior** — all hiring signal briefs are synthetic. A prospect who knows their own company's state would immediately detect fabricated signals. Real-world rejection rates cannot be measured from this benchmark.
-
-3. **P33 in programmatic tasks** — the sector mismatch probe is only covered by 2 hand-authored tasks (TB-HA008, TB-HA009). A v0.2 programmatic sweep should generate 20+ sector mismatch variants across all 4 segments.
-
-4. **Pricing and capacity validation** — the bench over-commitment probe (P11-P14) is tested by adversarial variants but not by positive examples that correctly route to a human. A v0.2 bench-gated correct routing task set would complete this coverage.
-
----
-
-*Dataset constructed April 28-29, 2026 | Probe library source: Week 10 Conversion Engine (github.com/yakobd/The-Conversion-Engine) | Style guide source: Tenacious Intelligence Corporation internal document (private)*
-
-
-## Distribution
-
-**Dataset URL:** https://huggingface.co/datasets/yakobd/tenacious-bench
-
-**License:** CC-BY-4.0
+- **Maintainer.** Yakob Dereje. Issues go to the GitHub repository.
+- **Versioning.** Each data change bumps the dataset version. Each evaluator change gets a new `evaluator-vX-frozen` tag, and results are reported against a named tag.
+- **Planned for v0.3:**
+  - An evaluator that addresses the round 1 human disagreements and the "Synergy" false positive.
+  - A usefulness and specificity dimension.
+  - More held-out tasks with in-window signals, so the cold slice is not dominated by abstention.
+  - A second, independent labeller, plus a test–retest with a full 24-hour gap.

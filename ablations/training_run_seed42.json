@@ -1,0 +1,200 @@
+{
+  "run_id": "tenacious-bench-v0.2-sft-seed42",
+  "seed": 42,
+  "backbone": "unsloth/Qwen3.5-2B",
+  "backbone_revision": "fffbc0d8711cf87df6d1f97938c5e50ef94aadc7",
+  "method": "SFT, LoRA 16-bit, loss on assistant tokens only",
+  "hyperparameters": {
+    "r": 16,
+    "lora_alpha": 16,
+    "lora_dropout": 0.0,
+    "epochs": 2,
+    "lr": 0.0002,
+    "batch": 2,
+    "grad_accum": 4,
+    "warmup_ratio": 0.05,
+    "weight_decay": 0.01,
+    "scheduler": "linear",
+    "optim": "adamw_8bit",
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ],
+    "max_seq_length": 2048,
+    "precision": "fp16"
+  },
+  "train_pairs": 512,
+  "val_pairs": 55,
+  "steps": 128,
+  "wall_time_minutes": 17.3,
+  "train_loss": [
+    [
+      5,
+      1.9053
+    ],
+    [
+      10,
+      1.1613
+    ],
+    [
+      15,
+      0.8859
+    ],
+    [
+      20,
+      0.6911
+    ],
+    [
+      25,
+      0.7765
+    ],
+    [
+      30,
+      0.584
+    ],
+    [
+      35,
+      0.6115
+    ],
+    [
+      40,
+      0.6186
+    ],
+    [
+      45,
+      0.4925
+    ],
+    [
+      50,
+      0.4692
+    ],
+    [
+      55,
+      0.561
+    ],
+    [
+      60,
+      0.5427
+    ],
+    [
+      65,
+      0.4988
+    ],
+    [
+      70,
+      0.3933
+    ],
+    [
+      75,
+      0.3569
+    ],
+    [
+      80,
+      0.3843
+    ],
+    [
+      85,
+      0.3604
+    ],
+    [
+      90,
+      0.4559
+    ],
+    [
+      95,
+      0.4255
+    ],
+    [
+      100,
+      0.3176
+    ],
+    [
+      105,
+      0.3794
+    ],
+    [
+      110,
+      0.4122
+    ],
+    [
+      115,
+      0.6709
+    ],
+    [
+      120,
+      0.5192
+    ],
+    [
+      125,
+      0.3304
+    ]
+  ],
+  "eval_loss": [
+    [
+      25,
+      0.6814
+    ],
+    [
+      50,
+      0.5807
+    ],
+    [
+      75,
+      0.5454
+    ],
+    [
+      100,
+      0.521
+    ],
+    [
+      125,
+      0.5075
+    ],
+    [
+      128,
+      0.507
+    ]
+  ],
+  "generation": {
+    "max_new_tokens": 320,
+    "do_sample": false,
+    "repetition_penalty": 1.05
+  },
+  "single_request_latency_s": {
+    "trained": [
+      2.799,
+      2.773,
+      2.777,
+      2.88,
+      2.712
+    ],
+    "prompt_engineered": [
+      3.862,
+      2.208,
+      3.121,
+      3.053,
+      3.731
+    ]
+  },
+  "gpu": "Tesla T4",
+  "versions": {
+    "unsloth": "2026.11.4",
+    "unsloth_zoo": "2026.11.4",
+    "transformers": "5.17.0",
+    "trl": "1.15.0",
+    "peft": "0.21.2",
+    "accelerate": "1.15.0",
+    "torch": "2.14.1+cu130",
+    "datasets": "4.8.5"
+  },
+  "bundle_sha256": {
+    "sft_train.jsonl": "5627759df3b03c8ee1c0bc569b1afbc5bf9ec13d9b22fc7dd209771fa343cf80",
+    "sft_val.jsonl": "e14493c4461d6524170639225373ac2dad8a5127147ffd598b49d9d176d869c3",
+    "ablation_prompts.jsonl": "a27f68a06cc7982b8e646343bf2b157e8a4afec191b05ea6eb541887d6abd68e"
+  }
+}

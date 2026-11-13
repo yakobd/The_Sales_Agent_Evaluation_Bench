@@ -3,7 +3,7 @@
   "source_mode": "multi_llm_synthesis",
   "difficulty": "easy",
   "variant": "llm_generated_v2",
-  "is_passing": true,
+  "is_passing": false,
   "input": {
     "hiring_signal_brief": {
       "prospect": "Vale Engineering",
@@ -18,7 +18,7 @@
       "firmographics": {
         "company": "Vale Engineering",
         "website": "https://valeengineering.com",
-        "description": "Vale Engineering \u2014 technology company",
+        "description": "Vale Engineering — technology company",
         "num_employees": "51-200"
       },
       "ai_maturity": {
@@ -43,20 +43,17 @@
         "data": 4
       }
     },
-    "instruction": "Write outreach for Vale Engineering \u2014 Series A $24M closed in January, open roles went from 2 to 8",
-    "prior_thread": []
+    "instruction": "Write outreach for Vale Engineering — Series A $24M closed in January, open roles went from 2 to 8",
+    "prior_thread": [],
+    "email_type": "cold"
   },
   "candidate_output": {
     "subject": "Vale Engineering Hiring Momentum",
-    "body": "Hi [Name],\n\nVale Engineering\u2019s $24M Series A in January likely accelerated growth. Open roles increased from 2 to 8 since then\u2014a strong signal of scaling priorities.\n\nStrategic hiring could help maintain momentum without overextending. Worth 15 minutes this week? \u2192 http://localhost:3000/yakob/30min\n\nBest,\nResearch Partner / Tenacious Intelligence Corporation / gettenacious.com"
+    "body": "Hi [Name],\n\nVale Engineering’s $24M Series A in January likely accelerated growth. Open roles increased from 2 to 8 since then—a strong signal of scaling priorities.\n\nStrategic hiring could help maintain momentum without overextending. Worth 15 minutes this week? → http://localhost:3000/yakob/30min\n\nBest,\nResearch Partner / Tenacious Intelligence Corporation / gettenacious.com"
   },
   "ground_truth": {
     "required_signals": [
-      "funding",
-      "growth",
-      "engineering",
-      "capacity",
-      "roles"
+      "funding"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -122,6 +119,16 @@
     "source_trace_id": null,
     "judge_score": null,
     "expected_score": 1.0,
-    "generator_model": "qwen/qwen3-235b-a22b"
+    "generator_model": "qwen/qwen3-235b-a22b",
+    "required_signals_v01": [
+      "funding",
+      "growth",
+      "engineering",
+      "capacity",
+      "roles"
+    ],
+    "is_passing_v01": true,
+    "label_source": "evaluator_v0.2",
+    "dataset_version": "0.1.1"
   }
 }

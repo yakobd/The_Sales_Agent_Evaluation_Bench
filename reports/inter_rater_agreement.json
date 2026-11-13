@@ -1,0 +1,97 @@
+{
+  "n_tasks": 30,
+  "threshold": 0.8,
+  "test_retest": {
+    "grounding": {
+      "round1_pass": 22,
+      "round2_pass": 26,
+      "agree": 26,
+      "pass_to_fail": 0,
+      "fail_to_pass": 4,
+      "agreement": 0.867,
+      "cohen_kappa": 0.595,
+      "revise_rubric": false
+    },
+    "honesty": {
+      "round1_pass": 17,
+      "round2_pass": 17,
+      "agree": 30,
+      "pass_to_fail": 0,
+      "fail_to_pass": 0,
+      "agreement": 1.0,
+      "cohen_kappa": 1.0,
+      "revise_rubric": false
+    },
+    "commercial_safety": {
+      "round1_pass": 28,
+      "round2_pass": 28,
+      "agree": 30,
+      "pass_to_fail": 0,
+      "fail_to_pass": 0,
+      "agreement": 1.0,
+      "cohen_kappa": 1.0,
+      "revise_rubric": false
+    },
+    "tone": {
+      "round1_pass": 22,
+      "round2_pass": 22,
+      "agree": 30,
+      "pass_to_fail": 0,
+      "fail_to_pass": 0,
+      "agreement": 1.0,
+      "cohen_kappa": 1.0,
+      "revise_rubric": false
+    },
+    "format": {
+      "round1_pass": 23,
+      "round2_pass": 23,
+      "agree": 30,
+      "pass_to_fail": 0,
+      "fail_to_pass": 0,
+      "agreement": 1.0,
+      "cohen_kappa": 1.0,
+      "revise_rubric": false
+    }
+  },
+  "human_vs_evaluator": {
+    "grounding": {
+      "agree": 25,
+      "agreement": 0.833,
+      "cohen_kappa": 0.516
+    },
+    "honesty": {
+      "agree": 19,
+      "agreement": 0.633,
+      "cohen_kappa": 0.203
+    },
+    "commercial_safety": {
+      "agree": 29,
+      "agreement": 0.967,
+      "cohen_kappa": 0.651
+    },
+    "tone": {
+      "agree": 29,
+      "agreement": 0.967,
+      "cohen_kappa": 0.911
+    },
+    "format": {
+      "agree": 24,
+      "agreement": 0.8,
+      "cohen_kappa": 0.534
+    },
+    "overall": {
+      "agree": 23,
+      "agreement": 0.767,
+      "cohen_kappa": 0.512
+    }
+  },
+  "test_retest_overall": {
+    "round1_pass": 10,
+    "round2_pass": 12,
+    "agree": 28,
+    "agreement": 0.933,
+    "cohen_kappa": 0.857
+  },
+  "note": "Same labeller (the author) both rounds; measures self-consistency, not inter-annotator agreement. Protocol gap >= 24h; actual gap ~10h (round 1 labels saved 2026-11-12 23:18, round 2 submitted 2026-11-13 ~09:40 +03:00), so test-retest is an upper bound.",
+  "round_task_lists_identical": true
+}

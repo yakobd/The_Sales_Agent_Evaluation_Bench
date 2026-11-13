@@ -3,7 +3,7 @@
   "source_mode": "multi_llm_synthesis",
   "difficulty": "easy",
   "variant": "llm_generated_v2",
-  "is_passing": true,
+  "is_passing": false,
   "input": {
     "hiring_signal_brief": {
       "prospect": "Mast Cloud",
@@ -18,7 +18,7 @@
       "firmographics": {
         "company": "Mast Cloud",
         "website": "https://mastcloud.com",
-        "description": "Mast Cloud \u2014 technology company",
+        "description": "Mast Cloud — technology company",
         "num_employees": "51-200"
       },
       "ai_maturity": {
@@ -43,19 +43,17 @@
         "data": 4
       }
     },
-    "instruction": "Write outreach for Mast Cloud \u2014 Laid off 90 engineers in February, still active on delivery",
-    "prior_thread": []
+    "instruction": "Write outreach for Mast Cloud — Laid off 90 engineers in February, still active on delivery",
+    "prior_thread": [],
+    "email_type": "cold"
   },
   "candidate_output": {
     "subject": "Preserving Delivery Momentum Post-Restructure",
-    "body": "Dear [First Name],\n\nWe recognized Mast Cloud\u2019s recent restructuring and wanted to acknowledge the challenge of balancing team adjustments with ongoing delivery commitments. Impressive to see continued progress in Q2 despite these changes.\n\nIf preserving delivery momentum matters most right now, we\u2019d welcome a conversation about low-lift support options that align with your current priorities. No pressure\u2014just exploring how we might help maintain velocity without adding complexity.\n\nWorth 15 minutes this week? \u2192 http://localhost:3000/yakob/30min\n\nBest regards,\n[Your Name]\nResearch Partner / Tenacious Intelligence Corporation / gettenacious.com"
+    "body": "Dear [First Name],\n\nWe recognized Mast Cloud’s recent restructuring and wanted to acknowledge the challenge of balancing team adjustments with ongoing delivery commitments. Impressive to see continued progress in Q2 despite these changes.\n\nIf preserving delivery momentum matters most right now, we’d welcome a conversation about low-lift support options that align with your current priorities. No pressure—just exploring how we might help maintain velocity without adding complexity.\n\nWorth 15 minutes this week? → http://localhost:3000/yakob/30min\n\nBest regards,\n[Your Name]\nResearch Partner / Tenacious Intelligence Corporation / gettenacious.com"
   },
   "ground_truth": {
     "required_signals": [
-      "restructuring",
-      "cost",
-      "delivery",
-      "capacity"
+      "restructuring"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -121,6 +119,15 @@
     "source_trace_id": null,
     "judge_score": null,
     "expected_score": 1.0,
-    "generator_model": "qwen/qwen3-235b-a22b"
+    "generator_model": "qwen/qwen3-235b-a22b",
+    "required_signals_v01": [
+      "restructuring",
+      "cost",
+      "delivery",
+      "capacity"
+    ],
+    "is_passing_v01": true,
+    "label_source": "evaluator_v0.2",
+    "dataset_version": "0.1.1"
   }
 }

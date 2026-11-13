@@ -1,0 +1,142 @@
+{
+  "v0.1": {
+    "summary": {
+      "independent_labels": {
+        "n": 39,
+        "agree": 28,
+        "rate": 0.718,
+        "good_passed": 11,
+        "bad_failed": 17,
+        "bad_passed": 5,
+        "good_failed": 6
+      },
+      "evaluator_assigned_labels": {
+        "n": 322,
+        "agree": 193,
+        "rate": 0.599,
+        "good_passed": 96,
+        "bad_failed": 97,
+        "bad_passed": 128,
+        "good_failed": 1
+      }
+    },
+    "disagreements": [
+      {
+        "task_id": "TB-HA003",
+        "label": false,
+        "pred": true,
+        "independent": true,
+        "violations": []
+      },
+      {
+        "task_id": "TB-HA005",
+        "label": false,
+        "pred": true,
+        "independent": true,
+        "violations": []
+      },
+      {
+        "task_id": "TB-SG02",
+        "label": true,
+        "pred": false,
+        "independent": true,
+        "violations": [
+          "cta_present",
+          "llm_judge"
+        ]
+      },
+      {
+        "task_id": "TB-SG05",
+        "label": true,
+        "pred": false,
+        "independent": true,
+        "violations": [
+          "cta_present",
+          "llm_judge"
+        ]
+      },
+      {
+        "task_id": "TB-SG06",
+        "label": true,
+        "pred": false,
+        "independent": true,
+        "violations": [
+          "cta_present",
+          "llm_judge"
+        ]
+      },
+      {
+        "task_id": "TB-HA007",
+        "label": false,
+        "pred": true,
+        "independent": true,
+        "violations": []
+      },
+      {
+        "task_id": "TB-HA008",
+        "label": false,
+        "pred": true,
+        "independent": true,
+        "violations": []
+      },
+      {
+        "task_id": "TB-HA014",
+        "label": false,
+        "pred": true,
+        "independent": true,
+        "violations": []
+      },
+      {
+        "task_id": "TB-SG08",
+        "label": true,
+        "pred": false,
+        "independent": true,
+        "violations": [
+          "llm_judge"
+        ]
+      },
+      {
+        "task_id": "TB-SG09",
+        "label": true,
+        "pred": false,
+        "independent": true,
+        "violations": [
+          "cta_present",
+          "llm_judge"
+        ]
+      },
+      {
+        "task_id": "TB-SG10",
+        "label": true,
+        "pred": false,
+        "independent": true,
+        "violations": [
+          "tone"
+        ]
+      }
+    ]
+  },
+  "v0.2": {
+    "summary": {
+      "independent_labels": {
+        "n": 39,
+        "agree": 39,
+        "rate": 1.0,
+        "good_passed": 17,
+        "bad_failed": 22,
+        "bad_passed": 0,
+        "good_failed": 0
+      },
+      "evaluator_assigned_labels": {
+        "n": 322,
+        "agree": 322,
+        "rate": 1.0,
+        "good_passed": 97,
+        "bad_failed": 225,
+        "bad_passed": 0,
+        "good_failed": 0
+      }
+    },
+    "disagreements": []
+  }
+}

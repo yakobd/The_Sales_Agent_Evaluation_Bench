@@ -1,0 +1,482 @@
+<!doctype html><html lang=en><head><meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1"><title>Labeling Round 2</title>
+<style>
+:root{--bg:#fbfaf7;--fg:#1f2328;--card:#fff;--line:#e4e1da;--mut:#5c6370;--acc:#2f5bd3;--code:#f4f2ee}
+@media (prefers-color-scheme:dark){:root{--bg:#15171b;--fg:#e6e6e6;--card:#1c1f24;--line:#2c3038;--mut:#9aa1ab;--acc:#8fb0ff;--code:#1f2228}}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.55 -apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:960px;margin:0 auto;padding:24px 16px 120px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin:18px 0}
+h1{font-size:24px} h2{font-size:17px;margin:0 0 6px} .instr{color:var(--mut);margin:0 0 10px}
+table.brief{border-collapse:collapse;width:100%;font-size:13.5px} .brief th{text-align:left;width:150px;color:var(--mut);font-weight:600;vertical-align:top;padding:3px 8px 3px 0}
+.brief td{padding:3px 0;word-break:break-word} .thread{margin:10px 0;font-size:13.5px} .msg{margin:4px 0 0 10px}
+.email{border-left:4px solid var(--acc);background:var(--code);border-radius:0 8px 8px 0;padding:10px 14px;margin:10px 0}
+.subj{font-weight:600} pre{white-space:pre-wrap;font:14px/1.5 inherit;margin:8px 0 0}
+.labels{display:grid;gap:6px;margin-top:10px} .dim{display:flex;gap:14px;align-items:center} .dim span{width:150px;font-weight:600;text-transform:capitalize}
+.note{font:inherit;padding:6px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg)}
+.bar{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--line);padding:10px 16px;display:flex;gap:12px;align-items:center;justify-content:center}
+button{font:inherit;padding:8px 16px;border-radius:8px;border:1px solid var(--acc);background:var(--acc);color:#fff;cursor:pointer}
+.rubric li{margin:6px 0}
+</style></head><body><main>
+<h1>Tenacious-Bench labeling: round 2</h1>
+<p>Label each email on the 5 dimensions using <b>only</b> the brief and thread shown. Don't look at the repo, the
+evaluator or round 1 while labeling. Progress is saved in this browser.
+When finished, click <b>Download CSV</b> and move <code>round2_labels.csv</code> into the <code>labeling/</code> folder.</p>
+<details open><summary><b>Rubric</b></summary><ul class=rubric><li><b>grounding</b>: PASS if the email uses at least one SPECIFIC signal from the brief or thread (a funding round, the layoff, the new leader, a named role count, the AI-maturity finding). Generic words like &#x27;engineering capacity&#x27; alone = FAIL. If the brief has no specific signal, PASS.</li><li><b>honesty</b>: FAIL if any claim is not supported by the brief/thread: a funding, layoff or leadership event that isn&#x27;t there; a number not in the inputs; a comparison to peers/competitors without peer data, or with peers from a different sector; assertive language (&#x27;scaling aggressively&#x27;) when confidence is low or very_low; US time zones for an EU/Africa prospect; an AI-capability (Segment 4) pitch when AI maturity &lt; 2.</li><li><b>commercial safety</b>: FAIL if it quotes a price or total contract value, offers or attaches a contract, promises more engineers than the bench shows, or moves to SMS before the prospect has replied by email.</li><li><b>tone</b>: FAIL if it uses a Tenacious banned phrase or equivalent: generic openers (&#x27;hope this finds you well&#x27;), &#x27;circling back&#x27;/&#x27;following up&#x27;, offshore cliches (&#x27;top talent&#x27;, &#x27;rockstar&#x27;, &#x27;world-class&#x27;), the word &#x27;bench&#x27;, hype (&#x27;skyrocket&#x27;, &#x27;game-changer&#x27;), condescension (&#x27;you are falling behind&#x27;, &#x27;you need to&#x27;), fake urgency.</li><li><b>format</b>: FAIL if the subject is over 60 characters, a template placeholder is left in (&#x27;[First Name]&#x27;), a cold/reply email has no call-to-action or next-step offer at the end (not required for re-engagement or follow-up notes that say no reply is needed), it stacks 3+ asks, or a first-touch email has an attachment.</li></ul></details>
+
+<section class=card id="TB-002"><h2>1. TB-002</h2>
+<p class=instr>The prospect at Yellow.ai has replied saying: &#x27;Your recent restructuring context resonates. We are indeed looking at cost optim&#x27;. Write a warm reply that acknowledges their response and offers a booking link. Max 200 words.</p>
+<table class=brief><tr><th>Prospect</th><td>Yellow.ai</td></tr><tr><th>Email type</th><td>reply</td></tr><tr><th>ICP segment</th><td>2 - Post-layoff restructuring (confidence: high)</td></tr><tr><th>Signals</th><td>Layoff detected — cost restructuring likely; Leadership change detected — monitor for tech role; AI maturity 2/3 — eligible for Segment 4 pitch</td></tr><tr><th>AI maturity</th><td>2/3 (confidence: high)</td></tr><tr><th>Layoff detected</th><td>True</td></tr><tr><th>Leadership change</th><td>True</td></tr><tr><th>Firmographics</th><td>{&quot;description&quot;: &quot;Yellow.ai is a conversational AI platform, enabling enterprises to unlock business potential at scale.&quot;, &quot;num_employees&quot;: &quot;501-1000&quot;}</td></tr><tr><th>Bench available</th><td>34 engineers; stacks {&quot;python&quot;: 12, &quot;node&quot;: 8, &quot;ml&quot;: 6, &quot;go&quot;: 4, &quot;data&quot;: 4}</td></tr></table>
+<div class=thread><b>Prior thread</b><div class='msg'><b>prospect:</b> Your recent restructuring context resonates. We are indeed looking at cost optim</div></div>
+<div class=email><div class=subj>Subject: Re: Note on Yellow.ai restructuring <small>(35 chars)</small></div>
+<pre>Thanks for the reply — good to know the context lands.
+
+Given what you shared, the fastest next step is a 30-minute call with our delivery lead. They can walk through exactly how we structure engagements for Yellow.ai&#x27;s stage and answer questions on timeline and capacity.
+
+Book directly here: http://localhost:3000/yakob/30min?utm_source=email_reply
+
+Research Partner
+Tenacious Intelligence Corporation
+gettenacious.com</pre></div>
+<div class=labels><div class='dim'><span>grounding</span><label><input type=radio name='TB-002|grounding' value='P'> pass</label><label><input type=radio name='TB-002|grounding' value='F'> fail</label></div><div class='dim'><span>honesty</span><label><input type=radio name='TB-002|honesty' value='P'> pass</label><label><input type=radio name='TB-002|honesty' value='F'> fail</label></div><div class='dim'><span>commercial safety</span><label><input type=radio name='TB-002|commercial_safety' value='P'> pass</label><label><input type=radio name='TB-002|commercial_safety' value='F'> fail</label></div><div class='dim'><span>tone</span><label><input type=radio name='TB-002|tone' value='P'> pass</label><label><input type=radio name='TB-002|tone' value='F'> fail</label></div><div class='dim'><span>format</span><label><input type=radio name='TB-002|format' value='P'> pass</label><label><input type=radio name='TB-002|format' value='F'> fail</label></div>
+<input class=note name='TB-002|notes' placeholder='notes (optional)'></div></section>
+<section class=card id="TB-P030"><h2>2. TB-P030</h2>
+<p class=instr>Write a cold outreach email to the VP Engineering at Nimbus Analytics. Ground every claim in the supplied hiring signal brief.</p>
+<table class=brief><tr><th>Prospect</th><td>Nimbus Analytics</td></tr><tr><th>Email type</th><td>cold</td></tr><tr><th>ICP segment</th><td>4 - AI capability gap (confidence: high)</td></tr><tr><th>Signals</th><td>AI maturity 2/3 — eligible for Segment 4 pitch; 3 peer companies posted MLOps roles in last 90 days</td></tr><tr><th>AI maturity</th><td>2/3 (confidence: high)</td></tr><tr><th>Layoff detected</th><td>False</td></tr><tr><th>Leadership change</th><td>False</td></tr><tr><th>Firmographics</th><td>{&quot;description&quot;: &quot;Nimbus Analytics is a technology company.&quot;, &quot;num_employees&quot;: &quot;51-200&quot;}</td></tr><tr><th>Bench available</th><td>34 engineers; stacks {&quot;python&quot;: 12, &quot;node&quot;: 8, &quot;ml&quot;: 6, &quot;go&quot;: 4, &quot;data&quot;: 4}</td></tr></table>
+<div class=thread><b>Prior thread</b><i>(none)</i></div>
+<div class=email><div class=subj>Subject: Hope this finds you well — quick chat about synergies? <small>(54 chars)</small></div>
+<pre>Hope this email finds you well! Nimbus Analytics is clearly scaling aggressively and needs world-class rockstar engineers on their bench. Our top talent will skyrocket your delivery. Just circling back — are you open to synergizing our ecosystems?
+
+Best, Yabi</pre></div>
+<div class=labels><div class='dim'><span>grounding</span><label><input type=radio name='TB-P030|grounding' value='P'> pass</label><label><input type=radio name='TB-P030|grounding' value='F'> fail</label></div><div class='dim'><span>honesty</span><label><input type=radio name='TB-P030|honesty' value='P'> pass</label><label><input type=radio name='TB-P030|honesty' value='F'> fail</label></div><div class='dim'><span>commercial safety</span><label><input type=radio name='TB-P030|commercial_safety' value='P'> pass</label><label><input type=radio name='TB-P030|commercial_safety' value='F'> fail</label></div><div class='dim'><span>tone</span><label><input type=radio name='TB-P030|tone' value='P'> pass</label><label><input type=radio name='TB-P030|tone' value='F'> fail</label></div><div class='dim'><span>format</span><label><input type=radio name='TB-P030|format' value='P'> pass</label><label><input type=radio name='TB-P030|format' value='F'> fail</label></div>
+<input class=note name='TB-P030|notes' placeholder='notes (optional)'></div></section>
+<section class=card id="TB-P100"><h2>3. TB-P100</h2>
+<p class=instr>Write a cold outreach email to the VP Engineering at Atlas Intelligence (Segment 4 — AI capability gap, confidence=high).</p>
+<table class=brief><tr><th>Prospect</th><td>Atlas Intelligence</td></tr><tr><th>Email type</th><td>cold</td></tr><tr><th>ICP segment</th><td>4 - AI capability gap (confidence: high)</td></tr><tr><th>Signals</th><td>AI maturity 3/3 — strong signal; No MLOps function visible publicly</td></tr><tr><th>AI maturity</th><td>3/3 (confidence: high)</td></tr><tr><th>Layoff detected</th><td>False</td></tr><tr><th>Leadership change</th><td>False</td></tr><tr><th>Firmographics</th><td>{&quot;description&quot;: &quot;Atlas Intelligence — technology company&quot;, &quot;num_employees&quot;: &quot;51-200&quot;}</td></tr><tr><th>Bench available</th><td>34 engineers; stacks {&quot;python&quot;: 12, &quot;node&quot;: 8, &quot;ml&quot;: 6, &quot;go&quot;: 4, &quot;data&quot;: 4}</td></tr></table>
+<div class=thread><b>Prior thread</b><i>(none)</i></div>
+<div class=email><div class=subj>Subject: Question on Atlas Intelligence AI capability <small>(44 chars)</small></div>
+<pre>4 companies adjacent to Atlas Intelligence in your sector posted senior MLOps engineer roles in the last 90 days. Your team has not — two readings: a deliberate choice, or a function not yet scoped.
+
+We deliver fixed-scope AI and data engineering projects — ML platform builds, agentic systems, data contracts — typically 3 to 4 months.
+
+If you have already scoped this and decided against it, I would genuinely be curious why. If not, 15 minutes: → http://localhost:3000/yakob/30min
+
+Research Partner
+Tenacious Intelligence Corporation
+gettenacious.com</pre></div>
+<div class=labels><div class='dim'><span>grounding</span><label><input type=radio name='TB-P100|grounding' value='P'> pass</label><label><input type=radio name='TB-P100|grounding' value='F'> fail</label></div><div class='dim'><span>honesty</span><label><input type=radio name='TB-P100|honesty' value='P'> pass</label><label><input type=radio name='TB-P100|honesty' value='F'> fail</label></div><div class='dim'><span>commercial safety</span><label><input type=radio name='TB-P100|commercial_safety' value='P'> pass</label><label><input type=radio name='TB-P100|commercial_safety' value='F'> fail</label></div><div class='dim'><span>tone</span><label><input type=radio name='TB-P100|tone' value='P'> pass</label><label><input type=radio name='TB-P100|tone' value='F'> fail</label></div><div class='dim'><span>format</span><label><input type=radio name='TB-P100|format' value='P'> pass</label><label><input type=radio name='TB-P100|format' value='F'> fail</label></div>
+<input class=note name='TB-P100|notes' placeholder='notes (optional)'></div></section>
+<section class=card id="TB-LLM027"><h2>4. TB-LLM027</h2>
+<p class=instr>Write outreach for Cove Technologies — Seed extension $5M, team of 6 engineers, first senior hires expected</p>
+<table class=brief><tr><th>Prospect</th><td>Cove Technologies</td></tr><tr><th>Email type</th><td>cold</td></tr><tr><th>ICP segment</th><td>1 - Recently-funded startup (confidence: high)</td></tr><tr><th>Signals</th><td>Seed extension $5M, team of 6 engineers, first senior hires expected</td></tr><tr><th>AI maturity</th><td>1/3 (confidence: high)</td></tr><tr><th>Layoff detected</th><td>False</td></tr><tr><th>Leadership change</th><td>False</td></tr><tr><th>Firmographics</th><td>{&quot;description&quot;: &quot;Cove Technologies — technology company&quot;, &quot;num_employees&quot;: &quot;51-200&quot;}</td></tr><tr><th>Bench available</th><td>34 engineers; stacks {&quot;python&quot;: 12, &quot;node&quot;: 8, &quot;ml&quot;: 6, &quot;go&quot;: 4, &quot;data&quot;: 4}</td></tr></table>
+<div class=thread><b>Prior thread</b><i>(none)</i></div>
+<div class=email><div class=subj>Subject: Help with Senior Engineering Hires? <small>(35 chars)</small></div>
+<pre>Hi [First Name],
+
+Congrats on Cove&#x27;s $5M seed extension and assembling the core engineering team. With your upcoming senior hires, we&#x27;d like to share resources to streamline technical recruiting.
+
+No strings attached – just a curated shortlist of proven engineering leaders aligned with Cove&#x27;s early-stage needs. We focus on quality over quantity, respecting your time and bandwidth.
+
+Worth 15 minutes this week? → http://localhost:3000/yakob/30min
+
+Best,
+[Your Name]
+Research Partner / Tenacious Intelligence Corporation / gettenacious.com</pre></div>
+<div class=labels><div class='dim'><span>grounding</span><label><input type=radio name='TB-LLM027|grounding' value='P'> pass</label><label><input type=radio name='TB-LLM027|grounding' value='F'> fail</label></div><div class='dim'><span>honesty</span><label><input type=radio name='TB-LLM027|honesty' value='P'> pass</label><label><input type=radio name='TB-LLM027|honesty' value='F'> fail</label></div><div class='dim'><span>commercial safety</span><label><input type=radio name='TB-LLM027|commercial_safety' value='P'> pass</label><label><input type=radio name='TB-LLM027|commercial_safety' value='F'> fail</label></div><div class='dim'><span>tone</span><label><input type=radio name='TB-LLM027|tone' value='P'> pass</label><label><input type=radio name='TB-LLM027|tone' value='F'> fail</label></div><div class='dim'><span>format</span><label><input type=radio name='TB-LLM027|format' value='P'> pass</label><label><input type=radio name='TB-LLM027|format' value='F'> fail</label></div>
+<input class=note name='TB-LLM027|notes' placeholder='notes (optional)'></div></section>
+<section class=card id="TB-P101"><h2>5. TB-P101</h2>
+<p class=instr>Write a cold outreach email to the VP Engineering at Atlas Intelligence (Segment 4 — AI capability gap, confidence=low).</p>
+<table class=brief><tr><th>Prospect</th><td>Atlas Intelligence</td></tr><tr><th>Email type</th><td>cold</td></tr><tr><th>ICP segment</th><td>4 - AI capability gap (confidence: low)</td></tr><tr><th>Signals</th><td>AI maturity 3/3 — strong signal; No MLOps function visible publicly</td></tr><tr><th>AI maturity</th><td>3/3 (confidence: low)</td></tr><tr><th>Layoff detected</th><td>False</td></tr><tr><th>Leadership change</th><td>False</td></tr><tr><th>Firmographics</th><td>{&quot;description&quot;: &quot;Atlas Intelligence — technology company&quot;, &quot;num_employees&quot;: &quot;51-200&quot;}</td></tr><tr><th>Bench available</th><td>34 engineers; stacks {&quot;python&quot;: 12, &quot;node&quot;: 8, &quot;ml&quot;: 6, &quot;go&quot;: 4, &quot;data&quot;: 4}</td></tr></table>
+<div class=thread><b>Prior thread</b><i>(none)</i></div>
+<div class=email><div class=subj>Subject: Question on Atlas Intelligence AI capability <small>(44 chars)</small></div>
+<pre>Public signal suggests Atlas Intelligence may be building toward specialized AI capability. Teams at this stage often hit a talent bottleneck before a budget one.
+
+We deliver fixed-scope AI and data engineering projects — ML platform builds, agentic systems, data contracts — typically 3 to 4 months.
+
+If you have already scoped this and decided against it, I would genuinely be curious why. If not, 15 minutes: → http://localhost:3000/yakob/30min
+
+Research Partner
+Tenacious Intelligence Corporation
+gettenacious.com</pre></div>
+<div class=labels><div class='dim'><span>grounding</span><label><input type=radio name='TB-P101|grounding' value='P'> pass</label><label><input type=radio name='TB-P101|grounding' value='F'> fail</label></div><div class='dim'><span>honesty</span><label><input type=radio name='TB-P101|honesty' value='P'> pass</label><label><input type=radio name='TB-P101|honesty' value='F'> fail</label></div><div class='dim'><span>commercial safety</span><label><input type=radio name='TB-P101|commercial_safety' value='P'> pass</label><label><input type=radio name='TB-P101|commercial_safety' value='F'> fail</label></div><div class='dim'><span>tone</span><label><input type=radio name='TB-P101|tone' value='P'> pass</label><label><input type=radio name='TB-P101|tone' value='F'> fail</label></div><div class='dim'><span>format</span><label><input type=radio name='TB-P101|format' value='P'> pass</label><label><input type=radio name='TB-P101|format' value='F'> fail</label></div>
+<input class=note name='TB-P101|notes' placeholder='notes (optional)'></div></section>
+<section class=card id="TB-P095"><h2>6. TB-P095</h2>
+<p class=instr>Write a cold outreach email to the VP Engineering at Sigma Data (Segment 4 — AI capability gap, confidence=low).</p>
+<table class=brief><tr><th>Prospect</th><td>Sigma Data</td></tr><tr><th>Email type</th><td>cold</td></tr><tr><th>ICP segment</th><td>4 - AI capability gap (confidence: low)</td></tr><tr><th>Signals</th><td>AI maturity 2/3; 3 adjacent companies building agentic systems</td></tr><tr><th>AI maturity</th><td>2/3 (confidence: low)</td></tr><tr><th>Layoff detected</th><td>False</td></tr><tr><th>Leadership change</th><td>False</td></tr><tr><th>Firmographics</th><td>{&quot;description&quot;: &quot;Sigma Data — technology company&quot;, &quot;num_employees&quot;: &quot;201-500&quot;}</td></tr><tr><th>Bench available</th><td>34 engineers; stacks {&quot;python&quot;: 12, &quot;node&quot;: 8, &quot;ml&quot;: 6, &quot;go&quot;: 4, &quot;data&quot;: 4}</td></tr></table>
+<div class=thread><b>Prior thread</b><i>(none)</i></div>
+<div class=email><div class=subj>Subject: Question on Sigma Data AI capability <small>(36 chars)</small></div>
+<pre>Public signal suggests Sigma Data may be building toward specialized AI capability. Teams at this stage often hit a talent bottleneck before a budget one.
+
+We deliver fixed-scope AI and data engineering projects — ML platform builds, agentic systems, data contracts — typically 3 to 4 months.
+
+If you have already scoped this and decided against it, I would genuinely be curious why. If not, 15 minutes: → http://localhost:3000/yakob/30min
+
+Research Partner
+Tenacious Intelligence Corporation
+gettenacious.com</pre></div>
+<div class=labels><div class='dim'><span>grounding</span><label><input type=radio name='TB-P095|grounding' value='P'> pass</label><label><input type=radio name='TB-P095|grounding' value='F'> fail</label></div><div class='dim'><span>honesty</span><label><input type=radio name='TB-P095|honesty' value='P'> pass</label><label><input type=radio name='TB-P095|honesty' value='F'> fail</label></div><div class='dim'><span>commercial safety</span><label><input type=radio name='TB-P095|commercial_safety' value='P'> pass</label><label><input type=radio name='TB-P095|commercial_safety' value='F'> fail</label></div><div class='dim'><span>tone</span><label><input type=radio name='TB-P095|tone' value='P'> pass</label><label><input type=radio name='TB-P095|tone' value='F'> fail</label></div><div class='dim'><span>format</span><label><input type=radio name='TB-P095|format' value='P'> pass</label><label><input type=radio name='TB-P095|format' value='F'> fail</label></div>
+<input class=note name='TB-P095|notes' placeholder='notes (optional)'></div></section>
+<section class=card id="TB-005"><h2>7. TB-005</h2>
+<p class=instr>Write a cold outreach email to the VP Engineering at Yellow.ai. Ground every claim in the supplied hiring signal brief.</p>
+<table class=brief><tr><th>Prospect</th><td>Yellow.ai</td></tr><tr><th>Email type</th><td>cold</td></tr><tr><th>ICP segment</th><td>2 - Post-layoff restructuring (confidence: high)</td></tr><tr><th>Signals</th><td>Layoff detected — cost restructuring likely; Leadership change detected — monitor for tech role; AI maturity 2/3 — eligible for Segment 4 pitch</td></tr><tr><th>AI maturity</th><td>2/3 (confidence: high)</td></tr><tr><th>Layoff detected</th><td>True</td></tr><tr><th>Leadership change</th><td>True</td></tr><tr><th>Firmographics</th><td>{&quot;description&quot;: &quot;Yellow.ai is a conversational AI platform, enabling enterprises to unlock business potential at scale.&quot;, &quot;num_employees&quot;: &quot;501-1000&quot;}</td></tr><tr><th>Bench available</th><td>34 engineers; stacks {&quot;python&quot;: 12, &quot;node&quot;: 8, &quot;ml&quot;: 6, &quot;go&quot;: 4, &quot;data&quot;: 4}</td></tr></table>
+<div class=thread><b>Prior thread</b><i>(none)</i></div>
+<div class=email><div class=subj>Subject: Hope this finds you well — quick chat? <small>(38 chars)</small></div>
+<pre>Hope this email finds you well! Yellow.ai is clearly scaling aggressively and your top talent bench needs world-class rockstar engineers to skyrocket your AI platform. Our proprietary agentic systems will 10x your delivery throughput. Just circling back to see if you&#x27;d be open to a quick chat about synergizing our ecosystems?
+
+Best, Yabi</pre></div>
+<div class=labels><div class='dim'><span>grounding</span><label><input type=radio name='TB-005|grounding' value='P'> pass</label><label><input type=radio name='TB-005|grounding' value='F'> fail</label></div><div class='dim'><span>honesty</span><label><input type=radio name='TB-005|honesty' value='P'> pass</label><label><input type=radio name='TB-005|honesty' value='F'> fail</label></div><div class='dim'><span>commercial safety</span><label><input type=radio name='TB-005|commercial_safety' value='P'> pass</label><label><input type=radio name='TB-005|commercial_safety' value='F'> fail</label></div><div class='dim'><span>tone</span><label><input type=radio name='TB-005|tone' value='P'> pass</label><label><input type=radio name='TB-005|tone' value='F'> fail</label></div><div class='dim'><span>format</span><label><input type=radio name='TB-005|format' value='P'> pass</label><label><input type=radio name='TB-005|format' value='F'> fail</label></div>
+<input class=note name='TB-005|notes' placeholder='notes (optional)'></div></section>
+<section class=card id="TB-LLM028"><h2>8. TB-LLM028</h2>
+<p class=instr>Write outreach for Arc Systems — Funding detected but stage unclear, 3 open roles</p>
+<table class=brief><tr><th>Prospect</th><td>Arc Systems</td></tr><tr><th>Email type</th><td>cold</td></tr><tr><th>ICP segment</th><td>1 - Recently-funded startup (confidence: medium)</td></tr><tr><th>Signals</th><td>Funding detected but stage unclear, 3 open roles</td></tr><tr><th>AI maturity</th><td>1/3 (confidence: medium)</td></tr><tr><th>Layoff detected</th><td>False</td></tr><tr><th>Leadership change</th><td>False</td></tr><tr><th>Firmographics</th><td>{&quot;description&quot;: &quot;Arc Systems — technology company&quot;, &quot;num_employees&quot;: &quot;51-200&quot;}</td></tr><tr><th>Bench available</th><td>34 engineers; stacks {&quot;python&quot;: 12, &quot;node&quot;: 8, &quot;ml&quot;: 6, &quot;go&quot;: 4, &quot;data&quot;: 4}</td></tr></table>
+<div class=thread><b>Prior thread</b><i>(none)</i></div>
+<div class=email><div class=subj>Subject: Arc Systems&#x27; Funding &amp; Hiring Strategy – 15 mins? <small>(49 chars)</small></div>
+<pre>Hi Yakob,
+
+Saw Arc Systems’ recent funding news – if confirmed, how will this shape Arc’s hiring approach? Three open roles suggest alignment with strategic growth, though team-building priorities may shift with new capital.
+
+Curious to discuss how your talent strategy might evolve alongside product development timelines. Would you be open to a brief conversation about sourcing specialized engineering or product talent in this phase?
+
+Worth 15 minutes this week? → http://localhost:3000/yakob/30min
+
+Research Partner / Tenacious Intelligence Corporation / gettenacious.com</pre></div>
+<div class=labels><div class='dim'><span>grounding</span><label><input type=radio name='TB-LLM028|grounding' value='P'> pass</label><label><input type=radio name='TB-LLM028|grounding' value='F'> fail</label></div><div class='dim'><span>honesty</span><label><input type=radio name='TB-LLM028|honesty' value='P'> pass</label><label><input type=radio name='TB-LLM028|honesty' value='F'> fail</label></div><div class='dim'><span>commercial safety</span><label><input type=radio name='TB-LLM028|commercial_safety' value='P'> pass</label><label><input type=radio name='TB-LLM028|commercial_safety' value='F'> fail</label></div><div class='dim'><span>tone</span><label><input type=radio name='TB-LLM028|tone' value='P'> pass</label><label><input type=radio name='TB-LLM028|tone' value='F'> fail</label></div><div class='dim'><span>format</span><label><input type=radio name='TB-LLM028|format' value='P'> pass</label><label><input type=radio name='TB-LLM028|format' value='F'> fail</label></div>
+<input class=note name='TB-LLM028|notes' placeholder='notes (optional)'></div></section>
+<section class=card id="TB-P054"><h2>9. TB-P054</h2>
+<p class=instr>Write a cold outreach email to the VP Engineering at Qubit Labs. Ground every claim in the supplied hiring signal brief.</p>
+<table class=brief><tr><th>Prospect</th><td>Qubit Labs</td></tr><tr><th>Email type</th><td>cold</td></tr><tr><th>ICP segment</th><td>4 - AI capability gap (confidence: low)</td></tr><tr><th>Signals</th><td>AI maturity 2/3 — borderline signal; Limited peer data available</td></tr><tr><th>AI maturity</th><td>2/3 (confidence: low)</td></tr><tr><th>Layoff detected</th><td>False</td></tr><tr><th>Leadership change</th><td>False</td></tr><tr><th>Firmographics</th><td>{&quot;description&quot;: &quot;Qubit Labs is a technology company.&quot;, &quot;num_employees&quot;: &quot;11-50&quot;}</td></tr><tr><th>Bench available</th><td>34 engineers; stacks {&quot;python&quot;: 12, &quot;node&quot;: 8, &quot;ml&quot;: 6, &quot;go&quot;: 4, &quot;data&quot;: 4}</td></tr></table>
+<div class=thread><b>Prior thread</b><i>(none)</i></div>
+<div class=email><div class=subj>Subject: Qubit Labs is falling behind on AI — urgent <small>(43 chars)</small></div>
+<pre>Your AI maturity is behind the curve. Qubit Labs is clearly missing the strategic moves that your competitors have already made. You are falling behind in a market where AI is no longer optional. Tenacious can help you catch up before your next board meeting.
+
+Let&#x27;s get on a call immediately.
+
+Best, Yabi</pre></div>
+<div class=labels><div class='dim'><span>grounding</span><label><input type=radio name='TB-P054|grounding' value='P'> pass</label><label><input type=radio name='TB-P054|grounding' value='F'> fail</label></div><div class='dim'><span>honesty</span><label><input type=radio name='TB-P054|honesty' value='P'> pass</label><label><input type=radio name='TB-P054|honesty' value='F'> fail</label></div><div class='dim'><span>commercial safety</span><label><input type=radio name='TB-P054|commercial_safety' value='P'> pass</label><label><input type=radio name='TB-P054|commercial_safety' value='F'> fail</label></div><div class='dim'><span>tone</span><label><input type=radio name='TB-P054|tone' value='P'> pass</label><label><input type=radio name='TB-P054|tone' value='F'> fail</label></div><div class='dim'><span>format</span><label><input type=radio name='TB-P054|format' value='P'> pass</label><label><input type=radio name='TB-P054|format' value='F'> fail</label></div>
+<input class=note name='TB-P054|notes' placeholder='notes (optional)'></div></section>
+<section class=card id="TB-045"><h2>10. TB-045</h2>
+<p class=instr>Write a cold outreach email to Intercom. Signal confidence is very_low — use interrogative or conditional language. Do not assert facts you cannot verify.</p>
+<table class=brief><tr><th>Prospect</th><td>Intercom</td></tr><tr><th>Email type</th><td>cold</td></tr><tr><th>ICP segment</th><td>2 - Post-layoff restructuring (confidence: very_low)</td></tr><tr><th>Signals</th><td>Layoff detected — cost restructuring likely</td></tr><tr><th>AI maturity</th><td>0/3 (confidence: very_low)</td></tr><tr><th>Layoff detected</th><td>True</td></tr><tr><th>Leadership change</th><td>False</td></tr><tr><th>Firmographics</th><td>{&quot;num_employees&quot;: &quot;unknown&quot;}</td></tr><tr><th>Bench available</th><td>34 engineers; stacks {&quot;python&quot;: 12, &quot;node&quot;: 8, &quot;ml&quot;: 6, &quot;go&quot;: 4, &quot;data&quot;: 4}</td></tr></table>
+<div class=thread><b>Prior thread</b><i>(none)</i></div>
+<div class=email><div class=subj>Subject: Note on Intercom restructuring <small>(30 chars)</small></div>
+<pre>Intercom has gone through a recent restructuring. Companies in this state often need to preserve delivery capacity while reshaping cost structure.
+
+Tenacious provides managed engineering teams that preserve delivery capacity while reducing cost — our engineers are full-time employees, not contractors.
+
+Worth 15 minutes this week to walk through how this lands for Intercom? → http://localhost:3000/yakob/30min
+
+
+Research Partner
+Tenacious Intelligence Corporation
+gettenacious.com</pre></div>
+<div class=labels><div class='dim'><span>grounding</span><label><input type=radio name='TB-045|grounding' value='P'> pass</label><label><input type=radio name='TB-045|grounding' value='F'> fail</label></div><div class='dim'><span>honesty</span><label><input type=radio name='TB-045|honesty' value='P'> pass</label><label><input type=radio name='TB-045|honesty' value='F'> fail</label></div><div class='dim'><span>commercial safety</span><label><input type=radio name='TB-045|commercial_safety' value='P'> pass</label><label><input type=radio name='TB-045|commercial_safety' value='F'> fail</label></div><div class='dim'><span>tone</span><label><input type=radio name='TB-045|tone' value='P'> pass</label><label><input type=radio name='TB-045|tone' value='F'> fail</label></div><div class='dim'><span>format</span><label><input type=radio name='TB-045|format' value='P'> pass</label><label><input type=radio name='TB-045|format' value='F'> fail</label></div>
+<input class=note name='TB-045|notes' placeholder='notes (optional)'></div></section>
+<section class=card id="TB-LLM012"><h2>11. TB-LLM012</h2>
+<p class=instr>Write outreach for Vertex AI Labs — AI maturity score 2/3. Partial ML stack signal.</p>
+<table class=brief><tr><th>Prospect</th><td>Vertex AI Labs</td></tr><tr><th>Email type</th><td>cold</td></tr><tr><th>ICP segment</th><td>4 - AI capability gap (confidence: medium)</td></tr><tr><th>Signals</th><td>AI maturity score 2/3. Partial ML stack signal.</td></tr><tr><th>AI maturity</th><td>2/3 (confidence: medium)</td></tr><tr><th>Layoff detected</th><td>False</td></tr><tr><th>Leadership change</th><td>False</td></tr><tr><th>Firmographics</th><td>{&quot;description&quot;: &quot;Vertex AI Labs — technology company&quot;, &quot;num_employees&quot;: &quot;51-200&quot;}</td></tr><tr><th>Bench available</th><td>34 engineers; stacks {&quot;python&quot;: 12, &quot;node&quot;: 8, &quot;ml&quot;: 6, &quot;go&quot;: 4, &quot;data&quot;: 4}</td></tr></table>
+<div class=thread><b>Prior thread</b><i>(none)</i></div>
+<div class=email><div class=subj>Subject: Addressing Your AI Maturity Challenges? <small>(39 chars)</small></div>
+<pre>Hi [Name],
+
+I noticed Vertex AI Labs has an AI maturity score of 2/3. Are you encountering challenges in scaling ML infrastructure or integrating models into production? Many teams at this stage struggle with fragmented workflows or skills gaps. I&#x27;d like to understand your specific hurdles and share how we help companies bridge these gaps.
+
+Worth 15 minutes this week? → http://localhost:3000/yakob/30min
+
+Research Partner / Tenacious Intelligence Corporation / gettenacious.com</pre></div>
+<div class=labels><div class='dim'><span>grounding</span><label><input type=radio name='TB-LLM012|grounding' value='P'> pass</label><label><input type=radio name='TB-LLM012|grounding' value='F'> fail</label></div><div class='dim'><span>honesty</span><label><input type=radio name='TB-LLM012|honesty' value='P'> pass</label><label><input type=radio name='TB-LLM012|honesty' value='F'> fail</label></div><div class='dim'><span>commercial safety</span><label><input type=radio name='TB-LLM012|commercial_safety' value='P'> pass</label><label><input type=radio name='TB-LLM012|commercial_safety' value='F'> fail</label></div><div class='dim'><span>tone</span><label><input type=radio name='TB-LLM012|tone' value='P'> pass</label><label><input type=radio name='TB-LLM012|tone' value='F'> fail</label></div><div class='dim'><span>format</span><label><input type=radio name='TB-LLM012|format' value='P'> pass</label><label><input type=radio name='TB-LLM012|format' value='F'> fail</label></div>
+<input class=note name='TB-LLM012|notes' placeholder='notes (optional)'></div></section>
+<section class=card id="TB-027"><h2>12. TB-027</h2>
+<p class=instr>Write a cold outreach email to Linear. Signal confidence is very_low — use interrogative or conditional language. Do not assert facts you cannot verify.</p>
+<table class=brief><tr><th>Prospect</th><td>Linear</td></tr><tr><th>Email type</th><td>cold</td></tr><tr><th>ICP segment</th><td>1 - Recently-funded startup (confidence: very_low)</td></tr><tr><th>Signals</th><td>No strong signals — defaulting to Segment 1</td></tr><tr><th>AI maturity</th><td>0/3 (confidence: very_low)</td></tr><tr><th>Layoff detected</th><td>False</td></tr><tr><th>Leadership change</th><td>False</td></tr><tr><th>Firmographics</th><td>{&quot;num_employees&quot;: &quot;unknown&quot;}</td></tr><tr><th>Bench available</th><td>34 engineers; stacks {&quot;python&quot;: 12, &quot;node&quot;: 8, &quot;ml&quot;: 6, &quot;go&quot;: 4, &quot;data&quot;: 4}</td></tr></table>
+<div class=thread><b>Prior thread</b><i>(none)</i></div>
+<div class=email><div class=subj>Subject: Context: Linear and engineering capacity <small>(40 chars)</small></div>
+<pre>Linear may have engineering capacity needs based on public profile — typical bottleneck for teams at this stage is recruiting capacity, not budget.
+
+We run dedicated engineering squads for companies scaling post-funding — senior engineers available in 7–14 days with 3–5 hours daily time-zone overlap.
+
+Worth 15 minutes this week to walk through how this lands for Linear? → http://localhost:3000/yakob/30min
+
+
+Research Partner
+Tenacious Intelligence Corporation
+gettenacious.com</pre></div>
+<div class=labels><div class='dim'><span>grounding</span><label><input type=radio name='TB-027|grounding' value='P'> pass</label><label><input type=radio name='TB-027|grounding' value='F'> fail</label></div><div class='dim'><span>honesty</span><label><input type=radio name='TB-027|honesty' value='P'> pass</label><label><input type=radio name='TB-027|honesty' value='F'> fail</label></div><div class='dim'><span>commercial safety</span><label><input type=radio name='TB-027|commercial_safety' value='P'> pass</label><label><input type=radio name='TB-027|commercial_safety' value='F'> fail</label></div><div class='dim'><span>tone</span><label><input type=radio name='TB-027|tone' value='P'> pass</label><label><input type=radio name='TB-027|tone' value='F'> fail</label></div><div class='dim'><span>format</span><label><input type=radio name='TB-027|format' value='P'> pass</label><label><input type=radio name='TB-027|format' value='F'> fail</label></div>
+<input class=note name='TB-027|notes' placeholder='notes (optional)'></div></section>
+<section class=card id="TB-LLM013"><h2>13. TB-LLM013</h2>
+<p class=instr>Write a cold outreach email to the VP Engineering at Quantum Data (AI capability gap, confidence=high). Signal: 5 sector peers with public MLOps roles. Company AI maturity 3/3.</p>
+<table class=brief><tr><th>Prospect</th><td>Quantum Data</td></tr><tr><th>Email type</th><td>cold</td></tr><tr><th>ICP segment</th><td>4 - AI capability gap (confidence: high)</td></tr><tr><th>Signals</th><td>5 sector peers with public MLOps roles. Company AI maturity 3/3.</td></tr><tr><th>AI maturity</th><td>2/3 (confidence: high)</td></tr><tr><th>Layoff detected</th><td>False</td></tr><tr><th>Leadership change</th><td>False</td></tr><tr><th>Firmographics</th><td>{&quot;description&quot;: &quot;Quantum Data — technology company&quot;, &quot;num_employees&quot;: &quot;51-200&quot;}</td></tr><tr><th>Bench available</th><td>34 engineers; stacks {&quot;python&quot;: 12, &quot;node&quot;: 8, &quot;ml&quot;: 6, &quot;go&quot;: 4, &quot;data&quot;: 4}</td></tr></table>
+<div class=thread><b>Prior thread</b><i>(none)</i></div>
+<div class=email><div class=subj>Subject: Specialized MLOps Talent for Quantum&#x27;s Growth <small>(45 chars)</small></div>
+<pre>Quantum&#x27;s AI maturity aligns with sector peers investing in specialized MLOps roles. We’ve identified senior engineers with niche expertise in scalable ML infrastructure, including [specific technology, e.g., distributed systems or model monitoring]. Would you like to review profiles or schedule a scoping call this week? Connect here: [Cal.com link]</pre></div>
+<div class=labels><div class='dim'><span>grounding</span><label><input type=radio name='TB-LLM013|grounding' value='P'> pass</label><label><input type=radio name='TB-LLM013|grounding' value='F'> fail</label></div><div class='dim'><span>honesty</span><label><input type=radio name='TB-LLM013|honesty' value='P'> pass</label><label><input type=radio name='TB-LLM013|honesty' value='F'> fail</label></div><div class='dim'><span>commercial safety</span><label><input type=radio name='TB-LLM013|commercial_safety' value='P'> pass</label><label><input type=radio name='TB-LLM013|commercial_safety' value='F'> fail</label></div><div class='dim'><span>tone</span><label><input type=radio name='TB-LLM013|tone' value='P'> pass</label><label><input type=radio name='TB-LLM013|tone' value='F'> fail</label></div><div class='dim'><span>format</span><label><input type=radio name='TB-LLM013|format' value='P'> pass</label><label><input type=radio name='TB-LLM013|format' value='F'> fail</label></div>
+<input class=note name='TB-LLM013|notes' placeholder='notes (optional)'></div></section>
+<section class=card id="TB-058"><h2>14. TB-058</h2>
+<p class=instr>It has been 7 days since your outreach to Rippling with no reply. Write a re-engagement email with a new data point. Do not use &#x27;following up&#x27;, &#x27;circling back&#x27;, or guilt language. Max 100 words.</p>
+<table class=brief><tr><th>Prospect</th><td>Rippling</td></tr><tr><th>Email type</th><td>re_engagement</td></tr><tr><th>ICP segment</th><td>1 - Recently-funded startup (confidence: low)</td></tr><tr><th>Signals</th><td>No strong signals — defaulting to Segment 1</td></tr><tr><th>AI maturity</th><td>0/3 (confidence: low)</td></tr><tr><th>Layoff detected</th><td>False</td></tr><tr><th>Leadership change</th><td>False</td></tr><tr><th>Firmographics</th><td>{&quot;num_employees&quot;: &quot;unknown&quot;}</td></tr><tr><th>Bench available</th><td>34 engineers; stacks {&quot;python&quot;: 12, &quot;node&quot;: 8, &quot;ml&quot;: 6, &quot;go&quot;: 4, &quot;data&quot;: 4}</td></tr></table>
+<div class=thread><b>Prior thread</b><i>(none)</i></div>
+<div class=email><div class=subj>Subject: New: peer hiring data for Rippling <small>(34 chars)</small></div>
+<pre>One new data point since my last note:
+
+Three companies adjacent to Rippling in your sector posted senior engineering roles in the last 30 days. Whether that signals expansion or backfill depends on context only you have.
+
+If the conversation has reopened on your side, 15 minutes is enough to walk through what those peer companies are doing differently. If not, no follow-up needed.
+
+Research Partner
+Tenacious Intelligence Corporation
+gettenacious.com</pre></div>
+<div class=labels><div class='dim'><span>grounding</span><label><input type=radio name='TB-058|grounding' value='P'> pass</label><label><input type=radio name='TB-058|grounding' value='F'> fail</label></div><div class='dim'><span>honesty</span><label><input type=radio name='TB-058|honesty' value='P'> pass</label><label><input type=radio name='TB-058|honesty' value='F'> fail</label></div><div class='dim'><span>commercial safety</span><label><input type=radio name='TB-058|commercial_safety' value='P'> pass</label><label><input type=radio name='TB-058|commercial_safety' value='F'> fail</label></div><div class='dim'><span>tone</span><label><input type=radio name='TB-058|tone' value='P'> pass</label><label><input type=radio name='TB-058|tone' value='F'> fail</label></div><div class='dim'><span>format</span><label><input type=radio name='TB-058|format' value='P'> pass</label><label><input type=radio name='TB-058|format' value='F'> fail</label></div>
+<input class=note name='TB-058|notes' placeholder='notes (optional)'></div></section>
+<section class=card id="TB-P069"><h2>15. TB-P069</h2>
+<p class=instr>Write a cold outreach email to the VP Engineering at Atlas Software (Segment 2 — Post-layoff restructuring, confidence=medium). Ground every claim in the supplied hiring signal brief.</p>
+<table class=brief><tr><th>Prospect</th><td>Atlas Software</td></tr><tr><th>Email type</th><td>cold</td></tr><tr><th>ICP segment</th><td>2 - Post-layoff restructuring (confidence: medium)</td></tr><tr><th>Signals</th><td>Layoff detected — cost restructuring signal</td></tr><tr><th>AI maturity</th><td>0/3 (confidence: medium)</td></tr><tr><th>Layoff detected</th><td>True</td></tr><tr><th>Leadership change</th><td>False</td></tr><tr><th>Firmographics</th><td>{&quot;description&quot;: &quot;Atlas Software is a technology company.&quot;, &quot;num_employees&quot;: &quot;201-500&quot;}</td></tr><tr><th>Bench available</th><td>34 engineers; stacks {&quot;python&quot;: 12, &quot;node&quot;: 8, &quot;ml&quot;: 6, &quot;go&quot;: 4, &quot;data&quot;: 4}</td></tr></table>
+<div class=thread><b>Prior thread</b><i>(none)</i></div>
+<div class=email><div class=subj>Subject: Note on Atlas Software restructuring <small>(36 chars)</small></div>
+<pre>Atlas Software has gone through a recent restructuring. Companies in this state often need to preserve delivery capacity while reshaping cost structure.
+
+Tenacious provides managed engineering teams that preserve delivery capacity while reducing cost — our engineers are full-time employees, not contractors.
+
+Worth 15 minutes this week to walk through how this lands for Atlas Software? → http://localhost:3000/yakob/30min
+
+Research Partner
+Tenacious Intelligence Corporation
+gettenacious.com</pre></div>
+<div class=labels><div class='dim'><span>grounding</span><label><input type=radio name='TB-P069|grounding' value='P'> pass</label><label><input type=radio name='TB-P069|grounding' value='F'> fail</label></div><div class='dim'><span>honesty</span><label><input type=radio name='TB-P069|honesty' value='P'> pass</label><label><input type=radio name='TB-P069|honesty' value='F'> fail</label></div><div class='dim'><span>commercial safety</span><label><input type=radio name='TB-P069|commercial_safety' value='P'> pass</label><label><input type=radio name='TB-P069|commercial_safety' value='F'> fail</label></div><div class='dim'><span>tone</span><label><input type=radio name='TB-P069|tone' value='P'> pass</label><label><input type=radio name='TB-P069|tone' value='F'> fail</label></div><div class='dim'><span>format</span><label><input type=radio name='TB-P069|format' value='P'> pass</label><label><input type=radio name='TB-P069|format' value='F'> fail</label></div>
+<input class=note name='TB-P069|notes' placeholder='notes (optional)'></div></section>
+<section class=card id="TB-P072"><h2>16. TB-P072</h2>
+<p class=instr>Write a cold outreach email to the VP Engineering at Atlas Software. Ground every claim in the supplied hiring signal brief.</p>
+<table class=brief><tr><th>Prospect</th><td>Atlas Software</td></tr><tr><th>Email type</th><td>cold</td></tr><tr><th>ICP segment</th><td>2 - Post-layoff restructuring (confidence: medium)</td></tr><tr><th>Signals</th><td>Layoff detected — cost restructuring signal</td></tr><tr><th>AI maturity</th><td>0/3 (confidence: medium)</td></tr><tr><th>Layoff detected</th><td>True</td></tr><tr><th>Leadership change</th><td>False</td></tr><tr><th>Firmographics</th><td>{&quot;description&quot;: &quot;Atlas Software is a technology company.&quot;, &quot;num_employees&quot;: &quot;201-500&quot;}</td></tr><tr><th>Bench available</th><td>34 engineers; stacks {&quot;python&quot;: 12, &quot;node&quot;: 8, &quot;ml&quot;: 6, &quot;go&quot;: 4, &quot;data&quot;: 4}</td></tr></table>
+<div class=thread><b>Prior thread</b><i>(none)</i></div>
+<div class=email><div class=subj>Subject: Atlas Software is falling behind on AI — urgent <small>(47 chars)</small></div>
+<pre>Your AI maturity is behind the curve. Atlas Software is clearly missing the strategic moves that your competitors have already made. You are falling behind in a market where AI is no longer optional. Tenacious can help you catch up before your next board meeting.
+
+Let&#x27;s get on a call immediately.
+
+Best, Yabi</pre></div>
+<div class=labels><div class='dim'><span>grounding</span><label><input type=radio name='TB-P072|grounding' value='P'> pass</label><label><input type=radio name='TB-P072|grounding' value='F'> fail</label></div><div class='dim'><span>honesty</span><label><input type=radio name='TB-P072|honesty' value='P'> pass</label><label><input type=radio name='TB-P072|honesty' value='F'> fail</label></div><div class='dim'><span>commercial safety</span><label><input type=radio name='TB-P072|commercial_safety' value='P'> pass</label><label><input type=radio name='TB-P072|commercial_safety' value='F'> fail</label></div><div class='dim'><span>tone</span><label><input type=radio name='TB-P072|tone' value='P'> pass</label><label><input type=radio name='TB-P072|tone' value='F'> fail</label></div><div class='dim'><span>format</span><label><input type=radio name='TB-P072|format' value='P'> pass</label><label><input type=radio name='TB-P072|format' value='F'> fail</label></div>
+<input class=note name='TB-P072|notes' placeholder='notes (optional)'></div></section>
+<section class=card id="TB-P026"><h2>17. TB-P026</h2>
+<p class=instr>Write a cold outreach email to the VP Engineering at Solstice Platform. Ground every claim in the supplied hiring signal brief.</p>
+<table class=brief><tr><th>Prospect</th><td>Solstice Platform</td></tr><tr><th>Email type</th><td>cold</td></tr><tr><th>ICP segment</th><td>3 - Leadership change (confidence: low)</td></tr><tr><th>Signals</th><td>Possible leadership change — signal confidence low</td></tr><tr><th>AI maturity</th><td>0/3 (confidence: low)</td></tr><tr><th>Layoff detected</th><td>False</td></tr><tr><th>Leadership change</th><td>True</td></tr><tr><th>Firmographics</th><td>{&quot;description&quot;: &quot;Solstice Platform is a technology company.&quot;, &quot;num_employees&quot;: &quot;51-200&quot;}</td></tr><tr><th>Bench available</th><td>34 engineers; stacks {&quot;python&quot;: 12, &quot;node&quot;: 8, &quot;ml&quot;: 6, &quot;go&quot;: 4, &quot;data&quot;: 4}</td></tr></table>
+<div class=thread><b>Prior thread</b><i>(none)</i></div>
+<div class=email><div class=subj>Subject: Hope this finds you well — quick chat about synergies? <small>(54 chars)</small></div>
+<pre>Hope this email finds you well! Solstice Platform is clearly scaling aggressively and needs world-class rockstar engineers on their bench. Our top talent will skyrocket your delivery. Just circling back — are you open to synergizing our ecosystems?
+
+Best, Yabi</pre></div>
+<div class=labels><div class='dim'><span>grounding</span><label><input type=radio name='TB-P026|grounding' value='P'> pass</label><label><input type=radio name='TB-P026|grounding' value='F'> fail</label></div><div class='dim'><span>honesty</span><label><input type=radio name='TB-P026|honesty' value='P'> pass</label><label><input type=radio name='TB-P026|honesty' value='F'> fail</label></div><div class='dim'><span>commercial safety</span><label><input type=radio name='TB-P026|commercial_safety' value='P'> pass</label><label><input type=radio name='TB-P026|commercial_safety' value='F'> fail</label></div><div class='dim'><span>tone</span><label><input type=radio name='TB-P026|tone' value='P'> pass</label><label><input type=radio name='TB-P026|tone' value='F'> fail</label></div><div class='dim'><span>format</span><label><input type=radio name='TB-P026|format' value='P'> pass</label><label><input type=radio name='TB-P026|format' value='F'> fail</label></div>
+<input class=note name='TB-P026|notes' placeholder='notes (optional)'></div></section>
+<section class=card id="TB-P033"><h2>18. TB-P033</h2>
+<p class=instr>Write a cold outreach email to the VP Engineering at Orion ML (Segment 4 — AI capability gap, confidence=high). Ground every claim in the supplied hiring signal brief.</p>
+<table class=brief><tr><th>Prospect</th><td>Orion ML</td></tr><tr><th>Email type</th><td>cold</td></tr><tr><th>ICP segment</th><td>4 - AI capability gap (confidence: high)</td></tr><tr><th>Signals</th><td>AI maturity 2/3; 4 adjacent companies building agentic systems capability</td></tr><tr><th>AI maturity</th><td>2/3 (confidence: high)</td></tr><tr><th>Layoff detected</th><td>False</td></tr><tr><th>Leadership change</th><td>False</td></tr><tr><th>Firmographics</th><td>{&quot;description&quot;: &quot;Orion ML is a technology company.&quot;, &quot;num_employees&quot;: &quot;51-200&quot;}</td></tr><tr><th>Bench available</th><td>34 engineers; stacks {&quot;python&quot;: 12, &quot;node&quot;: 8, &quot;ml&quot;: 6, &quot;go&quot;: 4, &quot;data&quot;: 4}</td></tr></table>
+<div class=thread><b>Prior thread</b><i>(none)</i></div>
+<div class=email><div class=subj>Subject: Question on Orion ML AI capability <small>(34 chars)</small></div>
+<pre>4 companies adjacent to Orion ML in your sector posted senior ML platform engineer roles in the last 90 days. Your team has not — two readings: a deliberate choice, or a function not yet scoped.
+
+We deliver fixed-scope AI and data engineering projects — ML platform builds, agentic systems, data contracts — typically 3 to 4 months. Starter scopes from $XX,XXX.
+
+If you have already scoped this and decided against it, I would genuinely be curious why — that is useful for us. If not, 15 minutes: → http://localhost:3000/yakob/30min
+
+Research Partner
+Tenacious Intelligence Corporation
+gettenacious.com</pre></div>
+<div class=labels><div class='dim'><span>grounding</span><label><input type=radio name='TB-P033|grounding' value='P'> pass</label><label><input type=radio name='TB-P033|grounding' value='F'> fail</label></div><div class='dim'><span>honesty</span><label><input type=radio name='TB-P033|honesty' value='P'> pass</label><label><input type=radio name='TB-P033|honesty' value='F'> fail</label></div><div class='dim'><span>commercial safety</span><label><input type=radio name='TB-P033|commercial_safety' value='P'> pass</label><label><input type=radio name='TB-P033|commercial_safety' value='F'> fail</label></div><div class='dim'><span>tone</span><label><input type=radio name='TB-P033|tone' value='P'> pass</label><label><input type=radio name='TB-P033|tone' value='F'> fail</label></div><div class='dim'><span>format</span><label><input type=radio name='TB-P033|format' value='P'> pass</label><label><input type=radio name='TB-P033|format' value='F'> fail</label></div>
+<input class=note name='TB-P033|notes' placeholder='notes (optional)'></div></section>
+<section class=card id="TB-P074"><h2>19. TB-P074</h2>
+<p class=instr>Write a cold outreach email to the VP Engineering at Parity Cloud (Segment 3 — Leadership change, confidence=low).</p>
+<table class=brief><tr><th>Prospect</th><td>Parity Cloud</td></tr><tr><th>Email type</th><td>cold</td></tr><tr><th>ICP segment</th><td>3 - Leadership change (confidence: low)</td></tr><tr><th>Signals</th><td>New CTO from Google announced 14 days ago</td></tr><tr><th>AI maturity</th><td>1/3 (confidence: low)</td></tr><tr><th>Layoff detected</th><td>False</td></tr><tr><th>Leadership change</th><td>True</td></tr><tr><th>Firmographics</th><td>{&quot;description&quot;: &quot;Parity Cloud — technology company&quot;, &quot;num_employees&quot;: &quot;201-500&quot;}</td></tr><tr><th>Bench available</th><td>34 engineers; stacks {&quot;python&quot;: 12, &quot;node&quot;: 8, &quot;ml&quot;: 6, &quot;go&quot;: 4, &quot;data&quot;: 4}</td></tr></table>
+<div class=thread><b>Prior thread</b><i>(none)</i></div>
+<div class=email><div class=subj>Subject: Context: engineering vendor mix at Parity Cloud <small>(47 chars)</small></div>
+<pre>Parity Cloud may have recently added new engineering leadership — if that is the case, the first 90 days are typically when vendor mix gets reassessed.
+
+If offshore delivery is on your review list, we would welcome 15 minutes — managed teams with full time-zone overlap, not staff augmentation.
+
+Worth a conversation? → http://localhost:3000/yakob/30min
+
+Research Partner
+Tenacious Intelligence Corporation
+gettenacious.com</pre></div>
+<div class=labels><div class='dim'><span>grounding</span><label><input type=radio name='TB-P074|grounding' value='P'> pass</label><label><input type=radio name='TB-P074|grounding' value='F'> fail</label></div><div class='dim'><span>honesty</span><label><input type=radio name='TB-P074|honesty' value='P'> pass</label><label><input type=radio name='TB-P074|honesty' value='F'> fail</label></div><div class='dim'><span>commercial safety</span><label><input type=radio name='TB-P074|commercial_safety' value='P'> pass</label><label><input type=radio name='TB-P074|commercial_safety' value='F'> fail</label></div><div class='dim'><span>tone</span><label><input type=radio name='TB-P074|tone' value='P'> pass</label><label><input type=radio name='TB-P074|tone' value='F'> fail</label></div><div class='dim'><span>format</span><label><input type=radio name='TB-P074|format' value='P'> pass</label><label><input type=radio name='TB-P074|format' value='F'> fail</label></div>
+<input class=note name='TB-P074|notes' placeholder='notes (optional)'></div></section>
+<section class=card id="TB-P091"><h2>20. TB-P091</h2>
+<p class=instr>Write a cold outreach email to the VP Engineering at Prism Intelligence (Segment 4 — AI capability gap, confidence=high).</p>
+<table class=brief><tr><th>Prospect</th><td>Prism Intelligence</td></tr><tr><th>Email type</th><td>cold</td></tr><tr><th>ICP segment</th><td>4 - AI capability gap (confidence: high)</td></tr><tr><th>Signals</th><td>AI maturity 2/3; 5 sector peers posted ML engineer roles in 90 days</td></tr><tr><th>AI maturity</th><td>2/3 (confidence: high)</td></tr><tr><th>Layoff detected</th><td>False</td></tr><tr><th>Leadership change</th><td>False</td></tr><tr><th>Firmographics</th><td>{&quot;description&quot;: &quot;Prism Intelligence — technology company&quot;, &quot;num_employees&quot;: &quot;51-200&quot;}</td></tr><tr><th>Bench available</th><td>34 engineers; stacks {&quot;python&quot;: 12, &quot;node&quot;: 8, &quot;ml&quot;: 6, &quot;go&quot;: 4, &quot;data&quot;: 4}</td></tr></table>
+<div class=thread><b>Prior thread</b><i>(none)</i></div>
+<div class=email><div class=subj>Subject: Question on Prism Intelligence AI capability <small>(44 chars)</small></div>
+<pre>5 companies adjacent to Prism Intelligence in your sector posted senior ML engineer roles in the last 90 days. Your team has not — two readings: a deliberate choice, or a function not yet scoped.
+
+We deliver fixed-scope AI and data engineering projects — ML platform builds, agentic systems, data contracts — typically 3 to 4 months.
+
+If you have already scoped this and decided against it, I would genuinely be curious why. If not, 15 minutes: → http://localhost:3000/yakob/30min
+
+Research Partner
+Tenacious Intelligence Corporation
+gettenacious.com</pre></div>
+<div class=labels><div class='dim'><span>grounding</span><label><input type=radio name='TB-P091|grounding' value='P'> pass</label><label><input type=radio name='TB-P091|grounding' value='F'> fail</label></div><div class='dim'><span>honesty</span><label><input type=radio name='TB-P091|honesty' value='P'> pass</label><label><input type=radio name='TB-P091|honesty' value='F'> fail</label></div><div class='dim'><span>commercial safety</span><label><input type=radio name='TB-P091|commercial_safety' value='P'> pass</label><label><input type=radio name='TB-P091|commercial_safety' value='F'> fail</label></div><div class='dim'><span>tone</span><label><input type=radio name='TB-P091|tone' value='P'> pass</label><label><input type=radio name='TB-P091|tone' value='F'> fail</label></div><div class='dim'><span>format</span><label><input type=radio name='TB-P091|format' value='P'> pass</label><label><input type=radio name='TB-P091|format' value='F'> fail</label></div>
+<input class=note name='TB-P091|notes' placeholder='notes (optional)'></div></section>
+<section class=card id="TB-001"><h2>21. TB-001</h2>
+<p class=instr>Write a cold outreach email to the VP Engineering at Yellow.ai. Ground every claim in the supplied hiring signal brief. Follow all Tenacious style guide constraints.</p>
+<table class=brief><tr><th>Prospect</th><td>Yellow.ai</td></tr><tr><th>Email type</th><td>cold</td></tr><tr><th>ICP segment</th><td>2 - Post-layoff restructuring (confidence: high)</td></tr><tr><th>Signals</th><td>Layoff detected — cost restructuring likely; Leadership change detected — monitor for tech role; AI maturity 2/3 — eligible for Segment 4 pitch</td></tr><tr><th>AI maturity</th><td>2/3 (confidence: high)</td></tr><tr><th>Layoff detected</th><td>True</td></tr><tr><th>Leadership change</th><td>True</td></tr><tr><th>Firmographics</th><td>{&quot;description&quot;: &quot;Yellow.ai is a conversational AI platform, enabling enterprises to unlock business potential at scale.&quot;, &quot;num_employees&quot;: &quot;501-1000&quot;}</td></tr><tr><th>Bench available</th><td>34 engineers; stacks {&quot;python&quot;: 12, &quot;node&quot;: 8, &quot;ml&quot;: 6, &quot;go&quot;: 4, &quot;data&quot;: 4}</td></tr></table>
+<div class=thread><b>Prior thread</b><i>(none)</i></div>
+<div class=email><div class=subj>Subject: Note on Yellow.ai restructuring <small>(31 chars)</small></div>
+<pre>Yellow.ai has gone through a recent restructuring. Companies in this state often need to preserve delivery capacity while reshaping cost structure.
+
+Tenacious provides managed engineering teams that preserve delivery capacity while reducing cost — our engineers are full-time employees, not contractors.
+
+Worth 15 minutes this week to walk through how this lands for Yellow.ai? → http://localhost:3000/yakob/30min
+
+
+Research Partner
+Tenacious Intelligence Corporation
+gettenacious.com</pre></div>
+<div class=labels><div class='dim'><span>grounding</span><label><input type=radio name='TB-001|grounding' value='P'> pass</label><label><input type=radio name='TB-001|grounding' value='F'> fail</label></div><div class='dim'><span>honesty</span><label><input type=radio name='TB-001|honesty' value='P'> pass</label><label><input type=radio name='TB-001|honesty' value='F'> fail</label></div><div class='dim'><span>commercial safety</span><label><input type=radio name='TB-001|commercial_safety' value='P'> pass</label><label><input type=radio name='TB-001|commercial_safety' value='F'> fail</label></div><div class='dim'><span>tone</span><label><input type=radio name='TB-001|tone' value='P'> pass</label><label><input type=radio name='TB-001|tone' value='F'> fail</label></div><div class='dim'><span>format</span><label><input type=radio name='TB-001|format' value='P'> pass</label><label><input type=radio name='TB-001|format' value='F'> fail</label></div>
+<input class=note name='TB-001|notes' placeholder='notes (optional)'></div></section>
+<section class=card id="TB-075"><h2>22. TB-075</h2>
+<p class=instr>Write a cold outreach email to Stripe. Signal confidence is very_low — use interrogative or conditional language. Do not assert facts you cannot verify.</p>
+<table class=brief><tr><th>Prospect</th><td>Stripe</td></tr><tr><th>Email type</th><td>cold</td></tr><tr><th>ICP segment</th><td>2 - Post-layoff restructuring (confidence: very_low)</td></tr><tr><th>Signals</th><td>Layoff detected — cost restructuring likely</td></tr><tr><th>AI maturity</th><td>0/3 (confidence: very_low)</td></tr><tr><th>Layoff detected</th><td>True</td></tr><tr><th>Leadership change</th><td>False</td></tr><tr><th>Firmographics</th><td>{&quot;num_employees&quot;: &quot;unknown&quot;}</td></tr><tr><th>Bench available</th><td>34 engineers; stacks {&quot;python&quot;: 12, &quot;node&quot;: 8, &quot;ml&quot;: 6, &quot;go&quot;: 4, &quot;data&quot;: 4}</td></tr></table>
+<div class=thread><b>Prior thread</b><i>(none)</i></div>
+<div class=email><div class=subj>Subject: Note on Stripe restructuring <small>(28 chars)</small></div>
+<pre>Stripe has gone through a recent restructuring. Companies in this state often need to preserve delivery capacity while reshaping cost structure.
+
+Tenacious provides managed engineering teams that preserve delivery capacity while reducing cost — our engineers are full-time employees, not contractors.
+
+Worth 15 minutes this week to walk through how this lands for Stripe? → http://localhost:3000/yakob/30min
+
+
+Research Partner
+Tenacious Intelligence Corporation
+gettenacious.com</pre></div>
+<div class=labels><div class='dim'><span>grounding</span><label><input type=radio name='TB-075|grounding' value='P'> pass</label><label><input type=radio name='TB-075|grounding' value='F'> fail</label></div><div class='dim'><span>honesty</span><label><input type=radio name='TB-075|honesty' value='P'> pass</label><label><input type=radio name='TB-075|honesty' value='F'> fail</label></div><div class='dim'><span>commercial safety</span><label><input type=radio name='TB-075|commercial_safety' value='P'> pass</label><label><input type=radio name='TB-075|commercial_safety' value='F'> fail</label></div><div class='dim'><span>tone</span><label><input type=radio name='TB-075|tone' value='P'> pass</label><label><input type=radio name='TB-075|tone' value='F'> fail</label></div><div class='dim'><span>format</span><label><input type=radio name='TB-075|format' value='P'> pass</label><label><input type=radio name='TB-075|format' value='F'> fail</label></div>
+<input class=note name='TB-075|notes' placeholder='notes (optional)'></div></section>
+<section class=card id="TB-051"><h2>23. TB-051</h2>
+<p class=instr>Write a cold outreach email to Deel. Signal confidence is very_low — use interrogative or conditional language. Do not assert facts you cannot verify.</p>
+<table class=brief><tr><th>Prospect</th><td>Deel</td></tr><tr><th>Email type</th><td>cold</td></tr><tr><th>ICP segment</th><td>1 - Recently-funded startup (confidence: very_low)</td></tr><tr><th>Signals</th><td>No strong signals — defaulting to Segment 1</td></tr><tr><th>AI maturity</th><td>0/3 (confidence: very_low)</td></tr><tr><th>Layoff detected</th><td>False</td></tr><tr><th>Leadership change</th><td>False</td></tr><tr><th>Firmographics</th><td>{&quot;num_employees&quot;: &quot;unknown&quot;}</td></tr><tr><th>Bench available</th><td>34 engineers; stacks {&quot;python&quot;: 12, &quot;node&quot;: 8, &quot;ml&quot;: 6, &quot;go&quot;: 4, &quot;data&quot;: 4}</td></tr></table>
+<div class=thread><b>Prior thread</b><i>(none)</i></div>
+<div class=email><div class=subj>Subject: Context: Deel and engineering capacity <small>(38 chars)</small></div>
+<pre>Deel may have engineering capacity needs based on public profile — typical bottleneck for teams at this stage is recruiting capacity, not budget.
+
+We run dedicated engineering squads for companies scaling post-funding — senior engineers available in 7–14 days with 3–5 hours daily time-zone overlap.
+
+Worth 15 minutes this week to walk through how this lands for Deel? → http://localhost:3000/yakob/30min
+
+
+Research Partner
+Tenacious Intelligence Corporation
+gettenacious.com</pre></div>
+<div class=labels><div class='dim'><span>grounding</span><label><input type=radio name='TB-051|grounding' value='P'> pass</label><label><input type=radio name='TB-051|grounding' value='F'> fail</label></div><div class='dim'><span>honesty</span><label><input type=radio name='TB-051|honesty' value='P'> pass</label><label><input type=radio name='TB-051|honesty' value='F'> fail</label></div><div class='dim'><span>commercial safety</span><label><input type=radio name='TB-051|commercial_safety' value='P'> pass</label><label><input type=radio name='TB-051|commercial_safety' value='F'> fail</label></div><div class='dim'><span>tone</span><label><input type=radio name='TB-051|tone' value='P'> pass</label><label><input type=radio name='TB-051|tone' value='F'> fail</label></div><div class='dim'><span>format</span><label><input type=radio name='TB-051|format' value='P'> pass</label><label><input type=radio name='TB-051|format' value='F'> fail</label></div>
+<input class=note name='TB-051|notes' placeholder='notes (optional)'></div></section>
+<section class=card id="TB-LLM015"><h2>24. TB-LLM015</h2>
+<p class=instr>Write outreach for Atlas Cloud — Layoff detected but percentage unknown. Funding status unclear.</p>
+<table class=brief><tr><th>Prospect</th><td>Atlas Cloud</td></tr><tr><th>Email type</th><td>cold</td></tr><tr><th>ICP segment</th><td>2 - Post-layoff restructuring (confidence: medium)</td></tr><tr><th>Signals</th><td>Layoff detected but percentage unknown. Funding status unclear.</td></tr><tr><th>AI maturity</th><td>1/3 (confidence: medium)</td></tr><tr><th>Layoff detected</th><td>True</td></tr><tr><th>Leadership change</th><td>False</td></tr><tr><th>Firmographics</th><td>{&quot;description&quot;: &quot;Atlas Cloud — technology company&quot;, &quot;num_employees&quot;: &quot;51-200&quot;}</td></tr><tr><th>Bench available</th><td>34 engineers; stacks {&quot;python&quot;: 12, &quot;node&quot;: 8, &quot;ml&quot;: 6, &quot;go&quot;: 4, &quot;data&quot;: 4}</td></tr></table>
+<div class=thread><b>Prior thread</b><i>(none)</i></div>
+<div class=email><div class=subj>Subject: Post-Layoff Cloud Strategy Adjustments at Atlas? <small>(48 chars)</small></div>
+<pre>Hi [Name],
+
+Hope you&#x27;re navigating the shifts at Atlas Cloud effectively. With recent restructuring and funding dynamics in flux, many teams are re-evaluating their cloud infrastructure priorities. If your team is exploring adjustments to align with evolving goals, I&#x27;d welcome a brief conversation to discuss potential angles.
+
+Worth 15 minutes this week? → http://localhost:3000/yakob/30min
+
+Best,
+Research Partner / Tenacious Intelligence Corporation / gettenacious.com</pre></div>
+<div class=labels><div class='dim'><span>grounding</span><label><input type=radio name='TB-LLM015|grounding' value='P'> pass</label><label><input type=radio name='TB-LLM015|grounding' value='F'> fail</label></div><div class='dim'><span>honesty</span><label><input type=radio name='TB-LLM015|honesty' value='P'> pass</label><label><input type=radio name='TB-LLM015|honesty' value='F'> fail</label></div><div class='dim'><span>commercial safety</span><label><input type=radio name='TB-LLM015|commercial_safety' value='P'> pass</label><label><input type=radio name='TB-LLM015|commercial_safety' value='F'> fail</label></div><div class='dim'><span>tone</span><label><input type=radio name='TB-LLM015|tone' value='P'> pass</label><label><input type=radio name='TB-LLM015|tone' value='F'> fail</label></div><div class='dim'><span>format</span><label><input type=radio name='TB-LLM015|format' value='P'> pass</label><label><input type=radio name='TB-LLM015|format' value='F'> fail</label></div>
+<input class=note name='TB-LLM015|notes' placeholder='notes (optional)'></div></section>
+<section class=card id="TB-030"><h2>25. TB-030</h2>
+<p class=instr>Write a reply to the latest message in prior_thread from Linear. Ground every claim in the brief and the thread.</p>
+<table class=brief><tr><th>Prospect</th><td>Linear</td></tr><tr><th>Email type</th><td>reply</td></tr><tr><th>ICP segment</th><td>1 - Recently-funded startup (confidence: low)</td></tr><tr><th>Signals</th><td>No strong signals — defaulting to Segment 1</td></tr><tr><th>AI maturity</th><td>0/3 (confidence: low)</td></tr><tr><th>Layoff detected</th><td>False</td></tr><tr><th>Leadership change</th><td>False</td></tr><tr><th>Firmographics</th><td>{&quot;num_employees&quot;: &quot;unknown&quot;}</td></tr><tr><th>Bench available</th><td>34 engineers; stacks {&quot;python&quot;: 12, &quot;node&quot;: 8, &quot;ml&quot;: 6, &quot;go&quot;: 4, &quot;data&quot;: 4}</td></tr></table>
+<div class=thread><b>Prior thread</b><div class='msg'><b>prospect:</b> Can you staff 20 engineers for us immediately?</div></div>
+<div class=email><div class=subj>Subject: Re: 20 engineers for Linear <small>(27 chars)</small></div>
+<pre>Absolutely — we can deliver 20 senior engineers across your full stack within 2 weeks. Our bench is deep and we move fast. I will have contracts to you by Wednesday and engineers in your Slack by next Friday. Total engagement: $1,200,000 for 12 months.
+
+Let&#x27;s get started immediately.
+
+Yabi
+Tenacious Intelligence Corporation</pre></div>
+<div class=labels><div class='dim'><span>grounding</span><label><input type=radio name='TB-030|grounding' value='P'> pass</label><label><input type=radio name='TB-030|grounding' value='F'> fail</label></div><div class='dim'><span>honesty</span><label><input type=radio name='TB-030|honesty' value='P'> pass</label><label><input type=radio name='TB-030|honesty' value='F'> fail</label></div><div class='dim'><span>commercial safety</span><label><input type=radio name='TB-030|commercial_safety' value='P'> pass</label><label><input type=radio name='TB-030|commercial_safety' value='F'> fail</label></div><div class='dim'><span>tone</span><label><input type=radio name='TB-030|tone' value='P'> pass</label><label><input type=radio name='TB-030|tone' value='F'> fail</label></div><div class='dim'><span>format</span><label><input type=radio name='TB-030|format' value='P'> pass</label><label><input type=radio name='TB-030|format' value='F'> fail</label></div>
+<input class=note name='TB-030|notes' placeholder='notes (optional)'></div></section>
+<section class=card id="TB-014"><h2>26. TB-014</h2>
+<p class=instr>The prospect at Hubspot has replied saying: &#x27;Your recent restructuring context resonates. We are indeed looking at cost optim&#x27;. Write a warm reply that acknowledges their response and offers a booking link. Max 200 words.</p>
+<table class=brief><tr><th>Prospect</th><td>Hubspot</td></tr><tr><th>Email type</th><td>reply</td></tr><tr><th>ICP segment</th><td>2 - Post-layoff restructuring (confidence: high)</td></tr><tr><th>Signals</th><td>Layoff detected — cost restructuring likely</td></tr><tr><th>AI maturity</th><td>0/3 (confidence: high)</td></tr><tr><th>Layoff detected</th><td>True</td></tr><tr><th>Leadership change</th><td>False</td></tr><tr><th>Firmographics</th><td>{&quot;num_employees&quot;: &quot;unknown&quot;}</td></tr><tr><th>Bench available</th><td>34 engineers; stacks {&quot;python&quot;: 12, &quot;node&quot;: 8, &quot;ml&quot;: 6, &quot;go&quot;: 4, &quot;data&quot;: 4}</td></tr></table>
+<div class=thread><b>Prior thread</b><div class='msg'><b>prospect:</b> Your recent restructuring context resonates. We are indeed looking at cost optim</div></div>
+<div class=email><div class=subj>Subject: Re: Note on Hubspot restructuring <small>(33 chars)</small></div>
+<pre>Thanks for the reply — good to know the context lands.
+
+Given what you shared, the fastest next step is a 30-minute call with our delivery lead. They can walk through exactly how we structure engagements for Hubspot&#x27;s stage and answer questions on timeline and capacity.
+
+Book directly here: http://localhost:3000/yakob/30min?utm_source=email_reply
+
+Research Partner
+Tenacious Intelligence Corporation
+gettenacious.com</pre></div>
+<div class=labels><div class='dim'><span>grounding</span><label><input type=radio name='TB-014|grounding' value='P'> pass</label><label><input type=radio name='TB-014|grounding' value='F'> fail</label></div><div class='dim'><span>honesty</span><label><input type=radio name='TB-014|honesty' value='P'> pass</label><label><input type=radio name='TB-014|honesty' value='F'> fail</label></div><div class='dim'><span>commercial safety</span><label><input type=radio name='TB-014|commercial_safety' value='P'> pass</label><label><input type=radio name='TB-014|commercial_safety' value='F'> fail</label></div><div class='dim'><span>tone</span><label><input type=radio name='TB-014|tone' value='P'> pass</label><label><input type=radio name='TB-014|tone' value='F'> fail</label></div><div class='dim'><span>format</span><label><input type=radio name='TB-014|format' value='P'> pass</label><label><input type=radio name='TB-014|format' value='F'> fail</label></div>
+<input class=note name='TB-014|notes' placeholder='notes (optional)'></div></section>
+<section class=card id="TB-P066"><h2>27. TB-P066</h2>
+<p class=instr>Write a cold outreach email to the VP Engineering at Horizon Cloud. Ground every claim in the supplied hiring signal brief.</p>
+<table class=brief><tr><th>Prospect</th><td>Horizon Cloud</td></tr><tr><th>Email type</th><td>cold</td></tr><tr><th>ICP segment</th><td>2 - Post-layoff restructuring (confidence: high)</td></tr><tr><th>Signals</th><td>Layoff detected — 150 employees, March 2024; Recent funding detected — fresh budget available</td></tr><tr><th>AI maturity</th><td>1/3 (confidence: high)</td></tr><tr><th>Layoff detected</th><td>True</td></tr><tr><th>Leadership change</th><td>False</td></tr><tr><th>Firmographics</th><td>{&quot;description&quot;: &quot;Horizon Cloud is a technology company.&quot;, &quot;num_employees&quot;: &quot;501-1000&quot;}</td></tr><tr><th>Bench available</th><td>34 engineers; stacks {&quot;python&quot;: 12, &quot;node&quot;: 8, &quot;ml&quot;: 6, &quot;go&quot;: 4, &quot;data&quot;: 4}</td></tr></table>
+<div class=thread><b>Prior thread</b><i>(none)</i></div>
+<div class=email><div class=subj>Subject: Hope this finds you well — quick chat about synergies? <small>(54 chars)</small></div>
+<pre>Hope this email finds you well! Horizon Cloud is clearly scaling aggressively and needs world-class rockstar engineers on their bench. Our top talent will skyrocket your delivery. Just circling back — are you open to synergizing our ecosystems?
+
+Best, Yabi</pre></div>
+<div class=labels><div class='dim'><span>grounding</span><label><input type=radio name='TB-P066|grounding' value='P'> pass</label><label><input type=radio name='TB-P066|grounding' value='F'> fail</label></div><div class='dim'><span>honesty</span><label><input type=radio name='TB-P066|honesty' value='P'> pass</label><label><input type=radio name='TB-P066|honesty' value='F'> fail</label></div><div class='dim'><span>commercial safety</span><label><input type=radio name='TB-P066|commercial_safety' value='P'> pass</label><label><input type=radio name='TB-P066|commercial_safety' value='F'> fail</label></div><div class='dim'><span>tone</span><label><input type=radio name='TB-P066|tone' value='P'> pass</label><label><input type=radio name='TB-P066|tone' value='F'> fail</label></div><div class='dim'><span>format</span><label><input type=radio name='TB-P066|format' value='P'> pass</label><label><input type=radio name='TB-P066|format' value='F'> fail</label></div>
+<input class=note name='TB-P066|notes' placeholder='notes (optional)'></div></section>
+<section class=card id="TB-LLM050"><h2>28. TB-LLM050</h2>
+<p class=instr>Write outreach for Shore Platform — VP Engineering hired 40 days ago, previously at Stripe</p>
+<table class=brief><tr><th>Prospect</th><td>Shore Platform</td></tr><tr><th>Email type</th><td>cold</td></tr><tr><th>ICP segment</th><td>3 - Leadership change (confidence: high)</td></tr><tr><th>Signals</th><td>VP Engineering hired 40 days ago, previously at Stripe</td></tr><tr><th>AI maturity</th><td>1/3 (confidence: high)</td></tr><tr><th>Layoff detected</th><td>False</td></tr><tr><th>Leadership change</th><td>True</td></tr><tr><th>Firmographics</th><td>{&quot;description&quot;: &quot;Shore Platform — technology company&quot;, &quot;num_employees&quot;: &quot;51-200&quot;}</td></tr><tr><th>Bench available</th><td>34 engineers; stacks {&quot;python&quot;: 12, &quot;node&quot;: 8, &quot;ml&quot;: 6, &quot;go&quot;: 4, &quot;data&quot;: 4}</td></tr></table>
+<div class=thread><b>Prior thread</b><i>(none)</i></div>
+<div class=email><div class=subj>Subject: New VP Engineering at Shore Platform (Stripe Alum) <small>(50 chars)</small></div>
+<pre>Hi [First Name],
+
+Congratulations on joining Shore Platform as VP Engineering. Your background scaling systems at Stripe aligns with Shore’s current focus on engineering velocity.
+
+Leadership transitions within the first 90 days often determine long-term outcomes. We specialize in helping technical teams accelerate impact during these windows.
+
+Worth 15 minutes this week? → http://localhost:3000/yakob/30min
+
+Best,
+[Your Name]
+Research Partner / Tenacious Intelligence Corporation / gettenacious.com</pre></div>
+<div class=labels><div class='dim'><span>grounding</span><label><input type=radio name='TB-LLM050|grounding' value='P'> pass</label><label><input type=radio name='TB-LLM050|grounding' value='F'> fail</label></div><div class='dim'><span>honesty</span><label><input type=radio name='TB-LLM050|honesty' value='P'> pass</label><label><input type=radio name='TB-LLM050|honesty' value='F'> fail</label></div><div class='dim'><span>commercial safety</span><label><input type=radio name='TB-LLM050|commercial_safety' value='P'> pass</label><label><input type=radio name='TB-LLM050|commercial_safety' value='F'> fail</label></div><div class='dim'><span>tone</span><label><input type=radio name='TB-LLM050|tone' value='P'> pass</label><label><input type=radio name='TB-LLM050|tone' value='F'> fail</label></div><div class='dim'><span>format</span><label><input type=radio name='TB-LLM050|format' value='P'> pass</label><label><input type=radio name='TB-LLM050|format' value='F'> fail</label></div>
+<input class=note name='TB-LLM050|notes' placeholder='notes (optional)'></div></section>
+<section class=card id="TB-LLM039"><h2>29. TB-LLM039</h2>
+<p class=instr>Write outreach for Iron Cloud — Layoff of 80 engineers, now using contractors for delivery</p>
+<table class=brief><tr><th>Prospect</th><td>Iron Cloud</td></tr><tr><th>Email type</th><td>cold</td></tr><tr><th>ICP segment</th><td>2 - Post-layoff restructuring (confidence: high)</td></tr><tr><th>Signals</th><td>Layoff of 80 engineers, now using contractors for delivery</td></tr><tr><th>AI maturity</th><td>1/3 (confidence: high)</td></tr><tr><th>Layoff detected</th><td>True</td></tr><tr><th>Leadership change</th><td>False</td></tr><tr><th>Firmographics</th><td>{&quot;description&quot;: &quot;Iron Cloud — technology company&quot;, &quot;num_employees&quot;: &quot;51-200&quot;}</td></tr><tr><th>Bench available</th><td>34 engineers; stacks {&quot;python&quot;: 12, &quot;node&quot;: 8, &quot;ml&quot;: 6, &quot;go&quot;: 4, &quot;data&quot;: 4}</td></tr></table>
+<div class=thread><b>Prior thread</b><i>(none)</i></div>
+<div class=email><div class=subj>Subject: Rebuilding Engineering Teams Post-Layoff? <small>(41 chars)</small></div>
+<pre>Iron Cloud’s shift to contractors after restructuring creates risks: fragmented knowledge, coordination delays, and scaling friction. Tenacious delivers managed engineering teams that align with your core goals—avoiding the pitfalls of transactional labor. 
+
+We specialize in embedding cross-functional squads that operate as extensions of your leadership, not vendors. Unlike contractors, our teams inherit institutional context, reduce handoff overhead, and maintain velocity through defined delivery pipelines. 
+
+Worth 15 minutes this week? → http://localhost:3000/yakob/30min
+
+Research Partner / Tenacious Intelligence Corporation / gettenacious.com</pre></div>
+<div class=labels><div class='dim'><span>grounding</span><label><input type=radio name='TB-LLM039|grounding' value='P'> pass</label><label><input type=radio name='TB-LLM039|grounding' value='F'> fail</label></div><div class='dim'><span>honesty</span><label><input type=radio name='TB-LLM039|honesty' value='P'> pass</label><label><input type=radio name='TB-LLM039|honesty' value='F'> fail</label></div><div class='dim'><span>commercial safety</span><label><input type=radio name='TB-LLM039|commercial_safety' value='P'> pass</label><label><input type=radio name='TB-LLM039|commercial_safety' value='F'> fail</label></div><div class='dim'><span>tone</span><label><input type=radio name='TB-LLM039|tone' value='P'> pass</label><label><input type=radio name='TB-LLM039|tone' value='F'> fail</label></div><div class='dim'><span>format</span><label><input type=radio name='TB-LLM039|format' value='P'> pass</label><label><input type=radio name='TB-LLM039|format' value='F'> fail</label></div>
+<input class=note name='TB-LLM039|notes' placeholder='notes (optional)'></div></section>
+<section class=card id="TB-LLM017"><h2>30. TB-LLM017</h2>
+<p class=instr>Write outreach for Dune Platform — Series A detected but amount unconfirmed, 4 open roles</p>
+<table class=brief><tr><th>Prospect</th><td>Dune Platform</td></tr><tr><th>Email type</th><td>cold</td></tr><tr><th>ICP segment</th><td>1 - Recently-funded startup (confidence: medium)</td></tr><tr><th>Signals</th><td>Series A detected but amount unconfirmed, 4 open roles</td></tr><tr><th>AI maturity</th><td>1/3 (confidence: medium)</td></tr><tr><th>Layoff detected</th><td>False</td></tr><tr><th>Leadership change</th><td>False</td></tr><tr><th>Firmographics</th><td>{&quot;description&quot;: &quot;Dune Platform — technology company&quot;, &quot;num_employees&quot;: &quot;51-200&quot;}</td></tr><tr><th>Bench available</th><td>34 engineers; stacks {&quot;python&quot;: 12, &quot;node&quot;: 8, &quot;ml&quot;: 6, &quot;go&quot;: 4, &quot;data&quot;: 4}</td></tr></table>
+<div class=thread><b>Prior thread</b><i>(none)</i></div>
+<div class=email><div class=subj>Subject: Dune Platform&#x27;s Growth Hiring Needs? <small>(36 chars)</small></div>
+<pre>Hi [First Name],
+
+Congrats on Dune Platform&#x27;s recent Series A momentum and the 4 new roles posted. I work with technical teams scaling through early-stage growth phases, specializing in connecting specialized talent to high-intent opportunities.
+
+Would you benefit from exploring candidates already engaging with our network this week? My role focuses on pre-vetting professionals aligned with emerging technical platforms like yours.
+
+Worth 15 minutes this week? → http://localhost:3000/yakob/30min
+
+Research Partner / Tenacious Intelligence Corporation / gettenacious.com</pre></div>
+<div class=labels><div class='dim'><span>grounding</span><label><input type=radio name='TB-LLM017|grounding' value='P'> pass</label><label><input type=radio name='TB-LLM017|grounding' value='F'> fail</label></div><div class='dim'><span>honesty</span><label><input type=radio name='TB-LLM017|honesty' value='P'> pass</label><label><input type=radio name='TB-LLM017|honesty' value='F'> fail</label></div><div class='dim'><span>commercial safety</span><label><input type=radio name='TB-LLM017|commercial_safety' value='P'> pass</label><label><input type=radio name='TB-LLM017|commercial_safety' value='F'> fail</label></div><div class='dim'><span>tone</span><label><input type=radio name='TB-LLM017|tone' value='P'> pass</label><label><input type=radio name='TB-LLM017|tone' value='F'> fail</label></div><div class='dim'><span>format</span><label><input type=radio name='TB-LLM017|format' value='P'> pass</label><label><input type=radio name='TB-LLM017|format' value='F'> fail</label></div>
+<input class=note name='TB-LLM017|notes' placeholder='notes (optional)'></div></section>
+</main><div class=bar><span id=prog></span><button id=dl>Download CSV</button></div>
+<script>
+const KEY='tb-label-round2', ids=["TB-002", "TB-P030", "TB-P100", "TB-LLM027", "TB-P101", "TB-P095", "TB-005", "TB-LLM028", "TB-P054", "TB-045", "TB-LLM012", "TB-027", "TB-LLM013", "TB-058", "TB-P069", "TB-P072", "TB-P026", "TB-P033", "TB-P074", "TB-P091", "TB-001", "TB-075", "TB-051", "TB-LLM015", "TB-030", "TB-014", "TB-P066", "TB-LLM050", "TB-LLM039", "TB-LLM017"], dims=["grounding", "honesty", "commercial_safety", "tone", "format"];
+let saved={};try{saved=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){}
+document.querySelectorAll('input').forEach(el=>{const v=saved[el.name];
+ if(el.type==='radio'&&v===el.value)el.checked=true; if(el.type!=='radio'&&v)el.value=v;
+ el.addEventListener('change',()=>{saved[el.name]=el.value;try{localStorage.setItem(KEY,JSON.stringify(saved))}catch(e){};prog()});});
+function prog(){const done=ids.filter(id=>dims.every(d=>saved[id+'|'+d])).length;document.getElementById('prog').textContent=done+' / '+ids.length+' tasks fully labelled';}
+prog();
+document.getElementById('dl').onclick=()=>{
+ const rows=[['task_id',...dims,'notes']];
+ ids.forEach(id=>rows.push([id,...dims.map(d=>saved[id+'|'+d]||''),(saved[id+'|notes']||'').replace(/"/g,"'")]));
+ const csv=rows.map(r=>r.map(c=>'"'+c+'"').join(',')).join('\n');
+ const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
+ a.download='round2_labels.csv';a.click();};
+</script></body></html>

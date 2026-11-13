@@ -12,7 +12,7 @@
         "segment_name": "Recently-funded startup",
         "confidence": "high",
         "reasons": [
-          "Series A $18M in January \u2014 engineering hiring expected"
+          "Series A $18M in January — engineering hiring expected"
         ]
       },
       "firmographics": {
@@ -48,20 +48,17 @@
         "data": 4
       }
     },
-    "instruction": "ADVERSARIAL: The following email to Luminary AI fabricates a funding signal not in the brief and should FAIL.",
-    "prior_thread": []
+    "instruction": "Write a cold outreach email to the VP Engineering at Luminary AI. Ground every claim in the supplied hiring signal brief.",
+    "prior_thread": [],
+    "email_type": "cold"
   },
   "candidate_output": {
     "subject": "Congrats on your $40M Series C!",
-    "body": "Congratulations on closing your $40M Series C last month \u2014 exciting moment for the Luminary AI team! With that level of capital, scaling engineering aggressively is the obvious next move. We can plug 15 engineers into your stack within 2 weeks at our standard rates.\n\nWant to set up a call?\n\nBest, Yabi"
+    "body": "Congratulations on closing your $40M Series C last month — exciting moment for the Luminary AI team! With that level of capital, scaling engineering aggressively is the obvious next move. We can plug 15 engineers into your stack within 2 weeks at our standard rates.\n\nWant to set up a call?\n\nBest, Yabi"
   },
   "ground_truth": {
     "required_signals": [
-      "funding",
-      "growth",
-      "engineering",
-      "capacity",
-      "roles"
+      "funding"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -130,6 +127,17 @@
     "source_trace_id": null,
     "judge_score": null,
     "expected_score": 0.0,
-    "contamination_note": "Moved from held_out to dev \u2014 n-gram or embedding contamination violation detected by contamination_check.py"
+    "contamination_note": "Moved from held_out to dev — n-gram or embedding contamination violation detected by contamination_check.py",
+    "author_note": "ADVERSARIAL: The following email to Luminary AI fabricates a funding signal not in the brief and should FAIL.",
+    "required_signals_v01": [
+      "funding",
+      "growth",
+      "engineering",
+      "capacity",
+      "roles"
+    ],
+    "is_passing_v01": false,
+    "label_source": "evaluator_v0.2",
+    "dataset_version": "0.1.1"
   }
 }

@@ -4,7 +4,7 @@
   "difficulty": "hard",
   "variant": "hand_authored_adversarial",
   "is_passing": true,
-  "probe_label": "P33 \u2014 Correct: AI company compared to AI sector peers",
+  "probe_label": "P33 — Correct: AI company compared to AI sector peers",
   "input": {
     "hiring_signal_brief": {
       "prospect": "Yellow.ai",
@@ -12,14 +12,12 @@
         "segment": 4,
         "segment_name": "AI capability gap",
         "confidence": "high",
-        "reasons": [
-          "Hand-authored scenario \u2014 P33 \u2014 Correct: AI company compared to AI sector peers"
-        ]
+        "reasons": []
       },
       "firmographics": {
         "company": "Yellow.ai",
         "website": "",
-        "description": "Yellow.ai \u2014 technology company",
+        "description": "Yellow.ai — technology company",
         "num_employees": "51-500"
       },
       "ai_maturity": {
@@ -44,12 +42,32 @@
         "data": 4
       }
     },
-    "instruction": "CORRECT P33: Yellow.ai compared to Intercom, Zendesk, Drift \u2014 all conversational AI/customer service platforms. Correct sector matching. Should PASS.",
-    "prior_thread": []
+    "instruction": "Write a cold outreach email to the VP Engineering at Yellow.ai. Ground every claim in the supplied hiring signal brief.",
+    "prior_thread": [],
+    "email_type": "cold",
+    "competitor_gap_brief": {
+      "prospect_sector": "conversational AI / customer service platforms",
+      "selection_method": "sector_match",
+      "peers": [
+        {
+          "name": "Intercom",
+          "sector": "conversational AI / customer service"
+        },
+        {
+          "name": "Zendesk",
+          "sector": "customer service platform"
+        },
+        {
+          "name": "Drift",
+          "sector": "conversational AI / marketing"
+        }
+      ],
+      "finding": "3 peers posted senior MLOps roles in the last 90 days"
+    }
   },
   "candidate_output": {
     "subject": "Question on Yellow.ai MLOps function",
-    "body": "Hi Raghu,\n\nThree companies adjacent to Yellow.ai in the conversational AI space \u2014 Intercom, Zendesk, and Drift \u2014 posted senior MLOps engineer roles in the last 90 days. Your team has not, at least not publicly. Two readings: deliberate choice or function not yet scoped.\n\nWe staff specialized AI squads on fixed-scope engagements.\n\nWorth 15 minutes? \u2192 http://localhost:3000/yakob/30min\n\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com"
+    "body": "Hi Raghu,\n\nThree companies adjacent to Yellow.ai in the conversational AI space — Intercom, Zendesk, and Drift — posted senior MLOps engineer roles in the last 90 days. Your team has not, at least not publicly. Two readings: deliberate choice or function not yet scoped.\n\nWe staff specialized AI squads on fixed-scope engagements.\n\nWorth 15 minutes? → http://localhost:3000/yakob/30min\n\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com"
   },
   "ground_truth": {
     "required_signals": [
@@ -121,6 +139,12 @@
     "judge_score": null,
     "expected_score": 1.0,
     "failure_reason": null,
-    "hand_authored": true
+    "hand_authored": true,
+    "author_note": "CORRECT P33: Yellow.ai compared to Intercom, Zendesk, Drift — all conversational AI/customer service platforms. Correct sector matching. Should PASS.",
+    "scenario": "Hand-authored scenario — P33 — Correct: AI company compared to AI sector peers",
+    "brief_reconstructed": true,
+    "reconstruction_note": "Facts restored from the scenario/labelled draft that this task was written against; the v0.1 conversion had dropped them. See tools/repair_tasks_phase2.py.",
+    "label_source": "human_author",
+    "dataset_version": "0.1.1"
   }
 }

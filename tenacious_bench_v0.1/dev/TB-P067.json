@@ -12,8 +12,8 @@
         "segment_name": "Post-layoff restructuring",
         "confidence": "high",
         "reasons": [
-          "Layoff detected \u2014 150 employees, March 2024",
-          "Recent funding detected \u2014 fresh budget available"
+          "Layoff detected — 150 employees, March 2024",
+          "Recent funding detected — fresh budget available"
         ]
       },
       "firmographics": {
@@ -49,19 +49,17 @@
         "data": 4
       }
     },
-    "instruction": "ADVERSARIAL: The following email to Horizon Cloud uses condescending framing and should FAIL.",
-    "prior_thread": []
+    "instruction": "Write a cold outreach email to the VP Engineering at Horizon Cloud. Ground every claim in the supplied hiring signal brief.",
+    "prior_thread": [],
+    "email_type": "cold"
   },
   "candidate_output": {
-    "subject": "Horizon Cloud is falling behind on AI \u2014 urgent",
+    "subject": "Horizon Cloud is falling behind on AI — urgent",
     "body": "Your AI maturity is behind the curve. Horizon Cloud is clearly missing the strategic moves that your competitors have already made. You are falling behind in a market where AI is no longer optional. Tenacious can help you catch up before your next board meeting.\n\nLet's get on a call immediately.\n\nBest, Yabi"
   },
   "ground_truth": {
     "required_signals": [
-      "restructuring",
-      "cost",
-      "delivery",
-      "capacity"
+      "restructuring"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -130,6 +128,16 @@
     "source_trace_id": null,
     "judge_score": null,
     "expected_score": 0.0,
-    "contamination_note": "Moved from held_out to dev \u2014 n-gram or embedding contamination violation detected by contamination_check.py"
+    "contamination_note": "Moved from held_out to dev — n-gram or embedding contamination violation detected by contamination_check.py",
+    "author_note": "ADVERSARIAL: The following email to Horizon Cloud uses condescending framing and should FAIL.",
+    "required_signals_v01": [
+      "restructuring",
+      "cost",
+      "delivery",
+      "capacity"
+    ],
+    "is_passing_v01": false,
+    "label_source": "evaluator_v0.2",
+    "dataset_version": "0.1.1"
   }
 }

@@ -12,13 +12,13 @@
         "segment_name": "Leadership change",
         "confidence": "medium",
         "reasons": [
-          "Leadership change detected \u2014 50 days ago"
+          "Leadership change detected — 50 days ago"
         ]
       },
       "firmographics": {
         "company": "Beacon Software",
         "website": "https://beaconsoftware.io",
-        "description": "Beacon Software \u2014 technology company",
+        "description": "Beacon Software — technology company",
         "num_employees": "201-500"
       },
       "ai_maturity": {
@@ -46,20 +46,17 @@
         "data": 4
       }
     },
-    "instruction": "Write a cold outreach email to the VP Engineering at Beacon Software (Segment 3 \u2014 Leadership change, confidence=medium).",
-    "prior_thread": []
+    "instruction": "Write a cold outreach email to the VP Engineering at Beacon Software (Segment 3 — Leadership change, confidence=medium).",
+    "prior_thread": [],
+    "email_type": "cold"
   },
   "candidate_output": {
     "subject": "Context: engineering vendor mix at Beacon Software",
-    "body": "Congratulations on the recent leadership change at Beacon Software \u2014 the CTO appointment 50 days ago is the kind of moment when vendor and offshore mix typically gets a fresh look.\n\nIf offshore delivery is on your review list, we would welcome 15 minutes \u2014 managed teams with full time-zone overlap, not staff augmentation.\n\nWorth a conversation? \u2192 http://localhost:3000/yakob/30min\n\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com"
+    "body": "Congratulations on the recent leadership change at Beacon Software — the CTO appointment 50 days ago is the kind of moment when vendor and offshore mix typically gets a fresh look.\n\nIf offshore delivery is on your review list, we would welcome 15 minutes — managed teams with full time-zone overlap, not staff augmentation.\n\nWorth a conversation? → http://localhost:3000/yakob/30min\n\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com"
   },
   "ground_truth": {
     "required_signals": [
-      "leadership",
-      "engineering",
-      "vendor",
-      "mix",
-      "new"
+      "leadership"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -127,6 +124,16 @@
     ],
     "source_trace_id": null,
     "judge_score": null,
-    "expected_score": 1.0
+    "expected_score": 1.0,
+    "required_signals_v01": [
+      "leadership",
+      "engineering",
+      "vendor",
+      "mix",
+      "new"
+    ],
+    "is_passing_v01": true,
+    "label_source": "evaluator_v0.2",
+    "dataset_version": "0.1.1"
   }
 }

@@ -1,0 +1,17 @@
+{
+  "generated_at": "2026-11-12T14:43:23",
+  "week10_commit": "ae40b34",
+  "crunchbase_sample_commit": "7558159",
+  "crunchbase_snapshot": "2024-07-01 00:00:00.000 .. 2024-07-22 00:00:00.000",
+  "layoffs_source": "layoffs.fyi GitHub mirror, data/layoffs_cache.csv in the W10 repo",
+  "eligible_companies": 999,
+  "with_signal": 132,
+  "strong_signal": 22,
+  "exported": 54,
+  "seed": 42,
+  "windows_days": {
+    "funding": 180,
+    "layoff": 120,
+    "leadership": 90
+  }
+}

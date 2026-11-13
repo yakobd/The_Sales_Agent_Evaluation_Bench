@@ -11,16 +11,17 @@
       "icp_classification": {
         "segment": 1,
         "segment_name": "Recently-funded startup",
-        "confidence": "high",
+        "confidence": "low",
         "reasons": [
-          "Style guide labeled: Weak signal asks rather than asserts"
+          "Two open data engineer roles on the careers page (weak signal)"
         ]
       },
       "firmographics": {
         "company": "Tom Data",
         "website": "",
         "description": "Technology company",
-        "num_employees": "51-200"
+        "num_employees": "51-200",
+        "country_code": "USA"
       },
       "ai_maturity": {
         "ai_maturity_score": 1,
@@ -31,6 +32,9 @@
       },
       "leadership_signal": {
         "leadership_change_detected": false
+      },
+      "job_post_signal": {
+        "open_data_engineer_roles": 2
       }
     },
     "bench_summary": {
@@ -44,12 +48,13 @@
         "data": 4
       }
     },
-    "instruction": "STYLE GUIDE EXAMPLE (SG-G05): GOOD \u2014 should PASS. Weak signal asks rather than asserts",
-    "prior_thread": []
+    "instruction": "Write a cold outreach email to the VP Engineering at Tom Data. Ground every claim in the supplied hiring signal brief.",
+    "prior_thread": [],
+    "email_type": "cold"
   },
   "candidate_output": {
     "subject": "Question: are your data engineering hires keeping up?",
-    "body": "Hi Tom,\n\nTwo open data engineer roles on your careers page \u2014 I cannot tell from the outside whether that means hiring is keeping pace or whether the queue is longer than the postings suggest.\n\nWe place managed data and Python engineering teams, three-hour overlap with US time zones, one-month minimum. If the queue is longer than the posts, that is the pattern we solve most often.\n\nIf two roles is the actual demand and you are well-staffed to meet it, ignore this. If the real number is higher, a 15-minute conversation costs you nothing.\n\nWorth 15 minutes this week? https://cal.com/yakob/30min\n\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com\n\nBest,\nYabi\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com"
+    "body": "Hi Tom,\n\nTwo open data engineer roles on your careers page — I cannot tell from the outside whether that means hiring is keeping pace or whether the queue is longer than the postings suggest.\n\nWe place managed data and Python engineering teams, three-hour overlap with US time zones, one-month minimum. If the queue is longer than the posts, that is the pattern we solve most often.\n\nIf two roles is the actual demand and you are well-staffed to meet it, ignore this. If the real number is higher, a 15-minute conversation costs you nothing.\n\nBest,\nYabi\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com"
   },
   "ground_truth": {
     "required_signals": [
@@ -125,6 +130,12 @@
     "source_trace_id": null,
     "judge_score": null,
     "expected_score": 1.0,
-    "style_guide_label": "Weak signal asks rather than asserts"
+    "style_guide_label": "Weak signal asks rather than asserts",
+    "author_note": "STYLE GUIDE EXAMPLE (SG-G05): GOOD — should PASS. Weak signal asks rather than asserts",
+    "scenario": "Style guide labeled: Weak signal asks rather than asserts",
+    "brief_reconstructed": true,
+    "reconstruction_note": "Facts restored from the scenario/labelled draft that this task was written against; the v0.1 conversion had dropped them. See tools/repair_tasks_phase2.py.",
+    "label_source": "tenacious_style_guide",
+    "dataset_version": "0.1.1"
   }
 }

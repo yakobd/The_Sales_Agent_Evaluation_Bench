@@ -3,7 +3,7 @@
   "source_mode": "multi_llm_synthesis",
   "difficulty": "medium",
   "variant": "llm_generated",
-  "is_passing": true,
+  "is_passing": false,
   "generator_model": "qwen/qwen3-235b-a22b",
   "input": {
     "hiring_signal_brief": {
@@ -19,7 +19,7 @@
       "firmographics": {
         "company": "Axon Software",
         "website": "https://axonsoftware.com",
-        "description": "Axon Software \u2014 technology company",
+        "description": "Axon Software — technology company",
         "num_employees": "51-200"
       },
       "ai_maturity": {
@@ -46,19 +46,16 @@
       }
     },
     "instruction": "Write a cold outreach email to the VP Engineering at Axon Software (Leadership change, confidence=medium). Signal: VP Engineering change detected 40 days ago",
-    "prior_thread": []
+    "prior_thread": [],
+    "email_type": "cold"
   },
   "candidate_output": {
-    "subject": "New VP Eng at Axon Software \u2014 Tenacious Research Brief",
-    "body": "Dear [Name],\n\nWe believe a VP Engineering change at Axon Software occurred ~40 days ago. Leadership transitions often create uncertainty in engineering orgs. Given this shift, your team may be adjusting priorities or processes.\n\nTenacious Intelligence can provide a research brief analyzing recent changes in tech leadership patterns, including org stability metrics and technical roadmap risks we\u2019ve observed across 300+ companies.\n\nWould you like to explore how similar transitions impacted peers\u2019 engineering velocity? Let\u2019s discuss implications for Axon\u2019s structure. Book a 20-minute slot here: cal.com/tenacious.\n\nBest,\n[Name] Research Partner / Tenacious Intelligence Corporation / gettenacious.com"
+    "subject": "New VP Eng at Axon Software — Tenacious Research Brief",
+    "body": "Dear [Name],\n\nWe believe a VP Engineering change at Axon Software occurred ~40 days ago. Leadership transitions often create uncertainty in engineering orgs. Given this shift, your team may be adjusting priorities or processes.\n\nTenacious Intelligence can provide a research brief analyzing recent changes in tech leadership patterns, including org stability metrics and technical roadmap risks we’ve observed across 300+ companies.\n\nWould you like to explore how similar transitions impacted peers’ engineering velocity? Let’s discuss implications for Axon’s structure. Book a 20-minute slot here: cal.com/tenacious.\n\nBest,\n[Name] Research Partner / Tenacious Intelligence Corporation / gettenacious.com"
   },
   "ground_truth": {
     "required_signals": [
-      "leadership",
-      "engineering",
-      "vendor",
-      "mix",
-      "new"
+      "leadership"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -127,6 +124,16 @@
     "source_trace_id": null,
     "judge_score": null,
     "expected_score": 1.0,
-    "generator_model": "qwen/qwen3-235b-a22b"
+    "generator_model": "qwen/qwen3-235b-a22b",
+    "required_signals_v01": [
+      "leadership",
+      "engineering",
+      "vendor",
+      "mix",
+      "new"
+    ],
+    "is_passing_v01": true,
+    "label_source": "evaluator_v0.2",
+    "dataset_version": "0.1.1"
   }
 }

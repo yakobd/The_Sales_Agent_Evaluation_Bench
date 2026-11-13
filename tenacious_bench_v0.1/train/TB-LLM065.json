@@ -3,7 +3,7 @@
   "source_mode": "multi_llm_synthesis",
   "difficulty": "medium",
   "variant": "llm_generated_v2",
-  "is_passing": true,
+  "is_passing": false,
   "input": {
     "hiring_signal_brief": {
       "prospect": "Glow Intelligence",
@@ -18,7 +18,7 @@
       "firmographics": {
         "company": "Glow Intelligence",
         "website": "https://glowintelligence.com",
-        "description": "Glow Intelligence \u2014 technology company",
+        "description": "Glow Intelligence — technology company",
         "num_employees": "51-200"
       },
       "ai_maturity": {
@@ -43,21 +43,19 @@
         "data": 4
       }
     },
-    "instruction": "Write outreach for Glow Intelligence \u2014 AI maturity 2/3, building ML platform internally, 4 peers ahead",
-    "prior_thread": []
+    "instruction": "Write outreach for Glow Intelligence — AI maturity 2/3, building ML platform internally, 4 peers ahead",
+    "prior_thread": [],
+    "email_type": "cold"
   },
   "candidate_output": {
     "subject": "Accelerating Glow's AI Maturity Journey",
-    "body": "Hi [Name],\n\nGlow's internal ML platform shows ambition. But with 4 peers already ahead in AI maturity, how might you accelerate without rebuilding?\n\nWe help teams like yours reduce infrastructure overhead by 60%\u2014freeing engineers to focus on breakthroughs, not boilerplate. No need to start over; we plug into your existing stack.\n\nYour team spends ~30% of time on ML ops basics. Imagine repurposing that capacity toward competitive differentiation.\n\nWorth 15 minutes this week? \u2192 http://localhost:3000/yakob/30min\n\nResearch Partner / Tenacious Intelligence Corporation / gettenacious.com"
+    "body": "Hi [Name],\n\nGlow's internal ML platform shows ambition. But with 4 peers already ahead in AI maturity, how might you accelerate without rebuilding?\n\nWe help teams like yours reduce infrastructure overhead by 60%—freeing engineers to focus on breakthroughs, not boilerplate. No need to start over; we plug into your existing stack.\n\nYour team spends ~30% of time on ML ops basics. Imagine repurposing that capacity toward competitive differentiation.\n\nWorth 15 minutes this week? → http://localhost:3000/yakob/30min\n\nResearch Partner / Tenacious Intelligence Corporation / gettenacious.com"
   },
   "ground_truth": {
     "required_signals": [
       "ai",
-      "capability",
       "ml",
-      "platform",
-      "peer",
-      "data"
+      "peer"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -124,6 +122,17 @@
     "judge_score": null,
     "expected_score": 1.0,
     "generator_model": "qwen/qwen3-235b-a22b",
-    "contamination_note": "Moved from held_out to dev \u2014 n-gram or embedding contamination violation detected by contamination_check.py"
+    "contamination_note": "Moved from held_out to dev — n-gram or embedding contamination violation detected by contamination_check.py",
+    "required_signals_v01": [
+      "ai",
+      "capability",
+      "ml",
+      "platform",
+      "peer",
+      "data"
+    ],
+    "is_passing_v01": true,
+    "label_source": "evaluator_v0.2",
+    "dataset_version": "0.1.1"
   }
 }

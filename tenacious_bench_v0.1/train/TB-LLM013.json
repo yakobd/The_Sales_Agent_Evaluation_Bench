@@ -3,7 +3,7 @@
   "source_mode": "multi_llm_synthesis",
   "difficulty": "medium",
   "variant": "llm_generated",
-  "is_passing": true,
+  "is_passing": false,
   "generator_model": "qwen/qwen3-235b-a22b",
   "input": {
     "hiring_signal_brief": {
@@ -19,7 +19,7 @@
       "firmographics": {
         "company": "Quantum Data",
         "website": "https://quantumdata.com",
-        "description": "Quantum Data \u2014 technology company",
+        "description": "Quantum Data — technology company",
         "num_employees": "51-200"
       },
       "ai_maturity": {
@@ -46,20 +46,18 @@
       }
     },
     "instruction": "Write a cold outreach email to the VP Engineering at Quantum Data (AI capability gap, confidence=high). Signal: 5 sector peers with public MLOps roles. Company AI maturity 3/3.",
-    "prior_thread": []
+    "prior_thread": [],
+    "email_type": "cold"
   },
   "candidate_output": {
     "subject": "Specialized MLOps Talent for Quantum's Growth",
-    "body": "Quantum's AI maturity aligns with sector peers investing in specialized MLOps roles. We\u2019ve identified senior engineers with niche expertise in scalable ML infrastructure, including [specific technology, e.g., distributed systems or model monitoring]. Would you like to review profiles or schedule a scoping call this week? Connect here: [Cal.com link]"
+    "body": "Quantum's AI maturity aligns with sector peers investing in specialized MLOps roles. We’ve identified senior engineers with niche expertise in scalable ML infrastructure, including [specific technology, e.g., distributed systems or model monitoring]. Would you like to review profiles or schedule a scoping call this week? Connect here: [Cal.com link]"
   },
   "ground_truth": {
     "required_signals": [
       "ai",
-      "capability",
       "ml",
-      "platform",
-      "peer",
-      "data"
+      "peer"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -128,6 +126,17 @@
     "source_trace_id": null,
     "judge_score": null,
     "expected_score": 1.0,
-    "generator_model": "qwen/qwen3-235b-a22b"
+    "generator_model": "qwen/qwen3-235b-a22b",
+    "required_signals_v01": [
+      "ai",
+      "capability",
+      "ml",
+      "platform",
+      "peer",
+      "data"
+    ],
+    "is_passing_v01": true,
+    "label_source": "evaluator_v0.2",
+    "dataset_version": "0.1.1"
   }
 }

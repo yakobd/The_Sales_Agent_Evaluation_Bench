@@ -5,17 +5,21 @@ Cost:   ~$0.20-0.30
 Model:  Qwen3-235b via OpenRouter
 """
 
+import sys as _sys
+from pathlib import Path as _Path
+_sys.path.insert(0, str(_Path(__file__).resolve().parents[1]))
+from config import REPO_ROOT, WEEK10_DIR  # noqa: E402  (repo-relative paths)
 import json, os, re, sys, time, requests
 from pathlib import Path
 from datetime import datetime
 from dotenv import load_dotenv
 
-load_dotenv('/home/yakob/week11-sales-bench/.env')
-sys.path.insert(0, '/home/yakob/week11-sales-bench')
-from scoring_evaluator import score_task
+load_dotenv(REPO_ROOT / '.env')
+sys.path.insert(0, str(REPO_ROOT))
+from scoring_evaluator_v01 import score_task
 
-OUTPUT_DIR     = Path("/home/yakob/week11-sales-bench/tenacious_bench_v0.1")
-SCRIPTS_DIR    = Path("/home/yakob/week11-sales-bench/generation_scripts")
+OUTPUT_DIR     = (REPO_ROOT / 'tenacious_bench_v0.1')
+SCRIPTS_DIR    = (REPO_ROOT / 'generation_scripts')
 OPENROUTER_KEY = os.getenv('OPENROUTER_API_KEY')
 MODEL          = "qwen/qwen3-235b-a22b"
 
@@ -327,7 +331,7 @@ def main():
     existing = []
     for p in ['train','dev','held_out']:
         existing.extend(list(
-            Path(f'/home/yakob/week11-sales-bench/tenacious_bench_v0.1/{p}')
+            (REPO_ROOT / f'tenacious_bench_v0.1/{p}')
             .glob('TB-LLM*.json')))
     counter = [len(existing)]
 

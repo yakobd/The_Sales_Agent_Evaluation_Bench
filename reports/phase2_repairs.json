@@ -1,0 +1,2073 @@
+{
+  "base_commit": "8814993",
+  "dataset_version": "0.1.1",
+  "tasks_changed": 293,
+  "change_counts": {
+    "required_signals: generic words removed": 273,
+    "leaky instruction": 121,
+    "label changed": 81,
+    "authoring note in reasons": 39,
+    "brief facts reconstructed": 28,
+    "prior_thread from staffing request in instruction": 13,
+    "prior_thread from quoted reply in instruction": 13,
+    "prior_thread reconstructed": 11,
+    "competitor_gap_brief reconstructed": 4,
+    "restored original candidate_output from 96a4f31": 3,
+    "must_end_with_cta=False": 2
+  },
+  "per_task": [
+    {
+      "task_id": "TB-P039",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P040",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P041",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P042",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-P043",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P044",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P045",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P046",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P047",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P048",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P049",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P050",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P051",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P052",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P053",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P054",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P055",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P056",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P057",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P058",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P059",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P060",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P061",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P062",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P063",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P064",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P065",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P066",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P067",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P068",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P069",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P070",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P071",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P072",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P097",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P098",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P099",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P100",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-P101",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P102",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P103",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P104",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P105",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P106",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P107",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P108",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P109",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-P110",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-P111",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P112",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P113",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P114",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P115",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P116",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P117",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P118",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P119",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P120",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-041",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-042",
+      "changes": [
+        "prior_thread from staffing request in instruction",
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-043",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-047",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-048",
+      "changes": [
+        "prior_thread from staffing request in instruction",
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-053",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-054",
+      "changes": [
+        "prior_thread from staffing request in instruction",
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-059",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-060",
+      "changes": [
+        "prior_thread from staffing request in instruction",
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-061",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-062",
+      "changes": [
+        "prior_thread from quoted reply in instruction",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-064",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-065",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-066",
+      "changes": [
+        "prior_thread from staffing request in instruction",
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-067",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-068",
+      "changes": [
+        "prior_thread from quoted reply in instruction",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-070",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-071",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-072",
+      "changes": [
+        "prior_thread from staffing request in instruction",
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-073",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-074",
+      "changes": [
+        "prior_thread from quoted reply in instruction",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-076",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-077",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-078",
+      "changes": [
+        "prior_thread from staffing request in instruction",
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-HA007",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "authoring note in reasons -> metadata.scenario",
+        "brief facts reconstructed for prospect 'Personio'",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-HA008",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "authoring note in reasons -> metadata.scenario",
+        "competitor_gap_brief reconstructed",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-HA010",
+      "changes": [
+        "prior_thread reconstructed",
+        "leaky instruction -> metadata.author_note",
+        "authoring note in reasons -> metadata.scenario",
+        "competitor_gap_brief reconstructed",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-HA012",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "authoring note in reasons -> metadata.scenario",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-HA014",
+      "changes": [
+        "prior_thread reconstructed",
+        "leaky instruction -> metadata.author_note",
+        "authoring note in reasons -> metadata.scenario",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-HA015",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "authoring note in reasons -> metadata.scenario",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-LLM014",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-LLM044",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-LLM046",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-LLM049",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-LLM051",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-LLM055",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-LLM057",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-LLM058",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-LLM059",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-LLM061",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-LLM064",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-LLM066",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-LLM067",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-LLM069",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-LLM071",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-P037",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P038",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-SG08",
+      "changes": [
+        "prior_thread reconstructed",
+        "leaky instruction -> metadata.author_note",
+        "authoring note in reasons -> metadata.scenario",
+        "brief facts reconstructed for prospect 'Marcus Health'",
+        "must_end_with_cta=False (re_engagement)"
+      ]
+    },
+    {
+      "task_id": "TB-SG09",
+      "changes": [
+        "prior_thread reconstructed",
+        "leaky instruction -> metadata.author_note",
+        "authoring note in reasons -> metadata.scenario",
+        "brief facts reconstructed for prospect 'Will Engineering'"
+      ]
+    },
+    {
+      "task_id": "TB-SG10",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "authoring note in reasons -> metadata.scenario",
+        "brief facts reconstructed for prospect 'Sophia AI'"
+      ]
+    },
+    {
+      "task_id": "TB-SG12",
+      "changes": [
+        "prior_thread reconstructed",
+        "leaky instruction -> metadata.author_note",
+        "authoring note in reasons -> metadata.scenario",
+        "brief facts reconstructed for prospect 'Kevin Loyalty'",
+        "must_end_with_cta=False (follow_up)"
+      ]
+    },
+    {
+      "task_id": "TB-SG19",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "authoring note in reasons -> metadata.scenario",
+        "brief facts reconstructed for prospect 'Kevin Loyalty'"
+      ]
+    },
+    {
+      "task_id": "TB-SG20",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "authoring note in reasons -> metadata.scenario",
+        "brief facts reconstructed for prospect 'Sophia AI'"
+      ]
+    },
+    {
+      "task_id": "TB-SG21",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "authoring note in reasons -> metadata.scenario",
+        "brief facts reconstructed for prospect 'Marcus Health'"
+      ]
+    },
+    {
+      "task_id": "TB-SG22",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "authoring note in reasons -> metadata.scenario",
+        "brief facts reconstructed for prospect 'Daniel Corp'",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-SG23",
+      "changes": [
+        "prior_thread reconstructed",
+        "leaky instruction -> metadata.author_note",
+        "authoring note in reasons -> metadata.scenario",
+        "brief facts reconstructed for prospect 'Camila Systems'"
+      ]
+    },
+    {
+      "task_id": "TB-SG24",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "authoring note in reasons -> metadata.scenario",
+        "brief facts reconstructed for prospect 'Helix Inc'",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-001",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-002",
+      "changes": [
+        "prior_thread from quoted reply in instruction",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-003",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-004",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-005",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-006",
+      "changes": [
+        "prior_thread from staffing request in instruction",
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-007",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-008",
+      "changes": [
+        "prior_thread from quoted reply in instruction",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-009",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-010",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-011",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-012",
+      "changes": [
+        "prior_thread from staffing request in instruction",
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-013",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-014",
+      "changes": [
+        "prior_thread from quoted reply in instruction",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-015",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-016",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-017",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-018",
+      "changes": [
+        "prior_thread from staffing request in instruction",
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-019",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-020",
+      "changes": [
+        "prior_thread from quoted reply in instruction",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-021",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-022",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-023",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-024",
+      "changes": [
+        "prior_thread from staffing request in instruction",
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-025",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-026",
+      "changes": [
+        "prior_thread from quoted reply in instruction",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-027",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-028",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-029",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-030",
+      "changes": [
+        "prior_thread from staffing request in instruction",
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-031",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-032",
+      "changes": [
+        "prior_thread from quoted reply in instruction",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-033",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-034",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-035",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-036",
+      "changes": [
+        "prior_thread from staffing request in instruction",
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-037",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-038",
+      "changes": [
+        "prior_thread from quoted reply in instruction",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-039",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-040",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-044",
+      "changes": [
+        "prior_thread from quoted reply in instruction",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-045",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-046",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-049",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-050",
+      "changes": [
+        "prior_thread from quoted reply in instruction",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-051",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-052",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-055",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-056",
+      "changes": [
+        "prior_thread from quoted reply in instruction",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-057",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-058",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-063",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-069",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-075",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-HA001",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "authoring note in reasons -> metadata.scenario",
+        "brief facts reconstructed for prospect 'Nexus Technologies'",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-HA002",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "authoring note in reasons -> metadata.scenario",
+        "brief facts reconstructed for prospect 'Nexus Technologies'",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-HA003",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "authoring note in reasons -> metadata.scenario",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-HA004",
+      "changes": [
+        "prior_thread reconstructed",
+        "leaky instruction -> metadata.author_note",
+        "authoring note in reasons -> metadata.scenario",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-HA005",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "authoring note in reasons -> metadata.scenario",
+        "brief facts reconstructed for prospect 'Adyen'",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-HA006",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "authoring note in reasons -> metadata.scenario",
+        "brief facts reconstructed for prospect 'Adyen'",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-HA009",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "authoring note in reasons -> metadata.scenario",
+        "competitor_gap_brief reconstructed"
+      ]
+    },
+    {
+      "task_id": "TB-HA011",
+      "changes": [
+        "prior_thread reconstructed",
+        "leaky instruction -> metadata.author_note",
+        "authoring note in reasons -> metadata.scenario",
+        "competitor_gap_brief reconstructed"
+      ]
+    },
+    {
+      "task_id": "TB-HA013",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "authoring note in reasons -> metadata.scenario",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-LLM002",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-LLM003",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-LLM004",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-LLM005",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-LLM011",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-LLM012",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-LLM013",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-LLM015",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-LLM016",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-LLM017",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-LLM018",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-LLM019",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-LLM020",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-LLM021",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-LLM023",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-LLM024",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-LLM027",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-LLM028",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-LLM030",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-LLM031",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-LLM032",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-LLM033",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-LLM034",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-LLM035",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-LLM036",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-LLM037",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-LLM039",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-LLM040",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-LLM041",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-LLM042",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-LLM043",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-LLM045",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-LLM047",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-LLM050",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-LLM054",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-LLM056",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-LLM060",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-LLM062",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-LLM063",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-LLM065",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-LLM068",
+      "changes": [
+        "required_signals: generic words removed",
+        "label True -> False (evaluator v0.2)"
+      ]
+    },
+    {
+      "task_id": "TB-P001",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P002",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P003",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P004",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P005",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P006",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P007",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P008",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P009",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P010",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P011",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P012",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P013",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P014",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P015",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P016",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P017",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P018",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P019",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P020",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P021",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P022",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P023",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P024",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P025",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P026",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P027",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P028",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P029",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P030",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P031",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P032",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P033",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P034",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P035",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P036",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P073",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P074",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P075",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P076",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P077",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P078",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P079",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P080",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P081",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P082",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P083",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P084",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P085",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P086",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P087",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P088",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P089",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P090",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P091",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P092",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P093",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P094",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P095",
+      "changes": [
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-P096",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-SG01",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "authoring note in reasons -> metadata.scenario",
+        "brief facts reconstructed for prospect 'Maya Tech'"
+      ]
+    },
+    {
+      "task_id": "TB-SG02",
+      "changes": [
+        "restored original candidate_output from 96a4f31",
+        "leaky instruction -> metadata.author_note",
+        "authoring note in reasons -> metadata.scenario",
+        "brief facts reconstructed for prospect 'Daniel Corp'",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-SG03",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "authoring note in reasons -> metadata.scenario",
+        "brief facts reconstructed for prospect 'Helix Inc'",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-SG04",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "authoring note in reasons -> metadata.scenario",
+        "brief facts reconstructed for prospect 'Felix Platform'"
+      ]
+    },
+    {
+      "task_id": "TB-SG05",
+      "changes": [
+        "restored original candidate_output from 96a4f31",
+        "leaky instruction -> metadata.author_note",
+        "authoring note in reasons -> metadata.scenario",
+        "brief facts reconstructed for prospect 'Tom Data'"
+      ]
+    },
+    {
+      "task_id": "TB-SG06",
+      "changes": [
+        "restored original candidate_output from 96a4f31",
+        "leaky instruction -> metadata.author_note",
+        "authoring note in reasons -> metadata.scenario",
+        "brief facts reconstructed for prospect 'Ana Startup'"
+      ]
+    },
+    {
+      "task_id": "TB-SG07",
+      "changes": [
+        "prior_thread reconstructed",
+        "leaky instruction -> metadata.author_note",
+        "authoring note in reasons -> metadata.scenario",
+        "brief facts reconstructed for prospect 'Camila Systems'"
+      ]
+    },
+    {
+      "task_id": "TB-SG11",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "authoring note in reasons -> metadata.scenario",
+        "brief facts reconstructed for prospect 'Mei Data'"
+      ]
+    },
+    {
+      "task_id": "TB-SG13",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "authoring note in reasons -> metadata.scenario",
+        "brief facts reconstructed for prospect 'Maya Tech'",
+        "required_signals: generic words removed"
+      ]
+    },
+    {
+      "task_id": "TB-SG14",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "authoring note in reasons -> metadata.scenario",
+        "brief facts reconstructed for prospect 'Tom Data'"
+      ]
+    },
+    {
+      "task_id": "TB-SG15",
+      "changes": [
+        "prior_thread reconstructed",
+        "leaky instruction -> metadata.author_note",
+        "authoring note in reasons -> metadata.scenario",
+        "brief facts reconstructed for prospect 'Will Engineering'"
+      ]
+    },
+    {
+      "task_id": "TB-SG16",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "authoring note in reasons -> metadata.scenario",
+        "brief facts reconstructed for prospect 'Felix Platform'"
+      ]
+    },
+    {
+      "task_id": "TB-SG17",
+      "changes": [
+        "prior_thread reconstructed",
+        "leaky instruction -> metadata.author_note",
+        "authoring note in reasons -> metadata.scenario",
+        "brief facts reconstructed for prospect 'Ana Startup'"
+      ]
+    },
+    {
+      "task_id": "TB-SG18",
+      "changes": [
+        "leaky instruction -> metadata.author_note",
+        "authoring note in reasons -> metadata.scenario",
+        "required_signals: generic words removed"
+      ]
+    }
+  ]
+}

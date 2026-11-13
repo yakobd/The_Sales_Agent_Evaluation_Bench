@@ -1,12 +1,14 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "Tenacious-Bench Task Schema v0.1",
-  "description": "Schema for evaluating signal-grounded B2B outreach generation",
+  "title": "Tenacious-Bench Task Schema v0.1.1",
+  "description": "One task = the inputs a B2B outreach writer is allowed to see (hiring signal brief, bench summary, conversation history), a stored candidate email with its label, and the machine-checkable ground truth used by scoring_evaluator.py. A task can be used two ways: (1) as an evaluator test case, scoring candidate_output and comparing with is_passing; (2) as a generation benchmark, giving input to a model and scoring its email against ground_truth.",
   "type": "object",
   "required": [
     "task_id",
     "source_mode",
     "difficulty",
+    "variant",
+    "is_passing",
     "input",
     "candidate_output",
     "ground_truth",
@@ -16,8 +18,8 @@
   "properties": {
     "task_id": {
       "type": "string",
-      "description": "Unique task identifier e.g. TB-001",
-      "pattern": "^TB-[0-9]{3,4}$"
+      "pattern": "^TB-(?:[A-Z]{1,3})?[0-9]{2,4}$",
+      "description": "TB-0xx trace-derived, TB-Pxxx programmatic, TB-LLMxxx multi-LLM synthesis, TB-HAxxx hand-authored adversarial, TB-SGxx Tenacious style-guide draft"
     },
     "source_mode": {
       "type": "string",
@@ -26,8 +28,7 @@
         "programmatic",
         "multi_llm_synthesis",
         "hand_authored"
-      ],
-      "description": "How this task was generated"
+      ]
     },
     "difficulty": {
       "type": "string",
@@ -35,28 +36,101 @@
         "easy",
         "medium",
         "hard"
-      ],
-      "description": "easy=single signal, medium=conflicting signals, hard=adversarial"
+      ]
+    },
+    "variant": {
+      "type": "string",
+      "description": "generator-specific sub-type, e.g. style_guide_good, hand_authored_adversarial"
+    },
+    "is_passing": {
+      "type": "boolean",
+      "description": "label for candidate_output; who assigned it is in metadata.label_source"
+    },
+    "style_guide_id": {
+      "type": "string"
+    },
+    "probe_label": {
+      "type": "string"
+    },
+    "generator_model": {
+      "type": "string"
     },
     "input": {
       "type": "object",
+      "description": "Everything the writer may use. Must not contain the label or authoring notes.",
       "required": [
         "hiring_signal_brief",
         "bench_summary",
-        "instruction"
+        "instruction",
+        "email_type",
+        "prior_thread"
       ],
+      "additionalProperties": false,
       "properties": {
+        "instruction": {
+          "type": "string",
+          "minLength": 10
+        },
+        "email_type": {
+          "type": "string",
+          "enum": [
+            "cold",
+            "reply",
+            "re_engagement",
+            "follow_up",
+            "referral"
+          ]
+        },
+        "prior_thread": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "from"
+            ],
+            "properties": {
+              "from": {
+                "type": "string",
+                "enum": [
+                  "prospect",
+                  "tenacious",
+                  "meeting_notes"
+                ]
+              },
+              "body": {
+                "type": "string"
+              },
+              "note": {
+                "type": "string"
+              },
+              "channel": {
+                "type": "string"
+              },
+              "date": {
+                "type": "string"
+              },
+              "days_ago": {
+                "type": "integer",
+                "minimum": 0
+              }
+            }
+          }
+        },
         "hiring_signal_brief": {
           "type": "object",
-          "description": "Enrichment output from Week 10 pipeline",
+          "description": "Week 10 enrichment output (agent/enrichment/pipeline.py), possibly with reconstructed fields",
           "required": [
             "prospect",
             "icp_classification",
-            "firmographics"
+            "firmographics",
+            "ai_maturity",
+            "layoff_signal",
+            "leadership_signal"
           ],
           "properties": {
             "prospect": {
-              "type": "string"
+              "type": "string",
+              "minLength": 1
             },
             "icp_classification": {
               "type": "object",
@@ -93,21 +167,13 @@
               }
             },
             "firmographics": {
-              "type": "object",
-              "properties": {
-                "company": {
-                  "type": "string"
-                },
-                "website": {
-                  "type": "string"
-                },
-                "description": {
-                  "type": "string"
-                }
-              }
+              "type": "object"
             },
             "ai_maturity": {
               "type": "object",
+              "required": [
+                "ai_maturity_score"
+              ],
               "properties": {
                 "ai_maturity_score": {
                   "type": "integer",
@@ -118,43 +184,103 @@
                   "type": "string"
                 }
               }
+            },
+            "layoff_signal": {
+              "type": "object",
+              "required": [
+                "layoff_detected"
+              ],
+              "properties": {
+                "layoff_detected": {
+                  "type": "boolean"
+                }
+              }
+            },
+            "leadership_signal": {
+              "type": "object",
+              "required": [
+                "leadership_change_detected"
+              ],
+              "properties": {
+                "leadership_change_detected": {
+                  "type": "boolean"
+                }
+              }
+            },
+            "funding": {
+              "type": [
+                "object",
+                "null"
+              ]
+            },
+            "job_post_signal": {
+              "type": [
+                "object",
+                "null"
+              ]
+            },
+            "sector_layoff_signal": {
+              "type": "object"
+            },
+            "team": {
+              "type": "object"
+            },
+            "referral": {
+              "type": "object"
             }
           }
         },
         "bench_summary": {
           "type": "object",
-          "description": "Tenacious bench state at time of task generation",
+          "required": [
+            "available"
+          ],
           "properties": {
             "total_engineers": {
-              "type": "integer"
+              "type": "integer",
+              "minimum": 0
             },
             "available": {
-              "type": "integer"
+              "type": "integer",
+              "minimum": 0
             },
             "stacks": {
-              "type": "object"
+              "type": "object",
+              "additionalProperties": {
+                "type": "integer",
+                "minimum": 0
+              }
             }
           }
         },
-        "instruction": {
-          "type": "string",
-          "description": "What the agent is asked to do"
-        },
-        "prior_thread": {
-          "type": "array",
-          "description": "Optional prior conversation turns",
-          "items": {
-            "type": "object",
-            "properties": {
-              "role": {
-                "type": "string",
-                "enum": [
-                  "agent",
-                  "prospect"
-                ]
-              },
-              "content": {
-                "type": "string"
+        "competitor_gap_brief": {
+          "type": "object",
+          "description": "Week 10 competitor_gap output; when peers carry a sector, the evaluator checks sector match (probe P33)",
+          "properties": {
+            "prospect_sector": {
+              "type": "string"
+            },
+            "selection_method": {
+              "type": "string"
+            },
+            "finding": {
+              "type": "string"
+            },
+            "peers": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "name"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "sector": {
+                    "type": "string"
+                  }
+                }
               }
             }
           }
@@ -163,7 +289,6 @@
     },
     "candidate_output": {
       "type": "object",
-      "description": "The agent output being evaluated",
       "required": [
         "subject",
         "body"
@@ -179,117 +304,55 @@
     },
     "ground_truth": {
       "type": "object",
-      "description": "Verifiable facts from the input that must appear in the output",
       "required": [
         "required_signals",
         "forbidden_phrases",
-        "max_subject_length"
+        "max_subject_length",
+        "must_end_with_cta"
       ],
       "properties": {
         "required_signals": {
           "type": "array",
-          "description": "At least one of these signals must appear in the email body",
           "items": {
             "type": "string"
-          }
+          },
+          "description": "task-specific signals; generic words are ignored by the evaluator"
         },
         "forbidden_phrases": {
           "type": "array",
-          "description": "None of these phrases may appear in subject or body",
           "items": {
             "type": "string"
           }
         },
         "max_subject_length": {
           "type": "integer",
-          "default": 60
+          "minimum": 1
         },
         "must_end_with_cta": {
-          "type": "boolean",
-          "description": "Email must end with calendar link or explicit next-step offer",
-          "default": true
+          "type": "boolean"
+        },
+        "max_body_words": {
+          "type": "integer",
+          "minimum": 1
         }
       }
     },
     "rubric": {
       "type": "object",
-      "description": "Four machine-verifiable scoring dimensions",
-      "required": [
-        "grounding",
-        "tone",
-        "subject_length",
-        "cta_present"
-      ],
-      "properties": {
-        "grounding": {
-          "type": "object",
-          "description": "Every factual claim maps to a field in hiring_signal_brief",
-          "properties": {
-            "weight": {
-              "type": "number",
-              "default": 1.0
-            },
-            "check": {
-              "type": "string",
-              "default": "all_claims_grounded"
-            }
-          }
-        },
-        "tone": {
-          "type": "object",
-          "description": "No banned phrase from Tenacious style guide",
-          "properties": {
-            "weight": {
-              "type": "number",
-              "default": 1.0
-            },
-            "check": {
-              "type": "string",
-              "default": "zero_banned_phrases"
-            }
-          }
-        },
-        "subject_length": {
-          "type": "object",
-          "description": "Subject line 60 characters or fewer",
-          "properties": {
-            "weight": {
-              "type": "number",
-              "default": 1.0
-            },
-            "check": {
-              "type": "string",
-              "default": "subject_lte_60_chars"
-            }
-          }
-        },
-        "cta_present": {
-          "type": "object",
-          "description": "Email ends with calendar link or next-step offer",
-          "properties": {
-            "weight": {
-              "type": "number",
-              "default": 1.0
-            },
-            "check": {
-              "type": "string",
-              "default": "cta_in_last_paragraph"
-            }
-          }
-        }
-      }
+      "description": "legacy v0.1 rubric descriptor; scoring logic lives in scoring_evaluator.py"
     },
     "metadata": {
       "type": "object",
       "required": [
         "created_at",
         "partition",
-        "probe_ids"
+        "probe_ids",
+        "label_source",
+        "dataset_version"
       ],
       "properties": {
         "created_at": {
-          "type": "string",
-          "format": "date-time"
+          "type": "string"
         },
         "partition": {
           "type": "string",
@@ -301,155 +364,312 @@
         },
         "probe_ids": {
           "type": "array",
-          "description": "Week 10 probe IDs this task targets",
+          "items": {
+            "type": "string",
+            "pattern": "^P[0-9]{2}$"
+          }
+        },
+        "label_source": {
+          "type": "string",
+          "enum": [
+            "human_author",
+            "tenacious_style_guide",
+            "evaluator_v0.2"
+          ]
+        },
+        "dataset_version": {
+          "type": "string"
+        },
+        "source_trace_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "judge_score": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "description": "null: no LLM judge filter was run when the task was authored"
+        },
+        "expected_score": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "is_passing_v01": {
+          "type": "boolean"
+        },
+        "required_signals_v01": {
+          "type": "array",
           "items": {
             "type": "string"
           }
         },
-        "source_trace_id": {
+        "author_note": {
           "type": "string",
-          "description": "Week 10 trace ID if trace_derived"
+          "description": "original authoring instruction (may state the expected verdict) - never shown to the writer"
         },
-        "judge_score": {
-          "type": "number",
-          "description": "LLM judge quality score 1-5 at authoring time"
+        "scenario": {
+          "type": "string"
+        },
+        "brief_reconstructed": {
+          "type": "boolean"
+        },
+        "reconstruction_note": {
+          "type": "string"
         }
       }
     }
   },
   "examples": [
     {
-      "task_id": "TB-001",
-      "source_mode": "trace_derived",
-      "difficulty": "easy",
+      "task_id": "TB-P039",
+      "source_mode": "programmatic",
+      "difficulty": "medium",
+      "variant": "programmatic_low_confidence",
+      "is_passing": true,
       "input": {
         "hiring_signal_brief": {
-          "prospect": "Yellow.ai",
+          "prospect": "Vertex Intelligence",
           "icp_classification": {
-            "segment": 2,
-            "segment_name": "Mid-market restructuring",
-            "confidence": "high",
+            "segment": 4,
+            "segment_name": "AI capability gap",
+            "confidence": "low",
             "reasons": [
-              "Layoff detected \u2014 cost restructuring likely"
+              "AI maturity 2/3 with partial ML stack signal",
+              "Competitor gap: 2 peers with public MLOps function"
             ]
           },
           "firmographics": {
-            "company": "Yellow.ai",
-            "website": "https://yellow.ai"
+            "company": "Vertex Intelligence",
+            "website": "https://vertexintelligence.com",
+            "description": "Vertex Intelligence is a technology company.",
+            "num_employees": "201-500"
           },
           "ai_maturity": {
             "ai_maturity_score": 2,
-            "confidence": "high"
+            "confidence": "low"
+          },
+          "layoff_signal": {
+            "layoff_detected": false,
+            "total_laid_off": "0",
+            "confidence": 0.0
+          },
+          "leadership_signal": {
+            "leadership_change_detected": false,
+            "leader_name": "",
+            "leader_title": "",
+            "days_since_hire": 0
           }
         },
         "bench_summary": {
           "total_engineers": 60,
-          "available": 34
+          "available": 34,
+          "stacks": {
+            "python": 12,
+            "node": 8,
+            "ml": 6,
+            "go": 4,
+            "data": 4
+          }
         },
-        "instruction": "Write a cold outreach email to the VP Engineering at Yellow.ai.",
-        "prior_thread": []
+        "instruction": "Write a cold outreach email to the VP Engineering at Vertex Intelligence (Segment 4 — AI capability gap, confidence=low). Ground every claim in the supplied hiring signal brief.",
+        "prior_thread": [],
+        "email_type": "cold"
       },
       "candidate_output": {
-        "subject": "Note on Yellow.ai restructuring",
-        "body": "Yellow.ai has gone through a recent restructuring. Companies in this state often need to preserve delivery capacity while reshaping cost structure.\n\nTenacious provides managed engineering teams that preserve delivery capacity while reducing cost.\n\nWorth 15 minutes this week? http://localhost:3000/yakob/30min\n\nResearch Partner\nTenacious Intelligence Corporation"
+        "subject": "Question on Vertex Intelligence AI capability",
+        "body": "Public signal suggests Vertex Intelligence may be building toward specialized AI capability. Teams at this stage often hit a talent bottleneck before a budget one.\n\nWe deliver fixed-scope AI and data engineering projects — ML platform builds, agentic systems, data contracts — typically 3 to 4 months. Starter scopes from $XX,XXX.\n\nIf you have already scoped this and decided against it, I would genuinely be curious why — that is useful for us. If not, 15 minutes: → http://localhost:3000/yakob/30min\n\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com"
+      },
+      "ground_truth": {
+        "required_signals": [
+          "ai",
+          "ml",
+          "agentic"
+        ],
+        "forbidden_phrases": [
+          "just circling back",
+          "hope this finds you well",
+          "just following up",
+          "per my last email",
+          "top talent",
+          "world-class",
+          "rockstar",
+          "a-players",
+          "ninja",
+          "wizard",
+          "bench",
+          "aggressive hiring",
+          "skyrocket",
+          "supercharge",
+          "synergize",
+          "synergy",
+          "game-changer",
+          "disruptor",
+          "you are missing",
+          "falling behind",
+          "behind the curve",
+          "catch up",
+          "quick question",
+          "quick chat",
+          "obviously",
+          "clearly",
+          "touching base",
+          "following up",
+          "as per"
+        ],
+        "max_subject_length": 60,
+        "must_end_with_cta": true
+      },
+      "rubric": {
+        "grounding": {
+          "weight": 1.0,
+          "check": "all_claims_grounded"
+        },
+        "tone": {
+          "weight": 1.0,
+          "check": "zero_banned_phrases"
+        },
+        "subject_length": {
+          "weight": 1.0,
+          "check": "subject_lte_60_chars"
+        },
+        "cta_present": {
+          "weight": 1.0,
+          "check": "cta_in_last_paragraph"
+        },
+        "llm_judge": {
+          "weight": 1.0,
+          "check": "avg_tone_marker_gte_4"
+        }
+      },
+      "metadata": {
+        "created_at": "2026-04-29T21:49:47.105054Z",
+        "partition": "dev",
+        "probe_ids": [
+          "P05",
+          "P30"
+        ],
+        "source_trace_id": null,
+        "judge_score": null,
+        "expected_score": 1.0,
+        "required_signals_v01": [
+          "ai",
+          "capability",
+          "ml",
+          "platform",
+          "agentic",
+          "data"
+        ],
+        "is_passing_v01": true,
+        "label_source": "evaluator_v0.2",
+        "dataset_version": "0.1.1"
+      }
+    },
+    {
+      "task_id": "TB-043",
+      "source_mode": "trace_derived",
+      "difficulty": "easy",
+      "variant": "v1_standard_outreach",
+      "is_passing": true,
+      "input": {
+        "hiring_signal_brief": {
+          "prospect": "Intercom",
+          "icp_classification": {
+            "segment": 2,
+            "segment_name": "Post-layoff restructuring",
+            "confidence": "high",
+            "reasons": [
+              "Layoff detected — cost restructuring likely"
+            ]
+          },
+          "firmographics": {
+            "company": "Intercom",
+            "website": "",
+            "description": "",
+            "num_employees": "unknown"
+          },
+          "ai_maturity": {
+            "ai_maturity_score": 0,
+            "confidence": "high"
+          },
+          "layoff_signal": {
+            "company": "Intercom",
+            "layoff_detected": true,
+            "confidence": 1.0,
+            "source": "layoffs_fyi_github_mirror",
+            "total_laid_off": "124.0",
+            "percentage_laid_off": "0.13",
+            "date": "11/14/2022",
+            "stage": "Series D",
+            "country": "United States",
+            "icp_signal": "Segment 2 — cost restructuring pitch",
+            "note": "Layoff detected from layoffs.fyi dataset (3 records found)"
+          },
+          "leadership_signal": {
+            "company": "Intercom",
+            "leadership_change_detected": false,
+            "confidence": 0.0,
+            "note": "Company not found in Crunchbase ODM sample"
+          }
+        },
+        "bench_summary": {
+          "total_engineers": 60,
+          "available": 34,
+          "stacks": {
+            "python": 12,
+            "node": 8,
+            "ml": 6,
+            "go": 4,
+            "data": 4
+          }
+        },
+        "instruction": "Write a cold outreach email to the VP Engineering at Intercom. Ground every claim in the supplied hiring signal brief. Follow all Tenacious style guide constraints.",
+        "prior_thread": [],
+        "email_type": "cold"
+      },
+      "candidate_output": {
+        "subject": "Note on Intercom restructuring",
+        "body": "Intercom has gone through a recent restructuring. Companies in this state often need to preserve delivery capacity while reshaping cost structure.\n\nTenacious provides managed engineering teams that preserve delivery capacity while reducing cost — our engineers are full-time employees, not contractors.\n\nWorth 15 minutes this week to walk through how this lands for Intercom? → http://localhost:3000/yakob/30min\n\n\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com"
       },
       "ground_truth": {
         "required_signals": [
           "restructuring",
-          "cost",
           "layoff"
         ],
         "forbidden_phrases": [
           "just circling back",
-          "aggressive hiring",
-          "bench"
-        ],
-        "max_subject_length": 60,
-        "must_end_with_cta": true
-      },
-      "rubric": {
-        "grounding": {
-          "weight": 1.0,
-          "check": "all_claims_grounded"
-        },
-        "tone": {
-          "weight": 1.0,
-          "check": "zero_banned_phrases"
-        },
-        "subject_length": {
-          "weight": 1.0,
-          "check": "subject_lte_60_chars"
-        },
-        "cta_present": {
-          "weight": 1.0,
-          "check": "cta_in_last_paragraph"
-        },
-        "llm_judge": {
-          "weight": 1.0,
-          "check": "avg_tone_marker_gte_4"
-        }
-      },
-      "metadata": {
-        "created_at": "2026-04-28T00:00:00Z",
-        "partition": "dev",
-        "probe_ids": [
-          "P06",
-          "P10",
-          "P30"
-        ],
-        "source_trace_id": "thread_20260427_110356",
-        "judge_score": 4.5
-      }
-    },
-    {
-      "task_id": "TB-002",
-      "source_mode": "hand_authored",
-      "difficulty": "hard",
-      "input": {
-        "hiring_signal_brief": {
-          "prospect": "Notion",
-          "icp_classification": {
-            "segment": 1,
-            "segment_name": "Recently-funded startup",
-            "confidence": "very_low",
-            "reasons": [
-              "No strong signals \u2014 defaulting to Segment 1"
-            ]
-          },
-          "firmographics": {
-            "company": "Notion",
-            "website": "https://notion.so"
-          },
-          "ai_maturity": {
-            "ai_maturity_score": 0,
-            "confidence": "very_low"
-          }
-        },
-        "bench_summary": {
-          "total_engineers": 60,
-          "available": 34
-        },
-        "instruction": "Write a cold outreach email to the VP Engineering at Notion.",
-        "prior_thread": []
-      },
-      "candidate_output": {
-        "subject": "Note on Notion \u2014 aggressive hiring signal detected and your top talent bench",
-        "body": "Hope this finds you well. We noticed Notion has been aggressively hiring world-class rockstar engineers.\n\nTenacious has a bench of top talent ready to deploy.\n\nJust circling back to see if you would be open to a call?\n\nResearch Partner\nTenacious Intelligence Corporation"
-      },
-      "ground_truth": {
-        "required_signals": [
-          "funding",
-          "growth",
-          "engineering"
-        ],
-        "forbidden_phrases": [
-          "just circling back",
-          "aggressive hiring",
-          "bench",
+          "hope this finds you well",
+          "just following up",
+          "per my last email",
           "top talent",
           "world-class",
           "rockstar",
-          "hope this finds you well"
+          "a-players",
+          "ninja",
+          "wizard",
+          "bench",
+          "aggressive hiring",
+          "skyrocket",
+          "supercharge",
+          "synergize",
+          "synergy",
+          "game-changer",
+          "disruptor",
+          "you are missing",
+          "falling behind",
+          "behind the curve",
+          "catch up",
+          "quick question",
+          "quick chat",
+          "obviously",
+          "clearly",
+          "touching base",
+          "following up",
+          "as per"
         ],
         "max_subject_length": 60,
         "must_end_with_cta": true
@@ -477,64 +697,132 @@
         }
       },
       "metadata": {
-        "created_at": "2026-04-28T00:00:00Z",
-        "partition": "dev",
+        "created_at": "2026-04-29T20:13:27.303896Z",
+        "partition": "held_out",
         "probe_ids": [
-          "P06",
+          "P10",
           "P16",
-          "P17",
-          "P19",
           "P20"
         ],
-        "judge_score": 1.0
+        "source_trace_id": "thread_20260427_114814",
+        "judge_score": null,
+        "expected_score": 1.0,
+        "required_signals_v01": [
+          "restructuring",
+          "cost",
+          "layoff",
+          "restructure"
+        ],
+        "is_passing_v01": true,
+        "label_source": "evaluator_v0.2",
+        "dataset_version": "0.1.1"
       }
     },
     {
-      "task_id": "TB-003",
-      "source_mode": "programmatic",
-      "difficulty": "medium",
+      "task_id": "TB-HA008",
+      "source_mode": "hand_authored",
+      "difficulty": "hard",
+      "variant": "hand_authored_adversarial",
+      "is_passing": false,
+      "probe_label": "P33 — Gap brief compares AI company to dental practices",
       "input": {
         "hiring_signal_brief": {
-          "prospect": "Figma",
+          "prospect": "Yellow.ai",
           "icp_classification": {
-            "segment": 3,
-            "segment_name": "Leadership change",
-            "confidence": "medium",
-            "reasons": [
-              "New VP Engineering detected in last 90 days"
-            ]
+            "segment": 4,
+            "segment_name": "AI capability gap",
+            "confidence": "high",
+            "reasons": []
           },
           "firmographics": {
-            "company": "Figma",
-            "website": "https://figma.com"
+            "company": "Yellow.ai",
+            "website": "",
+            "description": "Yellow.ai — technology company",
+            "num_employees": "51-500"
           },
           "ai_maturity": {
-            "ai_maturity_score": 1,
-            "confidence": "medium"
+            "ai_maturity_score": 2,
+            "confidence": "high"
+          },
+          "layoff_signal": {
+            "layoff_detected": false
+          },
+          "leadership_signal": {
+            "leadership_change_detected": false
           }
         },
         "bench_summary": {
           "total_engineers": 60,
-          "available": 34
+          "available": 34,
+          "stacks": {
+            "python": 12,
+            "node": 8,
+            "ml": 6,
+            "go": 4,
+            "data": 4
+          }
         },
-        "instruction": "Write a cold outreach email to the new VP Engineering at Figma.",
-        "prior_thread": []
+        "instruction": "Write a cold outreach email to the VP Engineering at Yellow.ai. Ground every claim in the supplied hiring signal brief.",
+        "prior_thread": [],
+        "email_type": "cold",
+        "competitor_gap_brief": {
+          "prospect_sector": "conversational AI",
+          "selection_method": "random_fallback (sector match failed)",
+          "peers": [
+            {
+              "name": "Bright Dental",
+              "sector": "dental practice"
+            },
+            {
+              "name": "MedSpring Clinics",
+              "sector": "healthcare clinics"
+            },
+            {
+              "name": "Valley Orthodontics",
+              "sector": "dental practice"
+            }
+          ],
+          "finding": "3 peers posted senior MLOps roles in the last 90 days"
+        }
       },
       "candidate_output": {
-        "subject": "Note for Figma's new VP Engineering",
-        "body": "Figma recently brought in new engineering leadership. New VPs often reassess vendor relationships in the first 90 days \u2014 particularly around engineering capacity.\n\nTenacious works with teams at this stage to provide managed engineering capacity that new leaders can shape around their priorities.\n\nWorth a 15-minute call this week? https://cal.com/yakob/30min\n\nResearch Partner\nTenacious Intelligence Corporation"
+        "subject": "Question on Yellow.ai AI capability gap",
+        "body": "Hi Raghu,\n\nThree companies adjacent to Yellow.ai in your sector posted senior MLOps engineer roles in the last 90 days — including Bright Dental, MedSpring Clinics, and Valley Orthodontics. Your team has not.\n\nWe staff specialized AI and data engineering squads on fixed-scope engagements, typically 3-4 months.\n\nWorth 15 minutes? → http://localhost:3000/yakob/30min\n\nResearch Partner\nTenacious Intelligence Corporation\ngettenacious.com"
       },
       "ground_truth": {
         "required_signals": [
-          "leadership",
-          "engineering",
-          "new"
+          "ai",
+          "ml",
+          "peer",
+          "conversational"
         ],
         "forbidden_phrases": [
           "just circling back",
-          "aggressive hiring",
+          "hope this finds you well",
+          "just following up",
+          "per my last email",
+          "top talent",
+          "world-class",
+          "rockstar",
+          "a-players",
+          "ninja",
+          "wizard",
           "bench",
-          "top talent"
+          "aggressive hiring",
+          "skyrocket",
+          "supercharge",
+          "synergize",
+          "synergy",
+          "game-changer",
+          "disruptor",
+          "you are missing",
+          "falling behind",
+          "behind the curve",
+          "catch up",
+          "quick question",
+          "quick chat",
+          "obviously",
+          "clearly"
         ],
         "max_subject_length": 60,
         "must_end_with_cta": true
@@ -562,13 +850,29 @@
         }
       },
       "metadata": {
-        "created_at": "2026-04-28T00:00:00Z",
-        "partition": "dev",
+        "created_at": "2026-04-29T22:43:14.678551Z",
+        "partition": "held_out",
         "probe_ids": [
-          "P02",
-          "P30"
+          "P33"
         ],
-        "judge_score": 4.0
+        "source_trace_id": null,
+        "judge_score": null,
+        "expected_score": 0.0,
+        "failure_reason": "AI company compared to dental practices — sector mismatch P33",
+        "hand_authored": true,
+        "author_note": "ADVERSARIAL P33: Yellow.ai is a conversational AI platform. The gap brief incorrectly compares it to dental practices — classic sector mismatch from random fallback. Should FAIL — nonsensical peer comparison destroys research credibility.",
+        "scenario": "Hand-authored scenario — P33 — Gap brief compares AI company to dental practices",
+        "brief_reconstructed": true,
+        "reconstruction_note": "Facts restored from the scenario/labelled draft that this task was written against; the v0.1 conversion had dropped them. See tools/repair_tasks_phase2.py.",
+        "required_signals_v01": [
+          "ai",
+          "ml",
+          "platform",
+          "peer",
+          "conversational"
+        ],
+        "label_source": "human_author",
+        "dataset_version": "0.1.1"
       }
     }
   ]

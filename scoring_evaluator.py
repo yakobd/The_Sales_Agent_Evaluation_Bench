@@ -1,637 +1,709 @@
 """
-Tenacious-Bench Scoring Evaluator v0.1
-Yakob Dereje | TenX Academy Week 11 | April 28, 2026
+Tenacious-Bench Scoring Evaluator v0.2
 
-Scores an agent output against a Tenacious-Bench task.
-Returns a numerical score with no human in the loop.
+Scores one outreach email (subject + body) against one Tenacious-Bench task.
+Deterministic by default: same task + same email -> same score, no network.
+
+Five deterministic dimensions (all must pass for overall_score = 1.0):
+
+  grounding          the email references at least one *task-specific* signal
+                     from the brief (generic words like "engineering" don't count)
+  honesty            no claim the brief cannot support: funding / layoff /
+                     leadership claims, numbers absent from the inputs, sector-peer
+                     comparisons without a competitor brief, assertive language on
+                     weak signals, US time zones sent to non-US prospects
+  commercial_safety  no price / TCV quotes, no contract commitments, no engineer
+                     counts above what the bench summary shows
+  tone               no Tenacious style-guide banned phrase (word-boundary match)
+  format             subject <= 60 chars, no template placeholders, CTA present
+                     when the task requires one, optional body word limit
+
+Optional sixth dimension (off by default, costs money, non-deterministic):
+
+  tone_judge         an LLM scores the 5 Tenacious tone markers 1-5; pass if the
+                     mean >= 4.0. Enable with --judge or score_task(..., judge=...).
+                     It is reported separately and only gates overall_score when
+                     require_judge=True. Use a model family different from the
+                     generator under test (preference-leakage rule, Li et al. 2025).
+
+Every failure is recorded as a violation {dimension, code, evidence} so a score
+can always be traced to the exact text that caused it.
+
+v0.1 (the scorer used for the original Week 11 results) is preserved unchanged
+in scoring_evaluator_v01.py for comparison.
 
 Usage:
-    python3 scoring_evaluator.py --task path/to/task.json --output path/to/output.json
-    python3 scoring_evaluator.py --demo
+    python scoring_evaluator.py --task path/to/task.json [--output email.json] [--judge]
+    python scoring_evaluator.py --dataset tenacious_bench_v0.1/dev
+    python scoring_evaluator.py --demo
 """
+from __future__ import annotations
 
-import json
-import re
 import argparse
+import hashlib
+import json
+import os
+import re
 import sys
 from pathlib import Path
 
-# ─────────────────────────────────────────────
-# Tenacious Style Guide — Banned Phrases
-# Source: Tenacious style guide v2
-# ─────────────────────────────────────────────
+VERSION = "0.2.1"
+DIMENSIONS = ("grounding", "honesty", "commercial_safety", "tone", "format")
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Lexicons
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Banned phrases. Core list = the Tenacious style guide v2 list (as embedded in
+# the SFT system prompt). Extras were added in Week 11 from probe evidence.
+# "cheaper" was removed in v0.2: it appears in a Tenacious-labelled GOOD draft
+# (TB-SG10), so it is not a style-guide ban.
 BANNED_PHRASES = [
-    # Generic openers
-    "just circling back",
-    "hope this finds you well",
-    "hope you're doing well",
-    "i hope this email finds you",
-    "touching base",
-    "following up",
-    "just following up",
-    "per my last email",
-    "per my last",
-    "as per",
-    # Offshore vendor cliches
-    "top talent",
-    "world-class",
-    "rockstar",
-    "a-players",
-    "ninja",
-    "wizard",
-    "guru",
-    # Internal jargon
-    "bench",
-    # Aggressive claims
-    "aggressive hiring",
-    "skyrocket",
-    "supercharge",
-    "10x",
-    "game-changer",
-    "disruptor",
-    "paradigm shift",
-    # Consultant jargon
-    "synergize",
-    "synergy",
-    "leverage",
-    "ecosystem",
-    # Condescending framing
-    "you are missing",
-    "you are falling behind",
-    "behind the curve",
-    "your competitors have",
-    "fell behind",
-    "catch up",
-    "you need to",
-    "you should",
-    # Fake urgency
-    "you'll regret",
-    "don't miss out",
-    "last chance",
-    "urgent",
-    # Fabrication risk
-    "our proprietary",
-    "our ai-powered",
-    # Other violations
-    "quick question",
-    "quick chat",
-    "obviously",
-    "clearly",
-    "struggling",
-    "outsourcing",
-    "cheaper",
-    "cost effective",
-    "cost-effective",
+    # style guide v2
+    "just circling back", "hope this finds you well", "just following up",
+    "per my last email", "top talent", "world-class", "rockstar", "a-players",
+    "ninja", "wizard", "bench", "aggressive hiring", "skyrocket", "supercharge",
+    "synergize", "synergy", "game-changer", "disruptor", "you are missing",
+    "falling behind", "behind the curve", "catch up", "quick question",
+    "quick chat", "obviously", "clearly", "touching base", "following up", "as per",
+    # Week 11 extras (probe-derived)
+    "hope you're doing well", "i hope this email finds you", "per my last",
+    "guru", "10x", "paradigm shift", "leverage", "ecosystem",
+    "you are falling behind", "your competitors have", "fell behind",
+    "you need to", "you should", "you'll regret", "don't miss out",
+    "last chance", "urgent", "our proprietary", "our ai-powered",
+    "struggling", "outsourcing", "cost effective", "cost-effective",
+]
+# Regex variants of generic openers that slip past exact phrases.
+BANNED_PATTERNS = [
+    (r"\bhope (this|the) (message|email|note) finds you\b", "generic opener"),
+    (r"\bi hope you('| a)re (doing )?well\b", "generic opener"),
 ]
 
-# CTA indicators — email must end with one of these
-CTA_PATTERNS = [
-    r"http[s]?://",           # any URL
-    r"calendar",
-    r"book",
-    r"schedule",
-    r"15 minutes",
-    r"30 minutes",
-    r"call",
-    r"meeting",
-    r"next step",
-    r"reply",
+# required_signals entries that appear in almost every email and therefore
+# prove nothing about grounding (245/293 v0.1 tasks relied on one of these).
+GENERIC_SIGNALS = {
+    "engineering", "new", "team", "growth", "cost", "company", "capacity",
+    "hiring", "roles", "delivery", "may", "appears", "public", "profile",
+    "based", "platform", "gap", "capability", "vendor", "mix", "data",
+    "restructure",
+}
+
+# Fallback signal words per brief fact, used when a task lists no specific signal.
+SIGNAL_WORDS = {
+    "layoff": [r"layoffs?", r"laid off", r"restructur\w*", r"contracted by", r"headcount"],
+    "leadership": [r"new (cto|vp|head|chief)\w*", r"leadership", r"appoint\w*"],
+    "funding": [r"series [a-f]", r"raised", r"funding", r"round", r"seed"],
+    "ai": [r"ai", r"ml", r"machine learning", r"mlops", r"llm", r"agentic"],
+}
+
+CLAIM_PATTERNS = {
+    "funding": r"\bseries [a-f]\b|\braised\b|\bfunding round\b|\bpost-funding\b|"
+               r"\bfresh(ly)? funded\b|\bnew funding\b|\bfundrais\w*|"
+               r"\bclosed (your|a|the|its) \$?\d",
+    "layoff": r"\blayoffs?\b|\blaid off\b|\brestructur\w*|\bcontracted by\b|"
+              r"\breduction in force\b|\bheadcount reduction\b",
+    "leadership": r"\bnew (cto|vp|head of|chief)\b|\bleadership (changes?|appointments?|transitions?)\b|"
+                  r"\b(recently|just) (appointed|brought in|hired) (a |an |your )?(new )?"
+                  r"(cto|vp|chief|head|engineering leader)|\bcongrat\w* on (the|your) "
+                  r"(new )?(role|appointment|leadership)",
+}
+PEER_CLAIM = (r"\b(companies|peers|competitors|teams|players) (adjacent|in your (sector|space|"
+              r"category|industry|segment)|like yours|at your stage in)|\btop[- ]quartile\b|"
+              r"\byour (competitors|peers)\b|\bin your sector\b|\bsector peers\b|"
+              r"\bpeer companies\b|\bmost (of your )?peers\b")
+# Segment-4 (specialized capability) pitch language. Only allowed at AI maturity >= 2 (probe P03).
+SEGMENT4_PITCH = (r"\bagentic[- ]systems?\b|\bmlops\b|\bml platform\b|\bcapability[- ]gap squads?\b|"
+                  r"\bllm[- ]orchestrat\w*|\bai capability gap\b")
+ASSERTIVE = (r"\baggressive(ly)?\b|\brapidly (scaling|growing|hiring)\b|\bscaling fast\b|"
+             r"\bhypergrowth\b|\byou are scaling\b|\byour team is (growing|scaling)\b|"
+             r"\bgrowing (its|your) engineering team\b|\bscaling (its|your) engineering\b")
+US_TIME = (r"\b(pst|pdt|est|edt|cst|pacific( time)?|eastern time|us east coast|"
+           r"east coast|west coast|us (business )?hours|us time ?zones?)\b")
+NON_US_REGION_HINTS = {
+    "eu": ["europe", "european", "emea", " eu ", "cet", "cest", "germany", "german",
+           "munich", "berlin", "netherlands", "amsterdam", "france", "paris", "london",
+           "uk", "united kingdom", "spain", "sweden", "stockholm", "dublin", "ireland",
+           "deu", "nld", "fra", "gbr", "esp", "swe", "irl"],
+    "africa": ["africa", "kenya", "nairobi", "ethiopia", "addis", "nigeria", "lagos",
+               " eat ", "ken", "eth", "nga"],
+}
+# ISO country codes (2- and 3-letter) by Tenacious delivery region.
+EUROPE_CODES = {"AT", "BE", "CH", "CZ", "DE", "DK", "EE", "ES", "FI", "FR", "GB", "UK", "GR", "HU", "IE", "IT",
+                "LT", "LU", "LV", "NL", "NO", "PL", "PT", "RO", "SE", "SI", "SK", "UA",
+                "AUT", "BEL", "CHE", "CZE", "DEU", "DNK", "EST", "ESP", "FIN", "FRA", "GBR", "GRC", "HUN", "IRL",
+                "ITA", "LTU", "LUX", "LVA", "NLD", "NOR", "POL", "PRT", "ROU", "SWE", "SVN", "SVK", "UKR"}
+AFRICA_CODES = {"ET", "KE", "NG", "ZA", "EG", "GH", "RW", "UG", "TZ", "MA", "SN",
+                "ETH", "KEN", "NGA", "ZAF", "EGY", "GHA", "RWA", "UGA", "TZA", "MAR", "SEN"}
+US_CODES = {"US", "USA", "CA", "CAN", "MX", "MEX"}  # North American time zones
+# Claims that a layoff / leadership change is recent (windows: layoff 120 days, leadership 90).
+RECENT_LAYOFF_CLAIM = (r"\brecent(ly)? (restructur\w*|layoffs?|reductions?|downsiz\w*)|"
+                       r"\bjust (restructured|laid off|downsized)\b|\bgone through a recent\b")
+RECENT_LEADERSHIP_CLAIM = (r"\b(recent|new) (leadership|cto|cio|cpo|vp|head|chief)\b|\bfirst 90 days\b|"
+                           r"\brecently (appointed|brought in|hired|named)\b|\bcongrat\w* on the recent\b|"
+                           r"\brecent \w+ (appointment|hire)\b")
+# Claims that funding is recent. Segment 1 = round in the last 180 days.
+RECENT_FUNDING_CLAIM = (r"\b(recent(ly)?|just|newly|fresh(ly)?) (raised|closed|funded|announced)\b|"
+                        r"\bpost-funding\b|\bfresh (budget|capital|funding)\b|\brecent (funding|round|raise)\b|"
+                        r"\bclosed your .{0,25}(last|this) (month|quarter|week)\b")
+PRICE_CONTEXT = (r"\b(cost|costs|price|pricing|priced|quote|quoted|rate|rates|fee|fees|"
+                 r"total|tcv|contract value|per month|/month|monthly|installments?|invoice|budget)\b")
+CONTRACT_COMMIT = (r"\b(attached|drafted|draft|send over|sending) (the |a |our )?contract\b|"
+                   r"\bsign and return\b|\bbegin onboarding\b|\bcontract outline\b")
+CAPACITY = r"\b(\d{1,3})\s+(?:senior\s+|dedicated\s+|full-time\s+)?(\w+\s+)?(engineers|developers|devs)\b"
+CURRENCY = r"[$€£]\s?\d[\d,]*(?:\.\d+)?\s*(?:k|m|million)?|\b\d[\d,]*(?:\.\d+)?\s?(?:usd|eur|gbp|dollars|euros)\b"
+# A reply that agrees to (or implies) a request the bench cannot cover, without declining or routing to a human.
+COMMIT_PHRASE = (r"\bwe can (assemble|provide|deliver|staff|place|plug|ramp|scale|get you|have)\b|\bcan likely fulfill\b|"
+                 r"\babsolutely\b|\bno problem\b|\bwe('ll| will) (have|get|assemble|provide)\b")
+DECLINE_PHRASE = (r"\bcannot\b|\bcan't\b|\bcan not\b|\bnot able\b|\bunable\b|\bat the edge\b|\brefer you\b|"
+                  r"\bwould rather\b|\bhonest(ly)?\b|\bonly have\b|\bdelivery lead\b|\bconfirm (with|after)\b")
+PLACEHOLDER = (r"\[[^\]\n]{2,60}\]|\{\{[^}\n]+\}\}|<(first[_ ]?name|company|name)[^>]*>|"
+               r"\byour (company|full name|position|contact information)\b(?=\s*\])")
+# Style guide: "ends with a calendar link OR an explicit next-step offer".
+# Tenacious-labelled good drafts use soft offers ("I can share two case studies",
+# "Want me to send the PDF?"), so offers count as a CTA.
+CTA = (r"https?://|cal\.com|\bcalendar\b|\b(15|20|30)[- ]minutes?\b|\bbook\b|\bschedule\b|\bcall\b|"
+       r"\bworth (a )?\d+|\breply\b|\bnext step\b|\bwalk through\b|"
+       r"\bhappy to (send|share|introduce|walk|talk)\b|\bwant me to\b|\bi can (share|send)\b|"
+       r"\b(would|could) (it|that|this) be useful\b|\byour call\b|\blet me know\b")
+# Channel policy (probe P25): SMS only after the prospect has replied by email.
+SMS_MENTION = r"\bsms\b|\btext message\b|\btext us\b|\bwhatsapp\b"
+# A list of 2+ capitalised names after a peer claim, e.g. "including Intercom, Zendesk, and Drift".
+NAMED_LIST = (r"(?:including|such as|like|—|:)\s+((?:[A-Z][\w.&'-]+(?:\s[A-Z][\w.&'-]+)*)"
+              r"(?:,\s*(?:and\s+)?[A-Z][\w.&'-]+(?:\s[A-Z][\w.&'-]+)*)+)")
+# Style guide: one ask per email; no attachments in first-touch email.
+ENUMERATED_ASKS = r"\b(first|second|third|fourth|fifth)(ly)?\b[,:]"
+ATTACHMENT = r"(?<!strings )\battach(ed|ment|ing)\b"  # but not the idiom "no strings attached"
+FIRST_TOUCH_TYPES = {"cold", "re_engagement", "referral"}
+NUMBER_UNITS_IGNORED =r"(minutes?|mins?|hours?|hrs?|days?|weeks?|months?|years?|yrs?|am|pm|x)\b"
+SIGNATURE_LINES = {"research partner", "tenacious intelligence corporation",
+                   "gettenacious.com", "best,", "best", "thanks,", "regards,"}
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Helpers
+# ─────────────────────────────────────────────────────────────────────────────
+
+def _flatten(obj) -> list[str]:
+    """All string / number leaves of a nested JSON object."""
+    if isinstance(obj, dict):
+        return [s for v in obj.values() for s in _flatten(v)]
+    if isinstance(obj, list):
+        return [s for v in obj for s in _flatten(v)]
+    if obj is None or isinstance(obj, bool):
+        return []
+    return [str(obj)]
+
+
+def input_text(task: dict) -> str:
+    """Everything the writer was allowed to know, lowercased."""
+    inp = task.get("input", {})
+    parts = _flatten({k: v for k, v in inp.items() if k != "instruction"})
+    return " ".join(parts).lower()
+
+
+def brief_facts(task: dict) -> dict:
+    """Boolean facts about the prospect, read from the structured brief."""
+    inp = task.get("input", {})
+    brief = inp.get("hiring_signal_brief", {}) or {}
+    text = " ".join(_flatten(brief)).lower()
+    firmo = brief.get("firmographics", {}) or {}
+    funding_list = str(firmo.get("funding_rounds_list", "") or "")
+    funding = brief.get("funding") or {}
+    has_funding = bool(funding) or funding_list not in ("", "[]", "None", "nan") or bool(
+        re.search(r"\bseries [a-f]\b|\bseed round\b|\braised\b|\bfunding (round|event)\b|\bclosed .{0,20}\bround\b", text))
+    layoff = brief.get("layoff_signal", {}) or {}
+    lead = brief.get("leadership_signal", {}) or {}
+    # icp_classification.reasons are written by the W10 pipeline from the same
+    # signals, so they count as evidence; authoring meta-notes do not.
+    reasons = " ".join(r for r in (brief.get("icp_classification", {}) or {}).get("reasons", [])
+                       if not re.match(r"(hand-authored scenario|style guide labeled|adversarial)", str(r).lower())).lower()
+    reason_layoff = bool(re.search(r"\blayoffs?\b|\blaid off\b|\brestructur", reasons))
+    reason_lead = bool(re.search(r"\bnew (cto|vp|head|chief)|\bleadership (change|hire)|\bappointed\b", reasons))
+    # a peer/competitor summary in the reasons is competitor-gap evidence (W10 competitor_gap output)
+    reason_peers = bool(re.search(r"\b(peers?|peer companies|adjacent compan\w*|competitors?|sector peers)\b", reasons))
+    region_text = " " + " ".join(_flatten({
+        "firmo": {k: firmo.get(k) for k in ("country_code", "country", "location", "region", "hq", "timezone")},
+        "brief_region": brief.get("region"), "tz": brief.get("timezone"),
+    })).lower() + " "
+    code = str(firmo.get("country_code") or "").strip().upper()
+    region = ("eu" if code in EUROPE_CODES else "africa" if code in AFRICA_CODES else "us" if code in US_CODES
+              else "other" if re.fullmatch(r"[A-Z]{2,3}", code) and code != "NAN" else None)
+    if region is None:
+        for name, hints in NON_US_REGION_HINTS.items():
+            if any(h in region_text for h in hints):
+                region = name
+    if region is None and re.search(r"\b(usa?|united states|us-|america|new york|san francisco|california)\b", region_text):
+        region = "us"
+    funding_recent = funding.get("recent") if isinstance(funding, dict) else None
+    return {
+        "has_funding": has_funding,
+        "has_layoff": bool(layoff.get("layoff_detected")) or reason_layoff,
+        "has_leadership": bool(lead.get("leadership_change_detected")) or reason_lead,
+        "confidence": str((brief.get("icp_classification", {}) or {}).get("confidence", "")).lower(),
+        "ai_score": (brief.get("ai_maturity", {}) or {}).get("ai_maturity_score") or 0,
+        "has_competitor_brief": bool(inp.get("competitor_gap_brief") or brief.get("competitor_gap")) or reason_peers,
+        "region": region,
+        "funding_recent": funding_recent,  # None = unknown; False = round older than 180 days
+        "layoff_recent": layoff.get("within_window"),        # None = unknown; False = older than 120 days
+        "leadership_recent": lead.get("within_window"),      # None = unknown; False = older than 90 days
+    }
+
+
+def _norm_number(tok: str) -> str:
+    return tok.replace(",", "").rstrip(".").lstrip("$").lower()
+
+
+def _numbers_in(text: str) -> set[str]:
+    return {_norm_number(m) for m in re.findall(r"\$?\d[\d,]*(?:\.\d+)?", text)}
+
+
+URL = r"https?://\S+|\b[\w.-]+\.(?:com|io|ai|dev|org|net)(?:/\S*)?|localhost:\d+\S*"
+DATE_NUMBER = r"\b(19|20)\d{2}\b|\b\d{1,2}(st|nd|rd|th)\b"
+
+
+def _claim_text(text: str) -> str:
+    """Text with URLs and dates blanked out, so '3000' in localhost:3000 or the
+    year 2026 is never mistaken for a factual claim about the prospect."""
+    return re.sub(DATE_NUMBER, " ", re.sub(URL, " ", text))
+
+
+def _sentences(text: str) -> list[str]:
+    return [s for s in re.split(r"(?<=[.!?])\s+|\n+", text) if s.strip()]
+
+
+def _v(violations, dim, code, evidence):
+    violations.append({"dimension": dim, "code": code, "evidence": evidence[:160]})
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Dimension checks. Each returns a list of violations (empty list = pass).
+# ─────────────────────────────────────────────────────────────────────────────
+
+def _brief_signal_patterns(task: dict) -> list[str]:
+    """Signal patterns implied by the brief's own facts (and its literal titles/names)."""
+    brief = task.get("input", {}).get("hiring_signal_brief", {}) or {}
+    f = brief_facts(task)
+    pats: list[str] = []
+    # Only VALID signals can be required: a signal outside its recency window must not
+    # be the basis of the pitch (honesty), so grounding cannot demand it either (v0.2.1).
+    if f["has_layoff"] and f["layoff_recent"] is not False:
+        pats += SIGNAL_WORDS["layoff"]
+    if f["has_leadership"] and f["leadership_recent"] is not False:
+        lead = brief.get("leadership_signal", {}) or {}
+        pats += SIGNAL_WORDS["leadership"] + [r"(cto|vp engineering|vp of engineering|head of engineering|chief \w+ officer)"]
+        pats += [re.escape(str(lead[k]).lower()) for k in ("leader_title", "leader_name") if lead.get(k)]
+    if f["has_funding"] and f["funding_recent"] is not False:
+        pats += SIGNAL_WORDS["funding"]
+    if f["ai_score"] >= 2:
+        pats += SIGNAL_WORDS["ai"]
+    return pats
+
+
+def check_grounding(email: dict, task: dict) -> tuple[list, dict]:
+    """
+    Pass if the email (subject or body) references at least one specific signal:
+    either a non-generic entry of ground_truth.required_signals, or a signal
+    pattern implied by the brief's facts (e.g. "Series B" when funding is known).
+    """
+    text = (email.get("subject", "") + "\n" + email.get("body", "")).lower()
+    gt = task.get("ground_truth", {})
+    specific = [s.lower() for s in gt.get("required_signals", []) if s.lower() not in GENERIC_SIGNALS]
+    patterns = [re.escape(s) for s in specific] + _brief_signal_patterns(task)
+    # A reply is grounded if it answers the prospect's latest message: its numbers or distinctive words.
+    asks = [m for m in (task.get("input", {}).get("prior_thread") or [])
+            if isinstance(m, dict) and m.get("from") == "prospect"]
+    if asks:
+        last = str(asks[-1].get("body", "")).lower()
+        stop = {"thanks", "reaching", "would", "could", "about", "there", "their", "these", "which", "within",
+                "please", "currently", "happy", "already", "really", "maybe", "think", "right", "where", "provide"}
+        patterns += [re.escape(w) for w in set(re.findall(r"\b\d+\b|\b[a-z]{5,}\b", last)) if w not in stop]
+    found = [p for p in patterns if re.search(rf"(?<!\w){p}(?!\w)", text)]
+    info = {"candidates": len(patterns), "found": found[:5]}
+    if not patterns:
+        return [], {**info, "note": "brief has no specific signal; grounding not applicable"}
+    if not found:
+        return [{"dimension": "grounding", "code": "NO_SPECIFIC_SIGNAL",
+                 "evidence": f"none of {specific or 'the brief-derived signals'} referenced"}], info
+    return [], info
+
+
+def check_honesty(email: dict, task: dict) -> tuple[list, dict]:
+    body = email.get("body", "")
+    low = _claim_text((email.get("subject", "") + "\n" + body).lower())
+    f = brief_facts(task)
+    known = input_text(task)
+    known_numbers = _numbers_in(known)
+    out: list = []
+
+    for claim, fact in (("funding", "has_funding"), ("layoff", "has_layoff"), ("leadership", "has_leadership")):
+        m = re.search(CLAIM_PATTERNS[claim], low)
+        if m and not f[fact]:
+            _v(out, "honesty", f"{claim.upper()}_UNSUPPORTED", m.group(0))
+
+    for claim_re, fact, recent, code, window in (
+            (RECENT_FUNDING_CLAIM, "has_funding", "funding_recent", "FUNDING_NOT_RECENT", 180),
+            (RECENT_LAYOFF_CLAIM, "has_layoff", "layoff_recent", "LAYOFF_NOT_RECENT", 120),
+            (RECENT_LEADERSHIP_CLAIM, "has_leadership", "leadership_recent", "LEADERSHIP_NOT_RECENT", 90)):
+        m = re.search(claim_re, low)
+        if m and f[fact] and f[recent] is False:
+            _v(out, "honesty", code, f"{m.group(0)} (brief: event older than {window} days)")
+
+    # Numbers about the prospect (money, %, headcounts) must appear in the inputs.
+    # Offer terms (minutes, days, months...) and engineer counts are excluded here;
+    # engineer counts are a capacity commitment, checked under commercial_safety.
+    for m in re.finditer(r"\$?\d[\d,]*(?:\.\d+)?(\s*(%|percent|[mk]\b|million|billion|bn\b))?(\s*\w+)?", low):
+        token, tail = m.group(0), (m.group(3) or "").strip()
+        num = _norm_number(re.match(r"\$?\d[\d,]*(?:\.\d+)?", token).group(0))
+        after = low[m.end(): m.end() + 12]
+        if re.match(NUMBER_UNITS_IGNORED, tail) or re.match(r"\s*" + NUMBER_UNITS_IGNORED, after if not tail else ""):
+            continue
+        if re.match(r"(engineers|developers|devs|senior|dedicated)\b", tail):
+            continue
+        if re.search(r"[-–]\s*$", low[max(0, m.start() - 2): m.start()]) or re.match(r"\s*[-–]\s*\d", low[m.end(): m.end() + 3]):
+            continue  # ranges like "3-5 hours", "7–14 days" are offer terms
+        if num in {"15", "20", "30"} and re.match(r"[- ]?min", low[m.end(): m.end() + 5]):
+            continue
+        if num in known_numbers:
+            continue
+        if "$" in token:
+            sent = next((s for s in _sentences(low) if token.strip() in s), "")
+            if re.search(PRICE_CONTEXT, sent):
+                continue  # a price, not a prospect fact: judged once, under commercial_safety
+        if len(num) <= 1 and "$" not in token and "%" not in token:
+            continue  # single digits like "3 companies" — too noisy to call fabrication
+        _v(out, "honesty", "NUMBER_NOT_IN_INPUTS", token.strip())
+
+    m = re.search(PEER_CLAIM, low)
+    if m and not f["has_competitor_brief"]:
+        _v(out, "honesty", "PEER_CLAIM_UNSUPPORTED", m.group(0))
+    out += _check_named_peers(body, task)
+
+    m = re.search(ASSERTIVE, low)
+    if m and f["confidence"] in ("low", "very_low"):
+        _v(out, "honesty", "ASSERTIVE_ON_WEAK_SIGNAL", f"{m.group(0)} (confidence={f['confidence']})")
+
+    m = re.search(SEGMENT4_PITCH, low)
+    if m and f["ai_score"] < 2:
+        _v(out, "honesty", "SEGMENT4_PITCH_LOW_AI_MATURITY", f"{m.group(0)} (ai_maturity={f['ai_score']})")
+
+    m = re.search(US_TIME, low)
+    if m and f["region"] in ("eu", "africa", "other"):
+        _v(out, "honesty", "REGION_TIMEZONE_MISMATCH", f"{m.group(0)} for {f['region']} prospect")
+
+    return out, {"facts": f}
+
+
+def _sector_words(s: str) -> set[str]:
+    stop = {"and", "or", "the", "of", "a", "platform", "platforms", "company", "companies", "services", "tech"}
+    return {w for w in re.findall(r"[a-z]+", s.lower()) if len(w) > 2 and w not in stop}
+
+
+def _check_named_peers(body: str, task: dict) -> list:
+    """
+    Named peer companies must (1) appear in the inputs and (2) be in the
+    prospect's sector when the competitor brief records sectors (probe P33:
+    the W10 random fallback compared an AI company to dental practices).
+    """
+    out: list = []
+    inp = task.get("input", {})
+    brief = inp.get("hiring_signal_brief", {}) or {}
+    prospect = str(brief.get("prospect", "")).lower()
+    known = input_text(task)
+    gap = inp.get("competitor_gap_brief") or {}
+    peers = {str(p.get("name", "")).lower(): p for p in gap.get("peers", []) if isinstance(p, dict)}
+    prospect_sector = _sector_words(str(gap.get("prospect_sector", "")))
+    for sent in _sentences(body):
+        if not re.search(PEER_CLAIM, sent.lower()):
+            continue
+        for lst in re.findall(NAMED_LIST, sent):
+            for name in re.split(r",\s*(?:and\s+)?|\s+and\s+", lst):
+                n = name.strip().lower()
+                if not n or n == prospect:
+                    continue
+                if n not in known:
+                    _v(out, "honesty", "PEER_NOT_IN_BRIEF", name.strip())
+                elif n in peers and prospect_sector:
+                    if not (_sector_words(str(peers[n].get("sector", ""))) & prospect_sector):
+                        _v(out, "honesty", "PEER_SECTOR_MISMATCH",
+                           f"{name.strip()} ({peers[n].get('sector')}) vs prospect sector {gap.get('prospect_sector')}")
+    return out
+
+
+def check_commercial_safety(email: dict, task: dict) -> tuple[list, dict]:
+    low = _claim_text((email.get("subject", "") + "\n" + email.get("body", "")).lower())
+    known_numbers = _numbers_in(input_text(task))
+    out: list = []
+    for sent in _sentences(low):
+        money = re.findall(CURRENCY, sent)
+        money += [m.group(0) for m in re.finditer(r"\b\d+(?:\.\d+)?\s?(?:k|m|million)\b", sent)
+                  if re.search(r"\b(engagement|contract|quote|total)\b", sent)]
+        if money and re.search(PRICE_CONTEXT, sent):
+            unsupported = [x for x in money if _norm_number(re.sub(r"[^\d.,$]", "", x)) not in known_numbers]
+            if unsupported:
+                _v(out, "commercial_safety", "PRICE_QUOTE", sent.strip())
+    m = re.search(CONTRACT_COMMIT, low)
+    if m:
+        _v(out, "commercial_safety", "CONTRACT_COMMITMENT", m.group(0))
+    thread = task.get("input", {}).get("prior_thread") or []
+    prospect_replied = any(str(msg.get("from", "")).lower() == "prospect"
+                           for msg in thread if isinstance(msg, dict))
+    m = re.search(SMS_MENTION, low)
+    if m and not prospect_replied:
+        _v(out, "commercial_safety", "SMS_BEFORE_REPLY", m.group(0))
+    bench = task.get("input", {}).get("bench_summary", {}) or {}
+    available = bench.get("available")
+    stacks = {str(k).lower(): v for k, v in (bench.get("stacks") or {}).items()}
+    for m in re.finditer(CAPACITY, low):
+        n, stack = int(m.group(1)), (m.group(2) or "").strip()
+        limit = stacks.get(stack, available)
+        if isinstance(limit, (int, float)) and n > limit:
+            _v(out, "commercial_safety", "CAPACITY_EXCEEDS_BENCH", f"{m.group(0)} > {limit} available")
+    # implicit commitment: the prospect asked for more than the bench holds and the reply says yes
+    asks = [x for x in thread if isinstance(x, dict) and x.get("from") == "prospect"]
+    if asks:
+        for m in re.finditer(CAPACITY, str(asks[-1].get("body", "")).lower()):
+            n, stack = int(m.group(1)), (m.group(2) or "").strip()
+            limit = stacks.get(stack, available)
+            if (isinstance(limit, (int, float)) and n > limit and re.search(COMMIT_PHRASE, low)
+                    and not re.search(DECLINE_PHRASE, low)):
+                _v(out, "commercial_safety", "CAPACITY_COMMITMENT_BEYOND_BENCH",
+                   f"prospect asked for {m.group(0)} (bench: {limit}); reply commits without declining or routing")
+    return out, {"bench_available": available}
+
+
+def check_tone(email: dict, task: dict) -> tuple[list, dict]:
+    low = (email.get("subject", "") + "\n" + email.get("body", "")).lower()
+    phrases = set(BANNED_PHRASES) | {p.lower() for p in task.get("ground_truth", {}).get("forbidden_phrases", [])}
+    phrases.discard("cheaper")
+    out: list = []
+    for p in sorted(phrases):
+        if re.search(rf"(?<!\w){re.escape(p)}(?!\w)", low):
+            _v(out, "tone", "BANNED_PHRASE", p)
+    for pat, label in BANNED_PATTERNS:
+        m = re.search(pat, low)
+        if m:
+            _v(out, "tone", "BANNED_PATTERN", f"{label}: {m.group(0)}")
+    return out, {}
+
+
+def _closing(body: str) -> str:
+    """Body text minus the signature block: the part a CTA must live in."""
+    lines = [l.strip() for l in body.strip().splitlines() if l.strip()]
+
+    def is_signature(line: str) -> bool:
+        low = line.lower()
+        if low in SIGNATURE_LINES:
+            return True
+        if ("tenacious intelligence" in low or "gettenacious.com" in low) and len(low.split()) <= 8:
+            return True  # one-line signature like "Research Partner / Tenacious ... / gettenacious.com"
+        if re.fullmatch(r"(best,?\s*)?\[[^\]]+\]", low):  # "[Your Name]" sign-off
+            return True
+        # short sign-off lines ("Yabi", "Best, Yabi") — but never a link, number or question
+        return len(low.split()) <= 2 and not re.search(r"https?://|cal\.com|localhost|\d|\?", low)
+
+    while lines and is_signature(lines[-1]):
+        lines.pop()
+    return "\n".join(lines[-3:]).lower()
+
+
+def check_format(email: dict, task: dict) -> tuple[list, dict]:
+    gt = task.get("ground_truth", {})
+    subject, body = email.get("subject", ""), email.get("body", "")
+    out: list = []
+    max_len = gt.get("max_subject_length", 60)
+    if len(subject) > max_len:
+        _v(out, "format", "SUBJECT_TOO_LONG", f"{len(subject)} > {max_len} chars")
+    m = re.search(PLACEHOLDER, subject + "\n" + body, re.IGNORECASE)
+    if m:
+        _v(out, "format", "TEMPLATE_PLACEHOLDER", m.group(0))
+    if gt.get("must_end_with_cta", True) and not re.search(CTA, _closing(body)):
+        _v(out, "format", "NO_CTA", "no call-to-action in closing lines")
+    low = body.lower()
+    asks = len(re.findall(ENUMERATED_ASKS, low))
+    if asks >= 3:
+        _v(out, "format", "MULTIPLE_ASKS", f"{asks} enumerated items (style guide: one ask per email)")
+    email_type = str(task.get("input", {}).get("email_type", "cold")).lower()
+    m = re.search(ATTACHMENT, low)
+    if m and email_type in FIRST_TOUCH_TYPES:
+        _v(out, "format", "ATTACHMENT_IN_FIRST_TOUCH", f"{m.group(0)} in a {email_type} email")
+    words = len(body.split())
+    if gt.get("max_body_words") and words > gt["max_body_words"]:
+        _v(out, "format", "BODY_TOO_LONG", f"{words} > {gt['max_body_words']} words")
+    return out, {"subject_length": len(subject), "body_words": words}
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Optional LLM judge (tone markers)
+# ─────────────────────────────────────────────────────────────────────────────
+
+TONE_MARKERS = [
+    "Direct: opens with a specific signal about the prospect, not a generic greeting",
+    "Grounded: every claim is supported by the supplied brief",
+    "Honest: hedges when evidence is weak; no over-claiming",
+    "Professional: no offshore-vendor cliches; appropriate for a CTO or VP Engineering",
+    "Non-condescending: gaps are framed as research findings or questions, not failures",
 ]
 
-# ─────────────────────────────────────────────
-# Scoring Functions
-# ─────────────────────────────────────────────
 
-def check_grounding(candidate_output: dict, ground_truth: dict) -> dict:
+class LLMJudge:
     """
-    Check 1: Every required signal must appear in the email body.
-    A required signal is a word or phrase from the hiring_signal_brief
-    that justifies the outreach angle.
+    Tone-marker judge via OpenRouter. Results are cached on disk keyed by
+    (model, brief, email) so re-runs are free and repeatable.
     """
-    body = candidate_output.get("body", "").lower()
-    required_signals = ground_truth.get("required_signals", [])
 
-    if not required_signals:
-        return {"pass": True, "score": 1.0, "detail": "No required signals defined"}
+    def __init__(self, model: str | None = None, cache_path: str | Path | None = None,
+                 bucket: str = "held_out_eval"):
+        self.bucket = bucket
+        self.model = model or os.getenv("TB_JUDGE_MODEL", "deepseek/deepseek-chat")
+        self.key = os.getenv("OPENROUTER_API_KEY")
+        self.cache_path = Path(cache_path or Path(__file__).parent / ".judge_cache.jsonl")
+        self.cache = {}
+        if self.cache_path.exists():
+            for line in self.cache_path.read_text(encoding="utf-8").splitlines():
+                rec = json.loads(line)
+                self.cache[rec["key"]] = rec["result"]
 
-    found = []
-    missing = []
-    for signal in required_signals:
-        if signal.lower() in body:
-            found.append(signal)
-        else:
-            missing.append(signal)
-
-    # Pass if at least one required signal is present
-    passed = len(found) >= 1
-    return {
-        "pass": passed,
-        "score": 1.0 if passed else 0.0,
-        "found_signals": found,
-        "missing_signals": missing,
-        "detail": f"{len(found)}/{len(required_signals)} required signals found"
-    }
-
-
-def check_tone(candidate_output: dict, ground_truth: dict) -> dict:
-    """
-    Check 2: No banned phrase from Tenacious style guide appears
-    in subject or body.
-    """
-    subject = candidate_output.get("subject", "").lower()
-    body = candidate_output.get("body", "").lower()
-    full_text = subject + " " + body
-
-    # Merge global banned phrases with task-specific ones
-    task_forbidden = [p.lower() for p in ground_truth.get("forbidden_phrases", [])]
-    all_banned = list(set(BANNED_PHRASES + task_forbidden))
-
-    violations = []
-    for phrase in all_banned:
-        if phrase in full_text:
-            violations.append(phrase)
-
-    passed = len(violations) == 0
-    return {
-        "pass": passed,
-        "score": 1.0 if passed else 0.0,
-        "violations": violations,
-        "detail": f"{len(violations)} banned phrase(s) detected" if violations else "No banned phrases"
-    }
-
-
-def check_subject_length(candidate_output: dict, ground_truth: dict) -> dict:
-    """
-    Check 3: Subject line must be 60 characters or fewer.
-    """
-    subject = candidate_output.get("subject", "")
-    max_len = ground_truth.get("max_subject_length", 60)
-    actual_len = len(subject)
-    passed = actual_len <= max_len
-
-    return {
-        "pass": passed,
-        "score": 1.0 if passed else 0.0,
-        "subject_length": actual_len,
-        "max_allowed": max_len,
-        "detail": f"Subject: {actual_len} chars (max {max_len})"
-    }
-
-
-def check_cta(candidate_output: dict, ground_truth: dict) -> dict:
-    """
-    Check 4: Email must end with a calendar link or explicit
-    next-step offer. Checks the last 3 lines of the email body.
-    """
-    must_have_cta = ground_truth.get("must_end_with_cta", True)
-    if not must_have_cta:
-        return {"pass": True, "score": 1.0, "detail": "CTA not required for this task"}
-
-    body = candidate_output.get("body", "")
-    # Check last 200 characters for CTA patterns
-    last_section = body[-200:].lower()
-
-    found_patterns = []
-    for pattern in CTA_PATTERNS:
-        if re.search(pattern, last_section, re.IGNORECASE):
-            found_patterns.append(pattern)
-
-    passed = len(found_patterns) > 0
-    return {
-        "pass": passed,
-        "score": 1.0 if passed else 0.0,
-        "cta_patterns_found": found_patterns,
-        "detail": f"CTA found: {found_patterns}" if passed else "No CTA in final section"
-    }
-
-
-# ─────────────────────────────────────────────
-# Check 5 — LLM Judge (5 Tenacious Tone Markers)
-# ─────────────────────────────────────────────
-
-TENACIOUS_TONE_MARKERS = [
-    "Direct — opens with a specific signal about the prospect, not a generic greeting",
-    "Honest — no claim is made that cannot be supported by the supplied brief",
-    "Respectful — no condescending framing, no urgency pressure, no clichés",
-    "Specific — references at least one named signal from the brief",
-    "Action-oriented — ends with a clear, low-friction next step",
-]
-
-def check_llm_judge(candidate_output: dict, ground_truth: dict,
-                    openrouter_api_key: str = None,
-                    hiring_signal_brief: dict = None) -> dict:
-    """
-    Check 5: LLM judge scores the email on 5 Tenacious tone markers.
-    Each marker scored 1-5. Pass threshold: average >= 4.0.
-
-    If no API key is provided, falls back to a rule-based heuristic.
-    """
-    subject = candidate_output.get("subject", "")
-    body = candidate_output.get("body", "")
-
-    # Rule-based fallback when no API key available
-    if not openrouter_api_key:
-        return _rule_based_tone_score(subject, body, hiring_signal_brief)
-
-    # LLM judge via OpenRouter
-    try:
-        import requests
-        brief_text = json.dumps(hiring_signal_brief, indent=2) if hiring_signal_brief else "Not provided"
-        prompt = f"""You are a strict evaluator for Tenacious Intelligence Corporation's outreach emails.
-
-Score the following email on each of the 5 Tenacious tone markers.
-Score each marker 1-5 where 1=completely fails, 5=exemplary.
-Respond ONLY with a JSON object like:
-{{"marker_1": 4, "marker_2": 3, "marker_3": 5, "marker_4": 4, "marker_5": 4, "reasoning": "brief explanation"}}
-
-Tone Markers:
-1. Direct — opens with a specific signal about the prospect, not a generic greeting
-2. Honest — no claim is made that cannot be supported by the supplied brief
-3. Respectful — no condescending framing, no urgency pressure, no clichés
-4. Specific — references at least one named signal from the brief
-5. Action-oriented — ends with a clear, low-friction next step
-
-Hiring Signal Brief:
-{brief_text}
-
-Email Subject: {subject}
-Email Body:
-{body}"""
-
-        response = requests.post(
-            "https://openrouter.ai/api/v1/chat/completions",
-            headers={
-                "Authorization": f"Bearer {openrouter_api_key}",
-                "Content-Type": "application/json",
-            },
-            json={
-                "model": "qwen/qwen3-235b-a22b",
-                "max_tokens": 300,
-                "messages": [{"role": "user", "content": prompt}]
-            },
-            timeout=30
+    def __call__(self, email: dict, task: dict) -> dict:
+        brief = task.get("input", {}).get("hiring_signal_brief", {})
+        payload = json.dumps([self.model, brief, email], sort_keys=True, ensure_ascii=False)
+        key = hashlib.sha256(payload.encode("utf-8")).hexdigest()
+        if key in self.cache:
+            return {**self.cache[key], "cached": True}
+        if not self.key:
+            raise RuntimeError("OPENROUTER_API_KEY not set; cannot run the LLM judge")
+        import llm_client  # logs cost, enforces the budget cap, caches
+        markers = "\n".join(f"{i + 1}. {m}" for i, m in enumerate(TONE_MARKERS))
+        prompt = (
+            "You grade B2B outreach emails for Tenacious, an engineering-services firm.\n"
+            f"Score each tone marker 1-5 (1 = fails, 5 = exemplary).\n{markers}\n\n"
+            f"Hiring signal brief (the ONLY facts the writer was allowed to use):\n"
+            f"{json.dumps(brief, ensure_ascii=False)}\n\n"
+            f"Subject: {email.get('subject', '')}\nBody:\n{email.get('body', '')}\n\n"
+            'Reply with JSON only: {"scores": [m1, m2, m3, m4, m5], "reason": "<one sentence>"}'
         )
-        response.raise_for_status()
-        content = response.json()["choices"][0]["message"]["content"]
-
-        # Parse JSON response
-        clean = content.strip()
-        if "```" in clean:
-            clean = clean.split("```")[1].replace("json", "").strip()
-        scores = json.loads(clean)
-
-        marker_scores = [
-            scores.get("marker_1", 3),
-            scores.get("marker_2", 3),
-            scores.get("marker_3", 3),
-            scores.get("marker_4", 3),
-            scores.get("marker_5", 3),
-        ]
-        avg_score = sum(marker_scores) / len(marker_scores)
-        passed = avg_score >= 4.0
-
-        return {
-            "pass": passed,
-            "score": 1.0 if passed else 0.0,
-            "marker_scores": marker_scores,
-            "average_score": round(avg_score, 2),
-            "reasoning": scores.get("reasoning", ""),
-            "detail": f"LLM judge avg: {round(avg_score, 2)}/5.0 (threshold 4.0)",
-            "method": "llm_judge"
-        }
-
-    except Exception as e:
-        # Fall back to rule-based if LLM call fails
-        result = _rule_based_tone_score(subject, body, hiring_signal_brief)
-        result["detail"] += f" [LLM fallback: {str(e)[:50]}]"
+        content = llm_client.chat(self.model, [{"role": "user", "content": prompt}],
+                                  bucket=self.bucket, purpose=f"tone judge {task.get('task_id', '?')}",
+                                  temperature=0, max_tokens=200)
+        parsed = json.loads(re.search(r"\{.*\}", content, re.S).group(0))
+        scores = [int(s) for s in parsed["scores"]][:5]
+        result = {"model": self.model, "scores": scores, "mean": round(sum(scores) / len(scores), 2),
+                  "reason": parsed.get("reason", "")}
+        with self.cache_path.open("a", encoding="utf-8") as fh:
+            fh.write(json.dumps({"key": key, "result": result}, ensure_ascii=False) + "\n")
+        self.cache[key] = result
         return result
 
 
-def _rule_based_tone_score(subject: str, body: str,
-                            hiring_signal_brief: dict = None) -> dict:
+# ─────────────────────────────────────────────────────────────────────────────
+# Public API
+# ─────────────────────────────────────────────────────────────────────────────
+
+CHECKS = {
+    "grounding": check_grounding,
+    "honesty": check_honesty,
+    "commercial_safety": check_commercial_safety,
+    "tone": check_tone,
+    "format": check_format,
+}
+
+
+def score_task(task: dict, candidate_output: dict | None = None,
+               judge: LLMJudge | None = None, require_judge: bool = False) -> dict:
     """
-    Rule-based fallback for LLM judge.
-    Scores 5 tone markers heuristically.
+    Score one email against one task.
+
+    candidate_output defaults to the task's stored candidate_output, which makes
+    the task usable as an evaluator test case (does the score match is_passing?).
+    Pass a freshly generated email to use the task as a generation benchmark.
     """
-    scores = []
-    body_lower = body.lower()
-    subject_lower = subject.lower()
+    email = candidate_output if candidate_output is not None else task.get("candidate_output", {})
+    violations: list = []
+    checks: dict = {}
+    for name, fn in CHECKS.items():
+        v, info = fn(email, task)
+        violations += v
+        checks[name] = {"pass": not v, "violations": [x["code"] for x in v], **info}
 
-    # Marker 1: Direct — no generic greeting
-    generic_greetings = ["hope this finds you", "hope you're doing well",
-                         "i wanted to reach out", "my name is"]
-    m1 = 5 if not any(g in body_lower for g in generic_greetings) else 2
-    scores.append(m1)
+    if judge is not None:
+        j = judge(email, task)
+        checks["tone_judge"] = {"pass": j["mean"] >= 4.0, **j}
+        if j["mean"] < 4.0:
+            violations.append({"dimension": "tone_judge", "code": "JUDGE_BELOW_4",
+                               "evidence": f"mean {j['mean']}: {j.get('reason', '')}"[:160]})
 
-    # Marker 2: Honest — no over-claiming phrases
-    overclaims = ["aggressive hiring", "clearly", "obviously",
-                  "you are definitely", "without a doubt"]
-    m2 = 5 if not any(o in body_lower for o in overclaims) else 2
-    scores.append(m2)
-
-    # Marker 3: Respectful — no condescending framing
-    condescending = ["you are missing", "fell behind", "struggling",
-                     "your competitors have already", "you need to"]
-    m3 = 5 if not any(c in body_lower for c in condescending) else 2
-    scores.append(m3)
-
-    # Marker 4: Specific — references prospect name or signal
-    prospect_name = ""
-    if hiring_signal_brief:
-        prospect_name = hiring_signal_brief.get("prospect", "").lower()
-    m4 = 5 if (prospect_name and prospect_name in body_lower) else 3
-    scores.append(m4)
-
-    # Marker 5: Action-oriented — has CTA
-    cta_words = ["http", "cal.com", "book", "schedule", "minutes", "call", "reply"]
-    m5 = 5 if any(c in body_lower for c in cta_words) else 1
-    scores.append(m5)
-
-    avg = sum(scores) / len(scores)
-    passed = avg >= 4.0
-
+    gating = list(DIMENSIONS) + (["tone_judge"] if (judge is not None and require_judge) else [])
+    all_pass = all(checks[d]["pass"] for d in gating)
     return {
-        "pass": passed,
-        "score": 1.0 if passed else 0.0,
-        "marker_scores": scores,
-        "average_score": round(avg, 2),
-        "detail": f"Rule-based tone avg: {round(avg, 2)}/5.0 (threshold 4.0)",
-        "method": "rule_based_fallback"
-    }
-
-# ─────────────────────────────────────────────
-# Main Scorer
-# ─────────────────────────────────────────────
-
-def score_task(task: dict, candidate_output: dict = None) -> dict:
-    """
-    Score a candidate output against a Tenacious-Bench task.
-    Returns a dict with overall score and per-dimension breakdown.
-
-    If candidate_output is None, uses task["candidate_output"].
-    """
-    if candidate_output is None:
-        candidate_output = task.get("candidate_output", {})
-
-    ground_truth = task.get("ground_truth", {})
-    task_id = task.get("task_id", "unknown")
-
-    # Run all five checks
-    # Use rule-based judge for bulk scoring (fast + free)
-    # LLM judge only used for sealed held-out evaluation
-    openrouter_key = None
-
-    hiring_brief = task.get("input", {}).get("hiring_signal_brief", {})
-
-    grounding_result    = check_grounding(candidate_output, ground_truth)
-    tone_result         = check_tone(candidate_output, ground_truth)
-    subject_result      = check_subject_length(candidate_output, ground_truth)
-    cta_result          = check_cta(candidate_output, ground_truth)
-    judge_result        = check_llm_judge(candidate_output, ground_truth,
-                                          openrouter_key, hiring_brief)
-
-    checks = {
-        "grounding":      grounding_result,
-        "tone":           tone_result,
-        "subject_length": subject_result,
-        "cta_present":    cta_result,
-        "llm_judge":      judge_result,
-    }
-
-    # Overall score: 1 only if ALL four checks pass
-    all_pass = all(c["pass"] for c in checks.values())
-    overall_score = 1.0 if all_pass else 0.0
-
-    # Partial score for reporting
-    partial_score = sum(c["score"] for c in checks.values()) / len(checks)
-
-    return {
-        "task_id":       task_id,
-        "overall_score": overall_score,
-        "partial_score": round(partial_score, 3),
-        "all_pass":      all_pass,
-        "checks":        checks,
-        "difficulty":    task.get("difficulty", "unknown"),
-        "source_mode":   task.get("source_mode", "unknown"),
+        "task_id": task.get("task_id", "unknown"),
+        "evaluator_version": VERSION,
+        "overall_score": 1.0 if all_pass else 0.0,
+        "partial_score": round(sum(checks[d]["pass"] for d in DIMENSIONS) / len(DIMENSIONS), 3),
+        "all_pass": all_pass,
+        "checks": checks,
+        "violations": violations,
+        "difficulty": task.get("difficulty", "unknown"),
+        "source_mode": task.get("source_mode", "unknown"),
     }
 
 
-def score_dataset(tasks: list) -> dict:
-    """
-    Score a list of tasks and return aggregate statistics.
-    """
-    results = [score_task(t) for t in tasks]
-    total = len(results)
-    passed = sum(1 for r in results if r["all_pass"])
-
-    check_names = ["grounding", "tone", "subject_length", "cta_present"]
-    per_check = {}
-    for check in check_names:
-        passed_check = sum(1 for r in results if r["checks"][check]["pass"])
-        per_check[check] = {
-            "passed": passed_check,
-            "total": total,
-            "pass_rate": round(passed_check / total, 3) if total > 0 else 0.0
-        }
-
-    return {
-        "total_tasks":    total,
-        "passed":         passed,
-        "pass_at_1":      round(passed / total, 3) if total > 0 else 0.0,
-        "per_check":      per_check,
-        "results":        results,
-    }
+def score_dataset(tasks: list, judge: LLMJudge | None = None, require_judge: bool = False) -> dict:
+    results = [score_task(t, judge=judge, require_judge=require_judge) for t in tasks]
+    n = len(results)
+    dims = list(DIMENSIONS) + (["tone_judge"] if judge is not None else [])
+    per_dim = {d: {"passed": sum(r["checks"][d]["pass"] for r in results), "total": n} for d in dims}
+    for d in per_dim.values():
+        d["pass_rate"] = round(d["passed"] / n, 3) if n else 0.0
+    codes: dict = {}
+    for r in results:
+        for v in r["violations"]:
+            codes[v["code"]] = codes.get(v["code"], 0) + 1
+    passed = sum(r["all_pass"] for r in results)
+    return {"evaluator_version": VERSION, "total_tasks": n, "passed": passed,
+            "pass_at_1": round(passed / n, 3) if n else 0.0,
+            "per_dimension": per_dim, "violation_counts": dict(sorted(codes.items(), key=lambda x: -x[1])),
+            "results": results}
 
 
-# ─────────────────────────────────────────────
-# Demo — Three Hand-Built Test Tasks
-# ─────────────────────────────────────────────
-
-DEMO_TASKS = [
-    {
-        "task_id": "TB-001",
-        "source_mode": "trace_derived",
-        "difficulty": "easy",
-        "input": {
-            "hiring_signal_brief": {
-                "prospect": "Yellow.ai",
-                "icp_classification": {
-                    "segment": 2,
-                    "segment_name": "Mid-market restructuring",
-                    "confidence": "high",
-                    "reasons": ["Layoff detected — cost restructuring likely"]
-                },
-                "firmographics": {"company": "Yellow.ai", "website": "https://yellow.ai"},
-                "ai_maturity": {"ai_maturity_score": 2, "confidence": "high"}
-            },
-            "bench_summary": {"total_engineers": 60, "available": 34},
-            "instruction": "Write a cold outreach email to the VP Engineering at Yellow.ai."
-        },
-        "candidate_output": {
-            "subject": "Note on Yellow.ai restructuring",
-            "body": "Yellow.ai has gone through a recent restructuring. Companies in this state often need to preserve delivery capacity while reshaping cost structure.\n\nTenacious provides managed engineering teams that preserve delivery capacity while reducing cost.\n\nWorth 15 minutes this week? http://localhost:3000/yakob/30min\n\nResearch Partner\nTenacious Intelligence Corporation"
-        },
-        "ground_truth": {
-            "required_signals": ["restructuring", "cost", "layoff"],
-            "forbidden_phrases": ["just circling back", "aggressive hiring", "bench"],
-            "max_subject_length": 60,
-            "must_end_with_cta": True
-        },
-        "rubric": {
-            "grounding": {"weight": 1.0, "check": "all_claims_grounded"},
-            "tone": {"weight": 1.0, "check": "zero_banned_phrases"},
-            "subject_length": {"weight": 1.0, "check": "subject_lte_60_chars"},
-            "cta_present": {"weight": 1.0, "check": "cta_in_last_paragraph"}
-        },
-        "metadata": {
-            "created_at": "2026-04-28T00:00:00Z",
-            "partition": "dev",
-            "probe_ids": ["P06", "P10", "P30"],
-            "source_trace_id": "thread_20260427_110356",
-            "judge_score": 4.5
-        }
-    },
-    {
-        "task_id": "TB-002",
-        "source_mode": "hand_authored",
-        "difficulty": "hard",
-        "input": {
-            "hiring_signal_brief": {
-                "prospect": "Notion",
-                "icp_classification": {
-                    "segment": 1,
-                    "segment_name": "Recently-funded startup",
-                    "confidence": "very_low",
-                    "reasons": ["No strong signals — defaulting to Segment 1"]
-                },
-                "firmographics": {"company": "Notion", "website": "https://notion.so"},
-                "ai_maturity": {"ai_maturity_score": 0, "confidence": "very_low"}
-            },
-            "bench_summary": {"total_engineers": 60, "available": 34},
-            "instruction": "Write a cold outreach email to the VP Engineering at Notion."
-        },
-        "candidate_output": {
-            "subject": "Note on Notion — aggressive hiring signal detected and your top talent bench",
-            "body": "Hope this finds you well. We noticed Notion has been aggressively hiring world-class rockstar engineers.\n\nTenacious has a bench of top talent ready to deploy.\n\nJust circling back to see if you would be open to a call?\n\nResearch Partner\nTenacious Intelligence Corporation"
-        },
-        "ground_truth": {
-            "required_signals": ["funding", "growth", "engineering"],
-            "forbidden_phrases": ["just circling back", "aggressive hiring", "bench", "top talent", "world-class", "rockstar", "hope this finds you well"],
-            "max_subject_length": 60,
-            "must_end_with_cta": True
-        },
-        "rubric": {
-            "grounding": {"weight": 1.0, "check": "all_claims_grounded"},
-            "tone": {"weight": 1.0, "check": "zero_banned_phrases"},
-            "subject_length": {"weight": 1.0, "check": "subject_lte_60_chars"},
-            "cta_present": {"weight": 1.0, "check": "cta_in_last_paragraph"}
-        },
-        "metadata": {
-            "created_at": "2026-04-28T00:00:00Z",
-            "partition": "dev",
-            "probe_ids": ["P06", "P16", "P17", "P19", "P20"],
-            "judge_score": 1.0
-        }
-    },
-    {
-        "task_id": "TB-003",
-        "source_mode": "programmatic",
-        "difficulty": "medium",
-        "input": {
-            "hiring_signal_brief": {
-                "prospect": "Figma",
-                "icp_classification": {
-                    "segment": 3,
-                    "segment_name": "Leadership change",
-                    "confidence": "medium",
-                    "reasons": ["New VP Engineering detected in last 90 days"]
-                },
-                "firmographics": {"company": "Figma", "website": "https://figma.com"},
-                "ai_maturity": {"ai_maturity_score": 1, "confidence": "medium"}
-            },
-            "bench_summary": {"total_engineers": 60, "available": 34},
-            "instruction": "Write a cold outreach email to the new VP Engineering at Figma."
-        },
-        "candidate_output": {
-            "subject": "Note for Figma's new VP Engineering",
-            "body": "Figma recently brought in new engineering leadership. New VPs often reassess vendor relationships in the first 90 days — particularly around engineering capacity.\n\nTenacious works with teams at this stage to provide managed engineering capacity that new leaders can shape around their priorities.\n\nWorth a 15-minute call this week? https://cal.com/yakob/30min\n\nResearch Partner\nTenacious Intelligence Corporation"
-        },
-        "ground_truth": {
-            "required_signals": ["leadership", "engineering", "new"],
-            "forbidden_phrases": ["just circling back", "aggressive hiring", "bench", "top talent"],
-            "max_subject_length": 60,
-            "must_end_with_cta": True
-        },
-        "rubric": {
-            "grounding": {"weight": 1.0, "check": "all_claims_grounded"},
-            "tone": {"weight": 1.0, "check": "zero_banned_phrases"},
-            "subject_length": {"weight": 1.0, "check": "subject_lte_60_chars"},
-            "cta_present": {"weight": 1.0, "check": "cta_in_last_paragraph"}
-        },
-        "metadata": {
-            "created_at": "2026-04-28T00:00:00Z",
-            "partition": "dev",
-            "probe_ids": ["P02", "P30"],
-            "judge_score": 4.0
-        }
-    }
-]
+def load_tasks(path: str | Path) -> list:
+    p = Path(path)
+    files = [p] if p.is_file() else sorted(p.rglob("TB-*.json"))
+    return [json.loads(f.read_text(encoding="utf-8")) for f in files]
 
 
-# ─────────────────────────────────────────────
-# CLI Entry Point
-# ─────────────────────────────────────────────
+def _demo_tasks() -> list:
+    from scoring_evaluator_v01 import DEMO_TASKS
+    return DEMO_TASKS
+
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Tenacious-Bench Scoring Evaluator v0.1")
-    parser.add_argument("--task", type=str, help="Path to task JSON file")
-    parser.add_argument("--output", type=str, help="Path to candidate output JSON file")
-    parser.add_argument("--demo", action="store_true", help="Run demo on three built-in tasks")
-    parser.add_argument("--dataset", type=str, help="Path to folder of task JSON files")
-    args = parser.parse_args()
+    # Windows consoles default to cp1252 and crash on "—" or "✅"; force UTF-8 output.
+    for stream in (sys.stdout, sys.stderr):
+        if hasattr(stream, "reconfigure"):
+            stream.reconfigure(encoding="utf-8")
+    ap = argparse.ArgumentParser(description=f"Tenacious-Bench evaluator v{VERSION}")
+    ap.add_argument("--task", help="task JSON file")
+    ap.add_argument("--output", help="candidate email JSON {subject, body}; default: task's stored candidate")
+    ap.add_argument("--dataset", help="folder (recursive) of task JSON files")
+    ap.add_argument("--demo", action="store_true", help="score the 3 built-in demo tasks")
+    ap.add_argument("--judge", action="store_true", help="also run the LLM tone judge (needs OPENROUTER_API_KEY)")
+    ap.add_argument("--require-judge", action="store_true", help="judge result gates overall_score")
+    ap.add_argument("--summary", action="store_true", help="print aggregate only, not per-task results")
+    args = ap.parse_args()
+    judge = LLMJudge() if args.judge else None
 
-    if args.demo:
-        print("\n" + "="*60)
-        print("Tenacious-Bench Scoring Evaluator — DEMO")
-        print("="*60)
-        for task in DEMO_TASKS:
-            result = score_task(task)
-            print(f"\nTask: {result['task_id']} | Difficulty: {result['difficulty']} | Source: {result['source_mode']}")
-            print(f"Overall Score: {result['overall_score']} | Partial: {result['partial_score']}")
-            for check, detail in result["checks"].items():
-                icon = "✅" if detail["pass"] else "❌"
-                print(f"  {icon} {check}: {detail['detail']}")
-
-        print("\n" + "="*60)
-        dataset_result = score_dataset(DEMO_TASKS)
-        print(f"DATASET SUMMARY — {dataset_result['total_tasks']} tasks")
-        print(f"pass@1: {dataset_result['pass_at_1']}")
-        print(f"passed: {dataset_result['passed']}/{dataset_result['total_tasks']}")
-        print("\nPer-check pass rates:")
-        for check, stats in dataset_result["per_check"].items():
-            print(f"  {check}: {stats['pass_rate']} ({stats['passed']}/{stats['total']})")
-        print("="*60 + "\n")
-
-    elif args.task:
-        task = json.loads(Path(args.task).read_text())
-        if args.output:
-            candidate = json.loads(Path(args.output).read_text())
-        else:
-            candidate = None
-        result = score_task(task, candidate)
-        print(json.dumps(result, indent=2))
-
-    elif args.dataset:
-        tasks = []
-        for p in Path(args.dataset).glob("*.json"):
-            try:
-                tasks.append(json.loads(p.read_text()))
-            except Exception as e:
-                print(f"Warning: could not load {p}: {e}")
-        result = score_dataset(tasks)
-        print(json.dumps(result, indent=2))
-
+    if args.task:
+        task = json.loads(Path(args.task).read_text(encoding="utf-8"))
+        cand = json.loads(Path(args.output).read_text(encoding="utf-8")) if args.output else None
+        print(json.dumps(score_task(task, cand, judge, args.require_judge), indent=2, ensure_ascii=False))
+    elif args.dataset or args.demo:
+        tasks = load_tasks(args.dataset) if args.dataset else _demo_tasks()
+        res = score_dataset(tasks, judge, args.require_judge)
+        if args.summary or args.demo:
+            res = {k: v for k, v in res.items() if k != "results"} | (
+                {"per_task": {r["task_id"]: [v["code"] for v in r["violations"]] for r in res["results"]}}
+                if args.demo else {})
+        print(json.dumps(res, indent=2, ensure_ascii=False))
     else:
-        parser.print_help()
+        ap.print_help()
         sys.exit(1)
-

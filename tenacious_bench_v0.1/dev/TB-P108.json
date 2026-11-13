@@ -12,13 +12,13 @@
         "segment_name": "Recently-funded startup",
         "confidence": "high",
         "reasons": [
-          "Series B $28M \u2014 scaling engineering team"
+          "Series B $28M — scaling engineering team"
         ]
       },
       "firmographics": {
         "company": "Wave Platform",
         "website": "https://waveplatform.io",
-        "description": "Wave Platform \u2014 technology company",
+        "description": "Wave Platform — technology company",
         "num_employees": "51-200"
       },
       "ai_maturity": {
@@ -46,20 +46,17 @@
         "data": 4
       }
     },
-    "instruction": "ADVERSARIAL: banned phrases email to Wave Platform",
-    "prior_thread": []
+    "instruction": "Write a cold outreach email to the VP Engineering at Wave Platform. Ground every claim in the supplied hiring signal brief.",
+    "prior_thread": [],
+    "email_type": "cold"
   },
   "candidate_output": {
-    "subject": "Hope this finds you well \u2014 quick chat?",
-    "body": "Hope this email finds you well! Wave Platform is clearly scaling aggressively with world-class rockstar engineers on their bench. Our top talent will skyrocket your delivery. Just circling back \u2014 quick question about synergizing?\n\nBest, Yabi"
+    "subject": "Hope this finds you well — quick chat?",
+    "body": "Hope this email finds you well! Wave Platform is clearly scaling aggressively with world-class rockstar engineers on their bench. Our top talent will skyrocket your delivery. Just circling back — quick question about synergizing?\n\nBest, Yabi"
   },
   "ground_truth": {
     "required_signals": [
-      "funding",
-      "growth",
-      "engineering",
-      "capacity",
-      "roles"
+      "funding"
     ],
     "forbidden_phrases": [
       "just circling back",
@@ -127,6 +124,17 @@
     ],
     "source_trace_id": null,
     "judge_score": null,
-    "expected_score": 0.0
+    "expected_score": 0.0,
+    "author_note": "ADVERSARIAL: banned phrases email to Wave Platform",
+    "required_signals_v01": [
+      "funding",
+      "growth",
+      "engineering",
+      "capacity",
+      "roles"
+    ],
+    "is_passing_v01": false,
+    "label_source": "evaluator_v0.2",
+    "dataset_version": "0.1.1"
   }
 }

@@ -1,0 +1,215 @@
+{
+  "v0.1": {
+    "summary": {
+      "independent_labels": {
+        "n": 39,
+        "agree": 31,
+        "rate": 0.795,
+        "good_passed": 14,
+        "bad_failed": 17,
+        "bad_passed": 5,
+        "good_failed": 3
+      },
+      "evaluator_assigned_labels": {
+        "n": 254,
+        "agree": 248,
+        "rate": 0.976,
+        "good_passed": 172,
+        "bad_failed": 76,
+        "bad_passed": 6,
+        "good_failed": 0
+      }
+    },
+    "disagreements": [
+      {
+        "task_id": "TB-HA003",
+        "label": false,
+        "pred": true,
+        "independent": true,
+        "violations": []
+      },
+      {
+        "task_id": "TB-HA005",
+        "label": false,
+        "pred": true,
+        "independent": true,
+        "violations": []
+      },
+      {
+        "task_id": "TB-HA007",
+        "label": false,
+        "pred": true,
+        "independent": true,
+        "violations": []
+      },
+      {
+        "task_id": "TB-HA008",
+        "label": false,
+        "pred": true,
+        "independent": true,
+        "violations": []
+      },
+      {
+        "task_id": "TB-HA014",
+        "label": false,
+        "pred": true,
+        "independent": true,
+        "violations": []
+      },
+      {
+        "task_id": "TB-SG08",
+        "label": true,
+        "pred": false,
+        "independent": true,
+        "violations": [
+          "cta_present",
+          "llm_judge"
+        ]
+      },
+      {
+        "task_id": "TB-SG09",
+        "label": true,
+        "pred": false,
+        "independent": true,
+        "violations": [
+          "cta_present",
+          "llm_judge"
+        ]
+      },
+      {
+        "task_id": "TB-SG10",
+        "label": true,
+        "pred": false,
+        "independent": true,
+        "violations": [
+          "tone"
+        ]
+      }
+    ]
+  },
+  "v0.2": {
+    "summary": {
+      "independent_labels": {
+        "n": 39,
+        "agree": 28,
+        "rate": 0.718,
+        "good_passed": 7,
+        "bad_failed": 21,
+        "bad_passed": 1,
+        "good_failed": 10
+      },
+      "evaluator_assigned_labels": {
+        "n": 254,
+        "agree": 168,
+        "rate": 0.661,
+        "good_passed": 86,
+        "bad_failed": 82,
+        "bad_passed": 0,
+        "good_failed": 86
+      }
+    },
+    "disagreements": [
+      {
+        "task_id": "TB-HA002",
+        "label": true,
+        "pred": false,
+        "independent": true,
+        "violations": [
+          "FUNDING_UNSUPPORTED"
+        ]
+      },
+      {
+        "task_id": "TB-HA005",
+        "label": false,
+        "pred": true,
+        "independent": true,
+        "violations": []
+      },
+      {
+        "task_id": "TB-HA009",
+        "label": true,
+        "pred": false,
+        "independent": true,
+        "violations": [
+          "PEER_CLAIM_UNSUPPORTED"
+        ]
+      },
+      {
+        "task_id": "TB-HA011",
+        "label": true,
+        "pred": false,
+        "independent": true,
+        "violations": [
+          "PEER_CLAIM_UNSUPPORTED"
+        ]
+      },
+      {
+        "task_id": "TB-SG01",
+        "label": true,
+        "pred": false,
+        "independent": true,
+        "violations": [
+          "NUMBER_NOT_IN_INPUTS"
+        ]
+      },
+      {
+        "task_id": "TB-SG04",
+        "label": true,
+        "pred": false,
+        "independent": true,
+        "violations": [
+          "PEER_CLAIM_UNSUPPORTED"
+        ]
+      },
+      {
+        "task_id": "TB-SG06",
+        "label": true,
+        "pred": false,
+        "independent": true,
+        "violations": [
+          "FUNDING_UNSUPPORTED"
+        ]
+      },
+      {
+        "task_id": "TB-SG11",
+        "label": true,
+        "pred": false,
+        "independent": true,
+        "violations": [
+          "FUNDING_UNSUPPORTED"
+        ]
+      },
+      {
+        "task_id": "TB-SG08",
+        "label": true,
+        "pred": false,
+        "independent": true,
+        "violations": [
+          "NO_CTA"
+        ]
+      },
+      {
+        "task_id": "TB-SG09",
+        "label": true,
+        "pred": false,
+        "independent": true,
+        "violations": [
+          "NUMBER_NOT_IN_INPUTS",
+          "NUMBER_NOT_IN_INPUTS",
+          "NUMBER_NOT_IN_INPUTS",
+          "NO_CTA"
+        ]
+      },
+      {
+        "task_id": "TB-SG10",
+        "label": true,
+        "pred": false,
+        "independent": true,
+        "violations": [
+          "FUNDING_UNSUPPORTED",
+          "NUMBER_NOT_IN_INPUTS"
+        ]
+      }
+    ]
+  }
+}

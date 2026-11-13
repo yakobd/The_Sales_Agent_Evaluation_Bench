@@ -1,0 +1,35 @@
+{
+  "meta-llama/llama-3.3-70b-instruct": {
+    "n": 12,
+    "pass_first_try": 7,
+    "pass_after_rewrite": 8,
+    "cost_usd": 0.0052,
+    "residual_failures": {
+      "NO_SPECIFIC_SIGNAL": 4,
+      "FUNDING_NOT_RECENT": 2
+    }
+  },
+  "mistralai/mistral-small-3.2-24b-instruct": {
+    "n": 12,
+    "pass_first_try": 3,
+    "pass_after_rewrite": 8,
+    "cost_usd": 0.0026,
+    "residual_failures": {
+      "NO_SPECIFIC_SIGNAL": 2,
+      "TEMPLATE_PLACEHOLDER": 1,
+      "PEER_CLAIM_UNSUPPORTED": 1,
+      "BANNED_PHRASE": 1
+    }
+  },
+  "google/gemma-3-27b-it": {
+    "n": 12,
+    "pass_first_try": 2,
+    "pass_after_rewrite": 7,
+    "cost_usd": 0.0032,
+    "residual_failures": {
+      "NO_SPECIFIC_SIGNAL": 3,
+      "TEMPLATE_PLACEHOLDER": 5,
+      "PEER_CLAIM_UNSUPPORTED": 1
+    }
+  }
+}

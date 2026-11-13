@@ -1,0 +1,16 @@
+{
+  "backbone": "unsloth/Qwen3.5-2B",
+  "backbone_revision": "fffbc0d8711cf87df6d1f97938c5e50ef94aadc7",
+  "seed": 42,
+  "held_out_tasks": 68,
+  "conditions": [
+    "prompt_engineered",
+    "base_short",
+    "trained"
+  ],
+  "sha256": {
+    "sft_train.jsonl": "5627759df3b03c8ee1c0bc569b1afbc5bf9ec13d9b22fc7dd209771fa343cf80",
+    "sft_val.jsonl": "e14493c4461d6524170639225373ac2dad8a5127147ffd598b49d9d176d869c3",
+    "ablation_prompts.jsonl": "a27f68a06cc7982b8e646343bf2b157e8a4afec191b05ea6eb541887d6abd68e"
+  }
+}
