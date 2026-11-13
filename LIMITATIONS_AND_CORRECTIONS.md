@@ -116,6 +116,18 @@ A production deployment would still need the bench check and the recency check i
 - **Fictional client.** Tenacious is a fictional client.
 - **Not a real person's data.** No email in the dataset was sent to a real person.
 
-### 11. Not yet republished
+### 11. The policy gate and the ad-creative pack
+
+- **The gate helps partly by construction.** It blocks drafts using the frozen evaluator's own implementations of 10 hard-policy codes, so its effect on those codes is guaranteed. What it actually shows is in two other numbers:
+  - **How often it fires:** 9% of trained-model drafts, against 82% of prompt-engineered drafts.
+  - **What still fails:** dimensions it does not gate, such as grounding and tone.
+
+  A production gate would apply the same rules to *live* drafts. The held-out shows how often that would intervene. It does not show an independent quality gain.
+- **The fallbacks are not free.**
+  - **Holding reply:** it is generic, and it defers the answer to a human.
+  - **Cold-email template:** it is the abstaining note, whose usefulness is unmeasured (limitation 1).
+- **The ad-creative pack is a demo.** It was written in one session and checked only against 12 fixtures the author wrote. Neither the pack nor its fixtures have been labelled by anyone else. Its value is showing that the evaluator design (deterministic checks, evidence per violation, pass = all dimensions) carries over to another creative format. It is not a validated ad-policy checker.
+
+### 12. Not yet republished
 
 The Hugging Face dataset and adapter pages still show v0.1. They will be updated to v0.2 only with the author's approval. Until then, this repository is the reference.

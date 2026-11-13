@@ -1,0 +1,125 @@
+{
+  "note": "DEMO fixtures for the ad-creative pack. Fictional brands, written by the author to exercise each rule; expected verdicts are the author's. Not a benchmark: no held-out, no human validation.",
+  "tasks": [
+    {
+      "task_id": "AD-001", "expected_pass": true, "expected_codes": [],
+      "input": {"as_of": "2026-11-13", "vertical": "finance",
+        "brand": {"name": "Lumen Savings", "display_domain": "lumensavings.example", "competitors": ["Harbor Bank"], "blocked_terms": ["cheap", "loophole"]},
+        "offer": {"product": "high-yield savings account", "approved_claims": ["4.10% APY", "no monthly fees", "FDIC insured"]},
+        "channel": {"type": "search_rsa", "headline_max": 30, "description_max": 90}},
+      "candidate_output": {"headlines": ["High-Yield Savings Account", "Earn 4.10% APY", "No Monthly Fees"],
+        "descriptions": ["Open a savings account with no monthly fees. FDIC insured.", "Earn 4.10% APY on your balance. Open an account in minutes."],
+        "final_url": "https://lumensavings.example/savings"}
+    },
+    {
+      "task_id": "AD-002", "expected_pass": false, "expected_codes": ["UNSUPPORTED_SUPERLATIVE", "NUMBER_NOT_APPROVED", "COMPETITOR_MENTION"],
+      "input": {"as_of": "2026-11-13", "vertical": "finance",
+        "brand": {"name": "Lumen Savings", "display_domain": "lumensavings.example", "competitors": ["Harbor Bank"], "blocked_terms": ["cheap"]},
+        "offer": {"product": "high-yield savings account", "approved_claims": ["4.10% APY", "no monthly fees"]},
+        "channel": {"type": "search_rsa", "headline_max": 30, "description_max": 90}},
+      "candidate_output": {"headlines": ["Best Savings Rate Anywhere", "Earn 5% APY Today", "No Monthly Fees"],
+        "descriptions": ["Beats Harbor Bank on every account. Open yours today.", "No monthly fees, ever. Open a high-yield savings account."],
+        "final_url": "https://lumensavings.example/savings"}
+    },
+    {
+      "task_id": "AD-003", "expected_pass": false, "expected_codes": ["RESTRICTED_CLAIM", "UNSUPPORTED_GUARANTEE"],
+      "input": {"as_of": "2026-11-13", "vertical": "finance",
+        "brand": {"name": "Lumen Savings", "display_domain": "lumensavings.example", "competitors": [], "blocked_terms": []},
+        "offer": {"product": "high-yield savings account", "approved_claims": ["4.10% APY"]},
+        "channel": {"type": "search_rsa", "headline_max": 30, "description_max": 90}},
+      "candidate_output": {"headlines": ["Guaranteed Returns", "Earn 4.10% APY", "High-Yield Savings Account"],
+        "descriptions": ["Guaranteed returns on a high-yield savings account.", "Open an account today and earn 4.10% APY."],
+        "final_url": "https://lumensavings.example/savings"}
+    },
+    {
+      "task_id": "AD-004", "expected_pass": true, "expected_codes": [],
+      "input": {"as_of": "2026-11-13", "vertical": "saas",
+        "brand": {"name": "Tidewater", "display_domain": "tidewater.example", "competitors": ["Boardly"], "blocked_terms": ["hack"]},
+        "offer": {"product": "project planning software", "approved_claims": ["14-day trial", "Gantt charts", "unlimited projects"]},
+        "channel": {"type": "search_rsa", "headline_max": 30, "description_max": 90}},
+      "candidate_output": {"headlines": ["{KeyWord:Project Planning}", "Start a 14-Day Trial", "Unlimited Projects"],
+        "descriptions": ["Plan every project with Gantt charts and unlimited projects.", "Start your 14-day trial of Tidewater project planning software."],
+        "final_url": "https://app.tidewater.example/signup"}
+    },
+    {
+      "task_id": "AD-005", "expected_pass": false, "expected_codes": ["TOO_LONG", "DUPLICATE_HEADLINE", "PLACEHOLDER", "EXCLAMATION_IN_HEADLINE", "REPEATED_PUNCTUATION"],
+      "input": {"as_of": "2026-11-13", "vertical": "saas",
+        "brand": {"name": "Tidewater", "display_domain": "tidewater.example", "competitors": [], "blocked_terms": []},
+        "offer": {"product": "project planning software", "approved_claims": ["14-day trial", "Gantt charts"]},
+        "channel": {"type": "search_rsa", "headline_max": 30, "description_max": 90}},
+      "candidate_output": {"headlines": ["Project Planning Software For Every Team", "Gantt Charts", "Gantt charts!!"],
+        "descriptions": ["Try [Product Name] with Gantt charts.", "Start a 14-day trial today."],
+        "final_url": "https://tidewater.example/trial"}
+    },
+    {
+      "task_id": "AD-006", "expected_pass": false, "expected_codes": ["DESTINATION_MISMATCH"],
+      "input": {"as_of": "2026-11-13", "vertical": "saas",
+        "brand": {"name": "Tidewater", "display_domain": "tidewater.example", "competitors": [], "blocked_terms": []},
+        "offer": {"product": "project planning software", "approved_claims": ["14-day trial"]},
+        "channel": {"type": "search_rsa", "headline_max": 30, "description_max": 90}},
+      "candidate_output": {"headlines": ["Project Planning Software", "Start a 14-Day Trial", "Plan Projects Faster"],
+        "descriptions": ["Start a 14-day trial of our project planning software.", "Plan projects with your team. Start free today."],
+        "final_url": "https://tidewater-deals.example.net/promo"}
+    },
+    {
+      "task_id": "AD-007", "expected_pass": false, "expected_codes": ["EXPIRED_PROMO"],
+      "input": {"as_of": "2026-11-13", "vertical": "retail",
+        "brand": {"name": "Northtrail", "display_domain": "northtrail.example", "competitors": [], "blocked_terms": []},
+        "offer": {"product": "trail running shoes", "approved_claims": ["free returns"], "promo": {"discount": "20% off", "ends": "2026-10-31"}},
+        "channel": {"type": "search_rsa", "headline_max": 30, "description_max": 90}},
+      "candidate_output": {"headlines": ["Trail Running Shoes", "20% Off Trail Shoes", "Free Returns"],
+        "descriptions": ["Shop trail running shoes, 20% off with free returns.", "Find your fit. Shop trail running shoes with free returns."],
+        "final_url": "https://northtrail.example/trail"}
+    },
+    {
+      "task_id": "AD-008", "expected_pass": true, "expected_codes": [],
+      "input": {"as_of": "2026-11-13", "vertical": "retail",
+        "brand": {"name": "Northtrail", "display_domain": "northtrail.example", "competitors": [], "blocked_terms": []},
+        "offer": {"product": "trail running shoes", "approved_claims": ["free returns"], "promo": {"discount": "20% off", "ends": "2026-12-31"}},
+        "channel": {"type": "search_rsa", "headline_max": 30, "description_max": 90}},
+      "candidate_output": {"headlines": ["Trail Running Shoes", "20% Off Trail Shoes", "Free Returns"],
+        "descriptions": ["Shop trail running shoes, 20% off with free returns.", "Find your fit. Shop trail running shoes with free returns."],
+        "final_url": "https://www.northtrail.example/trail"}
+    },
+    {
+      "task_id": "AD-009", "expected_pass": false, "expected_codes": ["EXCESSIVE_CAPS", "EXCLAMATION_IN_HEADLINE", "BLOCKED_TERM"],
+      "input": {"as_of": "2026-11-13", "vertical": "retail",
+        "brand": {"name": "Northtrail", "display_domain": "northtrail.example", "competitors": [], "blocked_terms": ["cheap"]},
+        "offer": {"product": "trail running shoes", "approved_claims": ["free returns"]},
+        "channel": {"type": "search_rsa", "headline_max": 30, "description_max": 90}},
+      "candidate_output": {"headlines": ["HUGE Trail Shoe Sale", "Cheap Trail Running Shoes", "Free Returns!"],
+        "descriptions": ["Shop trail running shoes with free returns.", "Find your next pair of trail running shoes. Shop now."],
+        "final_url": "https://northtrail.example/trail"}
+    },
+    {
+      "task_id": "AD-010", "expected_pass": false, "expected_codes": ["RESTRICTED_CLAIM"],
+      "input": {"as_of": "2026-11-13", "vertical": "health",
+        "brand": {"name": "Calmwell", "display_domain": "calmwell.example", "competitors": [], "blocked_terms": []},
+        "offer": {"product": "online therapy sessions", "approved_claims": ["licensed therapists", "video sessions"]},
+        "channel": {"type": "search_rsa", "headline_max": 30, "description_max": 90}},
+      "candidate_output": {"headlines": ["Online Therapy Sessions", "Licensed Therapists", "Therapy That Cures Anxiety"],
+        "descriptions": ["Book video sessions with licensed therapists.", "Online therapy sessions that fit your week. Book today."],
+        "final_url": "https://calmwell.example/start"}
+    },
+    {
+      "task_id": "AD-011", "expected_pass": false, "expected_codes": ["NO_OFFER_REFERENCE", "NO_CTA"],
+      "input": {"as_of": "2026-11-13", "vertical": "travel",
+        "brand": {"name": "Skylark Stays", "display_domain": "skylarkstays.example", "competitors": [], "blocked_terms": []},
+        "offer": {"product": "boutique hotel bookings", "approved_claims": ["free cancellation"]},
+        "channel": {"type": "search_rsa", "headline_max": 30, "description_max": 90}},
+      "candidate_output": {"headlines": ["Your Next Trip Awaits", "Travel Made Simple", "Make Memories"],
+        "descriptions": ["The world is waiting for you.", "Every journey starts somewhere."],
+        "final_url": "https://skylarkstays.example/"}
+    },
+    {
+      "task_id": "AD-012", "expected_pass": true, "expected_codes": [],
+      "input": {"as_of": "2026-11-13", "vertical": "travel",
+        "brand": {"name": "Skylark Stays", "display_domain": "skylarkstays.example", "competitors": [], "blocked_terms": []},
+        "offer": {"product": "boutique hotel bookings", "approved_claims": ["free cancellation"], "substantiated_superlatives": ["award-winning"]},
+        "channel": {"type": "search_rsa", "headline_max": 30, "description_max": 90}},
+      "candidate_output": {"headlines": ["Boutique Hotel Bookings", "Award-Winning Boutique Stays", "Free Cancellation"],
+        "descriptions": ["Book boutique hotels with free cancellation.", "Explore award-winning boutique stays and book in minutes."],
+        "final_url": "https://skylarkstays.example/hotels"}
+    }
+  ]
+}
