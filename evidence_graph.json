@@ -399,6 +399,36 @@
       ],
       "produced_by": "tools/labeling.py vs-evaluator"
     },
+    "retest_overall": {
+      "claim": "Test-retest, overall verdict (same labeller, ~10 h gap)",
+      "value": 0.933,
+      "source_file": "reports/inter_rater_agreement.json",
+      "json_path": [
+        "test_retest_overall",
+        "agreement"
+      ],
+      "produced_by": "tools/labeling.py score"
+    },
+    "human_r2_overall": {
+      "claim": "Human (round 2) vs evaluator, overall agreement",
+      "value": 0.833,
+      "source_file": "reports/human_vs_evaluator_round2.json",
+      "json_path": [
+        "overall",
+        "agreement"
+      ],
+      "produced_by": "tools/labeling.py vs-evaluator --round 2"
+    },
+    "human_r2_kappa": {
+      "claim": "Human (round 2) vs evaluator, overall kappa",
+      "value": 0.658,
+      "source_file": "reports/human_vs_evaluator_round2.json",
+      "json_path": [
+        "overall",
+        "cohen_kappa"
+      ],
+      "produced_by": "tools/labeling.py vs-evaluator --round 2"
+    },
     "dev_agreement": {
       "claim": "Evaluator v0.2 vs 39 independent labels (development set)",
       "value": 1.0,

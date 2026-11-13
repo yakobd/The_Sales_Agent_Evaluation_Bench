@@ -12,7 +12,7 @@ The v0.1 release (README, model card, memo and blog of May 2026) reported Delta 
 |---|---|---|
 | "Trained adapter pass@1 0.754" | The ablation script never loaded the adapter. The "trained" row scored outputs that did not come from the trained model. | The Colab notebook generates with the adapter, and runs the untrained conditions under `model.disable_adapter()` in the same session. The scorer verifies the sealed manifest. |
 | "Held-out is sealed" | The 57 held-out tasks were committed to the public repo. 48 of the 57 shared 8-grams with train. The split was redone after results were seen. | The v0.1 held-out was retired to dev ([reports/retired_held_out_v01.json](reports/retired_held_out_v01.json)). A new 68-task held-out from companies never used before is gitignored and pinned by SHA-256 ([reports/held_out_v0.2_manifest.json](reports/held_out_v0.2_manifest.json)). |
-| "93% inter-rater agreement, round 1 vs round 2" | The matrix is arithmetically impossible: the pass/fail marginals cannot produce the stated agreement counts. No label files existed. | 30 tasks were hand-labelled in a blind packet ([labeling/](labeling/)), with raw labels committed. Round 2 (test–retest) is pending. |
+| "93% inter-rater agreement, round 1 vs round 2" | The matrix is arithmetically impossible: the pass/fail marginals cannot produce the stated agreement counts. No label files existed. | 30 tasks were hand-labelled in a blind packet ([labeling/](labeling/)), with raw labels committed. Round 2 test–retest gives 28/30 (93%) on the overall verdict. That figure is real, but it is an upper bound: the rounds were about 10 hours apart, not 24, and the labeller is the author. |
 | "Contamination: 0 violations" | The check compared outputs rather than inputs, used n=3 with a threshold that was never applied, and its time-shift check always returned true. | [contamination_check.py](contamination_check.py) was rewritten to use input fields, per-field 8-grams, embeddings, and documented source windows, with negative-control tests. |
 | "LLM judge scores" | The judge was disabled in code, so every judge score was a placeholder. | The judge is optional and reported separately. The headline uses only deterministic checks. |
 | "Delta C +0.421 vs τ²-Bench" | It subtracts a retail-benchmark score from a sales-email score. | Not computed: the two scores measure different tasks. |
@@ -52,7 +52,13 @@ The human caught **9 honesty failures the evaluator passed**. Examples:
 
 The rule-based check catches dates, numbers and named signals. It misses vague overclaims. The trained model's 0.96 honesty pass rate is therefore an upper bound.
 
-### 3. Agreement on the development set is not a validity estimate
+### 3. Agreement figures and what each one measures
+
+- **Human vs evaluator (validity).** Round 1: 77%, κ 0.51. Round 2: 83%, κ 0.66, after the labeller made the paraphrased-grounding rule explicit. Honesty stays at 63% in both rounds.
+- **Test–retest, same labeller (consistency).** 93% on the overall verdict. Every dimension is at or above 87%, and the only changes are 4 borderline grounding calls. The gap was about 10 hours instead of the required 24, and there is one labeller who is also the author, so this is an upper bound. It is not inter-annotator agreement.
+- **39/39 independent labels (development set).** This is not a validity estimate.
+
+### 3b. Agreement on the development set is not a validity estimate
 
 The evaluator matches all 39 independent labels in the repo. Its v0.2 rules were written while looking at those tasks, so this 39/39 is development-set agreement. The out-of-sample estimate is the 77% from round 1 above.
 

@@ -11,7 +11,7 @@
 | Sample | 30 tasks from train and dev, chosen by [tools/labeling.py](tools/labeling.py) `make --round 1` with seed 42. Hand-authored tasks are excluded, because their labels were used to develop the evaluator. The sample is stratified by authoring mode × evaluator verdict, so it holds both passing and failing emails from every mode. | Done |
 | Round 1 | A blind HTML packet ([labeling/round1.html](labeling/round1.html)). For each task it shows the brief, the bench, the prior thread and the candidate email. It hides the evaluator output, the labels and the metadata. The labeller marks pass or fail on each of the five dimensions, following the written rubric in the packet. Raw labels: [labeling/round1_labels.csv](labeling/round1_labels.csv). | **Done** |
 | Human vs evaluator | `tools/labeling.py vs-evaluator --round 1` gives agreement and Cohen's κ for each dimension. Output: [reports/human_vs_evaluator_round1.json](reports/human_vs_evaluator_round1.json). | **Done** |
-| Round 2 (test–retest) | The same 30 tasks, shuffled into a new order ([labeling/round2.html](labeling/round2.html)), labelled at least 24 hours after round 1 without looking at the round 1 labels. `tools/labeling.py score` then compares the two rounds. | Pending |
+| Round 2 (test–retest) | The same 30 tasks, shuffled into a new order ([labeling/round2.html](labeling/round2.html)), to be labelled at least 24 hours after round 1 without looking at the round 1 labels. `tools/labeling.py score` then compares the two rounds. | **Done**, but the gap was about 10 hours (see below) |
 
 **The labeller is the author.** These are one person's labels, not those of an independent panel. Round 2 measures that person's consistency, not agreement between different people.
 
@@ -72,6 +72,27 @@ The evaluator passed 13 of the 30 emails. The human passed 10.
 5. **Company names.** Exempt the prospect's own name from the banned-phrase list. ("Synergy" is a held-out false positive.)
 6. **Paraphrased openers.** Optionally add an LLM-judge tone check for paraphrased generic openers, reported separately.
 
-## Round 2 (pending)
+## Round 2: test–retest (same labeller, same 30 tasks, new order)
 
-Round 2 can be labelled after 23:18 on 2026-11-13, 24 hours after round 1 was finished. This section will report test–retest agreement and κ for each dimension.
+Raw labels are in [labeling/round2_labels.csv](labeling/round2_labels.csv), produced by `tools/labeling.py score`. The output is in [reports/inter_rater_agreement.json](reports/inter_rater_agreement.json).
+
+| Dimension | Round 1 pass | Round 2 pass | Agreement | Cohen's κ |
+|---|---|---|---|---|
+| Grounding | 22 | 26 | 26/30 (87%) | 0.60 |
+| Honesty | 17 | 17 | 30/30 (100%) | 1.00 |
+| Commercial safety | 28 | 28 | 30/30 (100%) | 1.00 |
+| Tone | 22 | 22 | 30/30 (100%) | 1.00 |
+| Format | 23 | 23 | 30/30 (100%) | 1.00 |
+| **Overall verdict** | 10 | 12 | **28/30 (93%)** | 0.86 |
+
+Every dimension clears the 80% revision threshold.
+
+**The only changes were four borderline grounding calls, all from fail to pass** (TB-P054, TB-P072, TB-P095, TB-P101). In every case the email paraphrases the AI-maturity finding without stating it. In round 2 the labeller decided that a paraphrase which clearly refers to the finding counts as grounded, and wrote the reason down in the notes.
+
+That rule is now explicit. It is also the evaluator's behaviour. With it, round 2 agrees with the evaluator on grounding 27/30 (κ 0.61), up from 25/30 in round 1, and on the overall verdict 25/30 (83%, κ 0.66), up from 23/30. Honesty agreement with the evaluator is unchanged at 19/30 (63%). The honesty gap is a property of the evaluator, not of labeller noise.
+
+**Caveats. Read these before quoting 93% or 100%.**
+
+1. **The gap between rounds was about 10 hours, not 24.** Round 1 was finished by 23:18 on 2026-11-12, and round 2 was submitted at about 09:40 on 2026-11-13. The protocol asks for at least 24 hours. With a short gap, the labeller is more likely to remember round 1 answers, which pushes agreement up. Treat the test–retest figures as an upper bound.
+2. **It is one labeller, who is also the author.** This measures self-consistency, not agreement between different people. Seven of the 23 non-empty notes are word-for-word the same as in round 1, which suggests round 1 was recalled. A second, independent labeller is the obvious next step.
+3. **The headline validity figure is human vs evaluator, not test–retest.** Use round 1's 77% (κ 0.51) as the conservative number, and round 2's 83% (κ 0.66) as the figure once the grounding rule is clarified.
