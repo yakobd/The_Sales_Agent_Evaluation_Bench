@@ -22,3 +22,4 @@ ablations/generations_run1_INVALID_rightpad.jsonl
 ablations/adapter/
 ablations/generations_all.jsonl
 ablations/week10_v2_generations.jsonl
+revenue/.state/

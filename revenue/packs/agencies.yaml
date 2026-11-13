@@ -1,0 +1,104 @@
+# Segment pack: Agencies. Added as config only: no agent or skill code changed for this segment.
+id: agencies
+label: Agencies (media, performance & full-service)
+version: 1
+
+icp:
+  description: >
+    Agencies running paid media for multiple consumer clients, especially those with multi-location
+    clients, who need creative and activation at scale under their own brand.
+  owner: agency-partnerships
+
+messaging:
+  sender_name: Riley from Cool AI Partnerships
+  products:
+    Create: white-label creative automation for every client
+    Activate: programmatic and local activation from one seat
+    Optimize: client-ready measurement and attribution reporting
+  value_props:
+    margin: "run creative and local activation for all {client_count} clients from one seat, protecting margin as you grow"
+    measurement: "hand every client store-visit and lift reporting they can take to their CFO"
+    creative: "produce on-brand variants for every client without adding studio headcount"
+  hooks:
+    new_client_win: "Congratulations on the new win ({detail}). Onboarding a big multi-location client is usually where the workload spikes."
+    hiring_programmatic: "Saw that {company} is {detail}, which usually means the programmatic book is growing."
+    rfp_published: "I understand there's an open RFP ({detail})."
+    tech_stack_review: "I heard {company} is reviewing its ad-tech stack ({detail})."
+  default_hook: "I couldn't find recent news about {company}, so I'll ask directly: how are you scaling creative and reporting across clients today?"
+  cta: "Open to a 20-minute look at the partner workflow? My calendar: https://cal.example/cool-ai/agencies"
+  banned_phrases: ["guaranteed results", "best in the industry", "no-brainer", "revolutionary"]
+
+scoring:
+  weights: {fit: 0.40, intent: 0.40, engagement: 0.20}
+  tiers: {A: 70, B: 50, C: 30}
+  fit:
+    - {field: agency_type, op: in, value: [performance, media, full_service], points: 25, reason: "Agency type '{actual}' buys media at scale"}
+    - {field: managed_spend_usd, op: gte, value: 20000000, points: 30, reason: "Manages ${actual:,} in client spend"}
+    - {field: verticals, op: contains_any, value: [retail, qsr, automotive, home_services, fitness], points: 25, reason: "Client verticals {actual} include multi-location categories"}
+    - {field: client_count, op: gte, value: 20, points: 10, reason: "{actual} active clients"}
+    - {field: region, op: in, value: [north_america, europe], points: 10, reason: "Region '{actual}' is served today"}
+  intent:
+    - {signal: new_client_win, window_days: 120, points: 40, reason: "New client win ({detail})"}
+    - {signal: rfp_published, window_days: 60, points: 40, reason: "Open RFP ({detail})"}
+    - {signal: tech_stack_review, window_days: 90, points: 35, reason: "Ad-tech stack review ({detail})"}
+    - {signal: hiring_programmatic, window_days: 60, points: 20, reason: "Programmatic hiring ({detail})"}
+  engagement:
+    - {event: email_opened, points: 10, cap: 20, reason: "Opened our emails ({count}x)"}
+    - {event: link_clicked, points: 20, cap: 40, reason: "Clicked through ({count}x)"}
+    - {event: replied_positive, points: 40, cap: 40, reason: "Replied with interest"}
+    - {event: meeting_booked, points: 40, cap: 40, reason: "Booked a meeting"}
+
+autonomy:
+  first_touch_approval_tiers: [A, B]   # stricter than the code floor: partnerships wants to see B-tier first touches too
+
+templates:
+  first_touch:
+    subject: "{company}: creative and activation for all {client_count} clients"
+    body: |
+      Hi {first_name},
+
+      {hook}
+
+      Cool AI lets {company} {value_prop}. {lesson_line}
+
+      {cta}
+
+      {sender_name}
+  follow_up:
+    subject: "Re: {company}: creative and activation for all {client_count} clients"
+    body: |
+      Hi {first_name},
+
+      One idea for your multi-location clients: {value_prop_secondary}. {lesson_line}
+
+      {cta}
+
+      {sender_name}
+  call_brief:
+    title: "Call brief: {company} ({tier}-tier agency)"
+    sections: [account, why_now, scores, open_questions, lessons, watch_outs]
+
+stages:
+  sla_days: {outreach: 6, engaged: 2, meeting: 7, qualified: 14, proposal: 10, io_sent: 7}
+  exit_criteria:
+    qualified: [budget, timeline, decision_maker, need]
+    proposal: [budget, flight_start, flight_end, line_items]
+  max_followups: 2
+
+transcripts:
+  product_keywords:
+    Create: [creative, variants, studio, white-label, assets]
+    Activate: [programmatic, activation, local media, trading, seat]
+    Optimize: [reporting, attribution, measurement, lift, store visits]
+  decision_roles: [managing director, vp programmatic, head of investment, ceo, partner]
+
+io:
+  template: io_template.md
+  currency: USD
+  payment_terms: Net 60
+  min_budget: 50000
+  max_discount_pct: 20
+  rate_card:
+    "Activate - Programmatic Seat": {min_cpm: 6.0, max_cpm: 14.0}
+    "Create - White-label DCO": {min_cpm: 1.2, max_cpm: 3.5}
+    "Optimize - Client Reporting": {min_cpm: 0.4, max_cpm: 1.8}

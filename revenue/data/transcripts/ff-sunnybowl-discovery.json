@@ -1,0 +1,21 @@
+{
+  "id": "ff-sunnybowl-discovery",
+  "title": "Sunny Bowl x Cool AI - discovery",
+  "date": "2026-11-18",
+  "participants": [
+    {"name": "Jordan Blake", "email": "jordan@cool.ai", "title": "Account Executive"},
+    {"name": "Dana Ruiz", "email": "dana@sunnybowl.example", "title": "CMO"},
+    {"name": "Leo Park", "email": "leo@sunnybowl.example", "title": "Head of Media"}
+  ],
+  "sentences": [
+    {"speaker_name": "Jordan Blake", "text": "Thanks for making time. What's driving the timing on your side?"},
+    {"speaker_name": "Dana Ruiz", "text": "We're opening 40 locations in Texas and our creative is the bottleneck. It takes us weeks to produce new creative for each market."},
+    {"speaker_name": "Leo Park", "text": "We currently use Mediahub Local for local media, but reporting stops at clicks."},
+    {"speaker_name": "Dana Ruiz", "text": "The goal is one campaign that every franchisee can localise. But our franchisees want to approve each offer, they don't want to lose control."},
+    {"speaker_name": "Leo Park", "text": "And honestly, how would we know it drove store visits? We'd need a holdout to prove incrementality."},
+    {"speaker_name": "Jordan Blake", "text": "We usually design the pilot with a holdout. What budget are you thinking for a first phase?"},
+    {"speaker_name": "Dana Ruiz", "text": "We have $180k set aside for a Q1 pilot. I sign off on media budget."},
+    {"speaker_name": "Leo Park", "text": "We'd want to launch on 2027-01-12 and run through 2027-03-31, across creative, local media and measurement."},
+    {"speaker_name": "Jordan Blake", "text": "Great. Next step: I'll send over a proposal and IO by Friday."}
+  ]
+}

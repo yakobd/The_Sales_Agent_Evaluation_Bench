@@ -233,6 +233,9 @@ def review_agreement(source: str = "ui", pack: PackName = "sales_email", reviewe
 
 # ── static app ──────────────────────────────────────────────────────────────
 
+from revenue.api import router as revenue_router  # noqa: E402  (agentic revenue system: revenue desk)
+
+app.include_router(revenue_router)
 app.mount("/static", StaticFiles(directory=STATIC), name="static")
 
 

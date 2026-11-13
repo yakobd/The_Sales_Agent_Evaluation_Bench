@@ -1,0 +1,35 @@
+{
+  "sunnybowl.example": {
+    "attributes": {"industry": "qsr", "location_count": 240, "annual_media_spend_usd": 6500000, "region": "north_america",
+                   "franchise": true, "interests": ["multi_location", "measurement"]},
+    "signals": [
+      {"type": "new_marketing_leader", "date": "2026-10-20", "detail": "CMO since October 2026"},
+      {"type": "location_expansion", "date": "2026-09-30", "detail": "40 new locations planned in Texas"}
+    ]
+  },
+  "peakform.example": {
+    "attributes": {"industry": "fitness", "location_count": 85, "annual_media_spend_usd": 2400000, "region": "north_america",
+                   "franchise": true, "interests": ["creative"]},
+    "signals": [
+      {"type": "hiring_marketing_ops", "date": "2026-10-25", "detail": "2 marketing-ops roles open"},
+      {"type": "funding", "date": "2024-02-01", "detail": "Series B"}
+    ]
+  },
+  "crumbandco.example": {
+    "attributes": {"industry": "bakery", "location_count": 1, "annual_media_spend_usd": 40000, "region": "north_america"},
+    "signals": []
+  },
+  "northwind-agency.example": {
+    "attributes": {"agency_type": "performance", "client_count": 45, "managed_spend_usd": 80000000,
+                   "verticals": ["retail", "qsr", "automotive"], "region": "north_america", "interests": ["measurement"]},
+    "signals": [
+      {"type": "new_client_win", "date": "2026-10-28", "detail": "won a 300-location QSR account"},
+      {"type": "hiring_programmatic", "date": "2026-11-01", "detail": "hiring 3 programmatic traders"}
+    ]
+  },
+  "lanternco.example": {
+    "attributes": {"agency_type": "creative_boutique", "client_count": 8, "managed_spend_usd": 4000000,
+                   "verticals": ["fashion"], "region": "europe"},
+    "signals": []
+  }
+}
