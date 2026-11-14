@@ -41,7 +41,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import config  # noqa: E402
 import scoring_evaluator as E  # noqa: E402
 
-BASE_COMMIT = "8814993"     # dataset as of the end of Phase 1 (unchanged since v0.1)
+BASE_COMMIT = "a061693"     # dataset as of the end of Phase 1 (unchanged since v0.1)
 ORIGINAL_SG_COMMIT = "96a4f31"  # first commit of the style-guide tasks
 DATASET_VERSION = "0.1.1"
 
