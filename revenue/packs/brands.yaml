@@ -1,0 +1,103 @@
+# Segment pack: Brands, including franchise and multi-location brands.
+# Everything segment-specific lives here. Agents and skills are generic.
+id: brands
+label: Brands (incl. franchise & multi-location)
+version: 1
+
+icp:
+  description: >
+    Consumer brands with meaningful paid media, especially franchise and multi-location
+    brands that need local activation with central measurement.
+  owner: brand-sales
+
+messaging:
+  sender_name: Jordan from Cool AI
+  products:
+    Create: creative automation and dynamic creative optimization
+    Activate: local media activation across every location
+    Optimize: location-level measurement and attribution
+  value_props:
+    multi_location: "launch one campaign that adapts to every location, with each franchisee's offer and address"
+    measurement: "see which locations and creatives drive store visits, not just clicks"
+    creative: "generate and test on-brand creative variants without a production backlog"
+  hooks:   # one per intent signal; only used when the signal is inside its window
+    new_marketing_leader: "Congratulations on the new role ({detail}). The first 90 days are usually when the media stack gets a fresh look."
+    location_expansion: "Saw the news about {detail}. New locations usually mean new local campaigns to launch fast."
+    agency_review: "I understand {company} is reviewing its media partners ({detail})."
+    funding: "Congratulations on the recent funding ({detail})."
+    hiring_marketing_ops: "Noticed {company} is hiring for marketing operations ({detail})."
+  default_hook: "I couldn't find recent news about {company}, so I'll ask directly: how are you handling local campaigns across your locations today?"
+  cta: "Would a 20-minute walkthrough next week be useful? Here's my calendar: https://cal.example/cool-ai/brands"
+  banned_phrases: ["guaranteed results", "best in the industry", "no-brainer", "revolutionary"]
+
+scoring:
+  weights: {fit: 0.45, intent: 0.35, engagement: 0.20}
+  tiers: {A: 70, B: 50, C: 30}
+  fit:
+    - {field: industry, op: in, value: [qsr, restaurants, retail, fitness, automotive, home_services, healthcare_clinics], points: 30, reason: "Industry '{actual}' is a core brand vertical"}
+    - {field: location_count, op: gte, value: 50, points: 30, reason: "{actual} locations: multi-location activation is the main use case"}
+    - {field: annual_media_spend_usd, op: gte, value: 2000000, points: 25, reason: "Annual media spend ${actual:,} is above the $2M threshold"}
+    - {field: region, op: in, value: [north_america, europe], points: 15, reason: "Region '{actual}' is served today"}
+  intent:
+    - {signal: new_marketing_leader, window_days: 90, points: 40, reason: "New marketing leader ({detail}) in the last 90 days: vendor review window"}
+    - {signal: funding, window_days: 180, points: 25, reason: "Funding in the last 180 days ({detail})"}
+    - {signal: location_expansion, window_days: 180, points: 25, reason: "Expansion announced ({detail})"}
+    - {signal: agency_review, window_days: 120, points: 35, reason: "Media agency review under way ({detail})"}
+    - {signal: hiring_marketing_ops, window_days: 60, points: 15, reason: "Hiring marketing-ops roles ({detail})"}
+  engagement:
+    - {event: email_opened, points: 10, cap: 20, reason: "Opened our emails ({count}x)"}
+    - {event: link_clicked, points: 20, cap: 40, reason: "Clicked through ({count}x)"}
+    - {event: replied_positive, points: 40, cap: 40, reason: "Replied with interest"}
+    - {event: meeting_booked, points: 40, cap: 40, reason: "Booked a meeting"}
+
+templates:
+  first_touch:
+    subject: "{company}: one campaign, {location_count} local versions"
+    body: |
+      Hi {first_name},
+
+      {hook}
+
+      Cool AI lets {company} {value_prop}. {lesson_line}
+
+      {cta}
+
+      {sender_name}
+  follow_up:
+    subject: "Re: {company}: one campaign, {location_count} local versions"
+    body: |
+      Hi {first_name},
+
+      Following up with one concrete idea: {value_prop_secondary}. {lesson_line}
+
+      {cta}
+
+      {sender_name}
+  call_brief:
+    title: "Call brief: {company} ({tier}-tier brand)"
+    sections: [account, why_now, scores, open_questions, lessons, watch_outs]
+
+stages:
+  sla_days: {outreach: 5, engaged: 2, meeting: 7, qualified: 10, proposal: 7, io_sent: 5}
+  exit_criteria:
+    qualified: [budget, timeline, decision_maker, need]
+    proposal: [budget, flight_start, flight_end, line_items]
+  max_followups: 2
+
+transcripts:
+  product_keywords:
+    Create: [creative, variants, dco, assets, templates]
+    Activate: [local media, franchisee, locations, geo, activation, ctv]
+    Optimize: [measurement, attribution, store visits, reporting, incrementality]
+  decision_roles: [cmo, vp marketing, head of media, director of marketing, franchise marketing]
+
+io:
+  template: io_template.md
+  currency: USD
+  payment_terms: Net 45
+  min_budget: 25000
+  max_discount_pct: 15
+  rate_card:
+    "Activate - Local Media": {min_cpm: 8.0, max_cpm: 18.0}
+    "Create - DCO Creative": {min_cpm: 1.5, max_cpm: 4.0}
+    "Optimize - Measurement": {min_cpm: 0.5, max_cpm: 2.0}

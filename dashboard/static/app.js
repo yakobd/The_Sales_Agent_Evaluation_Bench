@@ -67,6 +67,7 @@ const I = {
   review: html`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8" r="4"/><path d="M2 21c0-4 3-6 7-6s7 2 7 6"/><path d="M16 11l2 2 4-4"/></svg>`,
   ab: html`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 20l4-12 4 12M5.5 16h5"/><path d="M15 8h3.5a2.5 2.5 0 0 1 0 5H15zm0 5h4a2.5 2.5 0 0 1 0 5h-4z"/></svg>`,
   cost: html`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M15 9.5c-.5-1-1.6-1.5-3-1.5-1.7 0-3 .8-3 2s1.3 1.7 3 2 3 .9 3 2.1-1.3 1.9-3 1.9c-1.4 0-2.6-.6-3-1.6M12 6.5V8M12 16v1.5"/></svg>`,
+  revenue: html`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg>`,
   sun: html`<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>`,
 };
 const PassIcon = () => html`<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>`;
@@ -617,6 +618,128 @@ function Cost() {
   </div>`;
 }
 
+/* ── Revenue desk (agentic revenue system) ─────────────────────────────── */
+const TierPill = ({ tier }) => html`<span class=${`pill ${tier === "A" ? "pass" : tier === "D" ? "neutral" : "warn"}`}>tier ${tier || "–"}</span>`;
+const DecisionPill = ({ d }) => {
+  const cls = { auto: "pass", approval: "warn", block: "fail", skipped: "neutral" }[d] || "neutral";
+  return html`<span class=${`pill ${cls}`}>${d}</span>`;
+};
+
+function ApprovalCard({ ap, onDecide, busy }) {
+  const a = ap.action, p = a.payload || {};
+  return html`<div class="card" style=${{ padding: 14 }}>
+    <div class="row"><b>${a.type.replaceAll("_", " ")}</b><span class="muted small">${ap.deal_id} · ${a.agent}</span><span class="spacer"></span><span class="mono small muted">${ap.id}</span></div>
+    <div class="note caveat" style=${{ margin: "8px 0" }}><b>Why a human:</b> ${ap.verdict.reasons.join("; ")}</div>
+    <div class="small muted" style=${{ marginBottom: 6 }}>${a.rationale}</div>
+    ${p.subject && html`<div class="email-preview"><div class="subj">Subject: ${p.subject}</div>${p.body}</div>`}
+    ${p.document && html`<details><summary class="small">IO document (${p.io_number})</summary><pre class="email-preview mono" style=${{ fontSize: 12 }}>${p.document}</pre></details>`}
+    ${p.lessons_used && p.lessons_used.length > 0 && html`<div class="small muted" style=${{ marginTop: 6 }}>Lessons used: <span class="mono">${p.lessons_used.join(", ")}</span></div>`}
+    <div class="row" style=${{ marginTop: 10 }}>
+      <button class="btn primary" disabled=${busy} onClick=${() => onDecide(ap.id, "approve")}>Approve</button>
+      <button class="btn" disabled=${busy} onClick=${() => onDecide(ap.id, "reject")}>Reject</button>
+    </div>
+  </div>`;
+}
+
+function DealDetail({ id, onClose }) {
+  const d = useApi(`/api/revenue/deals/${id}`, [id]);
+  if (!d.data) return html`<${Loading} s=${d}/>`;
+  const { deal, company, contact, activities, tasks, emails } = d.data;
+  const s = deal.score || {};
+  const sub = (k) => s[k] ? html`<div><b>${k}</b> ${num(s[k].value, 0)}<ul class="small" style=${{ margin: "2px 0 6px", paddingLeft: 18 }}>${s[k].reasons.map((r, i) => html`<li key=${i}>${r}</li>`)}</ul></div>` : null;
+  return html`<${Card} title=${`${company.name} · ${deal.deal_id}`} sub=${`${contact.name}, ${contact.title} · ${deal.segment} · stage ${deal.stage}`}
+      right=${html`<button class="btn small" onClick=${onClose}>Close</button>`}>
+    <div class="grid g2">
+      <div>${s.reason ? html`<div class="note" style=${{ marginBottom: 8 }}>${s.reason}</div>` : ""}${sub("fit")}${sub("intent")}${sub("engagement")}</div>
+      <div>
+        <h2 style=${{ fontSize: 13 }}>Deal fields</h2>
+        <dl class="kv">${Object.entries(deal.fields || {}).filter(([k]) => k !== "line_items").map(([k, v]) => html`<dt key=${k}>${k}</dt><dd key=${k + "v"}>${typeof v === "object" ? JSON.stringify(v) : String(v)}</dd>`)}</dl>
+        ${deal.flags.length > 0 && html`<div class="dimchips" style=${{ marginTop: 8 }}>${deal.flags.map(f => html`<span key=${f} class="pill fail">${f}</span>`)}</div>`}
+      </div>
+    </div>
+    <h2 style=${{ fontSize: 13, marginTop: 12 }}>Timeline</h2>
+    <div class="stack" style=${{ gap: 6 }}>${activities.map((a, i) => html`<details key=${i} class="note"><summary><b>${a.kind}</b> <span class="muted small">${a.ts.slice(0, 16)}</span></summary>
+      <pre class="mono small" style=${{ whiteSpace: "pre-wrap", margin: "6px 0 0" }}>${a.kind === "io_draft" ? a.body.document : JSON.stringify(a.body, null, 2)}</pre></details>`)}</div>
+    ${emails.length > 0 && html`<h2 style=${{ fontSize: 13, marginTop: 12 }}>Emails sent</h2>${emails.map(m => html`<div key=${m.id} class="email-preview" style=${{ marginBottom: 6 }}><div class="subj">${m.subject}</div>${m.body}</div>`)}`}
+    ${tasks.length > 0 && html`<h2 style=${{ fontSize: 13, marginTop: 12 }}>Tasks</h2><ul class="small">${tasks.map((t, i) => html`<li key=${i}>${t.title} <span class="muted">(${t.owner}, due ${t.due})</span></li>`)}</ul>`}
+  </${Card}>`;
+}
+
+function RevenueDesk() {
+  const [nonce, setNonce] = useState(0);
+  const st = useApi("/api/revenue/state", [nonce]);
+  const [busy, setBusy] = useState(false), [err, setErr] = useState(null), [sel, setSel] = useState(null), [trace, setTrace] = useState(null);
+  const refresh = () => setNonce(n => n + 1);
+  const call = (path, body) => {
+    setBusy(true); setErr(null);
+    return api(path, { method: "POST", body: body || {} }).then(r => { if (r.trace) setTrace(r.trace); refresh(); return r; })
+      .catch(e => setErr(e.message)).finally(() => setBusy(false));
+  };
+  if (!st.data) return html`<${Loading} s=${st}/>`;
+  const s = st.data;
+  const pending = s.approvals.filter(a => a.status === "pending");
+  const sc = s.scenario, next = sc.steps[sc.step];
+  const deals = [...s.deals].sort((a, b) => (b.score ? b.score.total : -1) - (a.score ? a.score.total : -1));
+  const shownTrace = trace || s.last_trace;
+  const killStyle = s.kill_switch ? { background: "var(--critical)", borderColor: "var(--critical)", color: "#fff" } : {};
+  return html`<div class="stack">
+    <div class="card"><div class="row">
+      <div><div class="small muted">Scenario step ${sc.step}/${sc.steps.length}</div><b>${next ? `Next: ${next.title}` : "Scenario complete"}</b>${next && html`<div class="small muted">${next.hint}</div>`}</div>
+      <span class="spacer"></span>
+      <button class="btn primary" disabled=${busy || !next} onClick=${() => call("/api/revenue/scenario/next")}>Run next step</button>
+      <button class="btn" disabled=${busy} onClick=${() => { setTrace(null); setSel(null); call("/api/revenue/scenario/reset"); }}>Reset</button>
+      <button class="btn" style=${killStyle} disabled=${busy} onClick=${() => call("/api/revenue/killswitch", { on: !s.kill_switch })}>${s.kill_switch ? "Kill switch ON" : "Kill switch off"}</button>
+    </div>
+    <div class="row small muted" style=${{ marginTop: 8 }}>
+      <span>Clock ${s.clock.slice(0, 10)}</span><span>·</span><span>${s.events.total} events (${s.events.dead.length} dead)</span><span>·</span>
+      <span>Audit chain ${s.audit.verify.ok ? html`<span class="pill pass"><${PassIcon}/>intact (${s.audit.verify.entries})</span>` : html`<span class="pill fail">broken at #${s.audit.verify.broken_at}</span>`}</span><span>·</span>
+      <span>Packs: ${s.packs.map(p => p.id).join(", ")}</span>
+    </div>
+    ${err && html`<p class="err">${err}</p>`}</div>
+
+    <div class="grid g2">
+      <${Card} title="Pipeline" sub="Sorted by score. Click a deal for scores with reasons, fields, timeline and IO.">
+        ${deals.length === 0 ? html`<div class="empty">No deals yet: run the first step.</div>` : html`<div class="scroll-x"><table class="tbl">
+          <thead><tr><th>Deal</th><th>Segment</th><th>Tier</th><th class="num">Score</th><th class="num" title="fit / intent / engagement">F / I / E</th><th>Stage</th><th>Flags</th></tr></thead>
+          <tbody>${deals.map(d => html`<tr key=${d.deal_id} class=${sel === d.deal_id ? "hl" : ""} style=${{ cursor: "pointer" }} onClick=${() => setSel(d.deal_id)}>
+            <td><b>${d.company_name}</b><div class="small muted">${d.contact_name}</div></td><td>${d.segment}</td><td><${TierPill} tier=${d.tier}/></td>
+            <td class="num">${d.score ? num(d.score.total, 1) : "–"}</td>
+            <td class="num small">${d.score ? `${num(d.score.fit.value, 0)} / ${num(d.score.intent.value, 0)} / ${num(d.score.engagement.value, 0)}` : "–"}</td>
+            <td>${d.stage}${d.opted_out ? html` <span class="pill neutral">opted out</span>` : ""}</td>
+            <td>${d.flags.map(f => html`<span key=${f} class="pill fail" style=${{ marginRight: 4 }}>${f}</span>`)}</td></tr>`)}</tbody></table></div>`}
+      </${Card}>
+      <${Card} title=${`Approval queue (${pending.length})`} sub="High-risk actions wait here: tier-A first touches, pricing, IOs, unverified closes. The policy is code; this is the human in the loop.">
+        ${pending.length === 0 ? html`<div class="empty">Nothing waiting.</div>` : html`<div class="stack">${pending.map(ap => html`<${ApprovalCard} key=${ap.id} ap=${ap} busy=${busy}
+          onDecide=${(id, d) => call(`/api/revenue/approvals/${id}`, { decision: d })}/>`)}</div>`}
+      </${Card}>
+    </div>
+
+    ${sel && html`<${DealDetail} id=${sel} onClose=${() => setSel(null)} key=${sel + nonce}/>`}
+
+    <div class="grid g2">
+      <${Card} title="What just happened" sub="Every agent proposal in the last step, and the policy's decision.">
+        ${!shownTrace || shownTrace.length === 0 ? html`<div class="empty">Run a step.</div>` : html`<div class="scroll-x"><table class="tbl"><thead><tr><th>Event</th><th>Agent</th><th>Action</th><th>Decision</th><th>Why</th></tr></thead><tbody>
+          ${shownTrace.flatMap((t, i) => (t.actions || []).filter(a => a.decision !== "skipped").map((a, j) => html`<tr key=${i + "-" + j}><td class="small mono">${t.event}</td><td>${a.agent}</td><td class="small">${a.type}</td>
+            <td><${DecisionPill} d=${a.decision || "error"}/></td><td class="small">${(a.decision === "auto" ? a.rationale : (a.reasons || []).join("; ")) || a.error || ""}</td></tr>`))}</tbody></table></div>`}
+      </${Card}>
+      <${Card} title=${`Lessons (${s.lessons.length})`} sub="Learned from replies and calls. Scope 'all' lessons feed every segment's outreach and call briefs.">
+        ${s.lessons.length === 0 ? html`<div class="empty">No lessons yet.</div>` : html`<div class="stack" style=${{ gap: 6 }}>${s.lessons.map(l => html`<div key=${l.lesson_id} class="note">
+          <div class="row"><b class="small">${l.text}</b><span class="spacer"></span><span class="pill neutral">${l.scope}</span><span class="pill pass">used ${l.uses}×</span></div>
+          <div class="small muted">${l.evidence}</div>${l.outreach_line && html`<div class="small">Email line: "${l.outreach_line}"</div>`}
+          <div class="small mono muted">${l.lesson_id} · from ${l.origin_segment} · ${l.source}</div></div>`)}</div>`}
+      </${Card}>
+    </div>
+
+    <div class="grid g2">
+      <${Card} title="Daily digest"><pre class="mono small" style=${{ whiteSpace: "pre-wrap", margin: 0 }}>${s.digest.text}</pre></${Card}>
+      <${Card} title="Audit log (latest)" sub="Append-only and hash-chained: editing any row breaks verification.">
+        <div class="list" style=${{ maxHeight: 260 }}>${s.audit.tail.map(e => html`<div key=${e.seq} class="list-item"><div><div class="t small">${e.kind} <span class="muted">· ${e.actor}</span></div>
+          <div class="m mono">${JSON.stringify(e.data).slice(0, 140)}</div></div><span class="mono small muted">#${e.seq}</span></div>`)}</div>
+      </${Card}>
+    </div>
+  </div>`;
+}
+
 /* ── shell ───────────────────────────────────────────────────────────── */
 const PAGES = [
   ["overview", "Overview", I.overview, "Headline results, validity and spend at a glance."],
@@ -627,6 +750,7 @@ const PAGES = [
   ["review", "Review queue", I.review, "Blind human labelling and human-vs-evaluator agreement."],
   ["ab", "A/B test", I.ab, "Significance, lift and detectable effect for creative tests."],
   ["cost", "Cost & latency", I.cost, "API spend, per-email latency and cost per 1,000 creatives."],
+  ["revenue", "Revenue desk", I.revenue, "Agentic revenue system: lead to signed IO, with the autonomy policy in code and a human approval queue."],
 ];
 
 function App() {
@@ -644,7 +768,7 @@ function App() {
   const body = !meta.data ? html`<${Loading} s=${meta}/>` : ({
     overview: html`<${Overview} meta=${meta.data} go=${go}/>`, check: html`<${LiveCheck} meta=${meta.data}/>`,
     experiments: html`<${Experiments}/>`, gate: html`<${Gate} meta=${meta.data}/>`, traces: html`<${Traces} meta=${meta.data}/>`,
-    review: html`<${Review} meta=${meta.data}/>`, ab: html`<${ABTest}/>`, cost: html`<${Cost}/>`,
+    review: html`<${Review} meta=${meta.data}/>`, ab: html`<${ABTest}/>`, cost: html`<${Cost}/>`, revenue: html`<${RevenueDesk}/>`,
   })[cur[0]];
   return html`<${TipLayer}><div class="shell">
     <nav class="side" aria-label="sections">

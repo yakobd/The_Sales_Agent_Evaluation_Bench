@@ -1,0 +1,17 @@
+{
+  "note": "Mock leads. Companies and people are fictional; domains use the reserved .example TLD.",
+  "brands": [
+    {"company": {"company_id": "sunnybowl", "name": "Sunny Bowl", "domain": "sunnybowl.example"},
+     "contact": {"contact_id": "c-dana", "name": "Dana Ruiz", "email": "dana@sunnybowl.example", "title": "CMO"}},
+    {"company": {"company_id": "peakform", "name": "PeakForm Fitness", "domain": "peakform.example"},
+     "contact": {"contact_id": "c-marcus", "name": "Marcus Lee", "email": "marcus@peakform.example", "title": "Director of Marketing"}},
+    {"company": {"company_id": "crumbandco", "name": "Crumb & Co", "domain": "crumbandco.example"},
+     "contact": {"contact_id": "c-ana", "name": "Ana Silva", "email": "ana@crumbandco.example", "title": "Owner"}}
+  ],
+  "agencies": [
+    {"company": {"company_id": "northwind", "name": "Northwind Performance", "domain": "northwind-agency.example"},
+     "contact": {"contact_id": "c-sam", "name": "Sam Okafor", "email": "sam@northwind-agency.example", "title": "VP Programmatic"}},
+    {"company": {"company_id": "lantern", "name": "Lantern Creative", "domain": "lanternco.example"},
+     "contact": {"contact_id": "c-elle", "name": "Elle Martin", "email": "elle@lanternco.example", "title": "Managing Director"}}
+  ]
+}

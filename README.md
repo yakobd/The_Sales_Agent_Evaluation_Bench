@@ -103,6 +103,19 @@ The principle is "the model proposes, policy disposes".
 
 Trained + gate vs trained: **+0.07, CI [+0.01, +0.15]**. The gate reuses the evaluator's own rules for those codes, so it helps by construction. The meaningful readings are the **fire rate** and the **share the model wrote**. A weak model behind a gate scores 0.88, but only because 82% of its drafts were thrown away.
 
+## Agentic revenue system ([revenue/](revenue/))
+
+This applies the same ideas to the whole revenue lifecycle: lead → enrich → score → outreach → reply → meeting → qualify → IO → signature → handoff.
+
+- **Six single-responsibility agents propose actions.** An orchestrator owns deal state, and an **autonomy policy in code** decides auto, approval or block.
+- **Segment packs** (YAML) hold ICP, scoring, messaging, SLAs and IO terms. A second segment is added by config only.
+- **Durable, idempotent events** with HMAC-verified webhooks.
+- **A knowledge loop:** transcripts and replies become lessons used in later emails and call briefs.
+- **IO generation and validation,** a **hash-chained audit log** and a **kill switch.**
+- **An optional Claude Agent SDK runtime** with scoped tools and permission hooks.
+
+It runs end to end with `python -m revenue.demo`, or live in the console's **Revenue desk** tab. Further reading: [revenue/DESIGN.md](revenue/DESIGN.md) (3 pages) and [revenue/INTERVIEW_MAP.md](revenue/INTERVIEW_MAP.md).
+
 ## Quickstart
 
 ```bash
