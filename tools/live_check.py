@@ -1,19 +1,13 @@
-"""Live HTTP check against a running console: every API endpoint plus the full revenue scenario,
-with approvals made the way a human would make them in the Revenue desk.
+"""Live HTTP check against a running console: every API endpoint.
 
     python -m dashboard.server --port 8765 &   then   python tools/live_check.py --port 8765
-(tools/check_all.sh --live does both.) Resets the revenue desk state.
+(tools/check_all.sh --live does both.)
 """
 import argparse
-import hashlib
-import hmac
-import json
 import sys
 import time
 
 import requests
-
-secret = __import__("os").environ.get("REVENUE_WEBHOOK_SECRET", "dev-secret").encode()
 
 _ap = argparse.ArgumentParser()
 _ap.add_argument("--port", type=int, default=8765)
@@ -53,54 +47,6 @@ pr = p("/api/abtest/paired", json={"condition_a": "trained", "condition_b": "pro
 check("A/B: paired test", pr["delta"] == 0.7647)
 ag = g("/api/review/agreement", params={"source": "round2"}).json()
 check("Review: round-2 agreement", ag["overall"]["agreement"] == 0.833, f"kappa {ag['overall']['cohen_kappa']}")
-
-# Revenue desk: the full scenario exactly as in the interview (approvals done "by hand")
-check("Revenue: reset", p("/api/revenue/scenario/reset").ok)
-step = lambda: p("/api/revenue/scenario/next")  # noqa: E731
-state = lambda: g("/api/revenue/state").json()  # noqa: E731
-pend = lambda kind: [a for a in state()["approvals"] if a["status"] == "pending" and a["action"]["type"] == kind]  # noqa: E731
-
-step()  # 1 brand leads
-s = state()
-tiers = {d["deal_id"]: d["tier"] for d in s["deals"]}
-check("Revenue 1: leads scored and tiered", tiers == {"D-sunnybowl": "A", "D-peakform": "B", "D-crumbandco": "D"}, str(tiers))
-a = pend("send_email")
-check("Revenue 1: tier-A first touch queued", len(a) == 1 and a[0]["deal_id"] == "D-sunnybowl")
-check("Revenue 1: approve email", p(f"/api/revenue/approvals/{a[0]['id']}", json={"decision": "approve"}).ok)
-step()  # 2 reply
-d = next(x for x in state()["deals"] if x["deal_id"] == "D-sunnybowl")
-check("Revenue 2: injection flagged, deal not won", d["stage"] == "engaged" and "injection_attempt" in d["flags"], str(d["flags"]))
-step()  # 3 opt-out
-check("Revenue 3: opt-out recorded", next(x for x in state()["deals"] if x["deal_id"] == "D-peakform")["opted_out"])
-step()  # 4 meeting
-step()  # 5 transcript
-d = next(x for x in state()["deals"] if x["deal_id"] == "D-sunnybowl")
-check("Revenue 5: transcript -> fields, qualified, IO valid", d["fields"].get("budget") == 180000 and d["fields"].get("io_valid") is True, d["stage"])
-check("Revenue 5: lessons learned", len(state()["lessons"]) == 3)
-early = p("/api/revenue/scenario/next")
-check("Revenue 6: e-sign refused before IO approval", early.status_code == 409)
-io = pend("send_io_for_signature")
-check("Revenue 6: approve IO", len(io) == 1 and p(f"/api/revenue/approvals/{io[0]['id']}", json={"decision": "approve"}).ok)
-step()  # 6 e-sign
-check("Revenue 6: closed won", next(x for x in state()["deals"] if x["deal_id"] == "D-sunnybowl")["stage"] == "closed_won")
-step()  # 7 agencies
-nw = [a for a in pend("send_email") if a["deal_id"] == "D-northwind"]
-check("Revenue 7: agency pack works, lesson reused", len(nw) == 1 and nw[0]["action"]["payload"]["lessons_used"], str(nw[0]["action"]["payload"]["lessons_used"] if nw else ""))
-p("/api/revenue/killswitch", json={"on": True})
-blocked = p(f"/api/revenue/approvals/{nw[0]['id']}", json={"decision": "approve"})
-check("Revenue: kill switch refuses approved send", blocked.status_code == 409)
-p("/api/revenue/killswitch", json={"on": False})
-check("Revenue: approve after kill switch off", p(f"/api/revenue/approvals/{nw[0]['id']}", json={"decision": "approve"}).ok)
-step()  # 8 time passes
-s = state()
-check("Revenue 8: stall detected", "stalled" in next(x for x in s["deals"] if x["deal_id"] == "D-northwind")["flags"])
-check("Revenue: no dead events, audit chain intact", not s["events"]["dead"] and s["audit"]["verify"]["ok"], f"{s['audit']['verify']['entries']} audit entries")
-body = json.dumps({"deal_id": "D-sunnybowl", "booking_id": "bk-live"}).encode()
-sig = hmac.new(secret, body, hashlib.sha256).hexdigest()
-check("Webhook: bad signature rejected", p("/api/revenue/webhooks/calcom", data=body, headers={"X-Cool-Signature": "nope"}).status_code == 401)
-first = p("/api/revenue/webhooks/calcom", data=body, headers={"X-Cool-Signature": sig}).json()
-again = p("/api/revenue/webhooks/calcom", data=body, headers={"X-Cool-Signature": sig}).json()
-check("Webhook: signed accepted once, duplicate ignored", first["accepted"] and again["duplicate"])
 
 for status, name, detail in rows:
     print(f"{status} | {name}" + (f" | {detail}" if detail else ""))

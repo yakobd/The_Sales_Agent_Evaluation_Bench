@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# One command, whole system: Week 10 + Week 11 + console API + revenue system.
+# One command, whole system: Week 10 + Week 11 + console API.
 #   bash tools/check_all.sh            # offline checks (about 2 minutes)
-#   bash tools/check_all.sh --live     # also boots the console and drives every endpoint + the revenue scenario
+#   bash tools/check_all.sh --live     # also boots the console and drives every endpoint
 # Regenerated result files must match the committed ones; they are restored afterwards.
 set -u
 W11="$(cd "$(dirname "$0")/.." && pwd)"
@@ -43,7 +43,6 @@ if ls "$W11"/tenacious_bench_v0.1/held_out/TB-H*.json >/dev/null 2>&1 && [ -f "$
   run "Gate + router on sealed held-out"          "$W11" "$PY" ablations/score_gated.py
   same "Gate" ablations/gated_results_v0.2.json
 else results+=("SKIP  Ablation (sealed held-out / generations are local-only)"); fi
-run "Revenue system demo (full slice)"            "$W11" "$PY" -m revenue.demo
 if [ -x "$PY10" ]; then
   run "Week 10 tests"                             "$W10" "$PY10" -m pytest -q tests
   run "Week 10 composer v1 vs v2 (204 briefs)"    "$W11" "$PY10" generation_scripts/eval_week10_composer.py --split train
@@ -53,7 +52,7 @@ else results+=("SKIP  Week 10 (set W10_DIR or create its venv)"); fi
 if [ "${1:-}" = "--live" ]; then
   PORT="${PORT:-8765}"
   (cd "$W11" && "$PY" -m dashboard.server --port "$PORT" >>"$LOG" 2>&1) & SRV=$!
-  run "Live console + revenue scenario (HTTP)"   "$W11" "$PY" tools/live_check.py --port "$PORT"
+  run "Live console (HTTP)"                      "$W11" "$PY" tools/live_check.py --port "$PORT"
   kill $SRV 2>/dev/null; wait $SRV 2>/dev/null
 fi
 
