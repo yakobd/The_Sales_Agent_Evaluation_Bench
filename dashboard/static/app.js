@@ -298,7 +298,7 @@ function Overview({ meta, go }) {
 }
 
 function LiveCheck({ meta }) {
-  const [pack, setPack] = useState(ls.get("qa-pack", "sales_email"));
+  const [pack, setPack] = useState(() => { const v = ls.get("qa-pack", "sales_email"); return meta.packs[v] ? v : "sales_email"; });
   const [q, setQ] = useState("");
   const list = useApi(`/api/tasks?pack=${pack}&q=${encodeURIComponent(q)}&limit=400`);
   const [tid, setTid] = useState(null);
@@ -306,7 +306,11 @@ function LiveCheck({ meta }) {
   const [out, setOut] = useState(null);
   const [res, setRes] = useState(null);
   const [err, setErr] = useState(null);
-  useEffect(() => { ls.set("qa-pack", pack); setTid(null); setOut(null); setRes(null); }, [pack]);
+  // Switch pack in ONE render: the old pack's draft must never be drawn with the new pack's form
+  // (an email has subject/body, an ad has headlines/descriptions; mixing them crashed the page).
+  const choosePack = v => { if (v === pack) return; setTid(null); setOut(null); setRes(null); setErr(null); setPack(v); };
+  useEffect(() => { ls.set("qa-pack", pack); }, [pack]);
+  const fits = o => !!o && (pack === "ad_creative" ? typeof o.headlines === "string" : typeof o.subject === "string");
   useEffect(() => { if (!tid && list.data && list.data.rows.length) setTid(list.data.rows[0].task_id); }, [list.data]);
   useEffect(() => {
     if (task.data) {
@@ -321,16 +325,17 @@ function LiveCheck({ meta }) {
     ? { headlines: o.headlines.split("\n").map(s => s.trim()).filter(Boolean), descriptions: o.descriptions.split("\n").map(s => s.trim()).filter(Boolean), final_url: o.final_url.trim() }
     : o;
   const run = useCallback(() => {
-    if (!tid || !out) return;
+    if (!tid || !fits(out)) return;
     setErr(null);
     api("/api/score", { method: "POST", body: { pack, task_id: tid, output: payload(out) } }).then(setRes).catch(e => setErr(e.message));
   }, [tid, out, pack]);
   useEffect(() => { const t = setTimeout(run, 350); return () => clearTimeout(t); }, [run]);
   const set = k => e => setOut(o => ({ ...o, [k]: e.target.value }));
   const p = meta.packs[pack];
+  const draft = fits(out) ? out : null;
   return html`<div class="grid g-side">
     <div class="stack">
-      <${Seg} value=${pack} onChange=${setPack} options=${[["sales_email", "Sales email"], ["ad_creative", "Search ad"]]}/>
+      <${Seg} value=${pack} onChange=${choosePack} options=${[["sales_email", "Sales email"], ["ad_creative", "Search ad"]]}/>
       <input class="input" placeholder="Search tasks, prospects, types…" value=${q} onInput=${e => setQ(e.target.value)}/>
       <div class="list" role="listbox" aria-label="tasks">
         ${!list.data ? html`<${Loading} s=${list}/>` : list.data.rows.map(r => html`<div key=${r.task_id} class="list-item" role="option" aria-selected=${r.task_id === tid} onClick=${() => setTid(r.task_id)}>
@@ -343,21 +348,21 @@ function LiveCheck({ meta }) {
       <div class="grid g2">
         <${Card} title="Brief" sub=${task.data ? `${task.data.task_id} · ${task.data.partition}` : ""}>${task.data ? html`<${BriefView} pack=${pack} task=${task.data}/>` : html`<${Loading} s=${task}/>`}</${Card}>
         <${Card} title="Draft" sub="Edit freely – it re-scores as you type.">
-          ${out && (pack === "ad_creative" ? html`<div class="stack" style=${{ gap: 10 }}>
-            <label class="field">Headlines (one per line)<textarea class="textarea" value=${out.headlines} onInput=${set("headlines")}/></label>
-            <label class="field">Descriptions (one per line)<textarea class="textarea" style=${{ minHeight: 80 }} value=${out.descriptions} onInput=${set("descriptions")}/></label>
-            <label class="field">Final URL<input class="input mono" value=${out.final_url} onInput=${set("final_url")}/></label></div>`
+          ${draft && (pack === "ad_creative" ? html`<div class="stack" style=${{ gap: 10 }}>
+            <label class="field">Headlines (one per line)<textarea class="textarea" value=${draft.headlines} onInput=${set("headlines")}/></label>
+            <label class="field">Descriptions (one per line)<textarea class="textarea" style=${{ minHeight: 80 }} value=${draft.descriptions} onInput=${set("descriptions")}/></label>
+            <label class="field">Final URL<input class="input mono" value=${draft.final_url} onInput=${set("final_url")}/></label></div>`
           : html`<div class="stack" style=${{ gap: 10 }}>
-            <label class="field">Subject <span class="muted">${out.subject.length} chars</span><input class="input" value=${out.subject} onInput=${set("subject")}/></label>
-            <label class="field">Body<textarea class="textarea" style=${{ minHeight: 220 }} value=${out.body} onInput=${set("body")}/></label></div>`)}
+            <label class="field">Subject <span class="muted">${draft.subject.length} chars</span><input class="input" value=${draft.subject} onInput=${set("subject")}/></label>
+            <label class="field">Body<textarea class="textarea" style=${{ minHeight: 220 }} value=${draft.body} onInput=${set("body")}/></label></div>`)}
         </${Card}>
       </div>
       ${err && html`<p class="err">${err}</p>`}
-      ${res && html`<${Card} title=${html`<span class="verdict"><${Verdict} pass=${res.all_pass}>${res.all_pass ? "Ready to send" : "Blocked by QA"}</${Verdict}></span>`} sub=${p.evaluator}>
+      ${res && draft && html`<${Card} title=${html`<span class="verdict"><${Verdict} pass=${res.all_pass}>${res.all_pass ? "Ready to send" : "Blocked by QA"}</${Verdict}></span>`} sub=${p.evaluator}>
         <div class="dimchips" style=${{ marginBottom: 12 }}>${Object.entries(res.checks).map(([d, c]) => html`<${Verdict} key=${d} pass=${c.pass}>${dimLabel(d)}</${Verdict}>`)}</div>
         <div class="grid g2">
           <div><h2 style=${{ fontSize: 13 }}>Violations</h2><${ViolationList} violations=${res.violations} policy=${meta.hard_policies}/></div>
-          <div><h2 style=${{ fontSize: 13 }}>Evidence in context</h2><${EmailPreview} pack=${pack} output=${payload(out)} violations=${res.violations}/></div>
+          <div><h2 style=${{ fontSize: 13 }}>Evidence in context</h2><${EmailPreview} pack=${pack} output=${payload(draft)} violations=${res.violations}/></div>
         </div>
         ${res.gate && html`<div class="grid g2" style=${{ marginTop: 12 }}>
           <div class="note"><b>Router:</b> ${res.route.writer === "template" ? "honest template" : "model"} – ${res.route.reason}.<br/><span class="muted">In-window signals: ${Object.entries(res.route.valid_signals).filter(([, v]) => v).map(([k]) => k).join(", ") || "none"}</span></div>
@@ -495,7 +500,7 @@ function Review({ meta }) {
   const agr = useApi(`/api/review/agreement?source=${src}&pack=${pack}${src === "ui" ? `&reviewer=${encodeURIComponent(reviewer)}` : ""}`, [nonce]);
   useEffect(() => { ls.set("qa-reviewer", reviewer); }, [reviewer]);
   useEffect(() => { setLabels({}); setNote(""); setReveal(null); }, [next.data]);
-  useEffect(() => { if (pack !== "sales_email") setSrc("ui"); setSkip([]); }, [pack]);
+  const choosePack = v => { if (v === pack) return; setLabels({}); setNote(""); setReveal(null); setErr(null); setSkip([]); if (v !== "sales_email") setSrc("ui"); setPack(v); };
   const dims = meta.packs[pack].dimensions;
   const task = next.data && !next.data.done ? next.data.task : null;
   const submit = () => {
@@ -505,7 +510,7 @@ function Review({ meta }) {
   };
   const out = task && task.candidate_output;
   return html`<div class="stack">
-    <div class="row"><${Seg} value=${pack} onChange=${setPack} options=${[["sales_email", "Sales email"], ["ad_creative", "Search ad"]]}/>
+    <div class="row"><${Seg} value=${pack} onChange=${choosePack} options=${[["sales_email", "Sales email"], ["ad_creative", "Search ad"]]}/>
       <label class="field" style=${{ width: 200 }}>Reviewer<input class="input" value=${reviewer} onChange=${e => setReviewer(e.target.value || "reviewer")}/></label>
       <span class="spacer"></span><span class="muted small">${next.data ? `${next.data.labelled} labelled${next.data.remaining != null ? ` · ${next.data.remaining} remaining` : ""}` : ""}</span></div>
     <div class="grid g2">
@@ -516,7 +521,7 @@ function Review({ meta }) {
           <${EmailPreview} pack=${pack} output=${out} violations=${reveal ? reveal.evaluator.violations : []}/>
           <div class="stack" style=${{ gap: 6 }}>${dims.map(d => html`<div key=${d} class="row"><span style=${{ width: 140 }}>${dimLabel(d)}</span>
             <${Seg} value=${labels[d]} onChange=${v => !reveal && setLabels(l => ({ ...l, [d]: v }))} options=${[["P", "Pass"], ["F", "Fail"]]}/>
-            ${reveal && html`<span>${reveal.agreement[d] ? html`<span class="pill pass"><${PassIcon}/>agrees</span>` : html`<span class="pill warn">evaluator: ${reveal.evaluator.checks[d].pass ? "pass" : "fail"}</span>`}</span>`}</div>`)}</div>
+            ${reveal && html`<span>${reveal.agreement[d] ? html`<span class="pill pass"><${PassIcon}/>agrees</span>` : html`<span class="pill warn">evaluator: ${reveal.evaluator.checks[d]?.pass ? "pass" : "fail"}</span>`}</span>`}</div>`)}</div>
           <input class="input" placeholder="Note (optional): why?" value=${note} onInput=${e => setNote(e.target.value)} disabled=${!!reveal}/>
           ${err && html`<p class="err">${err}</p>`}
           <div class="row">${!reveal
@@ -629,6 +634,18 @@ const PAGES = [
   ["cost", "Cost & latency", I.cost, "API spend, per-email latency and cost per 1,000 creatives."],
 ];
 
+/* A page that throws shows an error card instead of blanking the whole console. */
+class PageBoundary extends React.Component {
+  constructor(props) { super(props); this.state = { err: null }; }
+  static getDerivedStateFromError(err) { return { err }; }
+  componentDidCatch(err) { console.error(err); }
+  render() {
+    if (!this.state.err) return this.props.children;
+    return html`<div class="card"><p class="err">This view hit an error: ${String(this.state.err.message || this.state.err)}</p>
+      <button class="btn small" onClick=${() => this.setState({ err: null })}>Reload this view</button></div>`;
+  }
+}
+
 function App() {
   const [page, setPage] = useState((location.hash || "#overview").slice(1));
   const [theme, setTheme] = useState(document.documentElement.dataset.theme || "");
@@ -658,7 +675,7 @@ function App() {
     </nav>
     <main class="main">
       <div class="page-head"><div><h1>${cur[1]}</h1><p>${cur[3]}</p></div></div>
-      ${body}
+      <${PageBoundary} key=${cur[0]}>${body}</${PageBoundary}>
     </main>
   </div></${TipLayer}>`;
 }
